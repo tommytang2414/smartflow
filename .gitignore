@@ -1,0 +1,28 @@
+# Environment
+.env
+.env.example
+
+# Data
+data/*.db
+data/*.parquet
+data/*.csv
+
+# Logs
+logs/*.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Playwright
+.playwright/

@@ -1,0 +1,6817 @@
+{
+  "A00001": {
+    "name": "THE SEHK OPTIONS CLEARING HOUSE LTD",
+    "type": "clearing",
+    "raw_name": "THE SEHK OPTIONS CLEARING HOUSE LTD"
+  },
+  "A00002": {
+    "name": "CHINA SECURITIES DEPOSITORY AND CLEARING",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "A00003": {
+    "name": "Stock Connect - Shanghai",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "A00004": {
+    "name": "Stock Connect - Shenzhen",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "A00005": {
+    "name": "CSDC Immobilized (H-share internal)",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "A00006": {
+    "name": "CHINA SECURITIES DEPOSITORY AND CLEARING",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "A90003": {
+    "name": "CHINA SECURITIES DEPOSITORY AND CLEARING",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "A90004": {
+    "name": "CHINA SECURITIES DEPOSITORY AND CLEARING",
+    "type": "clearing",
+    "raw_name": "CHINA SECURITIES DEPOSITORY AND CLEARING"
+  },
+  "B00001": {
+    "name": "CONCORD SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CONCORD SECURITIES CO"
+  },
+  "B00008": {
+    "name": "D. J. INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "D. J. INVESTMENT CO"
+  },
+  "B00013": {
+    "name": "NORMAN KONG & CO",
+    "type": "broker",
+    "raw_name": "NORMAN KONG & CO"
+  },
+  "B00026": {
+    "name": "GOLDEN SEA CO",
+    "type": "broker",
+    "raw_name": "GOLDEN SEA CO"
+  },
+  "B00029": {
+    "name": "HONG KONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HONG KONG SECURITIES CO"
+  },
+  "B00040": {
+    "name": "SOEN TAK CO",
+    "type": "broker",
+    "raw_name": "SOEN TAK CO"
+  },
+  "B00043": {
+    "name": "LUEN SING & CO",
+    "type": "broker",
+    "raw_name": "LUEN SING & CO"
+  },
+  "B00045": {
+    "name": "HUNG CHEONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HUNG CHEONG SECURITIES CO"
+  },
+  "B00047": {
+    "name": "BOWIN INDUSTRIAL CO",
+    "type": "broker",
+    "raw_name": "BOWIN INDUSTRIAL CO"
+  },
+  "B00048": {
+    "name": "T. W. CHEUNG & CO",
+    "type": "broker",
+    "raw_name": "T. W. CHEUNG & CO"
+  },
+  "B00054": {
+    "name": "CHU CHUNG TIN",
+    "type": "broker",
+    "raw_name": "CHU CHUNG TIN"
+  },
+  "B00055": {
+    "name": "TAT LEE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAT LEE SECURITIES CO"
+  },
+  "B00067": {
+    "name": "KUENTAI SECURITIES (KAM NGAN) CO",
+    "type": "broker",
+    "raw_name": "KUENTAI SECURITIES (KAM NGAN) CO"
+  },
+  "B00070": {
+    "name": "YAN YAN INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "YAN YAN INVESTMENT CO"
+  },
+  "B00077": {
+    "name": "TRUTH & CO",
+    "type": "broker",
+    "raw_name": "TRUTH & CO"
+  },
+  "B00081": {
+    "name": "KWONG HING CO",
+    "type": "broker",
+    "raw_name": "KWONG HING CO"
+  },
+  "B00084": {
+    "name": "WAH SANG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WAH SANG SECURITIES CO"
+  },
+  "B00089": {
+    "name": "HWA LAM CO",
+    "type": "broker",
+    "raw_name": "HWA LAM CO"
+  },
+  "B00097": {
+    "name": "WINNING & CO",
+    "type": "broker",
+    "raw_name": "WINNING & CO"
+  },
+  "B00100": {
+    "name": "T. W. SABNANI & CO",
+    "type": "broker",
+    "raw_name": "T. W. SABNANI & CO"
+  },
+  "B00105": {
+    "name": "TAFONWORTHY INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "TAFONWORTHY INVESTMENT CO"
+  },
+  "B00106": {
+    "name": "SO KWAN NANE & CO",
+    "type": "broker",
+    "raw_name": "SO KWAN NANE & CO"
+  },
+  "B00110": {
+    "name": "WING ON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WING ON SECURITIES CO"
+  },
+  "B00112": {
+    "name": "MAN LUNG CO",
+    "type": "broker",
+    "raw_name": "MAN LUNG CO"
+  },
+  "B00115": {
+    "name": "TUNG TAK & CO",
+    "type": "broker",
+    "raw_name": "TUNG TAK & CO"
+  },
+  "B00116": {
+    "name": "LLOYD STOCKBROKERS & CO",
+    "type": "broker",
+    "raw_name": "LLOYD STOCKBROKERS & CO"
+  },
+  "B00126": {
+    "name": "FOREGROUND SECURITIES CO",
+    "type": "broker",
+    "raw_name": "FOREGROUND SECURITIES CO"
+  },
+  "B00127": {
+    "name": "POWER SECURITIES CO",
+    "type": "broker",
+    "raw_name": "POWER SECURITIES CO"
+  },
+  "B00128": {
+    "name": "KAM WAH SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KAM WAH SECURITIES CO"
+  },
+  "B00129": {
+    "name": "ZIAR & CO",
+    "type": "broker",
+    "raw_name": "ZIAR & CO"
+  },
+  "B00135": {
+    "name": "WORLDWIDE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WORLDWIDE SECURITIES CO"
+  },
+  "B00147": {
+    "name": "NORMAN & CO",
+    "type": "broker",
+    "raw_name": "NORMAN & CO"
+  },
+  "B00162": {
+    "name": "FAT LEE CO",
+    "type": "broker",
+    "raw_name": "FAT LEE CO"
+  },
+  "B00163": {
+    "name": "KO KUN STOCK CO",
+    "type": "broker",
+    "raw_name": "KO KUN STOCK CO"
+  },
+  "B00164": {
+    "name": "KO'S BROTHER (SECURITIES) CO",
+    "type": "broker",
+    "raw_name": "KO'S BROTHER (SECURITIES) CO"
+  },
+  "B00167": {
+    "name": "LAERTES SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LAERTES SECURITIES CO"
+  },
+  "B00169": {
+    "name": "KWOK CHUNG CHUN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KWOK CHUNG CHUN SECURITIES CO"
+  },
+  "B00173": {
+    "name": "YING HO STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "YING HO STOCK INVESTMENT CO"
+  },
+  "B00175": {
+    "name": "LAU & CO",
+    "type": "broker",
+    "raw_name": "LAU & CO"
+  },
+  "B00180": {
+    "name": "LEE SIN CHAI & CO",
+    "type": "broker",
+    "raw_name": "LEE SIN CHAI & CO"
+  },
+  "B00181": {
+    "name": "SIU ON STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "SIU ON STOCK INVESTMENT CO"
+  },
+  "B00183": {
+    "name": "LEE YUE LIM SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LEE YUE LIM SECURITIES CO"
+  },
+  "B00195": {
+    "name": "LING CO",
+    "type": "broker",
+    "raw_name": "LING CO"
+  },
+  "B00198": {
+    "name": "WADER INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "WADER INVESTMENT CO"
+  },
+  "B00201": {
+    "name": "WEALTHY INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "WEALTHY INVESTMENT CO"
+  },
+  "B00206": {
+    "name": "SUNRISE INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "SUNRISE INVESTMENT CO"
+  },
+  "B00210": {
+    "name": "GOLDEN HILL INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "GOLDEN HILL INVESTMENT CO"
+  },
+  "B00212": {
+    "name": "ALEXANDRA STOCK CO",
+    "type": "broker",
+    "raw_name": "ALEXANDRA STOCK CO"
+  },
+  "B00218": {
+    "name": "R. YU & CO",
+    "type": "broker",
+    "raw_name": "R. YU & CO"
+  },
+  "B00219": {
+    "name": "KA YUE INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "KA YUE INVESTMENT CO"
+  },
+  "B00223": {
+    "name": "YUEN HANG INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "YUEN HANG INVESTMENT CO"
+  },
+  "B00225": {
+    "name": "MAN YING & CO",
+    "type": "broker",
+    "raw_name": "MAN YING & CO"
+  },
+  "B00228": {
+    "name": "HANG YUE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HANG YUE SECURITIES CO"
+  },
+  "B00229": {
+    "name": "TUNG SHUN & CO",
+    "type": "broker",
+    "raw_name": "TUNG SHUN & CO"
+  },
+  "B00230": {
+    "name": "KIN FUNG STOCK CO",
+    "type": "broker",
+    "raw_name": "KIN FUNG STOCK CO"
+  },
+  "B00232": {
+    "name": "HOI SANG CO",
+    "type": "broker",
+    "raw_name": "HOI SANG CO"
+  },
+  "B00233": {
+    "name": "UNICORN SECURITIES & CO",
+    "type": "broker",
+    "raw_name": "UNICORN SECURITIES & CO"
+  },
+  "B00235": {
+    "name": "Y. F. CHAN & CO",
+    "type": "broker",
+    "raw_name": "Y. F. CHAN & CO"
+  },
+  "B00244": {
+    "name": "KUO PO INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "KUO PO INVESTMENT CO"
+  },
+  "B00250": {
+    "name": "TRIPLE A & CO",
+    "type": "broker",
+    "raw_name": "TRIPLE A & CO"
+  },
+  "B00257": {
+    "name": "SWIFT STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "SWIFT STOCK INVESTMENT CO"
+  },
+  "B00262": {
+    "name": "SZEHOPE & CO",
+    "type": "broker",
+    "raw_name": "SZEHOPE & CO"
+  },
+  "B00272": {
+    "name": "EVERGREEN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "EVERGREEN SECURITIES CO"
+  },
+  "B00275": {
+    "name": "CHENG YAM ON & CO",
+    "type": "broker",
+    "raw_name": "CHENG YAM ON & CO"
+  },
+  "B00289": {
+    "name": "GENERAL STOCKS CO",
+    "type": "broker",
+    "raw_name": "GENERAL STOCKS CO"
+  },
+  "B00293": {
+    "name": "AUDREY P. F. CHOW & CO",
+    "type": "broker",
+    "raw_name": "AUDREY P. F. CHOW & CO"
+  },
+  "B00295": {
+    "name": "Y. C. CHOW & CO",
+    "type": "broker",
+    "raw_name": "Y. C. CHOW & CO"
+  },
+  "B00303": {
+    "name": "ASIAN PACIFIC INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "ASIAN PACIFIC INVESTMENT CO"
+  },
+  "B00310": {
+    "name": "HEAD & SHOULDERS CO",
+    "type": "broker",
+    "raw_name": "HEAD & SHOULDERS CO"
+  },
+  "B00318": {
+    "name": "HOP YICK STOCK CO",
+    "type": "broker",
+    "raw_name": "HOP YICK STOCK CO"
+  },
+  "B00320": {
+    "name": "RAMON INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "RAMON INVESTMENT CO"
+  },
+  "B00321": {
+    "name": "WINFIELD SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WINFIELD SECURITIES CO"
+  },
+  "B00322": {
+    "name": "YING WAH SECURITIES CO",
+    "type": "broker",
+    "raw_name": "YING WAH SECURITIES CO"
+  },
+  "B00326": {
+    "name": "LUCKY CO",
+    "type": "broker",
+    "raw_name": "LUCKY CO"
+  },
+  "B00335": {
+    "name": "HING LUNG CO",
+    "type": "broker",
+    "raw_name": "HING LUNG CO"
+  },
+  "B00338": {
+    "name": "HUI KWAN KWONG & CO",
+    "type": "broker",
+    "raw_name": "HUI KWAN KWONG & CO"
+  },
+  "B00340": {
+    "name": "WINSOME STOCK CO",
+    "type": "broker",
+    "raw_name": "WINSOME STOCK CO"
+  },
+  "B00343": {
+    "name": "H. K. HUNG INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "H. K. HUNG INVESTMENT CO"
+  },
+  "B00344": {
+    "name": "TAI NING CO",
+    "type": "broker",
+    "raw_name": "TAI NING CO"
+  },
+  "B00345": {
+    "name": "K. S. KAM & CO",
+    "type": "broker",
+    "raw_name": "K. S. KAM & CO"
+  },
+  "B00360": {
+    "name": "KWONG FOOK HONG",
+    "type": "broker",
+    "raw_name": "KWONG FOOK HONG"
+  },
+  "B00362": {
+    "name": "C. K. SECURITIES CO",
+    "type": "broker",
+    "raw_name": "C. K. SECURITIES CO"
+  },
+  "B00371": {
+    "name": "NORTH SEA SECURITIES",
+    "type": "broker",
+    "raw_name": "NORTH SEA SECURITIES"
+  },
+  "B00375": {
+    "name": "TAI FUNG & CO",
+    "type": "broker",
+    "raw_name": "TAI FUNG & CO"
+  },
+  "B00376": {
+    "name": "CLOVER SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CLOVER SECURITIES CO"
+  },
+  "B00378": {
+    "name": "HOPE & CO",
+    "type": "broker",
+    "raw_name": "HOPE & CO"
+  },
+  "B00382": {
+    "name": "FORTUNATE & CO",
+    "type": "broker",
+    "raw_name": "FORTUNATE & CO"
+  },
+  "B00390": {
+    "name": "LUEN KAM INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "LUEN KAM INVESTMENT CO"
+  },
+  "B00392": {
+    "name": "KAM LUEN CO",
+    "type": "broker",
+    "raw_name": "KAM LUEN CO"
+  },
+  "B00393": {
+    "name": "NAN LEE INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "NAN LEE INVESTMENT CO"
+  },
+  "B00397": {
+    "name": "YAU CHEONG & CO",
+    "type": "broker",
+    "raw_name": "YAU CHEONG & CO"
+  },
+  "B00402": {
+    "name": "CHAMPION & CO",
+    "type": "broker",
+    "raw_name": "CHAMPION & CO"
+  },
+  "B00403": {
+    "name": "GOLD FUND SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GOLD FUND SECURITIES CO"
+  },
+  "B00408": {
+    "name": "MAINLAND SECURITIES CO",
+    "type": "broker",
+    "raw_name": "MAINLAND SECURITIES CO"
+  },
+  "B00413": {
+    "name": "ON HING SECURITIES CO",
+    "type": "broker",
+    "raw_name": "ON HING SECURITIES CO"
+  },
+  "B00418": {
+    "name": "MAN HON YEUNG & CO",
+    "type": "broker",
+    "raw_name": "MAN HON YEUNG & CO"
+  },
+  "B00419": {
+    "name": "WELFORM INVESTORS CO",
+    "type": "broker",
+    "raw_name": "WELFORM INVESTORS CO"
+  },
+  "B00422": {
+    "name": "TIM PO SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TIM PO SECURITIES CO"
+  },
+  "B00424": {
+    "name": "TUNG WUI SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TUNG WUI SECURITIES CO"
+  },
+  "B00444": {
+    "name": "TAK HING & CO",
+    "type": "broker",
+    "raw_name": "TAK HING & CO"
+  },
+  "B00450": {
+    "name": "SOO PEI SHAO & CO",
+    "type": "broker",
+    "raw_name": "SOO PEI SHAO & CO"
+  },
+  "B00451": {
+    "name": "SOO PUI CHEN & CO",
+    "type": "broker",
+    "raw_name": "SOO PUI CHEN & CO"
+  },
+  "B00452": {
+    "name": "HO CHONG & CO",
+    "type": "broker",
+    "raw_name": "HO CHONG & CO"
+  },
+  "B00454": {
+    "name": "FU WAH & CO",
+    "type": "broker",
+    "raw_name": "FU WAH & CO"
+  },
+  "B00456": {
+    "name": "WAI MAN STOCK & SHARES CO",
+    "type": "broker",
+    "raw_name": "WAI MAN STOCK & SHARES CO"
+  },
+  "B00457": {
+    "name": "CHEUNG ON & CO",
+    "type": "broker",
+    "raw_name": "CHEUNG ON & CO"
+  },
+  "B00461": {
+    "name": "TANG PING KONG & CO",
+    "type": "broker",
+    "raw_name": "TANG PING KONG & CO"
+  },
+  "B00465": {
+    "name": "BONANZA SECURITIES CO",
+    "type": "broker",
+    "raw_name": "BONANZA SECURITIES CO"
+  },
+  "B00466": {
+    "name": "TO HOI HUNG CO",
+    "type": "broker",
+    "raw_name": "TO HOI HUNG CO"
+  },
+  "B00470": {
+    "name": "KAN FUNG INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "KAN FUNG INVESTMENT CO"
+  },
+  "B00472": {
+    "name": "ONWARD SECURITIES CO",
+    "type": "broker",
+    "raw_name": "ONWARD SECURITIES CO"
+  },
+  "B00473": {
+    "name": "WINLAND STOCK & SHARES CO",
+    "type": "broker",
+    "raw_name": "WINLAND STOCK & SHARES CO"
+  },
+  "B00486": {
+    "name": "CHUNG LEE & CO",
+    "type": "broker",
+    "raw_name": "CHUNG LEE & CO"
+  },
+  "B00487": {
+    "name": "CHUNG HSIN & CO",
+    "type": "broker",
+    "raw_name": "CHUNG HSIN & CO"
+  },
+  "B00489": {
+    "name": "ANDERSON WEN & CO",
+    "type": "broker",
+    "raw_name": "ANDERSON WEN & CO"
+  },
+  "B00490": {
+    "name": "THE BRIGHT SECURITIES CO",
+    "type": "broker",
+    "raw_name": "THE BRIGHT SECURITIES CO"
+  },
+  "B00494": {
+    "name": "WILBY INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "WILBY INVESTMENT CO"
+  },
+  "B00499": {
+    "name": "HING WAI SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HING WAI SECURITIES CO"
+  },
+  "B00502": {
+    "name": "PROSPEROUS INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "PROSPEROUS INVESTMENT CO"
+  },
+  "B00508": {
+    "name": "HING SHING INVESTMENTS CO",
+    "type": "broker",
+    "raw_name": "HING SHING INVESTMENTS CO"
+  },
+  "B00534": {
+    "name": "SAN WAN YUAN & CO",
+    "type": "broker",
+    "raw_name": "SAN WAN YUAN & CO"
+  },
+  "B00539": {
+    "name": "UNION SECURITIES CO",
+    "type": "broker",
+    "raw_name": "UNION SECURITIES CO"
+  },
+  "B00545": {
+    "name": "CHAN & IU CO",
+    "type": "broker",
+    "raw_name": "CHAN & IU CO"
+  },
+  "B00566": {
+    "name": "NEW UNION SECURITIES CO",
+    "type": "broker",
+    "raw_name": "NEW UNION SECURITIES CO"
+  },
+  "B00579": {
+    "name": "FREDDY CO",
+    "type": "broker",
+    "raw_name": "FREDDY CO"
+  },
+  "B00585": {
+    "name": "J. A. FU & CO",
+    "type": "broker",
+    "raw_name": "J. A. FU & CO"
+  },
+  "B00587": {
+    "name": "TANG KEE & CO",
+    "type": "broker",
+    "raw_name": "TANG KEE & CO"
+  },
+  "B00597": {
+    "name": "LUNE YICK & CO",
+    "type": "broker",
+    "raw_name": "LUNE YICK & CO"
+  },
+  "B00598": {
+    "name": "KATHERINE IP & CO",
+    "type": "broker",
+    "raw_name": "KATHERINE IP & CO"
+  },
+  "B00601": {
+    "name": "VICTORY INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "VICTORY INVESTMENT CO"
+  },
+  "B00602": {
+    "name": "GOLDEN HARVEST STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "GOLDEN HARVEST STOCK INVESTMENT CO"
+  },
+  "B00605": {
+    "name": "CHONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CHONG SECURITIES CO"
+  },
+  "B00607": {
+    "name": "LAI PO HUNG & CO",
+    "type": "broker",
+    "raw_name": "LAI PO HUNG & CO"
+  },
+  "B00609": {
+    "name": "SIU WING STOCKS & SHARES CO",
+    "type": "broker",
+    "raw_name": "SIU WING STOCKS & SHARES CO"
+  },
+  "B00610": {
+    "name": "WANG LEE CO (ADMINISTRATOR APPOINTED)",
+    "type": "broker",
+    "raw_name": "WANG LEE CO (ADMINISTRATOR APPOINTED)"
+  },
+  "B00620": {
+    "name": "TAI CHUEN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAI CHUEN SECURITIES CO"
+  },
+  "B00623": {
+    "name": "NATIONAL SECURITIES CO",
+    "type": "broker",
+    "raw_name": "NATIONAL SECURITIES CO"
+  },
+  "B00636": {
+    "name": "Y. K. LI CO",
+    "type": "broker",
+    "raw_name": "Y. K. LI CO"
+  },
+  "B00642": {
+    "name": "ANNIE MA & CO",
+    "type": "broker",
+    "raw_name": "ANNIE MA & CO"
+  },
+  "B00649": {
+    "name": "BENTLEY SECURITIES CO",
+    "type": "broker",
+    "raw_name": "BENTLEY SECURITIES CO"
+  },
+  "B00659": {
+    "name": "TRANSPACIFIC SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TRANSPACIFIC SECURITIES CO"
+  },
+  "B00661": {
+    "name": "WAI FAT SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WAI FAT SECURITIES CO"
+  },
+  "B00663": {
+    "name": "HOP YICK & CO",
+    "type": "broker",
+    "raw_name": "HOP YICK & CO"
+  },
+  "B00665": {
+    "name": "KING WAI CO",
+    "type": "broker",
+    "raw_name": "KING WAI CO"
+  },
+  "B00670": {
+    "name": "CHUNG TAK & CO",
+    "type": "broker",
+    "raw_name": "CHUNG TAK & CO"
+  },
+  "B00676": {
+    "name": "CARRY ON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CARRY ON SECURITIES CO"
+  },
+  "B00679": {
+    "name": "DOVER CO",
+    "type": "broker",
+    "raw_name": "DOVER CO"
+  },
+  "B00682": {
+    "name": "WING TAK & CO",
+    "type": "broker",
+    "raw_name": "WING TAK & CO"
+  },
+  "B00684": {
+    "name": "TAK ON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAK ON SECURITIES CO"
+  },
+  "B00692": {
+    "name": "KWONG WAH INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "KWONG WAH INVESTMENT CO"
+  },
+  "B00694": {
+    "name": "CHAN NGOK MING & CO",
+    "type": "broker",
+    "raw_name": "CHAN NGOK MING & CO"
+  },
+  "B00695": {
+    "name": "ALPHA SECURITIES CO",
+    "type": "broker",
+    "raw_name": "ALPHA SECURITIES CO"
+  },
+  "B00702": {
+    "name": "JENNY & EDWARD CHEUNG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "JENNY & EDWARD CHEUNG SECURITIES CO"
+  },
+  "B00704": {
+    "name": "SEAGA INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "SEAGA INTERNATIONAL"
+  },
+  "B00716": {
+    "name": "FOOK TAI & CO",
+    "type": "broker",
+    "raw_name": "FOOK TAI & CO"
+  },
+  "B00721": {
+    "name": "MAN WO INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "MAN WO INVESTMENT CO"
+  },
+  "B00723": {
+    "name": "CARRIER STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "CARRIER STOCK INVESTMENT CO"
+  },
+  "B00725": {
+    "name": "CHING YICK CO",
+    "type": "broker",
+    "raw_name": "CHING YICK CO"
+  },
+  "B00732": {
+    "name": "YING KIT STOCK CO",
+    "type": "broker",
+    "raw_name": "YING KIT STOCK CO"
+  },
+  "B00736": {
+    "name": "Y. S. LAW & CO",
+    "type": "broker",
+    "raw_name": "Y. S. LAW & CO"
+  },
+  "B00741": {
+    "name": "BOLD WIN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "BOLD WIN SECURITIES CO"
+  },
+  "B00742": {
+    "name": "LEES SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LEES SECURITIES CO"
+  },
+  "B00746": {
+    "name": "SHUK KWUN & CO",
+    "type": "broker",
+    "raw_name": "SHUK KWUN & CO"
+  },
+  "B00749": {
+    "name": "THOMAS SECURITIES CO",
+    "type": "broker",
+    "raw_name": "THOMAS SECURITIES CO"
+  },
+  "B00752": {
+    "name": "LEGARLEON SECURITIES",
+    "type": "broker",
+    "raw_name": "LEGARLEON SECURITIES"
+  },
+  "B00765": {
+    "name": "EASTERN SECURITIES & CO",
+    "type": "broker",
+    "raw_name": "EASTERN SECURITIES & CO"
+  },
+  "B00769": {
+    "name": "HOU TAK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "HOU TAK INVESTMENT CO"
+  },
+  "B00776": {
+    "name": "YICK FUNG SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "YICK FUNG SECURITIES & INVESTMENT CO"
+  },
+  "B00794": {
+    "name": "SHUI CHEUNG CO",
+    "type": "broker",
+    "raw_name": "SHUI CHEUNG CO"
+  },
+  "B00795": {
+    "name": "EATON SECURITIES",
+    "type": "broker",
+    "raw_name": "EATON SECURITIES"
+  },
+  "B00797": {
+    "name": "INTERCONTINENT SECURITIES CO",
+    "type": "broker",
+    "raw_name": "INTERCONTINENT SECURITIES CO"
+  },
+  "B00799": {
+    "name": "WILLIAM KOO & CO",
+    "type": "broker",
+    "raw_name": "WILLIAM KOO & CO"
+  },
+  "B00803": {
+    "name": "KAM KWONG CO",
+    "type": "broker",
+    "raw_name": "KAM KWONG CO"
+  },
+  "B00804": {
+    "name": "CHEONG LEE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CHEONG LEE SECURITIES CO"
+  },
+  "B00807": {
+    "name": "WING CHEUNG HING INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "WING CHEUNG HING INVESTMENT CO"
+  },
+  "B00813": {
+    "name": "VICTORY ENTERPRISES CO",
+    "type": "broker",
+    "raw_name": "VICTORY ENTERPRISES CO"
+  },
+  "B00816": {
+    "name": "JOLLY STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "JOLLY STOCK INVESTMENT CO"
+  },
+  "B00833": {
+    "name": "RESIDENTS SECURITIES CO",
+    "type": "broker",
+    "raw_name": "RESIDENTS SECURITIES CO"
+  },
+  "B00835": {
+    "name": "CHI HING CO",
+    "type": "broker",
+    "raw_name": "CHI HING CO"
+  },
+  "B00846": {
+    "name": "KEE CHEONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KEE CHEONG SECURITIES CO"
+  },
+  "B00850": {
+    "name": "MELBOURNE INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "MELBOURNE INVESTMENT CO"
+  },
+  "B00862": {
+    "name": "HUNG'S CO",
+    "type": "broker",
+    "raw_name": "HUNG'S CO"
+  },
+  "B00866": {
+    "name": "SALISBURY SECURITIES",
+    "type": "broker",
+    "raw_name": "SALISBURY SECURITIES"
+  },
+  "B00880": {
+    "name": "PING ON & CO",
+    "type": "broker",
+    "raw_name": "PING ON & CO"
+  },
+  "B00890": {
+    "name": "TAI FUNG HONG",
+    "type": "broker",
+    "raw_name": "TAI FUNG HONG"
+  },
+  "B00902": {
+    "name": "MAN SHING CO",
+    "type": "broker",
+    "raw_name": "MAN SHING CO"
+  },
+  "B00904": {
+    "name": "TAI HANG INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "TAI HANG INVESTMENT CO"
+  },
+  "B00911": {
+    "name": "KILMOREY SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KILMOREY SECURITIES CO"
+  },
+  "B00932": {
+    "name": "JAMES CO",
+    "type": "broker",
+    "raw_name": "JAMES CO"
+  },
+  "B00937": {
+    "name": "LUEN ON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LUEN ON SECURITIES CO"
+  },
+  "B00947": {
+    "name": "GENTLE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GENTLE SECURITIES CO"
+  },
+  "B00951": {
+    "name": "NG WA YEE & CO",
+    "type": "broker",
+    "raw_name": "NG WA YEE & CO"
+  },
+  "B00957": {
+    "name": "KOH'S INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "KOH'S INVESTMENT CO"
+  },
+  "B00965": {
+    "name": "HANTEC SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HANTEC SECURITIES CO"
+  },
+  "B00976": {
+    "name": "STEPHIL SECURITIES CO",
+    "type": "broker",
+    "raw_name": "STEPHIL SECURITIES CO"
+  },
+  "B00987": {
+    "name": "SABAH SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "SABAH SECURITIES & INVESTMENT CO"
+  },
+  "B00988": {
+    "name": "LAWSONS SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LAWSONS SECURITIES CO"
+  },
+  "B01000": {
+    "name": "GOLDEN DRAGON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GOLDEN DRAGON SECURITIES CO"
+  },
+  "B01004": {
+    "name": "DASWANI TEK",
+    "type": "broker",
+    "raw_name": "DASWANI TEK"
+  },
+  "B01007": {
+    "name": "BULLISH SECURITIES",
+    "type": "broker",
+    "raw_name": "BULLISH SECURITIES"
+  },
+  "B01011": {
+    "name": "TRADEMORE SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "TRADEMORE SECURITIES & INVESTMENT CO"
+  },
+  "B01015": {
+    "name": "KAM BO SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KAM BO SECURITIES CO"
+  },
+  "B01024": {
+    "name": "HAMBURG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HAMBURG SECURITIES CO"
+  },
+  "B01031": {
+    "name": "KELLY & CO",
+    "type": "broker",
+    "raw_name": "KELLY & CO"
+  },
+  "B01033": {
+    "name": "TOWN HANG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TOWN HANG SECURITIES CO"
+  },
+  "B01034": {
+    "name": "WING YIP CO",
+    "type": "broker",
+    "raw_name": "WING YIP CO"
+  },
+  "B01039": {
+    "name": "KWOK HING SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KWOK HING SECURITIES CO"
+  },
+  "B01040": {
+    "name": "GREAT HONOUR SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GREAT HONOUR SECURITIES CO"
+  },
+  "B01045": {
+    "name": "SAI SHING SECURITIES CO",
+    "type": "broker",
+    "raw_name": "SAI SHING SECURITIES CO"
+  },
+  "B01055": {
+    "name": "LO KIN FAI SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LO KIN FAI SECURITIES CO"
+  },
+  "B01068": {
+    "name": "TEIL STOCK INVESTMENT CO (ADMINISTRATORS",
+    "type": "broker",
+    "raw_name": "TEIL STOCK INVESTMENT CO (ADMINISTRATORS"
+  },
+  "B01069": {
+    "name": "KAN FUNG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KAN FUNG SECURITIES CO"
+  },
+  "B01076": {
+    "name": "BARCLAYS CAPITAL SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "BARCLAYS CAPITAL SECURITIES ASIA LTD"
+  },
+  "B01077": {
+    "name": "MACQUARIE CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MACQUARIE CAPITAL SECURITIES LTD"
+  },
+  "B01078": {
+    "name": "STANDARD CHARTERED SECURITIES",
+    "type": "broker",
+    "raw_name": "STANDARD CHARTERED SECURITIES"
+  },
+  "B01080": {
+    "name": "VMS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "VMS SECURITIES LTD"
+  },
+  "B01081": {
+    "name": "TAI WAH & CO",
+    "type": "broker",
+    "raw_name": "TAI WAH & CO"
+  },
+  "B01084": {
+    "name": "S.G. WARBURG SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "S.G. WARBURG SECURITIES ASIA LTD"
+  },
+  "B01085": {
+    "name": "SALOMON SMITH BARNEY SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "SALOMON SMITH BARNEY SECURITIES ASIA LTD"
+  },
+  "B01086": {
+    "name": "EVERBRIGHT SECURITIES INVESTMENT",
+    "type": "broker",
+    "raw_name": "EVERBRIGHT SECURITIES INVESTMENT"
+  },
+  "B01087": {
+    "name": "TAI PO SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAI PO SECURITIES CO"
+  },
+  "B01088": {
+    "name": "CREDIT AGRICOLE INDOSUEZ CHEUVREUX",
+    "type": "broker",
+    "raw_name": "CREDIT AGRICOLE INDOSUEZ CHEUVREUX"
+  },
+  "B01089": {
+    "name": "HSBC BROKING SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "HSBC BROKING SECURITIES (HONG KONG) LTD"
+  },
+  "B01092": {
+    "name": "STAR SECURITIES CO",
+    "type": "broker",
+    "raw_name": "STAR SECURITIES CO"
+  },
+  "B01096": {
+    "name": "WARDLEY BROKERS LTD",
+    "type": "broker",
+    "raw_name": "WARDLEY BROKERS LTD"
+  },
+  "B01099": {
+    "name": "KGI SEAPOWER SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KGI SEAPOWER SECURITIES LTD"
+  },
+  "B01100": {
+    "name": "VICKERS BALLAS HONG KONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "VICKERS BALLAS HONG KONG SECURITIES LTD"
+  },
+  "B01103": {
+    "name": "SASSOON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SASSOON SECURITIES LTD"
+  },
+  "B01104": {
+    "name": "SMITH NEW COURT FAR EAST LTD",
+    "type": "broker",
+    "raw_name": "SMITH NEW COURT FAR EAST LTD"
+  },
+  "B01107": {
+    "name": "WAH CHEONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WAH CHEONG SECURITIES CO"
+  },
+  "B01108": {
+    "name": "HONOUR SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "HONOUR SECURITIES CO LTD"
+  },
+  "B01110": {
+    "name": "J.P. MORGAN BROKING (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "J.P. MORGAN BROKING (HONG KONG) LTD"
+  },
+  "B01112": {
+    "name": "DANNIS LEE & CO",
+    "type": "broker",
+    "raw_name": "DANNIS LEE & CO"
+  },
+  "B01114": {
+    "name": "YUANTA BROKERAGE CO LTD",
+    "type": "broker",
+    "raw_name": "YUANTA BROKERAGE CO LTD"
+  },
+  "B01115": {
+    "name": "SHENWAN HONGYUAN SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "SHENWAN HONGYUAN SECURITIES (H.K.) LTD"
+  },
+  "B01116": {
+    "name": "HONG KONG WAN KIU INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "HONG KONG WAN KIU INVESTMENT CO"
+  },
+  "B01118": {
+    "name": "EAST ASIA SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "EAST ASIA SECURITIES CO LTD"
+  },
+  "B01119": {
+    "name": "CELESTIAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CELESTIAL SECURITIES LTD"
+  },
+  "B01120": {
+    "name": "JS CRESVALE SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "JS CRESVALE SECURITIES ASIA LTD"
+  },
+  "B01121": {
+    "name": "SG SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "SG SECURITIES (HK) LTD"
+  },
+  "B01123": {
+    "name": "HING WONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HING WONG SECURITIES LTD"
+  },
+  "B01124": {
+    "name": "CHEKIANG FIRST SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CHEKIANG FIRST SECURITIES CO LTD"
+  },
+  "B01125": {
+    "name": "I & P SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "I & P SECURITIES LTD"
+  },
+  "B01127": {
+    "name": "REORIENT FINANCIAL MARKETS LTD",
+    "type": "broker",
+    "raw_name": "REORIENT FINANCIAL MARKETS LTD"
+  },
+  "B01129": {
+    "name": "WOCOM SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WOCOM SECURITIES LTD"
+  },
+  "B01130": {
+    "name": "BOCI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BOCI SECURITIES LTD"
+  },
+  "B01131": {
+    "name": "COMMERCIAL INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "COMMERCIAL INVESTMENT CO LTD"
+  },
+  "B01133": {
+    "name": "RBC INVESTMENT SERVICES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "RBC INVESTMENT SERVICES (ASIA) LTD"
+  },
+  "B01135": {
+    "name": "UNITED WORLD SECURITIES (INTERNATIONAL)",
+    "type": "broker",
+    "raw_name": "UNITED WORLD SECURITIES (INTERNATIONAL)"
+  },
+  "B01137": {
+    "name": "CHOW SANG SANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHOW SANG SANG SECURITIES LTD"
+  },
+  "B01138": {
+    "name": "CLSA LTD",
+    "type": "broker",
+    "raw_name": "CLSA LTD"
+  },
+  "B01140": {
+    "name": "MPI SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "MPI SECURITIES (ASIA) LTD"
+  },
+  "B01141": {
+    "name": "FE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FE SECURITIES LTD"
+  },
+  "B01142": {
+    "name": "SHING ON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SHING ON SECURITIES LTD"
+  },
+  "B01143": {
+    "name": "HAITONG INTERNATIONAL SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "HAITONG INTERNATIONAL SECURITIES CO LTD"
+  },
+  "B01144": {
+    "name": "TAK FUNG SHARES INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "TAK FUNG SHARES INVESTMENT CO LTD"
+  },
+  "B01146": {
+    "name": "GOLDENWAY SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GOLDENWAY SECURITIES CO"
+  },
+  "B01148": {
+    "name": "CHINA MERCHANTS SECURITIES (HK) CO LTD",
+    "type": "broker",
+    "raw_name": "CHINA MERCHANTS SECURITIES (HK) CO LTD"
+  },
+  "B01149": {
+    "name": "ABN AMRO ASIA SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "ABN AMRO ASIA SECURITIES (HONG KONG) LTD"
+  },
+  "B01150": {
+    "name": "MTF SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MTF SECURITIES LTD"
+  },
+  "B01152": {
+    "name": "YU ON SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "YU ON SECURITIES CO LTD"
+  },
+  "B01156": {
+    "name": "CMB INTERNATIONAL GLOBAL MARKETS LTD",
+    "type": "broker",
+    "raw_name": "CMB INTERNATIONAL GLOBAL MARKETS LTD"
+  },
+  "B01157": {
+    "name": "PASAY STOCK AND SHARES LTD",
+    "type": "broker",
+    "raw_name": "PASAY STOCK AND SHARES LTD"
+  },
+  "B01158": {
+    "name": "SOLID KING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SOLID KING SECURITIES LTD"
+  },
+  "B01160": {
+    "name": "Goldman Sachs (alt)",
+    "type": "broker",
+    "raw_name": "CHEONG WOON SECURITIES CO"
+  },
+  "B01161": {
+    "name": "UBS SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "UBS SECURITIES HONG KONG LTD"
+  },
+  "B01163": {
+    "name": "KA WING SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KA WING SECURITIES CO"
+  },
+  "B01166": {
+    "name": "KING FOOK SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KING FOOK SECURITIES CO LTD"
+  },
+  "B01168": {
+    "name": "GRAND SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GRAND SECURITIES CO"
+  },
+  "B01169": {
+    "name": "PUBLIC FINANCIAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PUBLIC FINANCIAL SECURITIES LTD"
+  },
+  "B01170": {
+    "name": "PBI SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "PBI SECURITIES HONG KONG LTD"
+  },
+  "B01171": {
+    "name": "PROMISING SECURITIES CO",
+    "type": "broker",
+    "raw_name": "PROMISING SECURITIES CO"
+  },
+  "B01173": {
+    "name": "RIFA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RIFA SECURITIES LTD"
+  },
+  "B01174": {
+    "name": "DBS VICKERS SECURITIES (HONG KONG)",
+    "type": "broker",
+    "raw_name": "DBS VICKERS SECURITIES (HONG KONG)"
+  },
+  "B01175": {
+    "name": "F. R. ZIMMERN LTD",
+    "type": "broker",
+    "raw_name": "F. R. ZIMMERN LTD"
+  },
+  "B01179": {
+    "name": "GRANSING SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "GRANSING SECURITIES & INVESTMENT CO"
+  },
+  "B01181": {
+    "name": "FOSUN INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FOSUN INTERNATIONAL SECURITIES LTD"
+  },
+  "B01182": {
+    "name": "LUEN CHEUNG SHARES INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "LUEN CHEUNG SHARES INVESTMENT CO"
+  },
+  "B01183": {
+    "name": "CHONG HING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHONG HING SECURITIES LTD"
+  },
+  "B01184": {
+    "name": "QUAM SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "QUAM SECURITIES LTD"
+  },
+  "B01186": {
+    "name": "BOKHARY & CO",
+    "type": "broker",
+    "raw_name": "BOKHARY & CO"
+  },
+  "B01187": {
+    "name": "YARDLEY SECURITIES CO",
+    "type": "broker",
+    "raw_name": "YARDLEY SECURITIES CO"
+  },
+  "B01190": {
+    "name": "MANY FAIR SECURITIES CO",
+    "type": "broker",
+    "raw_name": "MANY FAIR SECURITIES CO"
+  },
+  "B01191": {
+    "name": "OKACHI INVESTMENTS (HONG KONG) CO LTD",
+    "type": "broker",
+    "raw_name": "OKACHI INVESTMENTS (HONG KONG) CO LTD"
+  },
+  "B01192": {
+    "name": "SEEKERS MARKETS LTD (IN LIQUIDATION)",
+    "type": "broker",
+    "raw_name": "SEEKERS MARKETS LTD (IN LIQUIDATION)"
+  },
+  "B01193": {
+    "name": "UPBEST SECURITIES CO",
+    "type": "broker",
+    "raw_name": "UPBEST SECURITIES CO"
+  },
+  "B01194": {
+    "name": "GOOD HARVEST & CO",
+    "type": "broker",
+    "raw_name": "GOOD HARVEST & CO"
+  },
+  "B01196": {
+    "name": "Y. C. FUNG & CO",
+    "type": "broker",
+    "raw_name": "Y. C. FUNG & CO"
+  },
+  "B01197": {
+    "name": "H. K. HUNG & CO",
+    "type": "broker",
+    "raw_name": "H. K. HUNG & CO"
+  },
+  "B01198": {
+    "name": "PO KAY SECURITIES & SHARES CO LTD",
+    "type": "broker",
+    "raw_name": "PO KAY SECURITIES & SHARES CO LTD"
+  },
+  "B01199": {
+    "name": "HANG TUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HANG TUNG SECURITIES LTD"
+  },
+  "B01200": {
+    "name": "GREAT HONEST INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "GREAT HONEST INVESTMENT CO LTD"
+  },
+  "B01203": {
+    "name": "BOCI Securities",
+    "type": "broker",
+    "raw_name": "HOP LEE STOCK CO"
+  },
+  "B01204": {
+    "name": "TISCO SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "TISCO SECURITIES HONG KONG LTD"
+  },
+  "B01206": {
+    "name": "SELINA & CO",
+    "type": "broker",
+    "raw_name": "SELINA & CO"
+  },
+  "B01207": {
+    "name": "SHAREGAIN DEVELOPMENT LTD",
+    "type": "broker",
+    "raw_name": "SHAREGAIN DEVELOPMENT LTD"
+  },
+  "B01209": {
+    "name": "MASON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MASON SECURITIES LTD"
+  },
+  "B01210": {
+    "name": "KONGSON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KONGSON SECURITIES LTD"
+  },
+  "B01212": {
+    "name": "HENYEP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HENYEP SECURITIES LTD"
+  },
+  "B01213": {
+    "name": "MONEYMORE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MONEYMORE SECURITIES LTD"
+  },
+  "B01217": {
+    "name": "TAIPING SECURITIES (HK) CO LTD",
+    "type": "broker",
+    "raw_name": "TAIPING SECURITIES (HK) CO LTD"
+  },
+  "B01220": {
+    "name": "WING ON CHEONG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WING ON CHEONG SECURITIES CO LTD"
+  },
+  "B01221": {
+    "name": "LEE SHUN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "LEE SHUN SECURITIES CO"
+  },
+  "B01224": {
+    "name": "MERRILL LYNCH FAR EAST LTD",
+    "type": "broker",
+    "raw_name": "MERRILL LYNCH FAR EAST LTD"
+  },
+  "B01226": {
+    "name": "CHARK FUNG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CHARK FUNG SECURITIES CO"
+  },
+  "B01227": {
+    "name": "HOORAY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HOORAY SECURITIES LTD"
+  },
+  "B01228": {
+    "name": "CITIC SECURITIES BROKERAGE (HK) LTD",
+    "type": "broker",
+    "raw_name": "CITIC SECURITIES BROKERAGE (HK) LTD"
+  },
+  "B01230": {
+    "name": "GAOYU SECURITIES LIMITED",
+    "type": "broker",
+    "raw_name": "GAOYU SECURITIES LIMITED"
+  },
+  "B01231": {
+    "name": "GIGAMONEY LTD",
+    "type": "broker",
+    "raw_name": "GIGAMONEY LTD"
+  },
+  "B01232": {
+    "name": "CHIEF INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "CHIEF INVESTMENT CO"
+  },
+  "B01233": {
+    "name": "FOOK TIN SECURITIES (1987) LTD",
+    "type": "broker",
+    "raw_name": "FOOK TIN SECURITIES (1987) LTD"
+  },
+  "B01235": {
+    "name": "LEE ON TAT INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "LEE ON TAT INVESTMENT LTD"
+  },
+  "B01236": {
+    "name": "LOLLIMAN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LOLLIMAN SECURITIES LTD"
+  },
+  "B01238": {
+    "name": "TAI YIP STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "TAI YIP STOCK CO LTD"
+  },
+  "B01239": {
+    "name": "NAVA SC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "NAVA SC SECURITIES LTD"
+  },
+  "B01240": {
+    "name": "TSUN CHI YUEN SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TSUN CHI YUEN SECURITIES CO LTD"
+  },
+  "B01241": {
+    "name": "TUNLIN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TUNLIN SECURITIES CO"
+  },
+  "B01243": {
+    "name": "TEN & TEN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TEN & TEN SECURITIES CO"
+  },
+  "B01245": {
+    "name": "AGINCOURT SECURITIES & CO",
+    "type": "broker",
+    "raw_name": "AGINCOURT SECURITIES & CO"
+  },
+  "B01246": {
+    "name": "ROCTEC SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "ROCTEC SECURITIES CO LTD"
+  },
+  "B01247": {
+    "name": "KWAI HUNG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KWAI HUNG SECURITIES CO LTD"
+  },
+  "B01248": {
+    "name": "KWAN YICK SECURITIES (INTERNATIONAL) LTD",
+    "type": "broker",
+    "raw_name": "KWAN YICK SECURITIES (INTERNATIONAL) LTD"
+  },
+  "B01250": {
+    "name": "BILLION SECURITIES CO",
+    "type": "broker",
+    "raw_name": "BILLION SECURITIES CO"
+  },
+  "B01251": {
+    "name": "CHUANGS & CO",
+    "type": "broker",
+    "raw_name": "CHUANGS & CO"
+  },
+  "B01252": {
+    "name": "CORPORATE BROKERS LTD",
+    "type": "broker",
+    "raw_name": "CORPORATE BROKERS LTD"
+  },
+  "B01253": {
+    "name": "STOCKWELL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "STOCKWELL SECURITIES LTD"
+  },
+  "B01254": {
+    "name": "LEE WAI & CO",
+    "type": "broker",
+    "raw_name": "LEE WAI & CO"
+  },
+  "B01256": {
+    "name": "SINOLINK SECURITIES (HONG KONG) CO LTD",
+    "type": "broker",
+    "raw_name": "SINOLINK SECURITIES (HONG KONG) CO LTD"
+  },
+  "B01257": {
+    "name": "HO FUNG SHARES INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "HO FUNG SHARES INVESTMENT CO"
+  },
+  "B01258": {
+    "name": "CHINA POINT STOCK BROKERS LTD",
+    "type": "broker",
+    "raw_name": "CHINA POINT STOCK BROKERS LTD"
+  },
+  "B01259": {
+    "name": "FAIR EAGLE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "FAIR EAGLE SECURITIES CO LTD"
+  },
+  "B01260": {
+    "name": "LAMTEX SECURITIES LTD (IN LIQUIDATION)",
+    "type": "broker",
+    "raw_name": "LAMTEX SECURITIES LTD (IN LIQUIDATION)"
+  },
+  "B01262": {
+    "name": "RICOFULL SECURITIES CO",
+    "type": "broker",
+    "raw_name": "RICOFULL SECURITIES CO"
+  },
+  "B01264": {
+    "name": "MIB SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "MIB SECURITIES (HONG KONG) LTD"
+  },
+  "B01265": {
+    "name": "OCBC SECURITIES BROKERAGE (HK) LTD",
+    "type": "broker",
+    "raw_name": "OCBC SECURITIES BROKERAGE (HK) LTD"
+  },
+  "B01266": {
+    "name": "PRIME CDEX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PRIME CDEX SECURITIES LTD"
+  },
+  "B01267": {
+    "name": "WINFULL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WINFULL SECURITIES LTD"
+  },
+  "B01270": {
+    "name": "LEE TAT & CO",
+    "type": "broker",
+    "raw_name": "LEE TAT & CO"
+  },
+  "B01271": {
+    "name": "HANG TAI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HANG TAI SECURITIES LTD"
+  },
+  "B01272": {
+    "name": "FB SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "FB SECURITIES (HONG KONG) LTD"
+  },
+  "B01273": {
+    "name": "WHOLE WIN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WHOLE WIN SECURITIES CO"
+  },
+  "B01274": {
+    "name": "MORGAN STANLEY HONG KONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MORGAN STANLEY HONG KONG SECURITIES LTD"
+  },
+  "B01275": {
+    "name": "SANFULL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SANFULL SECURITIES LTD"
+  },
+  "B01276": {
+    "name": "Morgan Stanley",
+    "type": "broker",
+    "raw_name": "LEHMAN BROTHERS SECURITIES ASIA LTD"
+  },
+  "B01277": {
+    "name": "BRADBURY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BRADBURY SECURITIES LTD"
+  },
+  "B01279": {
+    "name": "THE BEST SECURITIES CO",
+    "type": "broker",
+    "raw_name": "THE BEST SECURITIES CO"
+  },
+  "B01280": {
+    "name": "WING FAT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WING FAT SECURITIES LTD"
+  },
+  "B01282": {
+    "name": "CHELSEA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHELSEA SECURITIES LTD"
+  },
+  "B01283": {
+    "name": "V SIX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "V SIX SECURITIES LTD"
+  },
+  "B01284": {
+    "name": "HANG SENG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HANG SENG SECURITIES LTD"
+  },
+  "B01286": {
+    "name": "K L SECURITIES CO",
+    "type": "broker",
+    "raw_name": "K L SECURITIES CO"
+  },
+  "B01287": {
+    "name": "PEREGRINE BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "PEREGRINE BROKERAGE LTD"
+  },
+  "B01288": {
+    "name": "BOND'S SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BOND'S SECURITIES LTD"
+  },
+  "B01289": {
+    "name": "SOUTH CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SOUTH CHINA SECURITIES LTD"
+  },
+  "B01290": {
+    "name": "JP Morgan",
+    "type": "broker",
+    "raw_name": "SPS SECURITIES LTD"
+  },
+  "B01292": {
+    "name": "ALPHA SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "ALPHA SECURITIES CO LTD"
+  },
+  "B01294": {
+    "name": "CS WEALTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CS WEALTH SECURITIES LTD"
+  },
+  "B01295": {
+    "name": "KARL THOMSON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "KARL THOMSON SECURITIES CO"
+  },
+  "B01296": {
+    "name": "MONTGOMERY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MONTGOMERY SECURITIES LTD"
+  },
+  "B01297": {
+    "name": "ONSHINE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ONSHINE SECURITIES LTD"
+  },
+  "B01298": {
+    "name": "GET NICE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GET NICE SECURITIES LTD"
+  },
+  "B01299": {
+    "name": "BNP PARIBAS SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "BNP PARIBAS SECURITIES (ASIA) LTD"
+  },
+  "B01300": {
+    "name": "OCBC SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "OCBC SECURITIES (HONG KONG) LTD"
+  },
+  "B01301": {
+    "name": "PARIBAS ASIA EQUITY LTD",
+    "type": "broker",
+    "raw_name": "PARIBAS ASIA EQUITY LTD"
+  },
+  "B01303": {
+    "name": "UPWORTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UPWORTH SECURITIES LTD"
+  },
+  "B01304": {
+    "name": "ANGLO CHINESE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ANGLO CHINESE SECURITIES LTD"
+  },
+  "B01305": {
+    "name": "CHIA TAI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHIA TAI SECURITIES LTD"
+  },
+  "B01307": {
+    "name": "CHELAC INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "CHELAC INVESTMENT CO"
+  },
+  "B01308": {
+    "name": "M&F ASSET MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "M&F ASSET MANAGEMENT LTD"
+  },
+  "B01309": {
+    "name": "WO FUNG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WO FUNG SECURITIES CO"
+  },
+  "B01310": {
+    "name": "TUNG TAK SECURITIES (H.K.) CO LTD",
+    "type": "broker",
+    "raw_name": "TUNG TAK SECURITIES (H.K.) CO LTD"
+  },
+  "B01317": {
+    "name": "C.A. PACIFIC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "C.A. PACIFIC SECURITIES LTD"
+  },
+  "B01318": {
+    "name": "OKASAN INTERNATIONAL (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "OKASAN INTERNATIONAL (ASIA) LTD"
+  },
+  "B01320": {
+    "name": "LUEN FAT SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "LUEN FAT SECURITIES CO LTD"
+  },
+  "B01321": {
+    "name": "WINTAKLY SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WINTAKLY SECURITIES CO"
+  },
+  "B01322": {
+    "name": "WATON SECURITIES INTERNATIONAL LIMITED",
+    "type": "broker",
+    "raw_name": "WATON SECURITIES INTERNATIONAL LIMITED"
+  },
+  "B01323": {
+    "name": "DEUTSCHE SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "DEUTSCHE SECURITIES ASIA LTD"
+  },
+  "B01324": {
+    "name": "FUNDERSTONE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FUNDERSTONE SECURITIES LTD"
+  },
+  "B01325": {
+    "name": "MASTER SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "MASTER SECURITIES & INVESTMENT CO"
+  },
+  "B01326": {
+    "name": "KING SUN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KING SUN SECURITIES LTD"
+  },
+  "B01328": {
+    "name": "BAN HIN SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "BAN HIN SECURITIES CO LTD"
+  },
+  "B01329": {
+    "name": "BLOOMYEARS LTD",
+    "type": "broker",
+    "raw_name": "BLOOMYEARS LTD"
+  },
+  "B01330": {
+    "name": "NOMURA SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "NOMURA SECURITIES (HK) LTD"
+  },
+  "B01331": {
+    "name": "WALCO SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WALCO SECURITIES CO"
+  },
+  "B01332": {
+    "name": "NEW GALA SECURITIES CO",
+    "type": "broker",
+    "raw_name": "NEW GALA SECURITIES CO"
+  },
+  "B01335": {
+    "name": "PLASIA SECURITIES CO",
+    "type": "broker",
+    "raw_name": "PLASIA SECURITIES CO"
+  },
+  "B01337": {
+    "name": "TAI FAT SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAI FAT SECURITIES CO"
+  },
+  "B01338": {
+    "name": "EMPEROR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "EMPEROR SECURITIES LTD"
+  },
+  "B01340": {
+    "name": "LEHIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LEHIN SECURITIES LTD"
+  },
+  "B01341": {
+    "name": "TUNG TAI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TUNG TAI SECURITIES CO LTD"
+  },
+  "B01342": {
+    "name": "WAH THAI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WAH THAI SECURITIES LTD"
+  },
+  "B01343": {
+    "name": "CELETIO INVESTMENTS LTD",
+    "type": "broker",
+    "raw_name": "CELETIO INVESTMENTS LTD"
+  },
+  "B01344": {
+    "name": "DAIWA SECURITIES SMBC (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "DAIWA SECURITIES SMBC (ASIA) LTD"
+  },
+  "B01345": {
+    "name": "PHILLIP SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "PHILLIP SECURITIES (HONG KONG) LTD"
+  },
+  "B01346": {
+    "name": "CHINA PACIFIC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA PACIFIC SECURITIES LTD"
+  },
+  "B01347": {
+    "name": "CGS INTERNATIONAL SECURITIES HK LTD",
+    "type": "broker",
+    "raw_name": "CGS INTERNATIONAL SECURITIES HK LTD"
+  },
+  "B01348": {
+    "name": "GRAND FORTUNE SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "GRAND FORTUNE SECURITIES & INVESTMENT CO"
+  },
+  "B01349": {
+    "name": "GA LUNG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GA LUNG SECURITIES CO"
+  },
+  "B01350": {
+    "name": "S. W. WOO & CO LTD",
+    "type": "broker",
+    "raw_name": "S. W. WOO & CO LTD"
+  },
+  "B01351": {
+    "name": "WING FUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WING FUNG SECURITIES LTD"
+  },
+  "B01352": {
+    "name": "UNI-CROWN INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "UNI-CROWN INVESTMENT LTD"
+  },
+  "B01353": {
+    "name": "UOB KAY HIAN (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "UOB KAY HIAN (HONG KONG) LTD"
+  },
+  "B01355": {
+    "name": "CHINA EVERBRIGHT SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "CHINA EVERBRIGHT SECURITIES (HK) LTD"
+  },
+  "B01356": {
+    "name": "DELTA ASIA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "DELTA ASIA SECURITIES LTD"
+  },
+  "B01358": {
+    "name": "TANRICH SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TANRICH SECURITIES CO"
+  },
+  "B01359": {
+    "name": "PAK LEE STOCK CO",
+    "type": "broker",
+    "raw_name": "PAK LEE STOCK CO"
+  },
+  "B01360": {
+    "name": "SEAMICO MARLIN SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "SEAMICO MARLIN SECURITIES (H.K.) LTD"
+  },
+  "B01361": {
+    "name": "B.N.P. SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "B.N.P. SECURITIES (HONG KONG) LTD"
+  },
+  "B01362": {
+    "name": "JOSPA INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "JOSPA INVESTMENT CO LTD"
+  },
+  "B01364": {
+    "name": "STANDARD CAPITAL BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "STANDARD CAPITAL BROKERAGE LTD"
+  },
+  "B01365": {
+    "name": "THE NIKKO SECURITIES CO (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "THE NIKKO SECURITIES CO (HONG KONG) LTD"
+  },
+  "B01366": {
+    "name": "UBS SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "UBS SECURITIES (HONG KONG) LTD"
+  },
+  "B01367": {
+    "name": "EVERLIGHT SHARES CO",
+    "type": "broker",
+    "raw_name": "EVERLIGHT SHARES CO"
+  },
+  "B01368": {
+    "name": "CORRINGTON SECURITIES & INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "CORRINGTON SECURITIES & INVESTMENT LTD"
+  },
+  "B01369": {
+    "name": "MAXGAIN INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "MAXGAIN INVESTMENT LTD"
+  },
+  "B01370": {
+    "name": "WINSON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WINSON SECURITIES LTD"
+  },
+  "B01372": {
+    "name": "FIRST WORLDSEC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FIRST WORLDSEC SECURITIES LTD"
+  },
+  "B01373": {
+    "name": "CHRISTFUND SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHRISTFUND SECURITIES LTD"
+  },
+  "B01374": {
+    "name": "PO LEE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PO LEE SECURITIES LTD"
+  },
+  "B01375": {
+    "name": "AVEREST CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "AVEREST CAPITAL LTD"
+  },
+  "B01376": {
+    "name": "PUBLIC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PUBLIC SECURITIES LTD"
+  },
+  "B01377": {
+    "name": "WAI KEUNG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "WAI KEUNG SECURITIES CO"
+  },
+  "B01379": {
+    "name": "GOLDEN FOUNTAIN SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GOLDEN FOUNTAIN SECURITIES CO"
+  },
+  "B01380": {
+    "name": "HING LEE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "HING LEE SECURITIES CO"
+  },
+  "B01381": {
+    "name": "ALLIED PROFIT SECURITIES CO",
+    "type": "broker",
+    "raw_name": "ALLIED PROFIT SECURITIES CO"
+  },
+  "B01382": {
+    "name": "CHINA-HK INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA-HK INTERNATIONAL SECURITIES LTD"
+  },
+  "B01383": {
+    "name": "RICH PLEASURE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RICH PLEASURE SECURITIES LTD"
+  },
+  "B01384": {
+    "name": "ORIENTAL STOCKS & SHARES (INVESTMENT) CO",
+    "type": "broker",
+    "raw_name": "ORIENTAL STOCKS & SHARES (INVESTMENT) CO"
+  },
+  "B01385": {
+    "name": "FAIRWIN BROKING LTD",
+    "type": "broker",
+    "raw_name": "FAIRWIN BROKING LTD"
+  },
+  "B01386": {
+    "name": "SBI CHINA CAPITAL FINANCIAL SERVICES LTD",
+    "type": "broker",
+    "raw_name": "SBI CHINA CAPITAL FINANCIAL SERVICES LTD"
+  },
+  "B01387": {
+    "name": "LUEN HING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LUEN HING SECURITIES LTD"
+  },
+  "B01388": {
+    "name": "Credit Suisse",
+    "type": "broker",
+    "raw_name": "MANSON HONG KONG LTD"
+  },
+  "B01389": {
+    "name": "ZHONGRONG PT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZHONGRONG PT SECURITIES LTD"
+  },
+  "B01390": {
+    "name": "CLARION CAPITAL ASIA LTD",
+    "type": "broker",
+    "raw_name": "CLARION CAPITAL ASIA LTD"
+  },
+  "B01391": {
+    "name": "KAY YUE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KAY YUE SECURITIES CO LTD"
+  },
+  "B01392": {
+    "name": "TAIFAIR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TAIFAIR SECURITIES LTD"
+  },
+  "B01393": {
+    "name": "CHINA NONFERROUS METALS SECURITIES CO",
+    "type": "broker",
+    "raw_name": "CHINA NONFERROUS METALS SECURITIES CO"
+  },
+  "B01395": {
+    "name": "SIX SIGMA BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "SIX SIGMA BROKERAGE LTD"
+  },
+  "B01396": {
+    "name": "REALIGHT INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "REALIGHT INVESTMENT LTD"
+  },
+  "B01397": {
+    "name": "BALI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "BALI SECURITIES CO LTD"
+  },
+  "B01398": {
+    "name": "TAI SHING STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "TAI SHING STOCK INVESTMENT CO"
+  },
+  "B01399": {
+    "name": "JIN LOONG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "JIN LOONG SECURITIES CO LTD"
+  },
+  "B01400": {
+    "name": "CMB International",
+    "type": "broker",
+    "raw_name": "GLOBAL CREDIT SECURITIES LTD"
+  },
+  "B01401": {
+    "name": "MEGABASE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MEGABASE SECURITIES LTD"
+  },
+  "B01402": {
+    "name": "PHOENIX CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PHOENIX CAPITAL SECURITIES LTD"
+  },
+  "B01403": {
+    "name": "QUEST STOCKBROKERS (HK) LTD",
+    "type": "broker",
+    "raw_name": "QUEST STOCKBROKERS (HK) LTD"
+  },
+  "B01404": {
+    "name": "HONG KONG STOCK LINK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HONG KONG STOCK LINK SECURITIES LTD"
+  },
+  "B01405": {
+    "name": "ETRADE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ETRADE SECURITIES LTD"
+  },
+  "B01406": {
+    "name": "CHINA SECURITIES HOLDINGS LTD",
+    "type": "broker",
+    "raw_name": "CHINA SECURITIES HOLDINGS LTD"
+  },
+  "B01407": {
+    "name": "WIN WONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WIN WONG SECURITIES LTD"
+  },
+  "B01408": {
+    "name": "PACIFIC RIM SECURITIES",
+    "type": "broker",
+    "raw_name": "PACIFIC RIM SECURITIES"
+  },
+  "B01409": {
+    "name": "DRESDNER KLEINWORT WASSERSTEIN",
+    "type": "broker",
+    "raw_name": "DRESDNER KLEINWORT WASSERSTEIN"
+  },
+  "B01410": {
+    "name": "WINGS SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "WINGS SECURITIES (HK) LTD"
+  },
+  "B01411": {
+    "name": "WING YEE CO",
+    "type": "broker",
+    "raw_name": "WING YEE CO"
+  },
+  "B01412": {
+    "name": "RANK GLORY INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "RANK GLORY INVESTMENT LTD"
+  },
+  "B01413": {
+    "name": "CORE PACIFIC - YAMAICHI INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "CORE PACIFIC - YAMAICHI INTERNATIONAL"
+  },
+  "B01414": {
+    "name": "EVERHOT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "EVERHOT SECURITIES LTD"
+  },
+  "B01415": {
+    "name": "TARZAN STOCK & SHARES LTD",
+    "type": "broker",
+    "raw_name": "TARZAN STOCK & SHARES LTD"
+  },
+  "B01416": {
+    "name": "VC BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "VC BROKERAGE LTD"
+  },
+  "B01417": {
+    "name": "CHEE TAK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHEE TAK SECURITIES LTD"
+  },
+  "B01418": {
+    "name": "EVER-LONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "EVER-LONG SECURITIES CO"
+  },
+  "B01419": {
+    "name": "UNICO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UNICO SECURITIES LTD"
+  },
+  "B01420": {
+    "name": "A ONE INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "A ONE INVESTMENT CO LTD"
+  },
+  "B01421": {
+    "name": "ONEPLATFORM SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ONEPLATFORM SECURITIES LTD"
+  },
+  "B01423": {
+    "name": "PRUDENTIAL BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "PRUDENTIAL BROKERAGE LTD"
+  },
+  "B01424": {
+    "name": "INTERCHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "INTERCHINA SECURITIES LTD"
+  },
+  "B01425": {
+    "name": "WELLFULL SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WELLFULL SECURITIES CO LTD"
+  },
+  "B01426": {
+    "name": "YEE FAT SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "YEE FAT SECURITIES CO LTD"
+  },
+  "B01427": {
+    "name": "TSE'S SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TSE'S SECURITIES LTD"
+  },
+  "B01428": {
+    "name": "HIP HING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HIP HING SECURITIES LTD"
+  },
+  "B01429": {
+    "name": "NEW JAPAN SECURITIES INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "NEW JAPAN SECURITIES INTERNATIONAL"
+  },
+  "B01430": {
+    "name": "CITIGROUP GLOBAL MARKETS ASIA LTD",
+    "type": "broker",
+    "raw_name": "CITIGROUP GLOBAL MARKETS ASIA LTD"
+  },
+  "B01431": {
+    "name": "YUE SHING SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "YUE SHING SECURITIES CO LTD"
+  },
+  "B01432": {
+    "name": "GRAND GENERALE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND GENERALE SECURITIES LTD"
+  },
+  "B01433": {
+    "name": "HING WAI ALLIED SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HING WAI ALLIED SECURITIES LTD"
+  },
+  "B01434": {
+    "name": "BEEVEST SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BEEVEST SECURITIES LTD"
+  },
+  "B01435": {
+    "name": "JOLLY FIRST CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "JOLLY FIRST CAPITAL LTD"
+  },
+  "B01436": {
+    "name": "MANBLE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MANBLE SECURITIES LTD"
+  },
+  "B01437": {
+    "name": "SINO CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SINO CAPITAL SECURITIES LTD"
+  },
+  "B01438": {
+    "name": "KINGSTON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KINGSTON SECURITIES LTD"
+  },
+  "B01439": {
+    "name": "TAI TAK SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "TAI TAK SECURITIES (ASIA) LTD"
+  },
+  "B01440": {
+    "name": "HOU TAK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HOU TAK SECURITIES LTD"
+  },
+  "B01441": {
+    "name": "M & A SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "M & A SECURITIES (HK) LTD"
+  },
+  "B01442": {
+    "name": "CENTURY CITY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CENTURY CITY SECURITIES LTD"
+  },
+  "B01443": {
+    "name": "YING WAH SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "YING WAH SECURITIES CO LTD"
+  },
+  "B01444": {
+    "name": "YUEXING SECURITIES COMPANY LTD",
+    "type": "broker",
+    "raw_name": "YUEXING SECURITIES COMPANY LTD"
+  },
+  "B01445": {
+    "name": "VICTORY SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "VICTORY SECURITIES CO LTD"
+  },
+  "B01446": {
+    "name": "FORLUXE SECURITIES CO",
+    "type": "broker",
+    "raw_name": "FORLUXE SECURITIES CO"
+  },
+  "B01447": {
+    "name": "BETA INTERNATIONAL SECURITIES LIMITED",
+    "type": "broker",
+    "raw_name": "BETA INTERNATIONAL SECURITIES LIMITED"
+  },
+  "B01448": {
+    "name": "SOEN TAK SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "SOEN TAK SECURITIES CO LTD"
+  },
+  "B01449": {
+    "name": "TARTAN SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "TARTAN SECURITIES (ASIA) LTD"
+  },
+  "B01450": {
+    "name": "DL BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "DL BROKERAGE LTD"
+  },
+  "B01451": {
+    "name": "Goldman Sachs",
+    "type": "broker",
+    "raw_name": "GOLDMAN SACHS (ASIA) SECURITIES LTD"
+  },
+  "B01452": {
+    "name": "GRAND FORTUNE SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "GRAND FORTUNE SECURITIES & INVESTMENT CO"
+  },
+  "B01453": {
+    "name": "INSTINET ALPHA TRADING LTD",
+    "type": "broker",
+    "raw_name": "INSTINET ALPHA TRADING LTD"
+  },
+  "B01454": {
+    "name": "HAO TIAN INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HAO TIAN INTERNATIONAL SECURITIES LTD"
+  },
+  "B01455": {
+    "name": "NATIONAL RESOURCES SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "NATIONAL RESOURCES SECURITIES LTD"
+  },
+  "B01456": {
+    "name": "FOREGROUND SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "FOREGROUND SECURITIES CO LTD"
+  },
+  "B01457": {
+    "name": "MARS SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "MARS SECURITIES CO LTD"
+  },
+  "B01458": {
+    "name": "YICKO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YICKO SECURITIES LTD"
+  },
+  "B01459": {
+    "name": "IFAST SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "IFAST SECURITIES (HK) LTD"
+  },
+  "B01460": {
+    "name": "BERICH BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "BERICH BROKERAGE LTD"
+  },
+  "B01461": {
+    "name": "BILLION SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "BILLION SECURITIES CO LTD"
+  },
+  "B01462": {
+    "name": "MANGO FINANCIAL LTD",
+    "type": "broker",
+    "raw_name": "MANGO FINANCIAL LTD"
+  },
+  "B01463": {
+    "name": "KGI WEALTH MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "KGI WEALTH MANAGEMENT LTD"
+  },
+  "B01464": {
+    "name": "PIPER JAFFRAY ASIA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PIPER JAFFRAY ASIA SECURITIES LTD"
+  },
+  "B01465": {
+    "name": "FULL SPEED SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "FULL SPEED SECURITIES CO LTD"
+  },
+  "B01466": {
+    "name": "DAOKOU SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "DAOKOU SECURITIES LTD"
+  },
+  "B01467": {
+    "name": "STAR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "STAR SECURITIES LTD"
+  },
+  "B01468": {
+    "name": "BRIGHT SMART SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "BRIGHT SMART SECURITIES CO LTD"
+  },
+  "B01469": {
+    "name": "KAISER SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KAISER SECURITIES LTD"
+  },
+  "B01470": {
+    "name": "HUNG SING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HUNG SING SECURITIES LTD"
+  },
+  "B01471": {
+    "name": "GREAT BAY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GREAT BAY SECURITIES LTD"
+  },
+  "B01472": {
+    "name": "SUN GROWTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUN GROWTH SECURITIES LTD"
+  },
+  "B01473": {
+    "name": "SUNNY WORLD INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "SUNNY WORLD INVESTMENT LTD"
+  },
+  "B01474": {
+    "name": "VICTORFIELD SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "VICTORFIELD SECURITIES LTD"
+  },
+  "B01475": {
+    "name": "WING SANG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WING SANG SECURITIES CO LTD"
+  },
+  "B01476": {
+    "name": "GOLD TRIUMPH INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "GOLD TRIUMPH INVESTMENT LTD"
+  },
+  "B01477": {
+    "name": "FT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FT SECURITIES LTD"
+  },
+  "B01478": {
+    "name": "GOLDBRIDGE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDBRIDGE SECURITIES LTD"
+  },
+  "B01479": {
+    "name": "SEG INTERNATIONAL SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "SEG INTERNATIONAL SECURITIES (H.K.) LTD"
+  },
+  "B01480": {
+    "name": "KEPPEL SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "KEPPEL SECURITIES HONG KONG LTD"
+  },
+  "B01481": {
+    "name": "NEW REGION SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "NEW REGION SECURITIES CO LTD"
+  },
+  "B01482": {
+    "name": "Tiger Brokers",
+    "type": "broker",
+    "raw_name": "RICH SECURITIES LTD"
+  },
+  "B01483": {
+    "name": "BULLISH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BULLISH SECURITIES LTD"
+  },
+  "B01484": {
+    "name": "HARVESTER (SECURITIES) CO LTD",
+    "type": "broker",
+    "raw_name": "HARVESTER (SECURITIES) CO LTD"
+  },
+  "B01485": {
+    "name": "WING YIP CO LTD (IN LIQUIDATION)",
+    "type": "broker",
+    "raw_name": "WING YIP CO LTD (IN LIQUIDATION)"
+  },
+  "B01486": {
+    "name": "ASG BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "ASG BROKERAGE LTD"
+  },
+  "B01487": {
+    "name": "CHINA RENAISSANCE BROKING SERVICES (HONG",
+    "type": "broker",
+    "raw_name": "CHINA RENAISSANCE BROKING SERVICES (HONG"
+  },
+  "B01488": {
+    "name": "KOWLOON DEVELOPMENT K. F. LO SECURITIES",
+    "type": "broker",
+    "raw_name": "KOWLOON DEVELOPMENT K. F. LO SECURITIES"
+  },
+  "B01489": {
+    "name": "GRAND CARTEL SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "GRAND CARTEL SECURITIES CO LTD"
+  },
+  "B01490": {
+    "name": "HSBC SECURITIES BROKERS (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "HSBC SECURITIES BROKERS (ASIA) LTD"
+  },
+  "B01491": {
+    "name": "CREDIT SUISSE SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "CREDIT SUISSE SECURITIES (HONG KONG) LTD"
+  },
+  "B01492": {
+    "name": "KAM WAH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KAM WAH SECURITIES LTD"
+  },
+  "B01493": {
+    "name": "YARDLEY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YARDLEY SECURITIES LTD"
+  },
+  "B01494": {
+    "name": "AUDREY CHOW SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "AUDREY CHOW SECURITIES LTD"
+  },
+  "B01495": {
+    "name": "CORE PACIFIC SECURITIES INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "CORE PACIFIC SECURITIES INTERNATIONAL"
+  },
+  "B01496": {
+    "name": "LIBRA ASIA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LIBRA ASIA SECURITIES LTD"
+  },
+  "B01497": {
+    "name": "SINOPAC SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "SINOPAC SECURITIES (ASIA) LTD"
+  },
+  "B01498": {
+    "name": "YAN YAN INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "YAN YAN INVESTMENT LTD"
+  },
+  "B01499": {
+    "name": "HLG SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "HLG SECURITIES (HK) LTD"
+  },
+  "B01500": {
+    "name": "UBS",
+    "type": "broker",
+    "raw_name": "D.J. SECURITIES LTD"
+  },
+  "B01501": {
+    "name": "GOLDRIDE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDRIDE SECURITIES LTD"
+  },
+  "B01502": {
+    "name": "NEW UNIVERSE SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "NEW UNIVERSE SECURITIES (HK) LTD"
+  },
+  "B01503": {
+    "name": "GOLD CENTRE INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "GOLD CENTRE INVESTMENT CO"
+  },
+  "B01504": {
+    "name": "J.P. MORGAN SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "J.P. MORGAN SECURITIES HONG KONG LTD"
+  },
+  "B01505": {
+    "name": "SHACOM SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SHACOM SECURITIES LTD"
+  },
+  "B01506": {
+    "name": "BEAR STEARNS ASIA LTD",
+    "type": "broker",
+    "raw_name": "BEAR STEARNS ASIA LTD"
+  },
+  "B01507": {
+    "name": "CHENG YAM ON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHENG YAM ON SECURITIES LTD"
+  },
+  "B01508": {
+    "name": "SOUTHWEST SECURITIES (HK) BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "SOUTHWEST SECURITIES (HK) BROKERAGE LTD"
+  },
+  "B01509": {
+    "name": "UNICORN SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "UNICORN SECURITIES CO LTD"
+  },
+  "B01510": {
+    "name": "ORIENTAL PATRON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ORIENTAL PATRON SECURITIES LTD"
+  },
+  "B01511": {
+    "name": "TAT LEE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TAT LEE SECURITIES CO LTD"
+  },
+  "B01512": {
+    "name": "CLOVER SECURITIES CO LTD (IN MEMBERS'",
+    "type": "broker",
+    "raw_name": "CLOVER SECURITIES CO LTD (IN MEMBERS'"
+  },
+  "B01513": {
+    "name": "CONCORD SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CONCORD SECURITIES CO LTD"
+  },
+  "B01514": {
+    "name": "KARL-THOMSON SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KARL-THOMSON SECURITIES CO LTD"
+  },
+  "B01515": {
+    "name": "KOKUSAI SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "KOKUSAI SECURITIES (HONG KONG) LTD"
+  },
+  "B01516": {
+    "name": "SHANGHAI SHENYIN SECURITIES (H. K.) LTD",
+    "type": "broker",
+    "raw_name": "SHANGHAI SHENYIN SECURITIES (H. K.) LTD"
+  },
+  "B01517": {
+    "name": "WEI XIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WEI XIN SECURITIES LTD"
+  },
+  "B01518": {
+    "name": "GINY SECURITIES CO",
+    "type": "broker",
+    "raw_name": "GINY SECURITIES CO"
+  },
+  "B01519": {
+    "name": "GOOD HARVEST SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "GOOD HARVEST SECURITIES CO LTD"
+  },
+  "B01520": {
+    "name": "NORTH SEA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "NORTH SEA SECURITIES LTD"
+  },
+  "B01521": {
+    "name": "CHAN NGOK MING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHAN NGOK MING SECURITIES LTD"
+  },
+  "B01522": {
+    "name": "CHUANGS & CO LTD",
+    "type": "broker",
+    "raw_name": "CHUANGS & CO LTD"
+  },
+  "B01523": {
+    "name": "EVER-LONG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "EVER-LONG SECURITIES CO LTD"
+  },
+  "B01524": {
+    "name": "GOLDEN HILL INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "GOLDEN HILL INVESTMENT CO LTD"
+  },
+  "B01525": {
+    "name": "KEE CHEONG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KEE CHEONG SECURITIES CO LTD"
+  },
+  "B01526": {
+    "name": "SIU FAI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "SIU FAI SECURITIES CO LTD"
+  },
+  "B01527": {
+    "name": "NITTAN SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "NITTAN SECURITIES ASIA LTD"
+  },
+  "B01528": {
+    "name": "EAA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "EAA SECURITIES LTD"
+  },
+  "B01529": {
+    "name": "HK KOWLOON FIRST SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "HK KOWLOON FIRST SECURITIES CO LTD"
+  },
+  "B01530": {
+    "name": "FULLJET SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FULLJET SECURITIES LTD"
+  },
+  "B01531": {
+    "name": "LAU & CO LTD",
+    "type": "broker",
+    "raw_name": "LAU & CO LTD"
+  },
+  "B01532": {
+    "name": "MAN LUNG HONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MAN LUNG HONG SECURITIES LTD"
+  },
+  "B01534": {
+    "name": "POWER RANGE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "POWER RANGE SECURITIES CO LTD"
+  },
+  "B01535": {
+    "name": "WING YEE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WING YEE SECURITIES CO LTD"
+  },
+  "B01537": {
+    "name": "AMSTEEL SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "AMSTEEL SECURITIES (H.K.) LTD"
+  },
+  "B01538": {
+    "name": "MORTON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MORTON SECURITIES LTD"
+  },
+  "B01539": {
+    "name": "FORDJOY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FORDJOY SECURITIES LTD"
+  },
+  "B01540": {
+    "name": "UPBEST SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "UPBEST SECURITIES CO LTD"
+  },
+  "B01541": {
+    "name": "BRILLIANT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BRILLIANT SECURITIES LTD"
+  },
+  "B01542": {
+    "name": "GRAND ONWARD SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND ONWARD SECURITIES LTD"
+  },
+  "B01543": {
+    "name": "KWONG FAT HONG (SECURITIES) LTD",
+    "type": "broker",
+    "raw_name": "KWONG FAT HONG (SECURITIES) LTD"
+  },
+  "B01544": {
+    "name": "IPO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "IPO SECURITIES LTD"
+  },
+  "B01545": {
+    "name": "TUNG SHING SECURITIES (BROKERS) LTD",
+    "type": "broker",
+    "raw_name": "TUNG SHING SECURITIES (BROKERS) LTD"
+  },
+  "B01546": {
+    "name": "WO FUNG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WO FUNG SECURITIES CO LTD"
+  },
+  "B01547": {
+    "name": "KWOK HING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KWOK HING SECURITIES LTD"
+  },
+  "B01548": {
+    "name": "LEE WAI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LEE WAI SECURITIES LTD"
+  },
+  "B01549": {
+    "name": "PROSPEROUS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PROSPEROUS SECURITIES LTD"
+  },
+  "B01550": {
+    "name": "HUAYU SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HUAYU SECURITIES LTD"
+  },
+  "B01551": {
+    "name": "YUE XIU SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "YUE XIU SECURITIES CO LTD"
+  },
+  "B01552": {
+    "name": "CARRIER STOCK INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "CARRIER STOCK INVESTMENT CO LTD"
+  },
+  "B01553": {
+    "name": "GRAND SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "GRAND SECURITIES CO LTD"
+  },
+  "B01554": {
+    "name": "MACQUARIE EQUITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "MACQUARIE EQUITIES (ASIA) LTD"
+  },
+  "B01555": {
+    "name": "ABN AMRO CLEARING HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "ABN AMRO CLEARING HONG KONG LTD"
+  },
+  "B01556": {
+    "name": "LUK FOOK SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "LUK FOOK SECURITIES (HK) LTD"
+  },
+  "B01557": {
+    "name": "CHU CHUNG TIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHU CHUNG TIN SECURITIES LTD"
+  },
+  "B01558": {
+    "name": "GOLD FUND SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "GOLD FUND SECURITIES CO LTD"
+  },
+  "B01559": {
+    "name": "WISETRADE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WISETRADE SECURITIES LTD"
+  },
+  "B01562": {
+    "name": "C.A. INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "C.A. INTERNATIONAL SECURITIES LTD"
+  },
+  "B01563": {
+    "name": "XINKONG INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "XINKONG INTERNATIONAL SECURITIES LTD"
+  },
+  "B01564": {
+    "name": "ABCI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "ABCI SECURITIES CO LTD"
+  },
+  "B01565": {
+    "name": "GUOTAI JUNAN SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "GUOTAI JUNAN SECURITIES (HONG KONG) LTD"
+  },
+  "B01566": {
+    "name": "K.K.M. SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "K.K.M. SECURITIES LTD"
+  },
+  "B01567": {
+    "name": "PRIME SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PRIME SECURITIES LTD"
+  },
+  "B01568": {
+    "name": "SHUN LOONG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "SHUN LOONG SECURITIES CO LTD"
+  },
+  "B01569": {
+    "name": "TANG PING KONG LTD",
+    "type": "broker",
+    "raw_name": "TANG PING KONG LTD"
+  },
+  "B01570": {
+    "name": "GOLDENWAY SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "GOLDENWAY SECURITIES CO LTD"
+  },
+  "B01571": {
+    "name": "KARFORD SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KARFORD SECURITIES LTD"
+  },
+  "B01572": {
+    "name": "ALEXANDRA STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "ALEXANDRA STOCK CO LTD"
+  },
+  "B01573": {
+    "name": "TIM PO SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TIM PO SECURITIES CO LTD"
+  },
+  "B01574": {
+    "name": "WADER SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WADER SECURITIES CO LTD"
+  },
+  "B01575": {
+    "name": "MASTER TRADEMORE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MASTER TRADEMORE SECURITIES LTD"
+  },
+  "B01576": {
+    "name": "SIU ON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SIU ON SECURITIES LTD"
+  },
+  "B01577": {
+    "name": "YF SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "YF SECURITIES CO LTD"
+  },
+  "B01579": {
+    "name": "APRICOT CAPITAL (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "APRICOT CAPITAL (HONG KONG) LTD"
+  },
+  "B01580": {
+    "name": "OSHIDORI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "OSHIDORI SECURITIES LTD"
+  },
+  "B01581": {
+    "name": "KINGSWAY FINANCIAL SERVICES GROUP LTD",
+    "type": "broker",
+    "raw_name": "KINGSWAY FINANCIAL SERVICES GROUP LTD"
+  },
+  "B01582": {
+    "name": "THING ON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "THING ON SECURITIES LTD"
+  },
+  "B01583": {
+    "name": "RESIDENTS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RESIDENTS SECURITIES LTD"
+  },
+  "B01584": {
+    "name": "CHIEF SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHIEF SECURITIES LTD"
+  },
+  "B01585": {
+    "name": "SINO GRADE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SINO GRADE SECURITIES LTD"
+  },
+  "B01586": {
+    "name": "WHOLE WIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WHOLE WIN SECURITIES LTD"
+  },
+  "B01587": {
+    "name": "T.Z. & W.Y. CHEUNG STOCKS LTD",
+    "type": "broker",
+    "raw_name": "T.Z. & W.Y. CHEUNG STOCKS LTD"
+  },
+  "B01588": {
+    "name": "LEI SHING HONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LEI SHING HONG SECURITIES LTD"
+  },
+  "B01589": {
+    "name": "OUB SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "OUB SECURITIES (H.K.) LTD"
+  },
+  "B01590": {
+    "name": "INTERACTIVE BROKERS HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "INTERACTIVE BROKERS HONG KONG LTD"
+  },
+  "B01591": {
+    "name": "BRIGHTON SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "BRIGHTON SECURITIES (HONG KONG) LTD"
+  },
+  "B01592": {
+    "name": "PLATINUM BROKING CO LTD",
+    "type": "broker",
+    "raw_name": "PLATINUM BROKING CO LTD"
+  },
+  "B01593": {
+    "name": "DAI-ICHI SECURITIES PACIFIC LTD",
+    "type": "broker",
+    "raw_name": "DAI-ICHI SECURITIES PACIFIC LTD"
+  },
+  "B01594": {
+    "name": "HOENIG (FAR EAST) LTD",
+    "type": "broker",
+    "raw_name": "HOENIG (FAR EAST) LTD"
+  },
+  "B01595": {
+    "name": "HUNG BROTHERS LTD",
+    "type": "broker",
+    "raw_name": "HUNG BROTHERS LTD"
+  },
+  "B01596": {
+    "name": "LG SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "LG SECURITIES (H.K.) LTD"
+  },
+  "B01597": {
+    "name": "TIMES SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TIMES SECURITIES CO LTD"
+  },
+  "B01598": {
+    "name": "Haitong International",
+    "type": "broker",
+    "raw_name": "AMMB SECURITIES (H.K.) LTD"
+  },
+  "B01599": {
+    "name": "POLARIS SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "POLARIS SECURITIES (HONG KONG) LTD"
+  },
+  "B01600": {
+    "name": "THOMAS GLOBAL FINANCIAL SERVICES LTD",
+    "type": "broker",
+    "raw_name": "THOMAS GLOBAL FINANCIAL SERVICES LTD"
+  },
+  "B01601": {
+    "name": "CSC SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "CSC SECURITIES (HK) LTD"
+  },
+  "B01602": {
+    "name": "FORLUXE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FORLUXE SECURITIES LTD"
+  },
+  "B01603": {
+    "name": "KOFFMAN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KOFFMAN SECURITIES LTD"
+  },
+  "B01604": {
+    "name": "WANHAI SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "WANHAI SECURITIES (HK) LTD"
+  },
+  "B01605": {
+    "name": "ESSENCE INTERNATIONAL FINANCIAL HOLDINGS",
+    "type": "broker",
+    "raw_name": "ESSENCE INTERNATIONAL FINANCIAL HOLDINGS"
+  },
+  "B01606": {
+    "name": "EWARTON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "EWARTON SECURITIES LTD"
+  },
+  "B01607": {
+    "name": "RHB SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "RHB SECURITIES HONG KONG LTD"
+  },
+  "B01608": {
+    "name": "OPEN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "OPEN SECURITIES LTD"
+  },
+  "B01609": {
+    "name": "WILBY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WILBY SECURITIES LTD"
+  },
+  "B01610": {
+    "name": "KGI ASIA LTD",
+    "type": "broker",
+    "raw_name": "KGI ASIA LTD"
+  },
+  "B01611": {
+    "name": "CAPITAL FRIEND SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CAPITAL FRIEND SECURITIES LTD"
+  },
+  "B01612": {
+    "name": "CU SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CU SECURITIES LTD"
+  },
+  "B01613": {
+    "name": "GOLDEN LIGHT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDEN LIGHT SECURITIES LTD"
+  },
+  "B01614": {
+    "name": "CHINA HONG KONG CAPITAL ASSET MANAGEMENT",
+    "type": "broker",
+    "raw_name": "CHINA HONG KONG CAPITAL ASSET MANAGEMENT"
+  },
+  "B01615": {
+    "name": "KAM FAI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KAM FAI SECURITIES CO LTD"
+  },
+  "B01616": {
+    "name": "PACIFIC PEARL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PACIFIC PEARL SECURITIES LTD"
+  },
+  "B01618": {
+    "name": "MAN WO INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "MAN WO INVESTMENT CO LTD"
+  },
+  "B01619": {
+    "name": "TUNG WUI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TUNG WUI SECURITIES CO LTD"
+  },
+  "B01620": {
+    "name": "VICTORY ENTERPRISES (INVESTMENT) LTD",
+    "type": "broker",
+    "raw_name": "VICTORY ENTERPRISES (INVESTMENT) LTD"
+  },
+  "B01621": {
+    "name": "TOWN HANG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TOWN HANG SECURITIES CO LTD"
+  },
+  "B01622": {
+    "name": "CHARK FUNG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CHARK FUNG SECURITIES CO LTD"
+  },
+  "B01623": {
+    "name": "TAI FUNG KUENTAI SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TAI FUNG KUENTAI SECURITIES CO LTD"
+  },
+  "B01624": {
+    "name": "CHINA GUARD INVESTMENTS LTD",
+    "type": "broker",
+    "raw_name": "CHINA GUARD INVESTMENTS LTD"
+  },
+  "B01625": {
+    "name": "METRO CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "METRO CAPITAL SECURITIES LTD"
+  },
+  "B01626": {
+    "name": "ONG ASIA SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "ONG ASIA SECURITIES (HK) LTD"
+  },
+  "B01627": {
+    "name": "SDHG INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SDHG INTERNATIONAL SECURITIES LTD"
+  },
+  "B01628": {
+    "name": "GREAT HONOUR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GREAT HONOUR SECURITIES LTD"
+  },
+  "B01629": {
+    "name": "WALCO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WALCO SECURITIES LTD"
+  },
+  "B01630": {
+    "name": "ANLI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ANLI SECURITIES LTD"
+  },
+  "B01631": {
+    "name": "PLANETREE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PLANETREE SECURITIES LTD"
+  },
+  "B01632": {
+    "name": "WAI FAT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WAI FAT SECURITIES LTD"
+  },
+  "B01633": {
+    "name": "ENLIGHTEN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ENLIGHTEN SECURITIES LTD"
+  },
+  "B01634": {
+    "name": "LLOYD SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "LLOYD SECURITIES CO LTD"
+  },
+  "B01635": {
+    "name": "TAI WAH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TAI WAH SECURITIES LTD"
+  },
+  "B01636": {
+    "name": "BUSINESS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BUSINESS SECURITIES LTD"
+  },
+  "B01637": {
+    "name": "COMPASS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "COMPASS SECURITIES LTD"
+  },
+  "B01638": {
+    "name": "KILMOREY SECURITIES LTD (IN LIQUIDATION)",
+    "type": "broker",
+    "raw_name": "KILMOREY SECURITIES LTD (IN LIQUIDATION)"
+  },
+  "B01640": {
+    "name": "BEIJING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BEIJING SECURITIES LTD"
+  },
+  "B01641": {
+    "name": "FULL WIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FULL WIN SECURITIES LTD"
+  },
+  "B01642": {
+    "name": "KMT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KMT SECURITIES LTD"
+  },
+  "B01643": {
+    "name": "LAI PO HUNG & CO LTD",
+    "type": "broker",
+    "raw_name": "LAI PO HUNG & CO LTD"
+  },
+  "B01644": {
+    "name": "Y. F. CHAN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "Y. F. CHAN SECURITIES LTD"
+  },
+  "B01645": {
+    "name": "SELINA & CO LTD",
+    "type": "broker",
+    "raw_name": "SELINA & CO LTD"
+  },
+  "B01646": {
+    "name": "TAI NING STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "TAI NING STOCK CO LTD"
+  },
+  "B01647": {
+    "name": "TRUTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TRUTH SECURITIES LTD"
+  },
+  "B01648": {
+    "name": "STELLAR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "STELLAR SECURITIES LTD"
+  },
+  "B01649": {
+    "name": "CINDA INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CINDA INTERNATIONAL SECURITIES LTD"
+  },
+  "B01650": {
+    "name": "KAM LUEN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KAM LUEN SECURITIES LTD"
+  },
+  "B01651": {
+    "name": "MING HON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MING HON SECURITIES LTD"
+  },
+  "B01652": {
+    "name": "TIS SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "TIS SECURITIES (HK) LTD"
+  },
+  "B01653": {
+    "name": "WAI MAN STOCK & SHARES CO LTD",
+    "type": "broker",
+    "raw_name": "WAI MAN STOCK & SHARES CO LTD"
+  },
+  "B01654": {
+    "name": "CHINA INTERNATIONAL CAPITAL CORPORATION",
+    "type": "broker",
+    "raw_name": "CHINA INTERNATIONAL CAPITAL CORPORATION"
+  },
+  "B01655": {
+    "name": "SANTANDER INVESTMENT SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "SANTANDER INVESTMENT SECURITIES (HK) LTD"
+  },
+  "B01656": {
+    "name": "DASHIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "DASHIN SECURITIES LTD"
+  },
+  "B01657": {
+    "name": "JS CRESVALE SECURITIES INTERNATIONAL LTD",
+    "type": "broker",
+    "raw_name": "JS CRESVALE SECURITIES INTERNATIONAL LTD"
+  },
+  "B01658": {
+    "name": "DRAKE & MORGAN LTD",
+    "type": "broker",
+    "raw_name": "DRAKE & MORGAN LTD"
+  },
+  "B01659": {
+    "name": "CHEER UNION SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHEER UNION SECURITIES LTD"
+  },
+  "B01660": {
+    "name": "GRANSING SECURITIES CO., LIMITED",
+    "type": "broker",
+    "raw_name": "GRANSING SECURITIES CO., LIMITED"
+  },
+  "B01661": {
+    "name": "HERMES SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HERMES SECURITIES LTD"
+  },
+  "B01662": {
+    "name": "BOKHARY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BOKHARY SECURITIES LTD"
+  },
+  "B01663": {
+    "name": "DONALDSON, LUFKIN & JENRETTE ASIA",
+    "type": "broker",
+    "raw_name": "DONALDSON, LUFKIN & JENRETTE ASIA"
+  },
+  "B01664": {
+    "name": "ROOFER SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ROOFER SECURITIES LTD"
+  },
+  "B01665": {
+    "name": "WINSOME STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "WINSOME STOCK CO LTD"
+  },
+  "B01666": {
+    "name": "GLORY SUN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GLORY SUN SECURITIES LTD"
+  },
+  "B01667": {
+    "name": "WIN SUCCESSFUL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WIN SUCCESSFUL SECURITIES LTD"
+  },
+  "B01668": {
+    "name": "BRIGHT SMART SECURITIES INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "BRIGHT SMART SECURITIES INTERNATIONAL"
+  },
+  "B01669": {
+    "name": "FIRST SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "FIRST SECURITIES (HK) LTD"
+  },
+  "B01670": {
+    "name": "FUZE SECURITIES (INTERNATIONAL) LTD",
+    "type": "broker",
+    "raw_name": "FUZE SECURITIES (INTERNATIONAL) LTD"
+  },
+  "B01671": {
+    "name": "AEVITAS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "AEVITAS SECURITIES LTD"
+  },
+  "B01672": {
+    "name": "WORLDWIDE BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "WORLDWIDE BROKERAGE LTD"
+  },
+  "B01673": {
+    "name": "FULBRIGHT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FULBRIGHT SECURITIES LTD"
+  },
+  "B01674": {
+    "name": "HONGKONG BAY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HONGKONG BAY SECURITIES LTD"
+  },
+  "B01675": {
+    "name": "T. W. SABNANI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "T. W. SABNANI SECURITIES LTD"
+  },
+  "B01676": {
+    "name": "TAI SHING STOCK INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "TAI SHING STOCK INVESTMENT CO LTD"
+  },
+  "B01677": {
+    "name": "ANUENUE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ANUENUE SECURITIES LTD"
+  },
+  "B01678": {
+    "name": "GLS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GLS SECURITIES LTD"
+  },
+  "B01679": {
+    "name": "TAI FUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TAI FUNG SECURITIES LTD"
+  },
+  "B01680": {
+    "name": "SUCCESS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUCCESS SECURITIES LTD"
+  },
+  "B01681": {
+    "name": "BOCOM INTERNATIONAL HOLDINGS CO LTD",
+    "type": "broker",
+    "raw_name": "BOCOM INTERNATIONAL HOLDINGS CO LTD"
+  },
+  "B01682": {
+    "name": "RAMON INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "RAMON INVESTMENT CO"
+  },
+  "B01683": {
+    "name": "DBS TD WATERHOUSE SECURITIES (HONG KONG)",
+    "type": "broker",
+    "raw_name": "DBS TD WATERHOUSE SECURITIES (HONG KONG)"
+  },
+  "B01684": {
+    "name": "WANG ON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WANG ON SECURITIES LTD"
+  },
+  "B01685": {
+    "name": "ARK SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "ARK SECURITIES (HONG KONG) LTD"
+  },
+  "B01686": {
+    "name": "FIRST SHANGHAI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FIRST SHANGHAI SECURITIES LTD"
+  },
+  "B01687": {
+    "name": "CHARLES SCHWAB HONG KONG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHARLES SCHWAB HONG KONG SECURITIES LTD"
+  },
+  "B01688": {
+    "name": "CHUN HUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHUN HUNG SECURITIES LTD"
+  },
+  "B01689": {
+    "name": "EUREKA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "EUREKA SECURITIES LTD"
+  },
+  "B01690": {
+    "name": "FIRST SIGN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FIRST SIGN SECURITIES LTD"
+  },
+  "B01691": {
+    "name": "GREATER CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GREATER CHINA SECURITIES LTD"
+  },
+  "B01692": {
+    "name": "SMBC NIKKO SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "SMBC NIKKO SECURITIES (HONG KONG) LTD"
+  },
+  "B01693": {
+    "name": "UOB KAY HIAN OVERSEAS LTD",
+    "type": "broker",
+    "raw_name": "UOB KAY HIAN OVERSEAS LTD"
+  },
+  "B01694": {
+    "name": "MINERVA HOLDING FINANCIAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MINERVA HOLDING FINANCIAL SECURITIES LTD"
+  },
+  "B01695": {
+    "name": "DAH SING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "DAH SING SECURITIES LTD"
+  },
+  "B01696": {
+    "name": "HANTEC SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "HANTEC SECURITIES CO LTD"
+  },
+  "B01697": {
+    "name": "JS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "JS SECURITIES LTD"
+  },
+  "B01698": {
+    "name": "LUEN SING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LUEN SING SECURITIES LTD"
+  },
+  "B01699": {
+    "name": "MASTERLINK SECURITIES (HONG KONG)",
+    "type": "broker",
+    "raw_name": "MASTERLINK SECURITIES (HONG KONG)"
+  },
+  "B01700": {
+    "name": "REALINK FINANCIAL TRADE LTD",
+    "type": "broker",
+    "raw_name": "REALINK FINANCIAL TRADE LTD"
+  },
+  "B01701": {
+    "name": "SHUI CHEUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SHUI CHEUNG SECURITIES LTD"
+  },
+  "B01702": {
+    "name": "BLACK MARBLE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BLACK MARBLE SECURITIES LTD"
+  },
+  "B01703": {
+    "name": "CROWN RICH SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "CROWN RICH SECURITIES (H.K.) LTD"
+  },
+  "B01704": {
+    "name": "JVSAKK ASIA LTD",
+    "type": "broker",
+    "raw_name": "JVSAKK ASIA LTD"
+  },
+  "B01705": {
+    "name": "HENIK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HENIK SECURITIES LTD"
+  },
+  "B01706": {
+    "name": "MAN HON YEUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MAN HON YEUNG SECURITIES LTD"
+  },
+  "B01707": {
+    "name": "PAK LEE STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "PAK LEE STOCK CO LTD"
+  },
+  "B01708": {
+    "name": "ROSA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ROSA SECURITIES LTD"
+  },
+  "B01709": {
+    "name": "RPS INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "RPS INVESTMENT LTD"
+  },
+  "B01710": {
+    "name": "SINO-RICH SECURITIES & FUTURES LTD",
+    "type": "broker",
+    "raw_name": "SINO-RICH SECURITIES & FUTURES LTD"
+  },
+  "B01711": {
+    "name": "UNI-ALPHA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UNI-ALPHA SECURITIES LTD"
+  },
+  "B01712": {
+    "name": "WAH SANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WAH SANG SECURITIES LTD"
+  },
+  "B01713": {
+    "name": "TRUSTFUL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TRUSTFUL SECURITIES LTD"
+  },
+  "B01714": {
+    "name": "MAGE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MAGE SECURITIES LTD"
+  },
+  "B01715": {
+    "name": "PRESIDENT SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "PRESIDENT SECURITIES (HONG KONG) LTD"
+  },
+  "B01716": {
+    "name": "ORIENT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ORIENT SECURITIES LTD"
+  },
+  "B01717": {
+    "name": "GOLDIN EQUITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDIN EQUITIES LTD"
+  },
+  "B01718": {
+    "name": "WILLIAMS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WILLIAMS SECURITIES LTD"
+  },
+  "B01719": {
+    "name": "LING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LING SECURITIES LTD"
+  },
+  "B01720": {
+    "name": "NORMAN KONG SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "NORMAN KONG SECURITIES CO LTD"
+  },
+  "B01721": {
+    "name": "HUA NAN SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "HUA NAN SECURITIES (HK) LTD"
+  },
+  "B01722": {
+    "name": "CTW SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CTW SECURITIES LTD"
+  },
+  "B01723": {
+    "name": "KAM BO SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KAM BO SECURITIES CO LTD"
+  },
+  "B01724": {
+    "name": "RAMON INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "RAMON INVESTMENT CO LTD"
+  },
+  "B01725": {
+    "name": "GT CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "GT CAPITAL LTD"
+  },
+  "B01726": {
+    "name": "C.P. SECURITIES INTERNATIONAL LTD",
+    "type": "broker",
+    "raw_name": "C.P. SECURITIES INTERNATIONAL LTD"
+  },
+  "B01727": {
+    "name": "ICBC (ASIA) SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ICBC (ASIA) SECURITIES LTD"
+  },
+  "B01728": {
+    "name": "AJ SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "AJ SECURITIES LTD"
+  },
+  "B01729": {
+    "name": "GRIT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRIT SECURITIES LTD"
+  },
+  "B01730": {
+    "name": "CCB SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CCB SECURITIES LTD"
+  },
+  "B01731": {
+    "name": "SHUN HENG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SHUN HENG SECURITIES LTD"
+  },
+  "B01732": {
+    "name": "WINTECH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WINTECH SECURITIES LTD"
+  },
+  "B01733": {
+    "name": "GRAND CATHAY SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "GRAND CATHAY SECURITIES (HONG KONG) LTD"
+  },
+  "B01734": {
+    "name": "KCG SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "KCG SECURITIES ASIA LTD"
+  },
+  "B01735": {
+    "name": "SUPERFUND FINANCIAL (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "SUPERFUND FINANCIAL (HONG KONG) LTD"
+  },
+  "B01736": {
+    "name": "TIFFIT SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "TIFFIT SECURITIES (HONG KONG) LTD"
+  },
+  "B01737": {
+    "name": "DAIWA CAPITAL MARKETS TRADING HONG KONG",
+    "type": "broker",
+    "raw_name": "DAIWA CAPITAL MARKETS TRADING HONG KONG"
+  },
+  "B01738": {
+    "name": "CES CAPITAL INTERNATIONAL (HONG KONG) CO",
+    "type": "broker",
+    "raw_name": "CES CAPITAL INTERNATIONAL (HONG KONG) CO"
+  },
+  "B01739": {
+    "name": "CHUNG LEE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CHUNG LEE SECURITIES CO LTD"
+  },
+  "B01740": {
+    "name": "WIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WIN SECURITIES LTD"
+  },
+  "B01741": {
+    "name": "SINOMAX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SINOMAX SECURITIES LTD"
+  },
+  "B01742": {
+    "name": "WORLDTOP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WORLDTOP SECURITIES LTD"
+  },
+  "B01743": {
+    "name": "CEPA ALLIANCE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CEPA ALLIANCE SECURITIES LTD"
+  },
+  "B01744": {
+    "name": "YICK FUNG SECURITIES & INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "YICK FUNG SECURITIES & INVESTMENT CO LTD"
+  },
+  "B01745": {
+    "name": "GUOCHUANG SECURITIES FINANCIAL HOLDING",
+    "type": "broker",
+    "raw_name": "GUOCHUANG SECURITIES FINANCIAL HOLDING"
+  },
+  "B01746": {
+    "name": "ITG HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "ITG HONG KONG LTD"
+  },
+  "B01747": {
+    "name": "MERDEKA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MERDEKA SECURITIES LTD"
+  },
+  "B01748": {
+    "name": "COL SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "COL SECURITIES (HK) LTD"
+  },
+  "B01749": {
+    "name": "TANG KEE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TANG KEE SECURITIES LTD"
+  },
+  "B01750": {
+    "name": "POLARIS CAPITAL (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "POLARIS CAPITAL (ASIA) LTD"
+  },
+  "B01751": {
+    "name": "IMAGI BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "IMAGI BROKERAGE LTD"
+  },
+  "B01752": {
+    "name": "HOI SANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HOI SANG SECURITIES LTD"
+  },
+  "B01753": {
+    "name": "FORTUNE (HK) SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FORTUNE (HK) SECURITIES LTD"
+  },
+  "B01754": {
+    "name": "ASIA PACIFIC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ASIA PACIFIC SECURITIES LTD"
+  },
+  "B01755": {
+    "name": "T G SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "T G SECURITIES LTD"
+  },
+  "B01756": {
+    "name": "CHINA SKY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA SKY SECURITIES LTD"
+  },
+  "B01757": {
+    "name": "WING TAK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WING TAK SECURITIES LTD"
+  },
+  "B01758": {
+    "name": "CHINA RESERVE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA RESERVE SECURITIES LTD"
+  },
+  "B01759": {
+    "name": "WINLAND WEALTH MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "WINLAND WEALTH MANAGEMENT LTD"
+  },
+  "B01760": {
+    "name": "FUHWA SECURITIES (HONG KONG) CO LTD",
+    "type": "broker",
+    "raw_name": "FUHWA SECURITIES (HONG KONG) CO LTD"
+  },
+  "B01761": {
+    "name": "KO'S BROTHER SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "KO'S BROTHER SECURITIES CO LTD"
+  },
+  "B01762": {
+    "name": "DBS VICKERS (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "DBS VICKERS (HONG KONG) LTD"
+  },
+  "B01763": {
+    "name": "1SPREAD BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "1SPREAD BROKERAGE LTD"
+  },
+  "B01764": {
+    "name": "DBS VICKERS SECURITIES ONLINE (HK) LTD",
+    "type": "broker",
+    "raw_name": "DBS VICKERS SECURITIES ONLINE (HK) LTD"
+  },
+  "B01765": {
+    "name": "PROMISING SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "PROMISING SECURITIES CO LTD"
+  },
+  "B01766": {
+    "name": "MUSHK LTD",
+    "type": "broker",
+    "raw_name": "MUSHK LTD"
+  },
+  "B01767": {
+    "name": "NEW GALA SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "NEW GALA SECURITIES CO LTD"
+  },
+  "B01768": {
+    "name": "WINTONE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WINTONE SECURITIES LTD"
+  },
+  "B01769": {
+    "name": "ONE CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ONE CHINA SECURITIES LTD"
+  },
+  "B01770": {
+    "name": "TOKAI TOKYO SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "TOKAI TOKYO SECURITIES (ASIA) LTD"
+  },
+  "B01771": {
+    "name": "CVP SECURITIES LTD (IN LIQUIDATION)",
+    "type": "broker",
+    "raw_name": "CVP SECURITIES LTD (IN LIQUIDATION)"
+  },
+  "B01772": {
+    "name": "TENSANT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TENSANT SECURITIES LTD"
+  },
+  "B01773": {
+    "name": "TOYO SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "TOYO SECURITIES ASIA LTD"
+  },
+  "B01774": {
+    "name": "CANTOR FITZGERALD (HONG KONG) CAPITAL",
+    "type": "broker",
+    "raw_name": "CANTOR FITZGERALD (HONG KONG) CAPITAL"
+  },
+  "B01775": {
+    "name": "CREDIT AGRICOLE SECURITIES (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "CREDIT AGRICOLE SECURITIES (ASIA) LTD"
+  },
+  "B01776": {
+    "name": "AIF SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "AIF SECURITIES LTD"
+  },
+  "B01777": {
+    "name": "DAIWA CAPITAL MARKETS HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "DAIWA CAPITAL MARKETS HONG KONG LTD"
+  },
+  "B01778": {
+    "name": "UNITED WORLD ONLINE LTD",
+    "type": "broker",
+    "raw_name": "UNITED WORLD ONLINE LTD"
+  },
+  "B01779": {
+    "name": "LEE'S SECURITIES CO LTD (IN LIQUIDATION)",
+    "type": "broker",
+    "raw_name": "LEE'S SECURITIES CO LTD (IN LIQUIDATION)"
+  },
+  "B01780": {
+    "name": "TUNG SHUN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TUNG SHUN SECURITIES LTD"
+  },
+  "B01781": {
+    "name": "BARCLAYS CAPITAL ASIA LTD",
+    "type": "broker",
+    "raw_name": "BARCLAYS CAPITAL ASIA LTD"
+  },
+  "B01782": {
+    "name": "SEAGA INTERNATIONAL LTD",
+    "type": "broker",
+    "raw_name": "SEAGA INTERNATIONAL LTD"
+  },
+  "B01783": {
+    "name": "FREDDY CO LTD",
+    "type": "broker",
+    "raw_name": "FREDDY CO LTD"
+  },
+  "B01784": {
+    "name": "FU YIP SECURITIES AND INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "FU YIP SECURITIES AND INVESTMENT CO LTD"
+  },
+  "B01785": {
+    "name": "PARTNERS CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PARTNERS CAPITAL SECURITIES LTD"
+  },
+  "B01786": {
+    "name": "KO KUN STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "KO KUN STOCK CO LTD"
+  },
+  "B01787": {
+    "name": "SOO PUI CHEN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SOO PUI CHEN SECURITIES LTD"
+  },
+  "B01788": {
+    "name": "SUNRISE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUNRISE SECURITIES LTD"
+  },
+  "B01789": {
+    "name": "HO FUNG SHARES INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "HO FUNG SHARES INVESTMENT LTD"
+  },
+  "B01790": {
+    "name": "YIELDFUL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YIELDFUL SECURITIES LTD"
+  },
+  "B01791": {
+    "name": "MAINLAND SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MAINLAND SECURITIES LTD"
+  },
+  "B01792": {
+    "name": "HONG KONG WAN KIU INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "HONG KONG WAN KIU INVESTMENT CO LTD"
+  },
+  "B01793": {
+    "name": "ASIA PACIFIC CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ASIA PACIFIC CAPITAL SECURITIES LTD"
+  },
+  "B01794": {
+    "name": "INTERCONTINENT SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "INTERCONTINENT SECURITIES CO LTD"
+  },
+  "B01795": {
+    "name": "RAFFAELLO SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "RAFFAELLO SECURITIES (HK) LTD"
+  },
+  "B01796": {
+    "name": "SOO PEI SHAO & CO LTD",
+    "type": "broker",
+    "raw_name": "SOO PEI SHAO & CO LTD"
+  },
+  "B01797": {
+    "name": "SZEHOPE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "SZEHOPE SECURITIES CO LTD"
+  },
+  "B01798": {
+    "name": "WINNING SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WINNING SECURITIES CO LTD"
+  },
+  "B01799": {
+    "name": "THE BRIGHT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "THE BRIGHT SECURITIES LTD"
+  },
+  "B01800": {
+    "name": "SUN CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUN CAPITAL SECURITIES LTD"
+  },
+  "B01801": {
+    "name": "KIN FUNG STOCK CO LTD",
+    "type": "broker",
+    "raw_name": "KIN FUNG STOCK CO LTD"
+  },
+  "B01802": {
+    "name": "REDFORD SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "REDFORD SECURITIES LTD"
+  },
+  "B01803": {
+    "name": "RICH BAY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RICH BAY SECURITIES LTD"
+  },
+  "B01805": {
+    "name": "SALISBURY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SALISBURY SECURITIES LTD"
+  },
+  "B01806": {
+    "name": "CHINA GATHER WEALTH FINANCIAL CO LTD",
+    "type": "broker",
+    "raw_name": "CHINA GATHER WEALTH FINANCIAL CO LTD"
+  },
+  "B01807": {
+    "name": "NEWEDGE BROKER LTD",
+    "type": "broker",
+    "raw_name": "NEWEDGE BROKER LTD"
+  },
+  "B01808": {
+    "name": "SHINKO SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "SHINKO SECURITIES (H.K.) LTD"
+  },
+  "B01809": {
+    "name": "CHINA SYSTEM SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA SYSTEM SECURITIES LTD"
+  },
+  "B01810": {
+    "name": "ASTRUM CAPITAL MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "ASTRUM CAPITAL MANAGEMENT LTD"
+  },
+  "B01811": {
+    "name": "3V CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "3V CAPITAL LTD"
+  },
+  "B01812": {
+    "name": "MF GLOBAL SECURITIES HK LTD",
+    "type": "broker",
+    "raw_name": "MF GLOBAL SECURITIES HK LTD"
+  },
+  "B01813": {
+    "name": "CCB INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CCB INTERNATIONAL SECURITIES LTD"
+  },
+  "B01814": {
+    "name": "WELL LINK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WELL LINK SECURITIES LTD"
+  },
+  "B01815": {
+    "name": "T & F EQUITIES LTD",
+    "type": "broker",
+    "raw_name": "T & F EQUITIES LTD"
+  },
+  "B01816": {
+    "name": "CHEONG LEE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHEONG LEE SECURITIES LTD"
+  },
+  "B01817": {
+    "name": "EXECUTION NOBLE (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "EXECUTION NOBLE (HONG KONG) LTD"
+  },
+  "B01818": {
+    "name": "I-ACCESS INVESTORS LTD",
+    "type": "broker",
+    "raw_name": "I-ACCESS INVESTORS LTD"
+  },
+  "B01819": {
+    "name": "M SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "M SECURITIES LTD"
+  },
+  "B01820": {
+    "name": "CMB INTERNATIONAL CAPITAL CORPORATION",
+    "type": "broker",
+    "raw_name": "CMB INTERNATIONAL CAPITAL CORPORATION"
+  },
+  "B01821": {
+    "name": "GETTA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GETTA SECURITIES LTD"
+  },
+  "B01823": {
+    "name": "ANGLO CHINESE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ANGLO CHINESE SECURITIES LTD"
+  },
+  "B01824": {
+    "name": "INSTINET PACIFIC LTD",
+    "type": "broker",
+    "raw_name": "INSTINET PACIFIC LTD"
+  },
+  "B01825": {
+    "name": "GUOYUAN SECURITIES BROKERAGE (HONG KONG)",
+    "type": "broker",
+    "raw_name": "GUOYUAN SECURITIES BROKERAGE (HONG KONG)"
+  },
+  "B01826": {
+    "name": "GF SECURITIES (HONG KONG) BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "GF SECURITIES (HONG KONG) BROKERAGE LTD"
+  },
+  "B01827": {
+    "name": "IBTS ASIA (HK) LTD",
+    "type": "broker",
+    "raw_name": "IBTS ASIA (HK) LTD"
+  },
+  "B01828": {
+    "name": "IMC ASIA PACIFIC LTD",
+    "type": "broker",
+    "raw_name": "IMC ASIA PACIFIC LTD"
+  },
+  "B01829": {
+    "name": "HUATAI FINANCIAL HOLDINGS (HONG KONG)",
+    "type": "broker",
+    "raw_name": "HUATAI FINANCIAL HOLDINGS (HONG KONG)"
+  },
+  "B01830": {
+    "name": "MIRAE ASSET SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "MIRAE ASSET SECURITIES (HK) LTD"
+  },
+  "B01831": {
+    "name": "NERICO BROTHERS LTD",
+    "type": "broker",
+    "raw_name": "NERICO BROTHERS LTD"
+  },
+  "B01832": {
+    "name": "MIZUHO SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "MIZUHO SECURITIES ASIA LTD"
+  },
+  "B01833": {
+    "name": "CTBC ASIA LTD",
+    "type": "broker",
+    "raw_name": "CTBC ASIA LTD"
+  },
+  "B01834": {
+    "name": "ECLIPSE OPTIONS (HK) LTD",
+    "type": "broker",
+    "raw_name": "ECLIPSE OPTIONS (HK) LTD"
+  },
+  "B01835": {
+    "name": "STANDARD SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "STANDARD SECURITIES ASIA LTD"
+  },
+  "B01836": {
+    "name": "TIBRA TRADING HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "TIBRA TRADING HONG KONG LTD"
+  },
+  "B01837": {
+    "name": "ETRADE SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "ETRADE SECURITIES (HONG KONG) LTD"
+  },
+  "B01838": {
+    "name": "SHENYIN WANGUO ONLINE BROKER (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "SHENYIN WANGUO ONLINE BROKER (H.K.) LTD"
+  },
+  "B01839": {
+    "name": "RABO BROKERAGE HK LTD",
+    "type": "broker",
+    "raw_name": "RABO BROKERAGE HK LTD"
+  },
+  "B01840": {
+    "name": "LIQUIDNET ASIA LTD",
+    "type": "broker",
+    "raw_name": "LIQUIDNET ASIA LTD"
+  },
+  "B01841": {
+    "name": "LA (GLOBAL) SINOMIX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LA (GLOBAL) SINOMIX SECURITIES LTD"
+  },
+  "B01842": {
+    "name": "BOCOM INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BOCOM INTERNATIONAL SECURITIES LTD"
+  },
+  "B01843": {
+    "name": "TELECOM KING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TELECOM KING SECURITIES LTD"
+  },
+  "B01844": {
+    "name": "NATIXIS ASIA LTD",
+    "type": "broker",
+    "raw_name": "NATIXIS ASIA LTD"
+  },
+  "B01845": {
+    "name": "MF GLOBAL HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "MF GLOBAL HONG KONG LTD"
+  },
+  "B01846": {
+    "name": "TISCO GLOBAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TISCO GLOBAL SECURITIES LTD"
+  },
+  "B01848": {
+    "name": "CATHAY SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "CATHAY SECURITIES (HONG KONG) LTD"
+  },
+  "B01849": {
+    "name": "CIS SECURITIES ASSET MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "CIS SECURITIES ASSET MANAGEMENT LTD"
+  },
+  "B01850": {
+    "name": "HAI TONG SECURITIES (HK) BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "HAI TONG SECURITIES (HK) BROKERAGE LTD"
+  },
+  "B01851": {
+    "name": "RICHE BRIGHT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RICHE BRIGHT SECURITIES LTD"
+  },
+  "B01852": {
+    "name": "ARTA GLOBAL MARKETS LTD",
+    "type": "broker",
+    "raw_name": "ARTA GLOBAL MARKETS LTD"
+  },
+  "B01853": {
+    "name": "CMBC SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CMBC SECURITIES CO LTD"
+  },
+  "B01854": {
+    "name": "MAINFIRST SECURITIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "MAINFIRST SECURITIES HONG KONG LTD"
+  },
+  "B01855": {
+    "name": "VISION FINANCE (SECURITIES) LTD",
+    "type": "broker",
+    "raw_name": "VISION FINANCE (SECURITIES) LTD"
+  },
+  "B01856": {
+    "name": "FINET SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FINET SECURITIES LTD"
+  },
+  "B01857": {
+    "name": "KAISA FINANCIAL GROUP CO LTD",
+    "type": "broker",
+    "raw_name": "KAISA FINANCIAL GROUP CO LTD"
+  },
+  "B01858": {
+    "name": "YUANTA SECURITIES (HONG KONG) CO LTD",
+    "type": "broker",
+    "raw_name": "YUANTA SECURITIES (HONG KONG) CO LTD"
+  },
+  "B01859": {
+    "name": "CLC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CLC SECURITIES LTD"
+  },
+  "B01860": {
+    "name": "KVB KUNLUN SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "KVB KUNLUN SECURITIES (HK) LTD"
+  },
+  "B01861": {
+    "name": "CHI CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHI CAPITAL SECURITIES LTD"
+  },
+  "B01862": {
+    "name": "ORIENTAL WEALTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ORIENTAL WEALTH SECURITIES LTD"
+  },
+  "B01863": {
+    "name": "WESTOCK SECURITIES INTERNATIONAL (HK)",
+    "type": "broker",
+    "raw_name": "WESTOCK SECURITIES INTERNATIONAL (HK)"
+  },
+  "B01866": {
+    "name": "ICBC INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ICBC INTERNATIONAL SECURITIES LTD"
+  },
+  "B01867": {
+    "name": "STARLING GROUP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "STARLING GROUP SECURITIES LTD"
+  },
+  "B01868": {
+    "name": "JIMEI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "JIMEI SECURITIES LTD"
+  },
+  "B01869": {
+    "name": "SYNERWEALTH FINANCIAL LTD",
+    "type": "broker",
+    "raw_name": "SYNERWEALTH FINANCIAL LTD"
+  },
+  "B01870": {
+    "name": "TOTAL SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "TOTAL SECURITIES (HK) LTD"
+  },
+  "B01871": {
+    "name": "NEWEDGE FINANCIAL HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "NEWEDGE FINANCIAL HONG KONG LTD"
+  },
+  "B01874": {
+    "name": "BTIG HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "BTIG HONG KONG LTD"
+  },
+  "B01875": {
+    "name": "GUODU SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "GUODU SECURITIES (HONG KONG) LTD"
+  },
+  "B01876": {
+    "name": "WATERLAND SECURITIES (HK) CO LTD",
+    "type": "broker",
+    "raw_name": "WATERLAND SECURITIES (HK) CO LTD"
+  },
+  "B01880": {
+    "name": "NORTH BETA INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "NORTH BETA INTERNATIONAL SECURITIES LTD"
+  },
+  "B01882": {
+    "name": "PING AN OF CHINA SECURITIES (HONG KONG)",
+    "type": "broker",
+    "raw_name": "PING AN OF CHINA SECURITIES (HONG KONG)"
+  },
+  "B01883": {
+    "name": "CHINA RISE SECURITIES ASSET MANAGEMENT",
+    "type": "broker",
+    "raw_name": "CHINA RISE SECURITIES ASSET MANAGEMENT"
+  },
+  "B01884": {
+    "name": "HONG KONG SECURITIES (INTERNATIONAL)",
+    "type": "broker",
+    "raw_name": "HONG KONG SECURITIES (INTERNATIONAL)"
+  },
+  "B01885": {
+    "name": "HAFOO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HAFOO SECURITIES LTD"
+  },
+  "B01886": {
+    "name": "CNI SECURITIES GROUP LTD",
+    "type": "broker",
+    "raw_name": "CNI SECURITIES GROUP LTD"
+  },
+  "B01887": {
+    "name": "CHINA JIANXIN FINANCIAL SERVICES LTD",
+    "type": "broker",
+    "raw_name": "CHINA JIANXIN FINANCIAL SERVICES LTD"
+  },
+  "B01890": {
+    "name": "GUOSEN SECURITIES (HK) BROKERAGE CO LTD",
+    "type": "broker",
+    "raw_name": "GUOSEN SECURITIES (HK) BROKERAGE CO LTD"
+  },
+  "B01891": {
+    "name": "FUTURE GROWTH FINANCIAL SERVICES LTD",
+    "type": "broker",
+    "raw_name": "FUTURE GROWTH FINANCIAL SERVICES LTD"
+  },
+  "B01893": {
+    "name": "WINCO SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "WINCO SECURITIES CO LTD"
+  },
+  "B01894": {
+    "name": "MFG LIMITED",
+    "type": "broker",
+    "raw_name": "MFG LIMITED"
+  },
+  "B01895": {
+    "name": "MARIGOLD INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MARIGOLD INTERNATIONAL SECURITIES LTD"
+  },
+  "B01897": {
+    "name": "CENTRAL WEALTH SECURITIES INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "CENTRAL WEALTH SECURITIES INVESTMENT LTD"
+  },
+  "B01899": {
+    "name": "SFGHK LTD",
+    "type": "broker",
+    "raw_name": "SFGHK LTD"
+  },
+  "B01900": {
+    "name": "ORIENT SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "ORIENT SECURITIES (HONG KONG) LTD"
+  },
+  "B01901": {
+    "name": "CMB INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CMB INTERNATIONAL SECURITIES LTD"
+  },
+  "B01903": {
+    "name": "PICO ZEMAN SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "PICO ZEMAN SECURITIES (HK) LTD"
+  },
+  "B01904": {
+    "name": "VALUABLE CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "VALUABLE CAPITAL LTD"
+  },
+  "B01905": {
+    "name": "SDIC SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "SDIC SECURITIES (HONG KONG) LTD"
+  },
+  "B01906": {
+    "name": "IMPERIUM INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "IMPERIUM INTERNATIONAL SECURITIES LTD"
+  },
+  "B01907": {
+    "name": "CHINA DEMETER SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA DEMETER SECURITIES LTD"
+  },
+  "B01908": {
+    "name": "ASA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ASA SECURITIES LTD"
+  },
+  "B01909": {
+    "name": "SHENG YUAN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SHENG YUAN SECURITIES LTD"
+  },
+  "B01910": {
+    "name": "FTFT INTERNATIONAL SECURITIES AND",
+    "type": "broker",
+    "raw_name": "FTFT INTERNATIONAL SECURITIES AND"
+  },
+  "B01911": {
+    "name": "MUFG SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "MUFG SECURITIES ASIA LTD"
+  },
+  "B01912": {
+    "name": "THE CORE SECURITIES COMPANY LTD",
+    "type": "broker",
+    "raw_name": "THE CORE SECURITIES COMPANY LTD"
+  },
+  "B01913": {
+    "name": "CHINAWIDE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINAWIDE SECURITIES LTD"
+  },
+  "B01914": {
+    "name": "JEFFERIES HONG KONG LTD",
+    "type": "broker",
+    "raw_name": "JEFFERIES HONG KONG LTD"
+  },
+  "B01915": {
+    "name": "METAVERSE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "METAVERSE SECURITIES LTD"
+  },
+  "B01916": {
+    "name": "AMBITION SECURITIES CO. LTD",
+    "type": "broker",
+    "raw_name": "AMBITION SECURITIES CO. LTD"
+  },
+  "B01917": {
+    "name": "CHINA TIMES SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA TIMES SECURITIES LTD"
+  },
+  "B01918": {
+    "name": "REALORD ASIA PACIFIC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "REALORD ASIA PACIFIC SECURITIES LTD"
+  },
+  "B01919": {
+    "name": "TIGER SECURITIES ASSET MANAGEMENT CO LTD",
+    "type": "broker",
+    "raw_name": "TIGER SECURITIES ASSET MANAGEMENT CO LTD"
+  },
+  "B01920": {
+    "name": "TIANDA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TIANDA SECURITIES LTD"
+  },
+  "B01921": {
+    "name": "GONG PING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GONG PING SECURITIES LTD"
+  },
+  "B01922": {
+    "name": "SUN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUN SECURITIES LTD"
+  },
+  "B01923": {
+    "name": "BERKSHIRE CAPITALS LTD",
+    "type": "broker",
+    "raw_name": "BERKSHIRE CAPITALS LTD"
+  },
+  "B01924": {
+    "name": "LT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LT SECURITIES LTD"
+  },
+  "B01925": {
+    "name": "BMI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BMI SECURITIES LTD"
+  },
+  "B01926": {
+    "name": "BIG BAY SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "BIG BAY SECURITIES (HK) LTD"
+  },
+  "B01927": {
+    "name": "KINGKEY SECURITIES GROUP LTD",
+    "type": "broker",
+    "raw_name": "KINGKEY SECURITIES GROUP LTD"
+  },
+  "B01928": {
+    "name": "ENHANCED SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ENHANCED SECURITIES LTD"
+  },
+  "B01929": {
+    "name": "CHINA GALAXY INTERNATIONAL SECURITIES",
+    "type": "broker",
+    "raw_name": "CHINA GALAXY INTERNATIONAL SECURITIES"
+  },
+  "B01930": {
+    "name": "PRIME COURAGE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "PRIME COURAGE SECURITIES CO LTD"
+  },
+  "B01933": {
+    "name": "BRILLIANT NORTON SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "BRILLIANT NORTON SECURITIES CO LTD"
+  },
+  "B01934": {
+    "name": "SELECT INVESTMENT SERVICES LTD",
+    "type": "broker",
+    "raw_name": "SELECT INVESTMENT SERVICES LTD"
+  },
+  "B01935": {
+    "name": "MAGIC COMPASS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MAGIC COMPASS SECURITIES LTD"
+  },
+  "B01936": {
+    "name": "MIGHTY BROKERAGE (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "MIGHTY BROKERAGE (ASIA) LTD"
+  },
+  "B01937": {
+    "name": "CHANGJIANG SECURITIES BROKERAGE (HK) LTD",
+    "type": "broker",
+    "raw_name": "CHANGJIANG SECURITIES BROKERAGE (HK) LTD"
+  },
+  "B01938": {
+    "name": "CHINA INDUSTRIAL SECURITIES",
+    "type": "broker",
+    "raw_name": "CHINA INDUSTRIAL SECURITIES"
+  },
+  "B01939": {
+    "name": "SOOCHOW SECURITIES INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "SOOCHOW SECURITIES INTERNATIONAL"
+  },
+  "B01940": {
+    "name": "SOFI SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "SOFI SECURITIES (HONG KONG) LTD"
+  },
+  "B01941": {
+    "name": "CENTALINE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CENTALINE SECURITIES LTD"
+  },
+  "B01942": {
+    "name": "SINO WEALTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SINO WEALTH SECURITIES LTD"
+  },
+  "B01943": {
+    "name": "PO SANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PO SANG SECURITIES LTD"
+  },
+  "B01945": {
+    "name": "INTEGRITY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "INTEGRITY SECURITIES LTD"
+  },
+  "B01947": {
+    "name": "FUBON SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "FUBON SECURITIES (HONG KONG) LTD"
+  },
+  "B01948": {
+    "name": "CAITONG INTERNATIONAL SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CAITONG INTERNATIONAL SECURITIES CO LTD"
+  },
+  "B01949": {
+    "name": "GRAND CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND CHINA SECURITIES LTD"
+  },
+  "B01950": {
+    "name": "GLOBAL GROUP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GLOBAL GROUP SECURITIES LTD"
+  },
+  "B01951": {
+    "name": "GENTING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GENTING SECURITIES LTD"
+  },
+  "B01952": {
+    "name": "TRINITY SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "TRINITY SECURITIES CO LTD"
+  },
+  "B01955": {
+    "name": "FUTU Securities",
+    "type": "broker",
+    "raw_name": "FUTU SECURITIES INTERNATIONAL"
+  },
+  "B01957": {
+    "name": "PINESTONE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PINESTONE SECURITIES LTD"
+  },
+  "B01958": {
+    "name": "TOPAZ FINANCIAL GROUP LTD",
+    "type": "broker",
+    "raw_name": "TOPAZ FINANCIAL GROUP LTD"
+  },
+  "B01959": {
+    "name": "ZHONGTAI INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZHONGTAI INTERNATIONAL SECURITIES LTD"
+  },
+  "B01960": {
+    "name": "ANZ SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "ANZ SECURITIES (HK) LTD"
+  },
+  "B01961": {
+    "name": "NOMURA INTERNATIONAL (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "NOMURA INTERNATIONAL (HONG KONG) LTD"
+  },
+  "B01962": {
+    "name": "CHINA SECURITIES (INTERNATIONAL)",
+    "type": "broker",
+    "raw_name": "CHINA SECURITIES (INTERNATIONAL)"
+  },
+  "B01963": {
+    "name": "TFI SECURITIES AND FUTURES LTD",
+    "type": "broker",
+    "raw_name": "TFI SECURITIES AND FUTURES LTD"
+  },
+  "B01964": {
+    "name": "HALCYON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HALCYON SECURITIES LTD"
+  },
+  "B01965": {
+    "name": "HK NOBLE SKY TREASURE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HK NOBLE SKY TREASURE SECURITIES LTD"
+  },
+  "B01967": {
+    "name": "YUNFENG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUNFENG SECURITIES LTD"
+  },
+  "B01968": {
+    "name": "AYERS ALLIANCE SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "AYERS ALLIANCE SECURITIES (HK) LTD"
+  },
+  "B01969": {
+    "name": "CHINA VERED SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA VERED SECURITIES LTD"
+  },
+  "B01970": {
+    "name": "YUE KUN RESEARCH LTD",
+    "type": "broker",
+    "raw_name": "YUE KUN RESEARCH LTD"
+  },
+  "B01971": {
+    "name": "HGNH INTERNATIONAL SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "HGNH INTERNATIONAL SECURITIES CO LTD"
+  },
+  "B01972": {
+    "name": "RICHES DEPOT SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "RICHES DEPOT SECURITIES CO LTD"
+  },
+  "B01973": {
+    "name": "PC SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PC SECURITIES LTD"
+  },
+  "B01974": {
+    "name": "ARISTO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ARISTO SECURITIES LTD"
+  },
+  "B01975": {
+    "name": "SUPREME CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUPREME CHINA SECURITIES LTD"
+  },
+  "B01976": {
+    "name": "FRONTIER CAPITAL MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "FRONTIER CAPITAL MANAGEMENT LTD"
+  },
+  "B01977": {
+    "name": "ZHONGCAI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZHONGCAI SECURITIES LTD"
+  },
+  "B01978": {
+    "name": "FOUNDER SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "FOUNDER SECURITIES (HONG KONG) LTD"
+  },
+  "B01979": {
+    "name": "FORMAX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FORMAX SECURITIES LTD"
+  },
+  "B01980": {
+    "name": "SHANXI SECURITIES INTERNATIONAL LTD",
+    "type": "broker",
+    "raw_name": "SHANXI SECURITIES INTERNATIONAL LTD"
+  },
+  "B01981": {
+    "name": "BLUESTONE SECURITIES (HK) CO LTD",
+    "type": "broker",
+    "raw_name": "BLUESTONE SECURITIES (HK) CO LTD"
+  },
+  "B01982": {
+    "name": "CENTRAL CHINA INTERNATIONAL SECURITIES",
+    "type": "broker",
+    "raw_name": "CENTRAL CHINA INTERNATIONAL SECURITIES"
+  },
+  "B01983": {
+    "name": "W. FALCON ASSET MANAGEMENT (ASIA) LTD",
+    "type": "broker",
+    "raw_name": "W. FALCON ASSET MANAGEMENT (ASIA) LTD"
+  },
+  "B01984": {
+    "name": "FORWIN SECURITIES GROUP LTD",
+    "type": "broker",
+    "raw_name": "FORWIN SECURITIES GROUP LTD"
+  },
+  "B01985": {
+    "name": "AZURE LION INTERNATIONAL SECURITIES",
+    "type": "broker",
+    "raw_name": "AZURE LION INTERNATIONAL SECURITIES"
+  },
+  "B01986": {
+    "name": "HUAJIN SECURITIES (INTERNATIONAL) LTD",
+    "type": "broker",
+    "raw_name": "HUAJIN SECURITIES (INTERNATIONAL) LTD"
+  },
+  "B01987": {
+    "name": "NINE RIVERS CAPITAL PARTNERS LTD",
+    "type": "broker",
+    "raw_name": "NINE RIVERS CAPITAL PARTNERS LTD"
+  },
+  "B01988": {
+    "name": "KOALA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KOALA SECURITIES LTD"
+  },
+  "B01989": {
+    "name": "PRESTIGE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PRESTIGE SECURITIES LTD"
+  },
+  "B01990": {
+    "name": "GRANDLY FINANCIAL SERVICES LTD",
+    "type": "broker",
+    "raw_name": "GRANDLY FINANCIAL SERVICES LTD"
+  },
+  "B01991": {
+    "name": "HF SECURITIES AND FUTURES LTD",
+    "type": "broker",
+    "raw_name": "HF SECURITIES AND FUTURES LTD"
+  },
+  "B01992": {
+    "name": "CHINA CIFCO SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CHINA CIFCO SECURITIES CO LTD"
+  },
+  "B01993": {
+    "name": "CROSBY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CROSBY SECURITIES LTD"
+  },
+  "B01994": {
+    "name": "BONUS EVENTUS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BONUS EVENTUS SECURITIES LTD"
+  },
+  "B01995": {
+    "name": "GARY CHENG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GARY CHENG SECURITIES LTD"
+  },
+  "B01996": {
+    "name": "CHINA RENAISSANCE SECURITIES (HONG KONG)",
+    "type": "broker",
+    "raw_name": "CHINA RENAISSANCE SECURITIES (HONG KONG)"
+  },
+  "B01997": {
+    "name": "SUNCORP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUNCORP SECURITIES LTD"
+  },
+  "B01998": {
+    "name": "CHINA SUNRISE SECURITIES (INTL) LTD",
+    "type": "broker",
+    "raw_name": "CHINA SUNRISE SECURITIES (INTL) LTD"
+  },
+  "B01999": {
+    "name": "CF SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CF SECURITIES LTD"
+  },
+  "B02000": {
+    "name": "TIAN YUAN FINANCE LTD",
+    "type": "broker",
+    "raw_name": "TIAN YUAN FINANCE LTD"
+  },
+  "B02001": {
+    "name": "CHINA PROSPECT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA PROSPECT SECURITIES LTD"
+  },
+  "B02002": {
+    "name": "SEAZEN RESOURCES SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SEAZEN RESOURCES SECURITIES LTD"
+  },
+  "B02003": {
+    "name": "DONGXING SECURITIES (HONG KONG) CO LTD",
+    "type": "broker",
+    "raw_name": "DONGXING SECURITIES (HONG KONG) CO LTD"
+  },
+  "B02004": {
+    "name": "INNOVATION SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "INNOVATION SECURITIES CO LTD"
+  },
+  "B02005": {
+    "name": "STI ASSET MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "STI ASSET MANAGEMENT LTD"
+  },
+  "B02006": {
+    "name": "SP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SP SECURITIES LTD"
+  },
+  "B02007": {
+    "name": "CHINA-HONG KONG LINK SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CHINA-HONG KONG LINK SECURITIES CO LTD"
+  },
+  "B02008": {
+    "name": "OOO SECURITIES (HK) GROUP LTD",
+    "type": "broker",
+    "raw_name": "OOO SECURITIES (HK) GROUP LTD"
+  },
+  "B02009": {
+    "name": "GOLDEN RICH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDEN RICH SECURITIES LTD"
+  },
+  "B02011": {
+    "name": "ZHONG YANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZHONG YANG SECURITIES LTD"
+  },
+  "B02012": {
+    "name": "BOSC INTERNATIONAL CO LTD",
+    "type": "broker",
+    "raw_name": "BOSC INTERNATIONAL CO LTD"
+  },
+  "B02013": {
+    "name": "ACU SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ACU SECURITIES LTD"
+  },
+  "B02014": {
+    "name": "YUET SHEUNG INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUET SHEUNG INTERNATIONAL SECURITIES LTD"
+  },
+  "B02015": {
+    "name": "VISION CAPITAL INTERNATIONAL HOLDINGS",
+    "type": "broker",
+    "raw_name": "VISION CAPITAL INTERNATIONAL HOLDINGS"
+  },
+  "B02016": {
+    "name": "GOLDHORSE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDHORSE SECURITIES LTD"
+  },
+  "B02017": {
+    "name": "WILSON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WILSON SECURITIES LTD"
+  },
+  "B02018": {
+    "name": "CORNERSTONE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CORNERSTONE SECURITIES LTD"
+  },
+  "B02019": {
+    "name": "GEO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GEO SECURITIES LTD"
+  },
+  "B02020": {
+    "name": "WEALTH LINK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WEALTH LINK SECURITIES LTD"
+  },
+  "B02021": {
+    "name": "NEW HARVEST WEALTH SECURITIES COMPANY",
+    "type": "broker",
+    "raw_name": "NEW HARVEST WEALTH SECURITIES COMPANY"
+  },
+  "B02022": {
+    "name": "MODERN INNOVATIVE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MODERN INNOVATIVE SECURITIES LTD"
+  },
+  "B02023": {
+    "name": "DONGHAI INTERNATIONAL SECURITIES",
+    "type": "broker",
+    "raw_name": "DONGHAI INTERNATIONAL SECURITIES"
+  },
+  "B02024": {
+    "name": "NAN GUO INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "NAN GUO INTERNATIONAL SECURITIES LTD"
+  },
+  "B02025": {
+    "name": "ASIA WEALTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ASIA WEALTH SECURITIES LTD"
+  },
+  "B02026": {
+    "name": "PRIOR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PRIOR SECURITIES LTD"
+  },
+  "B02027": {
+    "name": "LEADING SECURITIES COMPANY LTD",
+    "type": "broker",
+    "raw_name": "LEADING SECURITIES COMPANY LTD"
+  },
+  "B02028": {
+    "name": "SORRENTO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SORRENTO SECURITIES LTD"
+  },
+  "B02029": {
+    "name": "HONOR SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "HONOR SECURITIES (HK) LTD"
+  },
+  "B02030": {
+    "name": "SR WEALTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SR WEALTH SECURITIES LTD"
+  },
+  "B02031": {
+    "name": "GOLDLINK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GOLDLINK SECURITIES LTD"
+  },
+  "B02032": {
+    "name": "FORTHRIGHT SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "FORTHRIGHT SECURITIES CO LTD"
+  },
+  "B02033": {
+    "name": "SPDB INTERNATIONAL CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "SPDB INTERNATIONAL CAPITAL LTD"
+  },
+  "B02034": {
+    "name": "CHUENMAN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHUENMAN SECURITIES LTD"
+  },
+  "B02035": {
+    "name": "PRIME CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PRIME CHINA SECURITIES LTD"
+  },
+  "B02036": {
+    "name": "DAKIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "DAKIN SECURITIES LTD"
+  },
+  "B02037": {
+    "name": "KAI YIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "KAI YIN SECURITIES LTD"
+  },
+  "B02038": {
+    "name": "WEST BULL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WEST BULL SECURITIES LTD"
+  },
+  "B02039": {
+    "name": "ZHONG JIA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZHONG JIA SECURITIES LTD"
+  },
+  "B02040": {
+    "name": "TRADEMASTER SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "TRADEMASTER SECURITIES (HONG KONG) LTD"
+  },
+  "B02041": {
+    "name": "CNCB (HONG KONG) CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "CNCB (HONG KONG) CAPITAL LTD"
+  },
+  "B02042": {
+    "name": "MONMONKEY GROUP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MONMONKEY GROUP SECURITIES LTD"
+  },
+  "B02043": {
+    "name": "LERTHAI SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "LERTHAI SECURITIES (HONG KONG) LTD"
+  },
+  "B02044": {
+    "name": "FERRAN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FERRAN SECURITIES LTD"
+  },
+  "B02045": {
+    "name": "AAA SECURITIES CO. LTD",
+    "type": "broker",
+    "raw_name": "AAA SECURITIES CO. LTD"
+  },
+  "B02046": {
+    "name": "CHINA ZHONG HENG FINANCE GROUP LTD",
+    "type": "broker",
+    "raw_name": "CHINA ZHONG HENG FINANCE GROUP LTD"
+  },
+  "B02047": {
+    "name": "EDDID SECURITIES AND FUTURES LTD",
+    "type": "broker",
+    "raw_name": "EDDID SECURITIES AND FUTURES LTD"
+  },
+  "B02048": {
+    "name": "CHINA TRANSFER CAPITAL INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "CHINA TRANSFER CAPITAL INVESTMENT LTD"
+  },
+  "B02049": {
+    "name": "PACIFIC INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PACIFIC INTERNATIONAL SECURITIES LTD"
+  },
+  "B02050": {
+    "name": "QUASAR SECURITIES CO., LTD",
+    "type": "broker",
+    "raw_name": "QUASAR SECURITIES CO., LTD"
+  },
+  "B02051": {
+    "name": "GRAND VIEW SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND VIEW SECURITIES LTD"
+  },
+  "B02052": {
+    "name": "SUNHIGH FINANCIAL HOLDINGS LTD",
+    "type": "broker",
+    "raw_name": "SUNHIGH FINANCIAL HOLDINGS LTD"
+  },
+  "B02053": {
+    "name": "ORIGINAL GROUP SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ORIGINAL GROUP SECURITIES LTD"
+  },
+  "B02054": {
+    "name": "BLUEMOUNT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BLUEMOUNT SECURITIES LTD"
+  },
+  "B02055": {
+    "name": "SUNFUND SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SUNFUND SECURITIES LTD"
+  },
+  "B02056": {
+    "name": "RUIBANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RUIBANG SECURITIES LTD"
+  },
+  "B02057": {
+    "name": "FUNDE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FUNDE SECURITIES LTD"
+  },
+  "B02058": {
+    "name": "CONSTANCE CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "CONSTANCE CAPITAL LTD"
+  },
+  "B02059": {
+    "name": "MIDAS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MIDAS SECURITIES LTD"
+  },
+  "B02060": {
+    "name": "LEGO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LEGO SECURITIES LTD"
+  },
+  "B02061": {
+    "name": "GRAND PARTNERS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND PARTNERS SECURITIES LTD"
+  },
+  "B02062": {
+    "name": "CHINA INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA INTERNATIONAL SECURITIES LTD"
+  },
+  "B02063": {
+    "name": "SOLO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SOLO SECURITIES LTD"
+  },
+  "B02064": {
+    "name": "GALAXY TREASURE SECURITIES GROUP LTD",
+    "type": "broker",
+    "raw_name": "GALAXY TREASURE SECURITIES GROUP LTD"
+  },
+  "B02065": {
+    "name": "FORTUNE ORIGIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FORTUNE ORIGIN SECURITIES LTD"
+  },
+  "B02066": {
+    "name": "AP CAPITAL MANAGEMENT (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "AP CAPITAL MANAGEMENT (HONG KONG) LTD"
+  },
+  "B02067": {
+    "name": "LIGHTHOUSE CAPITAL (HK) FINANCIAL LTD",
+    "type": "broker",
+    "raw_name": "LIGHTHOUSE CAPITAL (HK) FINANCIAL LTD"
+  },
+  "B02068": {
+    "name": "CANFIELD SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "CANFIELD SECURITIES CO LTD"
+  },
+  "B02069": {
+    "name": "YUBO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUBO SECURITIES LTD"
+  },
+  "B02070": {
+    "name": "UZEN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UZEN SECURITIES LTD"
+  },
+  "B02071": {
+    "name": "CHINA-HONG KONG CONNECT INTERNATIONAL",
+    "type": "broker",
+    "raw_name": "CHINA-HONG KONG CONNECT INTERNATIONAL"
+  },
+  "B02072": {
+    "name": "SBI E2-CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SBI E2-CAPITAL SECURITIES LTD"
+  },
+  "B02073": {
+    "name": "SOLOMON JFZ (ASIA) HOLDINGS LTD",
+    "type": "broker",
+    "raw_name": "SOLOMON JFZ (ASIA) HOLDINGS LTD"
+  },
+  "B02074": {
+    "name": "GOLDEN LAKE CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "GOLDEN LAKE CAPITAL LTD"
+  },
+  "B02075": {
+    "name": "INNOVAX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "INNOVAX SECURITIES LTD"
+  },
+  "B02076": {
+    "name": "SINOSTAR SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SINOSTAR SECURITIES LTD"
+  },
+  "B02077": {
+    "name": "CONRAD INVESTMENT SERVICES LTD",
+    "type": "broker",
+    "raw_name": "CONRAD INVESTMENT SERVICES LTD"
+  },
+  "B02078": {
+    "name": "AFFLUX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "AFFLUX SECURITIES LTD"
+  },
+  "B02079": {
+    "name": "WONDER FACE FUND MANAGEMENT CO LTD",
+    "type": "broker",
+    "raw_name": "WONDER FACE FUND MANAGEMENT CO LTD"
+  },
+  "B02080": {
+    "name": "FUTEC FINANCIAL LTD",
+    "type": "broker",
+    "raw_name": "FUTEC FINANCIAL LTD"
+  },
+  "B02081": {
+    "name": "FIRST FIDELITY CAPITAL (INTERNATIONAL)",
+    "type": "broker",
+    "raw_name": "FIRST FIDELITY CAPITAL (INTERNATIONAL)"
+  },
+  "B02082": {
+    "name": "YELLOW RIVER SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YELLOW RIVER SECURITIES LTD"
+  },
+  "B02084": {
+    "name": "CHINA ON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA ON SECURITIES LTD"
+  },
+  "B02085": {
+    "name": "JOY RICH SECURITIES INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "JOY RICH SECURITIES INVESTMENT LTD"
+  },
+  "B02086": {
+    "name": "BG SECURITIES (HK) CO., LTD",
+    "type": "broker",
+    "raw_name": "BG SECURITIES (HK) CO., LTD"
+  },
+  "B02087": {
+    "name": "GLOBAL MASTERMIND SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GLOBAL MASTERMIND SECURITIES LTD"
+  },
+  "B02088": {
+    "name": "CARLYON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CARLYON SECURITIES LTD"
+  },
+  "B02089": {
+    "name": "TONGFANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TONGFANG SECURITIES LTD"
+  },
+  "B02090": {
+    "name": "PULUN INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PULUN INTERNATIONAL SECURITIES LTD"
+  },
+  "B02091": {
+    "name": "STAR RIVER SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "STAR RIVER SECURITIES LTD"
+  },
+  "B02092": {
+    "name": "I WIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "I WIN SECURITIES LTD"
+  },
+  "B02093": {
+    "name": "UPMAX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UPMAX SECURITIES LTD"
+  },
+  "B02094": {
+    "name": "ADVENT SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "ADVENT SECURITIES (HONG KONG) LTD"
+  },
+  "B02095": {
+    "name": "LION INTERNATIONAL SECURITIES GROUP LTD",
+    "type": "broker",
+    "raw_name": "LION INTERNATIONAL SECURITIES GROUP LTD"
+  },
+  "B02096": {
+    "name": "AFG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "AFG SECURITIES LTD"
+  },
+  "B02097": {
+    "name": "POLY WEALTH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "POLY WEALTH SECURITIES LTD"
+  },
+  "B02098": {
+    "name": "SP GLOBAL ACCESS LTD",
+    "type": "broker",
+    "raw_name": "SP GLOBAL ACCESS LTD"
+  },
+  "B02099": {
+    "name": "DA INTERNATIONAL FINANCIAL SERVICE LTD",
+    "type": "broker",
+    "raw_name": "DA INTERNATIONAL FINANCIAL SERVICE LTD"
+  },
+  "B02100": {
+    "name": "WEALTHY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WEALTHY SECURITIES LTD"
+  },
+  "B02101": {
+    "name": "ACER KING SECURITIES INTERNATIONAL LTD",
+    "type": "broker",
+    "raw_name": "ACER KING SECURITIES INTERNATIONAL LTD"
+  },
+  "B02102": {
+    "name": "ZINVEST GLOBAL LTD",
+    "type": "broker",
+    "raw_name": "ZINVEST GLOBAL LTD"
+  },
+  "B02103": {
+    "name": "CEB INTERNATIONAL CAPITAL CORPORATION",
+    "type": "broker",
+    "raw_name": "CEB INTERNATIONAL CAPITAL CORPORATION"
+  },
+  "B02104": {
+    "name": "MAGPIE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MAGPIE SECURITIES LTD"
+  },
+  "B02105": {
+    "name": "VMI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "VMI SECURITIES LTD"
+  },
+  "B02106": {
+    "name": "HOLLY INTERNATIONAL FINANCIAL HOLDINGS",
+    "type": "broker",
+    "raw_name": "HOLLY INTERNATIONAL FINANCIAL HOLDINGS"
+  },
+  "B02107": {
+    "name": "MARKETSENSE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MARKETSENSE SECURITIES LTD"
+  },
+  "B02108": {
+    "name": "WK SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WK SECURITIES LTD"
+  },
+  "B02109": {
+    "name": "PINETREE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PINETREE SECURITIES LTD"
+  },
+  "B02110": {
+    "name": "RED EAGLE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "RED EAGLE SECURITIES LTD"
+  },
+  "B02111": {
+    "name": "ZHONG XIANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZHONG XIANG SECURITIES LTD"
+  },
+  "B02112": {
+    "name": "CORE CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CORE CAPITAL SECURITIES LTD"
+  },
+  "B02113": {
+    "name": "UNITED SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UNITED SECURITIES LTD"
+  },
+  "B02114": {
+    "name": "THEIA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "THEIA SECURITIES LTD"
+  },
+  "B02116": {
+    "name": "MOUETTE SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "MOUETTE SECURITIES CO LTD"
+  },
+  "B02117": {
+    "name": "FUTURE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "FUTURE SECURITIES LTD"
+  },
+  "B02118": {
+    "name": "PO TAI SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "PO TAI SECURITIES (HONG KONG) LTD"
+  },
+  "B02119": {
+    "name": "GAYANG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GAYANG SECURITIES LTD"
+  },
+  "B02120": {
+    "name": "LIVERMORE HOLDINGS LTD",
+    "type": "broker",
+    "raw_name": "LIVERMORE HOLDINGS LTD"
+  },
+  "B02121": {
+    "name": "SPRING SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SPRING SECURITIES LTD"
+  },
+  "B02122": {
+    "name": "YUAN TONG GLOBAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUAN TONG GLOBAL SECURITIES LTD"
+  },
+  "B02123": {
+    "name": "CHINA DIFI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA DIFI SECURITIES LTD"
+  },
+  "B02124": {
+    "name": "EXCEL PRECISE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "EXCEL PRECISE SECURITIES LTD"
+  },
+  "B02125": {
+    "name": "CHINA YINSHENG INTERNATIONAL SECURITIES",
+    "type": "broker",
+    "raw_name": "CHINA YINSHENG INTERNATIONAL SECURITIES"
+  },
+  "B02126": {
+    "name": "PFC INTERNATIONAL CO LTD",
+    "type": "broker",
+    "raw_name": "PFC INTERNATIONAL CO LTD"
+  },
+  "B02127": {
+    "name": "ROCKFLOW SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ROCKFLOW SECURITIES LTD"
+  },
+  "B02128": {
+    "name": "SILVERBRICKS SECURITIES CO LTD",
+    "type": "broker",
+    "raw_name": "SILVERBRICKS SECURITIES CO LTD"
+  },
+  "B02129": {
+    "name": "WAN LUNG SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WAN LUNG SECURITIES LTD"
+  },
+  "B02130": {
+    "name": "GRANVILLE FINANCIAL SERVICES CO LTD",
+    "type": "broker",
+    "raw_name": "GRANVILLE FINANCIAL SERVICES CO LTD"
+  },
+  "B02131": {
+    "name": "DIFFER FINANCIAL AND SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "DIFFER FINANCIAL AND SECURITIES LTD"
+  },
+  "B02132": {
+    "name": "BOOM SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "BOOM SECURITIES (H.K.) LTD"
+  },
+  "B02133": {
+    "name": "CHINA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CHINA SECURITIES LTD"
+  },
+  "B02134": {
+    "name": "HOPE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HOPE SECURITIES LTD"
+  },
+  "B02135": {
+    "name": "ZUNDIAO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZUNDIAO SECURITIES LTD"
+  },
+  "B02136": {
+    "name": "HS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HS SECURITIES LTD"
+  },
+  "B02137": {
+    "name": "GREENCOURT FINANCIAL CO., LTD",
+    "type": "broker",
+    "raw_name": "GREENCOURT FINANCIAL CO., LTD"
+  },
+  "B02138": {
+    "name": "TIGER FAITH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TIGER FAITH SECURITIES LTD"
+  },
+  "B02139": {
+    "name": "WELL LINK INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WELL LINK INTERNATIONAL SECURITIES LTD"
+  },
+  "B02140": {
+    "name": "JQ SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "JQ SECURITIES (HONG KONG) LTD"
+  },
+  "B02141": {
+    "name": "XIN YONGAN INTERNATIONAL SECURITIES",
+    "type": "broker",
+    "raw_name": "XIN YONGAN INTERNATIONAL SECURITIES"
+  },
+  "B02142": {
+    "name": "TIGER BROKERS (HK) GLOBAL LTD",
+    "type": "broker",
+    "raw_name": "TIGER BROKERS (HK) GLOBAL LTD"
+  },
+  "B02143": {
+    "name": "YUANYIN SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUANYIN SECURITIES LTD"
+  },
+  "B02144": {
+    "name": "YEW TREE LTD",
+    "type": "broker",
+    "raw_name": "YEW TREE LTD"
+  },
+  "B02145": {
+    "name": "CIF SECURITIES FUTURES LTD",
+    "type": "broker",
+    "raw_name": "CIF SECURITIES FUTURES LTD"
+  },
+  "B02146": {
+    "name": "GRAND RICH SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND RICH SECURITIES LTD"
+  },
+  "B02147": {
+    "name": "REGAN INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "REGAN INTERNATIONAL SECURITIES LTD"
+  },
+  "B02148": {
+    "name": "LEEDS SECURITIES INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "LEEDS SECURITIES INVESTMENT LTD"
+  },
+  "B02150": {
+    "name": "TARGET CAPITAL MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "TARGET CAPITAL MANAGEMENT LTD"
+  },
+  "B02151": {
+    "name": "SOLITON SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SOLITON SECURITIES LTD"
+  },
+  "B02152": {
+    "name": "PARCHMENT INVESTMENT LTD",
+    "type": "broker",
+    "raw_name": "PARCHMENT INVESTMENT LTD"
+  },
+  "B02153": {
+    "name": "WE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WE SECURITIES LTD"
+  },
+  "B02154": {
+    "name": "MAGNUM RESEARCH LTD",
+    "type": "broker",
+    "raw_name": "MAGNUM RESEARCH LTD"
+  },
+  "B02155": {
+    "name": "ADEN FINANCIAL GROUP LTD",
+    "type": "broker",
+    "raw_name": "ADEN FINANCIAL GROUP LTD"
+  },
+  "B02156": {
+    "name": "LINKWAYS INVESTMENT MANAGEMENT LTD",
+    "type": "broker",
+    "raw_name": "LINKWAYS INVESTMENT MANAGEMENT LTD"
+  },
+  "B02157": {
+    "name": "OIL ASSETS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "OIL ASSETS SECURITIES LTD"
+  },
+  "B02158": {
+    "name": "DT SECURITIES & FUTURES CO. LTD",
+    "type": "broker",
+    "raw_name": "DT SECURITIES & FUTURES CO. LTD"
+  },
+  "B02159": {
+    "name": "USMART SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "USMART SECURITIES LTD"
+  },
+  "B02160": {
+    "name": "SUNTEK FINANCIAL INVESTMENT CO LTD",
+    "type": "broker",
+    "raw_name": "SUNTEK FINANCIAL INVESTMENT CO LTD"
+  },
+  "B02161": {
+    "name": "EMPERIO SECURITIES AND ASSETS MANAGEMENT",
+    "type": "broker",
+    "raw_name": "EMPERIO SECURITIES AND ASSETS MANAGEMENT"
+  },
+  "B02162": {
+    "name": "GAMMA SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GAMMA SECURITIES LTD"
+  },
+  "B02163": {
+    "name": "GOLDEN EAGLE BROKERAGE LTD",
+    "type": "broker",
+    "raw_name": "GOLDEN EAGLE BROKERAGE LTD"
+  },
+  "B02164": {
+    "name": "TUNG YAT SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "TUNG YAT SECURITIES LTD"
+  },
+  "B02165": {
+    "name": "YUEN META (INTERNATIONAL) SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUEN META (INTERNATIONAL) SECURITIES LTD"
+  },
+  "B02166": {
+    "name": "HTF SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HTF SECURITIES LTD"
+  },
+  "B02167": {
+    "name": "SDG SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "SDG SECURITIES (HK) LTD"
+  },
+  "B02170": {
+    "name": "ZERO2IPO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "ZERO2IPO SECURITIES LTD"
+  },
+  "B02171": {
+    "name": "DL SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "DL SECURITIES (HK) LTD"
+  },
+  "B02172": {
+    "name": "CITYLINE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CITYLINE SECURITIES LTD"
+  },
+  "B02173": {
+    "name": "HONGKONG RICH & FORTUNE SECURITIES CO.",
+    "type": "broker",
+    "raw_name": "HONGKONG RICH & FORTUNE SECURITIES CO."
+  },
+  "B02174": {
+    "name": "YONGHE SECURITIES (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "YONGHE SECURITIES (HONG KONG) LTD"
+  },
+  "B02175": {
+    "name": "WEBULL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "WEBULL SECURITIES LTD"
+  },
+  "B02176": {
+    "name": "PING AN SECURITIES (HONG KONG) CO LTD",
+    "type": "broker",
+    "raw_name": "PING AN SECURITIES (HONG KONG) CO LTD"
+  },
+  "B02177": {
+    "name": "ZHESHANG INTERNATIONAL FINANCIAL",
+    "type": "broker",
+    "raw_name": "ZHESHANG INTERNATIONAL FINANCIAL"
+  },
+  "B02178": {
+    "name": "LEE GO SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LEE GO SECURITIES LTD"
+  },
+  "B02179": {
+    "name": "YAW KAI FINANCIAL GROUP LTD",
+    "type": "broker",
+    "raw_name": "YAW KAI FINANCIAL GROUP LTD"
+  },
+  "B02180": {
+    "name": "PLUTUS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PLUTUS SECURITIES LTD"
+  },
+  "B02181": {
+    "name": "GRAND CAPITAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "GRAND CAPITAL SECURITIES LTD"
+  },
+  "B02183": {
+    "name": "SPDB INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "SPDB INTERNATIONAL SECURITIES LTD"
+  },
+  "B02184": {
+    "name": "DINGXIN (SECURITIES) LTD",
+    "type": "broker",
+    "raw_name": "DINGXIN (SECURITIES) LTD"
+  },
+  "B02185": {
+    "name": "KOREA INVESTMENT & SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "KOREA INVESTMENT & SECURITIES ASIA LTD"
+  },
+  "B02186": {
+    "name": "MONT AVENIR CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "MONT AVENIR CAPITAL LTD"
+  },
+  "B02188": {
+    "name": "HOMILY WORLDWIDE SECURITIES COMPANY LTD",
+    "type": "broker",
+    "raw_name": "HOMILY WORLDWIDE SECURITIES COMPANY LTD"
+  },
+  "B02190": {
+    "name": "LUMINEUX SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "LUMINEUX SECURITIES LTD"
+  },
+  "B02191": {
+    "name": "NH INVESTMENT & SECURITIES (H.K.) LTD",
+    "type": "broker",
+    "raw_name": "NH INVESTMENT & SECURITIES (H.K.) LTD"
+  },
+  "B02192": {
+    "name": "HUAFU INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "HUAFU INTERNATIONAL SECURITIES LTD"
+  },
+  "B02193": {
+    "name": "PATRONS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "PATRONS SECURITIES LTD"
+  },
+  "B02194": {
+    "name": "HARMONIA CAPITAL LTD",
+    "type": "broker",
+    "raw_name": "HARMONIA CAPITAL LTD"
+  },
+  "B02195": {
+    "name": "LONG BRIDGE HK LTD",
+    "type": "broker",
+    "raw_name": "LONG BRIDGE HK LTD"
+  },
+  "B02196": {
+    "name": "MIGHTY DIVINE SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "MIGHTY DIVINE SECURITIES LTD"
+  },
+  "B02197": {
+    "name": "YUNRUI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YUNRUI SECURITIES LTD"
+  },
+  "B02198": {
+    "name": "CITRUS SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "CITRUS SECURITIES LTD"
+  },
+  "B02199": {
+    "name": "LU INTERNATIONAL (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "LU INTERNATIONAL (HONG KONG) LTD"
+  },
+  "B02200": {
+    "name": "NINTH ETERNITY SECURITIES ASIA LTD",
+    "type": "broker",
+    "raw_name": "NINTH ETERNITY SECURITIES ASIA LTD"
+  },
+  "B02201": {
+    "name": "YONXI SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "YONXI SECURITIES LTD"
+  },
+  "B02202": {
+    "name": "JMC CAPITAL INTERNATIONAL LTD",
+    "type": "broker",
+    "raw_name": "JMC CAPITAL INTERNATIONAL LTD"
+  },
+  "B02203": {
+    "name": "VENTURE SMART ASIA LTD",
+    "type": "broker",
+    "raw_name": "VENTURE SMART ASIA LTD"
+  },
+  "B02204": {
+    "name": "VI ASSET MANAGEMENT COMPANY LTD",
+    "type": "broker",
+    "raw_name": "VI ASSET MANAGEMENT COMPANY LTD"
+  },
+  "B02205": {
+    "name": "VICTORY SECURITIES (GLOBAL) LTD",
+    "type": "broker",
+    "raw_name": "VICTORY SECURITIES (GLOBAL) LTD"
+  },
+  "B02206": {
+    "name": "ZIRCON SECURITIES (HK) LTD",
+    "type": "broker",
+    "raw_name": "ZIRCON SECURITIES (HK) LTD"
+  },
+  "B02208": {
+    "name": "CN FIRST INTERNATIONAL FUTURES LTD",
+    "type": "broker",
+    "raw_name": "CN FIRST INTERNATIONAL FUTURES LTD"
+  },
+  "B02210": {
+    "name": "ARK GROUP HOLDINGS (HONG KONG) LTD",
+    "type": "broker",
+    "raw_name": "ARK GROUP HOLDINGS (HONG KONG) LTD"
+  },
+  "B02211": {
+    "name": "UP WAY SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "UP WAY SECURITIES LTD"
+  },
+  "B02212": {
+    "name": "HUAAN SECURITIES (HONG KONG) BROKERAGE",
+    "type": "broker",
+    "raw_name": "HUAAN SECURITIES (HONG KONG) BROKERAGE"
+  },
+  "B02213": {
+    "name": "CITIC CFI SECURITIES COMPANY LTD",
+    "type": "broker",
+    "raw_name": "CITIC CFI SECURITIES COMPANY LTD"
+  },
+  "B02214": {
+    "name": "WINBULL SECURITIES INTERNATIONAL (HONG",
+    "type": "broker",
+    "raw_name": "WINBULL SECURITIES INTERNATIONAL (HONG"
+  },
+  "B02215": {
+    "name": "JIN YI FINANCIAL GROUP LTD",
+    "type": "broker",
+    "raw_name": "JIN YI FINANCIAL GROUP LTD"
+  },
+  "B02218": {
+    "name": "BOSC INTERNATIONAL SECURITIES LTD",
+    "type": "broker",
+    "raw_name": "BOSC INTERNATIONAL SECURITIES LTD"
+  },
+  "B02219": {
+    "name": "TRADEGO MARKETS LIMITED",
+    "type": "broker",
+    "raw_name": "TRADEGO MARKETS LIMITED"
+  },
+  "B02220": {
+    "name": "ZH SECURITIES LIMITED",
+    "type": "broker",
+    "raw_name": "ZH SECURITIES LIMITED"
+  },
+  "B02221": {
+    "name": "AACAT FINTECH LTD",
+    "type": "broker",
+    "raw_name": "AACAT FINTECH LTD"
+  },
+  "B02222": {
+    "name": "EBANG SECURITIES INTERNATIONAL (HK) LTD",
+    "type": "broker",
+    "raw_name": "EBANG SECURITIES INTERNATIONAL (HK) LTD"
+  },
+  "B02223": {
+    "name": "DOO FINANCIAL HK LTD",
+    "type": "broker",
+    "raw_name": "DOO FINANCIAL HK LTD"
+  },
+  "B02227": {
+    "name": "GUOLIAN SECURITIES INTERNATIONAL CAPITAL",
+    "type": "broker",
+    "raw_name": "GUOLIAN SECURITIES INTERNATIONAL CAPITAL"
+  },
+  "B02229": {
+    "name": "PANDA SECURITIES COMPANY LTD",
+    "type": "broker",
+    "raw_name": "PANDA SECURITIES COMPANY LTD"
+  },
+  "B80005": {
+    "name": "KOO & CO",
+    "type": "broker",
+    "raw_name": "KOO & CO"
+  },
+  "B80007": {
+    "name": "PAUL SECURITIES CO",
+    "type": "broker",
+    "raw_name": "PAUL SECURITIES CO"
+  },
+  "B80008": {
+    "name": "SHUN LOONG SECURITIES CO",
+    "type": "broker",
+    "raw_name": "SHUN LOONG SECURITIES CO"
+  },
+  "B80015": {
+    "name": "ROSA SECURITIES CO",
+    "type": "broker",
+    "raw_name": "ROSA SECURITIES CO"
+  },
+  "B80016": {
+    "name": "TAT MING HONG",
+    "type": "broker",
+    "raw_name": "TAT MING HONG"
+  },
+  "B80017": {
+    "name": "CHONG & PARTNERS",
+    "type": "broker",
+    "raw_name": "CHONG & PARTNERS"
+  },
+  "B80020": {
+    "name": "HUNG YIEH CO",
+    "type": "broker",
+    "raw_name": "HUNG YIEH CO"
+  },
+  "B80021": {
+    "name": "KWONG FAT HONG",
+    "type": "broker",
+    "raw_name": "KWONG FAT HONG"
+  },
+  "B80029": {
+    "name": "WING SANG & CO",
+    "type": "broker",
+    "raw_name": "WING SANG & CO"
+  },
+  "B80039": {
+    "name": "TAK ON SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAK ON SECURITIES CO"
+  },
+  "B80044": {
+    "name": "MING HON SECURITIES",
+    "type": "broker",
+    "raw_name": "MING HON SECURITIES"
+  },
+  "B80045": {
+    "name": "CHEUNG YAN LUNG STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "CHEUNG YAN LUNG STOCK INVESTMENT CO"
+  },
+  "B80046": {
+    "name": "Y. C. FUNG & CO",
+    "type": "broker",
+    "raw_name": "Y. C. FUNG & CO"
+  },
+  "B80048": {
+    "name": "TAI TAK SECURITIES CO",
+    "type": "broker",
+    "raw_name": "TAI TAK SECURITIES CO"
+  },
+  "B80049": {
+    "name": "HARVESTER STOCK INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "HARVESTER STOCK INVESTMENT CO"
+  },
+  "B80050": {
+    "name": "MING FUNG SHARES INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "MING FUNG SHARES INVESTMENT CO"
+  },
+  "B80052": {
+    "name": "FU YIP SECURITIES & INVESTMENT CO",
+    "type": "broker",
+    "raw_name": "FU YIP SECURITIES & INVESTMENT CO"
+  },
+  "C00001": {
+    "name": "BANK OF CHINA",
+    "type": "bank",
+    "raw_name": "BANK OF CHINA"
+  },
+  "C00002": {
+    "name": "BANK OF COMMUNICATIONS TRUSTEE LTD",
+    "type": "bank",
+    "raw_name": "BANK OF COMMUNICATIONS TRUSTEE LTD"
+  },
+  "C00003": {
+    "name": "THE BANK OF EAST ASIA LTD",
+    "type": "bank",
+    "raw_name": "THE BANK OF EAST ASIA LTD"
+  },
+  "C00004": {
+    "name": "MUFG BANK, LTD.",
+    "type": "bank",
+    "raw_name": "MUFG BANK, LTD."
+  },
+  "C00005": {
+    "name": "BARCLAYS BANK PLC",
+    "type": "bank",
+    "raw_name": "BARCLAYS BANK PLC"
+  },
+  "C00006": {
+    "name": "THE BANK OF BERMUDA LTD",
+    "type": "bank",
+    "raw_name": "THE BANK OF BERMUDA LTD"
+  },
+  "C00007": {
+    "name": "THE CHASE MANHATTAN BANK",
+    "type": "bank",
+    "raw_name": "THE CHASE MANHATTAN BANK"
+  },
+  "C00008": {
+    "name": "THE CHINA AND SOUTH SEA BANK LTD",
+    "type": "bank",
+    "raw_name": "THE CHINA AND SOUTH SEA BANK LTD"
+  },
+  "C00009": {
+    "name": "THE CHINA STATE BANK LTD",
+    "type": "bank",
+    "raw_name": "THE CHINA STATE BANK LTD"
+  },
+  "C00010": {
+    "name": "Citibank",
+    "type": "bank",
+    "raw_name": "CITIBANK N.A."
+  },
+  "C00011": {
+    "name": "DBS Bank",
+    "type": "bank",
+    "raw_name": "PUBLIC BANK (HONG KONG) LTD"
+  },
+  "C00012": {
+    "name": "DAH SING BANK LTD",
+    "type": "bank",
+    "raw_name": "DAH SING BANK LTD"
+  },
+  "C00013": {
+    "name": "DAIWA OVERSEAS FINANCE LTD",
+    "type": "bank",
+    "raw_name": "DAIWA OVERSEAS FINANCE LTD"
+  },
+  "C00015": {
+    "name": "DBS BANK (HONG KONG) LTD",
+    "type": "bank",
+    "raw_name": "DBS BANK (HONG KONG) LTD"
+  },
+  "C00016": {
+    "name": "Bank of China (HK)",
+    "type": "bank",
+    "raw_name": "DBS BANK LTD"
+  },
+  "C00017": {
+    "name": "DEUTSCHE BANK CAPITAL MARKETS (ASIA) LTD",
+    "type": "bank",
+    "raw_name": "DEUTSCHE BANK CAPITAL MARKETS (ASIA) LTD"
+  },
+  "C00018": {
+    "name": "HANG SENG BANK LTD",
+    "type": "bank",
+    "raw_name": "HANG SENG BANK LTD"
+  },
+  "C00019": {
+    "name": "HSBC",
+    "type": "bank",
+    "raw_name": "THE HONGKONG AND SHANGHAI BANKING"
+  },
+  "C00020": {
+    "name": "Standard Chartered",
+    "type": "bank",
+    "raw_name": "HUA CHIAO COMMERCIAL BANK LTD"
+  },
+  "C00024": {
+    "name": "KINCHENG BANKING CORPORATION",
+    "type": "bank",
+    "raw_name": "KINCHENG BANKING CORPORATION"
+  },
+  "C00025": {
+    "name": "KWANGTUNG PROVINCIAL BANK",
+    "type": "bank",
+    "raw_name": "KWANGTUNG PROVINCIAL BANK"
+  },
+  "C00026": {
+    "name": "CHONG HING BANK LTD",
+    "type": "bank",
+    "raw_name": "CHONG HING BANK LTD"
+  },
+  "C00027": {
+    "name": "DEXIA TRUST SERVICES HONG KONG LTD",
+    "type": "bank",
+    "raw_name": "DEXIA TRUST SERVICES HONG KONG LTD"
+  },
+  "C00028": {
+    "name": "NANYANG COMMERCIAL BANK LTD",
+    "type": "bank",
+    "raw_name": "NANYANG COMMERCIAL BANK LTD"
+  },
+  "C00029": {
+    "name": "THE NATIONAL COMMERCIAL BANK LTD",
+    "type": "bank",
+    "raw_name": "THE NATIONAL COMMERCIAL BANK LTD"
+  },
+  "C00030": {
+    "name": "THE NIKKO SECURITIES CO (ASIA) LTD",
+    "type": "bank",
+    "raw_name": "THE NIKKO SECURITIES CO (ASIA) LTD"
+  },
+  "C00031": {
+    "name": "OVERSEAS TRUST BANK LTD",
+    "type": "bank",
+    "raw_name": "OVERSEAS TRUST BANK LTD"
+  },
+  "C00032": {
+    "name": "OVERSEAS UNION BANK LTD",
+    "type": "bank",
+    "raw_name": "OVERSEAS UNION BANK LTD"
+  },
+  "C00033": {
+    "name": "BANK OF CHINA (HONG KONG) LTD",
+    "type": "bank",
+    "raw_name": "BANK OF CHINA (HONG KONG) LTD"
+  },
+  "C00035": {
+    "name": "SCHRODERS ASIA LTD",
+    "type": "bank",
+    "raw_name": "SCHRODERS ASIA LTD"
+  },
+  "C00036": {
+    "name": "CHINA CONSTRUCTION BANK (ASIA)",
+    "type": "bank",
+    "raw_name": "CHINA CONSTRUCTION BANK (ASIA)"
+  },
+  "C00037": {
+    "name": "SHANGHAI COMMERCIAL BANK LTD",
+    "type": "bank",
+    "raw_name": "SHANGHAI COMMERCIAL BANK LTD"
+  },
+  "C00038": {
+    "name": "SIN HUA BANK LTD",
+    "type": "bank",
+    "raw_name": "SIN HUA BANK LTD"
+  },
+  "C00039": {
+    "name": "STANDARD CHARTERED BANK (HONG KONG) LTD",
+    "type": "bank",
+    "raw_name": "STANDARD CHARTERED BANK (HONG KONG) LTD"
+  },
+  "C00040": {
+    "name": "INDUSTRIAL AND COMMERCIAL BANK OF CHINA",
+    "type": "bank",
+    "raw_name": "INDUSTRIAL AND COMMERCIAL BANK OF CHINA"
+  },
+  "C00041": {
+    "name": "OCBC BANK (HONG KONG) LTD",
+    "type": "bank",
+    "raw_name": "OCBC BANK (HONG KONG) LTD"
+  },
+  "C00042": {
+    "name": "CMB WING LUNG BANK LTD",
+    "type": "bank",
+    "raw_name": "CMB WING LUNG BANK LTD"
+  },
+  "C00043": {
+    "name": "MEVAS BANK LTD",
+    "type": "bank",
+    "raw_name": "MEVAS BANK LTD"
+  },
+  "C00045": {
+    "name": "YIEN YIEH COMMERCIAL BANK LTD",
+    "type": "bank",
+    "raw_name": "YIEN YIEH COMMERCIAL BANK LTD"
+  },
+  "C00047": {
+    "name": "BANGKOK BANK PUBLIC CO LTD",
+    "type": "bank",
+    "raw_name": "BANGKOK BANK PUBLIC CO LTD"
+  },
+  "C00048": {
+    "name": "CHIYU BANKING CORPORATION LTD",
+    "type": "bank",
+    "raw_name": "CHIYU BANKING CORPORATION LTD"
+  },
+  "C00050": {
+    "name": "DBS KWONG ON BANK LTD",
+    "type": "bank",
+    "raw_name": "DBS KWONG ON BANK LTD"
+  },
+  "C00051": {
+    "name": "PARIBAS",
+    "type": "bank",
+    "raw_name": "PARIBAS"
+  },
+  "C00052": {
+    "name": "BELGIAN BANK",
+    "type": "bank",
+    "raw_name": "BELGIAN BANK"
+  },
+  "C00053": {
+    "name": "AMERICAN EXPRESS BANK LTD",
+    "type": "bank",
+    "raw_name": "AMERICAN EXPRESS BANK LTD"
+  },
+  "C00054": {
+    "name": "BANK OF AMERICA NATIONAL TRUST AND",
+    "type": "bank",
+    "raw_name": "BANK OF AMERICA NATIONAL TRUST AND"
+  },
+  "C00055": {
+    "name": "KBC BANK N.V.",
+    "type": "bank",
+    "raw_name": "KBC BANK N.V."
+  },
+  "C00056": {
+    "name": "THE GOVERNOR AND COMPANY OF THE BANK OF",
+    "type": "bank",
+    "raw_name": "THE GOVERNOR AND COMPANY OF THE BANK OF"
+  },
+  "C00057": {
+    "name": "UNITED OVERSEAS BANK LTD",
+    "type": "bank",
+    "raw_name": "UNITED OVERSEAS BANK LTD"
+  },
+  "C00058": {
+    "name": "CHINA CITIC BANK INTERNATIONAL LTD",
+    "type": "bank",
+    "raw_name": "CHINA CITIC BANK INTERNATIONAL LTD"
+  },
+  "C00059": {
+    "name": "IBJ ASIA LTD",
+    "type": "bank",
+    "raw_name": "IBJ ASIA LTD"
+  },
+  "C00060": {
+    "name": "THE ROYAL BANK OF SCOTLAND N.V.",
+    "type": "bank",
+    "raw_name": "THE ROYAL BANK OF SCOTLAND N.V."
+  },
+  "C00061": {
+    "name": "FIRST PACIFIC BANK LTD",
+    "type": "bank",
+    "raw_name": "FIRST PACIFIC BANK LTD"
+  },
+  "C00062": {
+    "name": "CREDIT AGRICOLE CORPORATE AND INVESTMENT",
+    "type": "bank",
+    "raw_name": "CREDIT AGRICOLE CORPORATE AND INVESTMENT"
+  },
+  "C00063": {
+    "name": "CHEMICAL BANK",
+    "type": "bank",
+    "raw_name": "CHEMICAL BANK"
+  },
+  "C00064": {
+    "name": "BNP PARIBAS",
+    "type": "bank",
+    "raw_name": "BNP PARIBAS"
+  },
+  "C00065": {
+    "name": "HSBC PRIVATE BANK (SUISSE) SA",
+    "type": "bank",
+    "raw_name": "HSBC PRIVATE BANK (SUISSE) SA"
+  },
+  "C00066": {
+    "name": "BANQUE WORMS",
+    "type": "bank",
+    "raw_name": "BANQUE WORMS"
+  },
+  "C00067": {
+    "name": "THE BANK OF NOVA SCOTIA",
+    "type": "bank",
+    "raw_name": "THE BANK OF NOVA SCOTIA"
+  },
+  "C00068": {
+    "name": "BANK AUSTRIA AG",
+    "type": "bank",
+    "raw_name": "BANK AUSTRIA AG"
+  },
+  "C00069": {
+    "name": "UNITED CHINESE BANK LTD",
+    "type": "bank",
+    "raw_name": "UNITED CHINESE BANK LTD"
+  },
+  "C00070": {
+    "name": "OVERSEA-CHINESE BANKING CORPORATION LTD",
+    "type": "bank",
+    "raw_name": "OVERSEA-CHINESE BANKING CORPORATION LTD"
+  },
+  "C00071": {
+    "name": "ING BANK N.V.",
+    "type": "bank",
+    "raw_name": "ING BANK N.V."
+  },
+  "C00072": {
+    "name": "LTCB ASIA LTD",
+    "type": "bank",
+    "raw_name": "LTCB ASIA LTD"
+  },
+  "C00073": {
+    "name": "YASUDA TRUST ASIA PACIFIC LTD",
+    "type": "bank",
+    "raw_name": "YASUDA TRUST ASIA PACIFIC LTD"
+  },
+  "C00074": {
+    "name": "DEUTSCHE BANK AG",
+    "type": "bank",
+    "raw_name": "DEUTSCHE BANK AG"
+  },
+  "C00075": {
+    "name": "HSBC BANK USA",
+    "type": "bank",
+    "raw_name": "HSBC BANK USA"
+  },
+  "C00076": {
+    "name": "CHEKIANG FIRST BANK LTD",
+    "type": "bank",
+    "raw_name": "CHEKIANG FIRST BANK LTD"
+  },
+  "C00077": {
+    "name": "LLOYDS TSB BANK PLC",
+    "type": "bank",
+    "raw_name": "LLOYDS TSB BANK PLC"
+  },
+  "C00078": {
+    "name": "CREDIT COMMERCIAL DE FRANCE",
+    "type": "bank",
+    "raw_name": "CREDIT COMMERCIAL DE FRANCE"
+  },
+  "C00080": {
+    "name": "TRADINGGURU.COM SECURITIES LTD",
+    "type": "bank",
+    "raw_name": "TRADINGGURU.COM SECURITIES LTD"
+  },
+  "C00081": {
+    "name": "BOOM SECURITIES (H.K.) LTD",
+    "type": "bank",
+    "raw_name": "BOOM SECURITIES (H.K.) LTD"
+  },
+  "C00082": {
+    "name": "SCHRODER INVESTMENT MANAGEMENT",
+    "type": "bank",
+    "raw_name": "SCHRODER INVESTMENT MANAGEMENT"
+  },
+  "C00083": {
+    "name": "BANK CONSORTIUM TRUST CO LTD",
+    "type": "bank",
+    "raw_name": "BANK CONSORTIUM TRUST CO LTD"
+  },
+  "C00085": {
+    "name": "STANDARD BANK ASIA LTD",
+    "type": "bank",
+    "raw_name": "STANDARD BANK ASIA LTD"
+  },
+  "C00086": {
+    "name": "BNP PARIBAS WEALTH MANAGEMENT",
+    "type": "bank",
+    "raw_name": "BNP PARIBAS WEALTH MANAGEMENT"
+  },
+  "C00087": {
+    "name": "HUNG KAI FINANCE CO LTD",
+    "type": "bank",
+    "raw_name": "HUNG KAI FINANCE CO LTD"
+  },
+  "C00088": {
+    "name": "CHINA MERCHANTS BANK CO LTD",
+    "type": "bank",
+    "raw_name": "CHINA MERCHANTS BANK CO LTD"
+  },
+  "C00089": {
+    "name": "HONG KONG MONETARY AUTHORITY",
+    "type": "bank",
+    "raw_name": "HONG KONG MONETARY AUTHORITY"
+  },
+  "C00090": {
+    "name": "KBC BANK N.V.",
+    "type": "bank",
+    "raw_name": "KBC BANK N.V."
+  },
+  "C00091": {
+    "name": "BANK OF SINGAPORE LTD",
+    "type": "bank",
+    "raw_name": "BANK OF SINGAPORE LTD"
+  },
+  "C00092": {
+    "name": "CTBC BANK CO LTD",
+    "type": "bank",
+    "raw_name": "CTBC BANK CO LTD"
+  },
+  "C00093": {
+    "name": "BNP PARIBAS",
+    "type": "bank",
+    "raw_name": "BNP PARIBAS"
+  },
+  "C00094": {
+    "name": "ING BANK N.V.",
+    "type": "bank",
+    "raw_name": "ING BANK N.V."
+  },
+  "C00095": {
+    "name": "EFG BANK AG",
+    "type": "bank",
+    "raw_name": "EFG BANK AG"
+  },
+  "C00096": {
+    "name": "CHINA CONSTRUCTION BANK CORPORATION",
+    "type": "bank",
+    "raw_name": "CHINA CONSTRUCTION BANK CORPORATION"
+  },
+  "C00097": {
+    "name": "ABN AMRO BANK N.V.",
+    "type": "bank",
+    "raw_name": "ABN AMRO BANK N.V."
+  },
+  "C00098": {
+    "name": "BARCLAYS BANK PLC",
+    "type": "bank",
+    "raw_name": "BARCLAYS BANK PLC"
+  },
+  "C00099": {
+    "name": "TAISHIN INTERNATIONAL BANK CO., LTD",
+    "type": "bank",
+    "raw_name": "TAISHIN INTERNATIONAL BANK CO., LTD"
+  },
+  "C00100": {
+    "name": "JPMORGAN CHASE BANK, NATIONAL",
+    "type": "bank",
+    "raw_name": "JPMORGAN CHASE BANK, NATIONAL"
+  },
+  "C00101": {
+    "name": "BANK OF EAST ASIA (TRUSTEES) LTD",
+    "type": "bank",
+    "raw_name": "BANK OF EAST ASIA (TRUSTEES) LTD"
+  },
+  "C00102": {
+    "name": "MACQUARIE BANK LTD",
+    "type": "bank",
+    "raw_name": "MACQUARIE BANK LTD"
+  },
+  "C00103": {
+    "name": "MIZUHO BANK, LTD.",
+    "type": "bank",
+    "raw_name": "MIZUHO BANK, LTD."
+  },
+  "C00104": {
+    "name": "SHANGHAI PUDONG DEVELOPMENT BANK CO.",
+    "type": "bank",
+    "raw_name": "SHANGHAI PUDONG DEVELOPMENT BANK CO."
+  },
+  "C00105": {
+    "name": "AGRICULTURAL BANK OF CHINA LTD",
+    "type": "bank",
+    "raw_name": "AGRICULTURAL BANK OF CHINA LTD"
+  },
+  "C00106": {
+    "name": "GRAND MOORE CAPITAL LTD",
+    "type": "bank",
+    "raw_name": "GRAND MOORE CAPITAL LTD"
+  },
+  "C00107": {
+    "name": "INDUSTRIAL BANK CO., LTD.",
+    "type": "bank",
+    "raw_name": "INDUSTRIAL BANK CO., LTD."
+  },
+  "C00108": {
+    "name": "CHINA MINSHENG BANKING CORP., LTD.",
+    "type": "bank",
+    "raw_name": "CHINA MINSHENG BANKING CORP., LTD."
+  },
+  "C00109": {
+    "name": "BANK OF COMMUNICATIONS CO., LTD.",
+    "type": "bank",
+    "raw_name": "BANK OF COMMUNICATIONS CO., LTD."
+  },
+  "C00110": {
+    "name": "EAST WEST BANK",
+    "type": "bank",
+    "raw_name": "EAST WEST BANK"
+  },
+  "C00111": {
+    "name": "SOCIETE GENERALE",
+    "type": "bank",
+    "raw_name": "SOCIETE GENERALE"
+  },
+  "C00112": {
+    "name": "BANK OF COMMUNICATIONS (HONG KONG) LTD",
+    "type": "bank",
+    "raw_name": "BANK OF COMMUNICATIONS (HONG KONG) LTD"
+  },
+  "C99996": {
+    "name": "HONG KONG SECURITIES CLEARING COMPANY",
+    "type": "bank",
+    "raw_name": "HONG KONG SECURITIES CLEARING COMPANY"
+  },
+  "C99997": {
+    "name": "HKFE CLEARING CORPORATION LIMITED",
+    "type": "bank",
+    "raw_name": "HKFE CLEARING CORPORATION LIMITED"
+  },
+  "P00004": {
+    "name": "KREDIETBANK N V",
+    "type": "finance",
+    "raw_name": "KREDIETBANK N V"
+  },
+  "P00006": {
+    "name": "SUN TAI CHEUNG CREDITS LTD",
+    "type": "finance",
+    "raw_name": "SUN TAI CHEUNG CREDITS LTD"
+  },
+  "P00009": {
+    "name": "ALLIED BANKING CORPORATION (HONG KONG)",
+    "type": "finance",
+    "raw_name": "ALLIED BANKING CORPORATION (HONG KONG)"
+  },
+  "P00010": {
+    "name": "SOUTH CHINA FINANCE CO LTD",
+    "type": "finance",
+    "raw_name": "SOUTH CHINA FINANCE CO LTD"
+  },
+  "P00011": {
+    "name": "INTERNATIONALE NEDERLANDEN BANK N. V.",
+    "type": "finance",
+    "raw_name": "INTERNATIONALE NEDERLANDEN BANK N. V."
+  },
+  "P00012": {
+    "name": "BII FINANCE CO LTD",
+    "type": "finance",
+    "raw_name": "BII FINANCE CO LTD"
+  },
+  "P00013": {
+    "name": "CHOW TAI FOOK JEWELLERY CO LTD",
+    "type": "finance",
+    "raw_name": "CHOW TAI FOOK JEWELLERY CO LTD"
+  },
+  "P00014": {
+    "name": "HAITONG INTERNATIONAL FINANCE CO LTD",
+    "type": "finance",
+    "raw_name": "HAITONG INTERNATIONAL FINANCE CO LTD"
+  },
+  "P00015": {
+    "name": "DELTA ASIA CREDIT LTD",
+    "type": "finance",
+    "raw_name": "DELTA ASIA CREDIT LTD"
+  },
+  "P00017": {
+    "name": "CROSBY FINANCE (HK) LTD",
+    "type": "finance",
+    "raw_name": "CROSBY FINANCE (HK) LTD"
+  },
+  "P00018": {
+    "name": "SOLID CAPITAL HOLDINGS LTD",
+    "type": "finance",
+    "raw_name": "SOLID CAPITAL HOLDINGS LTD"
+  },
+  "P00019": {
+    "name": "XPRESS CREDIT LTD",
+    "type": "finance",
+    "raw_name": "XPRESS CREDIT LTD"
+  }
+}
