@@ -244,6 +244,136 @@ Dashboard: `streamlit run smartflow/dashboard.py` → localhost:8501
 6. **Rate limit respect** — EDGAR max 10 req/sec
 7. **`raw_data` JSON** — store full source record always
 
+## Changelog
+
+### 2026-04-10 — Lambda Daily Report Pipeline LIVE
+
+**AWS Lambda pipeline deployed** — fully automated daily research report:
+
+- Lambda function `smartflow-report` deployed (Python 3.12, 90s timeout)
+- S3 bucket `smartflow-tommy-db` for DB storage
+- EventBridge rule `smartflow-daily-report` triggers daily at 08:00 HK time
+- MiniMax-M2.7 generates Chinese research report from SmartFlow data
+- SES sends report to TOMMYTANG2414@GMAIL.COM
+- All Lambda code in `lambda/` directory, deployed via zip package
+
+**Fixes along the way:**
+- DB_PATH env var stuck on Windows path — fixed via --cli-input-json
+- cp950 encoding crash in Lambda runtime — fixed by replacing logging with stdout.buffer binary writes
+- MiniMax-Text-01 not supported — changed to MiniMax-M2.7
+- SES email not verified — verified both sender/receiver in SES sandbox
+- MiniMax API timeout (30s) — increased to 60s, Lambda timeout to 90s
+
+### 2026-04-10 — Phase 2 Complete, VPS Deployment
+
+**HKEX Dealings rewrite** — `www3.hkexnews.hk/more/news/companynews` returned 404. Completely rewritten using Playwright + `www1.hkexnews.hk/search/titlesearch.xhtml`. Key fix: autocomplete click does NOT set hidden `#stockId` field — must set via JS after click. Parses 4-cell results table (Release Time, Stock Code, Stock Short Name, Document). Tracks director dealings (17350 = 0 results → falls back to "Change in Directors" 12350) and director changes.
+
+**VPS deployment** — SmartFlow moved to AWS Lightsail (`18.139.210.59`). Data collection now runs on cloud:
+- SmartFlow code at `~/SmartFlow/`
+- Cron job: `0 6 * * * ~/SmartFlow/smartflow_vps.sh` (daily 06:00 UTC)
+- Log rotation: `0 7 * * * ~/SmartFlow/cleanup_logs.sh` (keep 7 days)
+- DB stays on VPS at `~/SmartFlow/data/smartflow.db`
+- Stale `hkex_dealings` running status fixed in DB
+
+**SSH key** — correct key for `18.139.210.59`: `C:\Users\user\PycharmProjects\CryptoStrategy\mcp_server\LightsailDefaultKey-ap-southeast-1.pem`, user `ubuntu` (NOT `bitnami` or the `Kronos` path).
+
+**Windows scheduler removed** — `SmartFlow_Scheduler` Windows Task Scheduler task deleted. All collection now on VPS.
+
+**GitHub backup** — repo created at `https://github.com/tommytang2414/smartflow`. Initial commit: Phase 1-2 code (44 files). README.md added. `.env` excluded via `.gitignore`.
+
+**README** — full project documentation written: quick start, CLI reference, collector pattern, DB schema, VPS ops, design decisions.
+
+## Lambda Daily Report Pipeline
+
+Fully automated daily research report generation using AWS Lambda + MiniMax + SES.
+
+### Architecture
+
+```
+VPS @ 06:00 HK time
+    → Collectors run → smartflow.db updated
+    → aws s3 cp smartflow.db s3://smartflow-tommy-db/smartflow.db
+
+AWS Lambda @ 08:00 HK time (EventBridge cron)
+    → Download smartflow.db from S3
+    → Run queries.py → daily_brief() JSON
+    → Build Chinese prompt → MiniMax-M2.7
+    → Send report via SES to TOMMYTANG2414@GMAIL.COM
+```
+
+### Lambda Function: smartflow-report
+
+| Setting | Value |
+|---------|-------|
+| Runtime | Python 3.12 |
+| Timeout | 90 seconds |
+| Memory | 512 MB |
+| Handler | lambda_function.handler |
+| S3 Bucket | smartflow-tommy-db |
+| Key | smartflow.db |
+| Model | MiniMax-M2.7 |
+| Email | SES → TOMMYTANG2414@GMAIL.COM |
+
+### AWS Resources
+
+| Resource | ARN / ID |
+|----------|----------|
+| S3 Bucket | smartflow-tommy-db |
+| Lambda | smartflow-report (ap-southeast-1:760981412816) |
+| IAM Role | smartflow-lambda-role |
+| SES From | tommytang.cc@gmail.com |
+| SES To | TOMMYTANG2414@GMAIL.COM |
+| EventBridge | smartflow-daily-report (cron: 0 0 * * ? * = 08:00 HK) |
+
+### Lambda Env Vars
+
+```
+S3_BUCKET=smartflow-tommy-db
+DB_PATH=/tmp/smartflow.db
+SES_FROM=tommytang.cc@gmail.com
+EMAIL_TO=TOMMYTANG2414@GMAIL.COM
+MINIMAX_API_KEY=sk-cp-...
+PYTHONIOENCODING=utf-8
+```
+
+### Deploy Lambda
+
+```bash
+# Package
+python -c "
+import zipfile, os
+src = r'C:\Users\user\SmartFlow\lambda'
+with zipfile.ZipFile(r'C:\tmp\smartflow_lambda.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+    z.write(os.path.join(src, 'lambda_function.py'), 'lambda_function.py')
+    z.write(os.path.join(src, 'queries.py'), 'queries.py')
+"
+
+# Deploy
+aws lambda update-function-code --function-name smartflow-report --zip-file fileb://C:/tmp/smartflow_lambda.zip
+```
+
+### Manual Test
+
+```bash
+aws lambda invoke --function-name smartflow-report /tmp/result.json
+```
+
+### View Logs
+
+```powershell
+aws logs get-log-events --log-group-name /aws/lambda/smartflow-report --log-stream-name (Get newest)
+```
+
+### MiniMax Model
+
+Model: `MiniMax-M2.7` — only model supported by this API key plan.
+
+### SES Status
+
+Both tommytang.cc@gmail.com and TOMMYTANG2414@GMAIL.COM are verified in SES sandbox.
+
+To send to any email: AWS Console → SES → Account → Request Production Access.
+
 ## Export
 
 ```bash
