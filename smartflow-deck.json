@@ -1,0 +1,149 @@
+{
+  "slides": [
+    {
+      "type": "title",
+      "title": "SmartFlow",
+      "subtitle": "Smart Money Data Pipeline — Phase 1 Status",
+      "meta": "March 2026 · Personal Trading Intelligence"
+    },
+    {
+      "type": "kpi",
+      "title": "Phase 1 delivers 981 live signals from 2 privileged data sources in one session",
+      "kpis": [
+        {
+          "value": "981",
+          "label": "Signals in DB",
+          "sub": "Insider trades + Congress disclosures — collected in a single run",
+          "status": "green"
+        },
+        {
+          "value": "942",
+          "label": "Congress Trades",
+          "sub": "House & Senate via QuiverQuant free API · MSFT, AAPL, NVDA top traded",
+          "status": "green"
+        },
+        {
+          "value": "39",
+          "label": "Insider Trades",
+          "sub": "SEC EDGAR Form 4 · Real-time via Atom feed · 100 filings parsed",
+          "status": "green"
+        },
+        {
+          "value": "15",
+          "label": "Python Files",
+          "sub": "Fully structured codebase · collector pattern · SQLite + APScheduler",
+          "status": "green"
+        }
+      ]
+    },
+    {
+      "type": "two_column",
+      "title": "The edge: privileged actors leave public trails — SmartFlow captures them systematically",
+      "left": {
+        "header": "Why This Works",
+        "bullets": [
+          "Insiders know their company — Form 4 must be filed within 2 business days of trade",
+          "Congress members trade on policy knowledge — STOCK Act forces disclosure within 45 days",
+          "Institutional 13F reveals what $100M+ funds actually hold (not just what they say)",
+          "Whale on-chain movements signal accumulation before price moves",
+          "Cluster selling (e.g. CHPT: 5 insiders selling simultaneously) = red flag signal"
+        ]
+      },
+      "right": {
+        "header": "Design Philosophy",
+        "bullets": [
+          "Unified schema — all signals in one table regardless of market or source",
+          "Collector pattern — each data source is an isolated, swappable module",
+          "SQLite first — no infrastructure overhead, portable, queryable from anywhere",
+          "Real-time polling via APScheduler — Form 4 checks every 5 minutes",
+          "Dedup by source_id — running twice never creates duplicate records"
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "title": "Congress members bought and sold in near-equal proportions — MSFT, AAPL, NVDA dominate their portfolios",
+      "chart_type": "column",
+      "categories": ["MSFT", "AAPL", "NVDA", "GOOGL", "AMZN"],
+      "series": [
+        {
+          "name": "Congress Trades (count)",
+          "values": [24, 18, 15, 15, 13]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Architecture is complete for Phase 1 — 3 further phases planned for full market coverage",
+      "headers": ["Phase", "Market", "Data Sources", "Method", "Status"],
+      "rows": [
+        ["Phase 1", "US Stocks", "SEC Form 4, 13F, Congress trades", "EDGAR feed + QuiverQuant API", "✓ Done"],
+        ["Phase 2", "Crypto", "Whale Alert, Etherscan, CoinGlass", "REST APIs (free/freemium)", "○ Planned"],
+        ["Phase 3", "HK Stocks", "HKEX directors, CCASS, shareholders", "Web scraping (no public API)", "○ Planned"],
+        ["Phase 4", "Options Flow", "FINRA dark pool, Unusual Whales", "CSV download + paid API", "○ Planned"],
+        ["Phase 5", "All Markets", "Dashboard, alerts, backtest hooks", "Streamlit / Telegram bot", "○ Planned"]
+      ]
+    },
+    {
+      "type": "timeline",
+      "title": "Full pipeline spans 5 phases — crypto and HK stocks are the highest-value next steps",
+      "items": [
+        {
+          "phase": "Phase 1",
+          "title": "US Stocks Foundation",
+          "detail": "SEC EDGAR Form 4\n13F Holdings\nCongress trades\nCLI + Scheduler",
+          "status": "done"
+        },
+        {
+          "phase": "Phase 2",
+          "title": "Crypto Whales",
+          "detail": "Whale Alert API\nEtherscan large txns\nCoinGlass exchange flows\nWallet watchlist",
+          "status": "planned"
+        },
+        {
+          "phase": "Phase 3",
+          "title": "HK Stocks",
+          "detail": "HKEX directors\nCCASS custody\nSubstantial holders\nBilingual parsing",
+          "status": "planned"
+        },
+        {
+          "phase": "Phase 4",
+          "title": "Options Flow",
+          "detail": "FINRA dark pool\nUnusual Whales\nBlock trades\nOI anomalies",
+          "status": "planned"
+        },
+        {
+          "phase": "Phase 5",
+          "title": "Output Layer",
+          "detail": "Streamlit dashboard\nTelegram alerts\nBacktest engine\nParquet exports",
+          "status": "planned"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "SmartFlow is queryable today — 5 CLI commands cover the full collection and analysis workflow",
+      "bullets": [
+        "python -m smartflow collect --source sec_form4     → fetch latest insider trades from SEC EDGAR Atom feed",
+        "python -m smartflow collect --source congress      → fetch Congress trades from QuiverQuant (free, no auth)",
+        "python -m smartflow collect --all                  → run all active collectors in sequence",
+        "python -m smartflow query --market US --days 7     → show all US signals from the past 7 days",
+        "python -m smartflow query --ticker AAPL            → filter by ticker (cross-source)",
+        "python -m smartflow query --direction BUY --min-value 500000  → big insider buys only",
+        "python -m smartflow schedule --all                 → start continuous polling (Form 4 every 5 min)"
+      ],
+      "note": "DB at data/smartflow.db — queryable directly with any SQLite client. Add SEC_EDGAR_EMAIL to .env before running Form 4 collector."
+    },
+    {
+      "type": "closing",
+      "title": "Next: Add crypto whale tracking + HK stock signals",
+      "items": [
+        "Phase 2: Integrate Whale Alert API + Etherscan (need free API keys)",
+        "Phase 3: Build HKEX director dealings scraper (highest value for local edge)",
+        "Phase 5: Wire Telegram alert bot to fire on cluster buys / large value signals",
+        "Stretch: Backtest 'follow congress buys >$50k' strategy against SPY"
+      ],
+      "footer": "SmartFlow v0.1 · Python + SQLite + APScheduler · C:\\Users\\user\\SmartFlow"
+    }
+  ]
+}
