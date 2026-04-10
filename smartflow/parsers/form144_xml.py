@@ -4,7 +4,30 @@ from typing import Dict, Any, Optional
 from datetime import datetime
 from lxml import etree
 
+# CIK → ticker cache fetched once from SEC
+_CIK_TICKER_CACHE: Optional[Dict[str, str]] = None
 
+
+def _get_cik_ticker_cache() -> Dict[str, str]:
+    """Fetch SEC company_tickers.json and build CIK→ticker mapping."""
+    global _CIK_TICKER_CACHE
+    if _CIK_TICKER_CACHE is not None:
+        return _CIK_TICKER_CACHE
+
+    try:
+        import requests
+        resp = requests.get(
+            "https://www.sec.gov/files/company_tickers.json",
+            headers={"User-Agent": "SmartFlow/0.1 tommytang.cc@gmail.com"},
+            timeout=15,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        # Structure: {"cik": "0000320193", "ticker": "AAPL", "name": "Apple Inc"}
+        _CIK_TICKER_CACHE = {str(r["cik"]).lstrip("0") or str(r["cik"]): r["ticker"] for r in data.values()}
+    except Exception:
+        _CIK_TICKER_CACHE = {}
+    return _CIK_TICKER_CACHE
 def parse_form144_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     """Parse a Form 144 XML document into structured data.
 
@@ -95,7 +118,7 @@ def parse_form144_xml(xml_content: str) -> Optional[Dict[str, Any]]:
                 continue
 
     return {
-        "ticker": None,
+        "ticker": _get_cik_ticker_cache().get(issuer_cik.lstrip("0"), ""),
         "issuer_name": issuer_name,
         "issuer_cik": issuer_cik,
         "filer_name": filer_name,

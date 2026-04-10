@@ -58,8 +58,22 @@ def _run_collector(name: str):
         collector = COLLECTOR_REGISTRY[name]()
         count = collector.run()
         logger.info(f"[{name}] Collected {count} new signals")
+        _upload_db_to_s3()
     except Exception as e:
         logger.error(f"[{name}] Failed: {e}")
+
+
+def _upload_db_to_s3():
+    """Upload local DB to S3 after each collection run."""
+    try:
+        import boto3
+        from smartflow.config import DATA_DIR
+        s3 = boto3.client("s3")
+        db_path = str(DATA_DIR / "smartflow.db")
+        s3.upload_file(db_path, "smartflow-tommy-db", "smartflow.db")
+        logger.info("DB uploaded to S3")
+    except Exception as e:
+        logger.warning(f"S3 upload failed: {e}")
 
 
 def start_scheduler(collectors: list[str] = None):

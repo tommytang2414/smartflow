@@ -15,13 +15,10 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     except etree.XMLSyntaxError:
         return None
 
-    ns = {"": "http://www.sec.gov/cgi-bin/viewer?action=view&cik={cik}&type=4"}
-
     # Try with and without namespace
     def find(element, path):
         result = element.find(path)
         if result is None:
-            # Try case-insensitive search on tag names
             for child in element.iter():
                 if child.tag.split("}")[-1].lower() == path.lower():
                     return child
@@ -80,7 +77,17 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         except ValueError:
             continue
 
-        direction = "BUY" if acq_disp == "A" else "SELL" if acq_disp == "D" else acq_disp
+        # transactionCode: P=Purchase, S=Sale — only these are true BUY/SELL
+        # M=Merger, G=Gift, F=Option exercise, W=Option grant
+        # A=Acquired (can be stock option exercise), D=Disposed (can be gift)
+        if tx_code == "P":
+            direction = "BUY"
+        elif tx_code == "S":
+            direction = "SELL"
+        elif tx_code in ("M", "G"):
+            direction = "TRANSFER"
+        else:
+            direction = "HOLD"  # F, W, A, D — option exercise/grant/acquired/disposed (no cash market direction)
 
         transactions.append({
             "security": security_title,

@@ -389,8 +389,9 @@ class CCASSCollector(BaseCollector):
                     "source_id": source_id,
                 })
 
-            # Signal: sudden BrkT5 increase (accumulation)
-            if brkt5_change and brkt5_change >= 5.0:
+            # Signal: sudden BrkT5 increase (accumulation) — only if NOT already RED
+            # RED takes priority; simultaneous RED + accumulation is a conflict
+            if brkt5_change and brkt5_change >= 5.0 and flag != "RED":
                 source_id = f"ccass_accum_{code}_{target_date}"
                 signals.append({
                     "signal_type": "ccass_accumulation",
