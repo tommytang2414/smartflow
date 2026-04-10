@@ -116,8 +116,8 @@ class NQSICollector(BaseCollector):
         out = pd.DataFrame(records).sort_values("date").reset_index(drop=True)
 
         # Z-score
-        out["si_rolling_mean"] = out["composite_si_pct_float"].expanding(min_periods=2).mean()
-        out["si_rolling_std"] = out["composite_si_pct_float"].expanding(min_periods=2).std()
+        out["si_rolling_mean"] = out["composite_si_pct_float"].rolling(window=20, min_periods=20).mean()
+        out["si_rolling_std"] = out["composite_si_pct_float"].rolling(window=20, min_periods=20).std()
         out["si_zscore"] = np.where(
             out["si_rolling_std"] > 0,
             (out["composite_si_pct_float"] - out["si_rolling_mean"]) / out["si_rolling_std"],

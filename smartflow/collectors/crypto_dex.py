@@ -47,10 +47,28 @@ query LargeSwaps($minAmount: String!, $blockNumber: Int!) {
 """
 
 
+def _get_eth_block_number() -> int:
+    """Fetch latest Ethereum block number via public RPC."""
+    import requests as _requests
+    try:
+        resp = _requests.post(
+            "https://eth.public-rpc.com",
+            json={"method": "eth_blockNumber", "params": [], "id": 1},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        return int(resp.json()["result"], 16)
+    except Exception:
+        return 0
+
+
 def get_recent_block_number() -> int:
-    """Approximate current block number (Ethereum ~12s/block)."""
-    import time
-    return 19000000  # Static fallback — update periodically
+    """Get approximate current block number. Falls back to conservative offset on error."""
+    block = _get_eth_block_number()
+    if block > 0:
+        # Return block - 1000 to get ~last 200 blocks (~40 min of history)
+        return block - 1000
+    return 19000000  # Static fallback only when RPC fails
 
 
 class DEXWhaleCollector(BaseCollector):
