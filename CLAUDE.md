@@ -23,23 +23,23 @@ C:\Users\user\SmartFlow\
 │   │   ├── sec_form144.py     # Form 144 pre-sale notices ✅ DONE
 │   │   ├── sec_13d.py         # SC 13D/13G activist filings ✅ DONE
 │   │   ├── crypto_coinglass.py # CoinGlass whale positions ✅ DONE
-│   │   ├── hkex_director.py   # HKEX director search ✅ BUILT (2026-03-25)
-│   ├── hkex_dealings.py   # HKEX director dealings (buy/sell) ✅ BUILT (2026-03-25)
-│   ├── hkex_ccass.py      # CCASS custody ✅ DONE
+│   │   ├── hkex_director.py   # HKEX director search ✅
+│   ├── hkex_dealings.py   # HKEX director dealings (buy/sell) ✅
+│   ├── hkex_ccass.py      # CCASS custody ✅ (RED/AMBER/GREEN signals)
 │   ├── hkex_participants.py # CCASS participant list helper ✅
 │   ├── hkex_watchlist.py  # CCASS stock watchlist ✅
-│   ├── hkex_northbound.py # Stock Connect northbound ✅ BUILT (2026-03-25)
-│   ├── hkex_short.py      # SFC short position reports ✅ BUILT (2026-03-25)
+│   ├── hkex_northbound.py # Stock Connect northbound ✅
+│   ├── hkex_short.py      # SFC short position reports ✅
 │   ├── finra_darkpool.py  # FINRA ATS dark pool ❌ Blocked
-│   │   ├── crypto_whale.py     # Whale Alert ❌ TODO (needs API key)
-│   │   ├── crypto_arkham.py   # Arkham Intelligence ❌ TODO
+│   ├── crypto_whale.py     # Whale Alert ❌ No free tier
+│   ├── crypto_arkham.py   # Arkham Intelligence ❌ No free tier
 │   │   ├── crypto_exchange.py # Glassnode/CoinGlass exchange flows ❌ TODO
 │   │   ├── options_tradier.py # Tradier RT options chain ❌ TODO
 │   │   └── options_darkpool.py # FINRA + unusual activity ❌ TODO
 │   ├── parsers/
-│   │   ├── edgar_xml.py       # Form 4 XML parser ✅ DONE
-│   │   ├── form144_xml.py     # Form 144 XML parser ✅ DONE
-│   │   └── hkex_html.py       # HKEX HTML parser ❌ TODO
+│   │   ├── edgar_xml.py       # Form 4 XML parser ✅ (P=BUY, S=SELL only)
+│   │   ├── form144_xml.py     # Form 144 XML parser ✅ (CIK→ticker)
+│   │   └── hkex_html.py       # HKEX HTML parser ✅
 │   ├── scheduler.py           # APScheduler orchestrator ✅ DONE
 │   ├── alert_bot.py          # Telegram alert bot ✅ BUILT
 │   ├── dashboard.py          # Streamlit dashboard ✅ BUILT
@@ -160,13 +160,11 @@ class MyCollector(BaseCollector):
 ```
 SEC_EDGAR_EMAIL=tommytang.cc@gmail.com    # Required for EDGAR User-Agent
 COINGLASS_API_KEY=5e3c70b131744fd5be3ae31878002971  # CoinGlass (from CryptoStrategy)
-WHALE_ALERT_API_KEY=                       # Free tier: 10 req/min (TODO)
-ETHERSCAN_API_KEY=                         # Free: 5 req/sec (TODO)
-UNUSUAL_WHALES_API_KEY=                    # Optional, paid ~$50/mo
-GLASSNODE_API_KEY=                         # Optional, $29/mo
 TG_BOT_TOKEN=                             # Telegram bot token (for alerts)
 TG_CHAT_ID=                               # Telegram chat ID (for alerts)
 ```
+
+Note: Whale Alert has no free tier. Arkham requires credit card. Self-built whale tracker via DEXScreener API (free, no key) — pending VPS test.
 
 ---
 
@@ -177,14 +175,19 @@ TG_CHAT_ID=                               # Telegram chat ID (for alerts)
 | sec_form4 | 5 min | EDGAR Atom feed updates frequently |
 | sec_form144 | 60 min | Pre-sale notices, event-driven |
 | sec_13d | 60 min | Event-driven, but check hourly |
+| sec_13f | 60 min | Quarterly filings |
 | congress | 60 min | New disclosures come in batches |
 | coinglass_whale | 60 sec | Real-time whale positions (Hyperliquid) |
 | coinglass_oi | 60 min | Open interest data (hourly) |
+| dex_whale | 5 min | DEX swap feeds (live block number now) |
+| whale_alert | 5 min | Whale transfers (0 signals — no free tier) |
+| arkham_labels | 60 min | Wallet labels (0 signals — no free tier) |
 | hkex_director | 60 min | T+3 filing delay anyway |
 | hkex_dealings | 60 min | Director buy/sell (T+3 delay) |
 | hkex_ccass | 24h | T+1 daily data |
 | hkex_northbound | 5 min | Real-time during HK market hours |
 | sfc_short | 24h | Weekly publication (Fridays) |
+| nq_si | 24h | NQ short interest composite z-score |
 | finra_darkpool | 24h | Weekly publication (BLOCKED) |
 
 ---
@@ -194,45 +197,52 @@ TG_CHAT_ID=                               # Telegram chat ID (for alerts)
 - **EDGAR `search-index` does NOT index Form 4 XML** — must use Atom feed (`browse-edgar?output=atom`)
 - **SEC requires email in User-Agent** — set `SEC_EDGAR_EMAIL` in `.env` or all EDGAR calls will 403
 - **CoinGlass API code field** — response code is string "0" not integer 0 for success
+- **SEC company_tickers.json format** — field is `title` (not `name`): `{"cik_str": 320193, "ticker": "AAPL", "title": "Apple Inc."}`
 - **13F source_id dedup** — uses `cusip + filer_cik + date`; CUSIPs can repeat across issuers, watch for collisions
-- **FINRA CDN blocked** — Cloudflare blocks non-residential IPs (Issue #1)
-- **ETF Baskets blocked** — iShares/Vanguard URLs returning 404/403 (Issue #2)
-- **HKEX dealings URL dead** — `www3.hkexnews.hk/more/news/companynews` returns 404 (site restructured). Rewritten using Playwright with `www1.hkexnews.hk/search/titlesearch.xhtml`. Searches by stock code + date range, parses results table. Tracks director dealings, share buybacks, and director change announcements.
+- **FINRA CDN blocked** — Cloudflare blocks non-residential IPs
+- **ETF Baskets blocked** — iShares/Vanguard URLs returning 404/403
+- **HKEX dealings URL dead** — `www3.hkexnews.hk/more/news/companynews` returns 404. Rewritten using Playwright with `www1.hkexnews.hk/search/titlesearch.xhtml`. Autocomplete click does NOT set hidden `#stockId` field — must set via JS after click.
+- **Form 4 direction** — only `P` (purchase) = BUY and `S` (sale) = SELL are true market direction. `M`/`G` = TRANSFER. `F`/`W`/`A`/`D` = HOLD (option exercise/grant/acquired/disposed — not cash market transactions)
+- **Whale Alert / Arkham** — no free tier. Self-built solution via DEXScreener API pending.
 
 ---
 
 ## Current State (2026-04-10)
 
-All Phase 1-4 collectors built. Total signals in DB: **1673** (as of 2026-04-10).
+**VPS running** — `python3 -m smartflow schedule --all` (PID 41116) on `18.139.210.59`. DB: `~/SmartFlow/data/smartflow.db` (3.1MB).
+
+Total signals in DB: **~2950** (as of 2026-04-10).
 
 | Collector | Status | Signals | Notes |
 |-----------|--------|---------|-------|
-| SEC Form 4 | ✅ | 43 | ~4/run |
-| Congress trades | ✅ | 1173 | |
-| SEC Form 144 | ✅ | 102 | |
-| SEC 13F | ✅ | 224 | |
-| CoinGlass Whale | ✅ | 98 | ~49/run |
-| CoinGlass OI | ✅ | 2 | Open interest |
-| HKEX CCASS | ✅ | 21 | Concentration signals |
-| HKEX Director | ✅ | 0 | T+3 delay |
-| HKEX Dealings | ✅ | 9 | Playwright + title search (2026-04-10) |
-| HKEX Northbound | ✅ | 0 | Real-time |
-| SFC Short Position | ✅ | 0 | Weekly |
-| NQ Short Interest | ✅ | 1 | Contrarian composite SI signal |
+| SEC Form 4 (sec_form4) | ✅ | ~97 | P=BUY, S=SELL only; M/G=TRANSFER |
+| Congress trades | ✅ | ~1198 | QuiverQuant free tier |
+| SEC Form 144 | ✅ | ~196 | CIK→ticker via SEC company_tickers.json |
+| SEC 13F | ✅ | ~387 | Name→ticker via SEC company_tickers.json |
+| CoinGlass Whale | ✅ | ~265 | |
+| CoinGlass OI | ✅ | ~8 | Open interest |
+| HKEX CCASS | ✅ | ~31 | RED/AMBER/GREEN concentration flags |
+| HKEX Director | ✅ | ~0 | T+3 delay |
+| HKEX Dealings | ✅ | ~27 | Playwright + title search |
+| HKEX Northbound | ✅ | ~0 | Real-time Stock Connect |
+| SFC Short Position | ✅ | ~0 | Weekly |
+| NQ Short Interest | ✅ | ~1 | Rolling z-score (20-period window) |
+| DEX Whale (dex_whale) | ✅ FIX | 0→pending | Was static block 19M; now live RPC |
+| Whale Alert | ❌ | 0 | No free tier |
+| Arkham Labels | ❌ | 0 | No free tier |
 
 Dashboard: `streamlit run smartflow/dashboard.py` → localhost:8501
-- Dashboard: sources filter now dynamic from DB (previously hardcoded)
-- Dashboard: session management fixed (was module-level, now per-call with try/finally)
-- Dashboard: Streamlit deprecation warnings fixed (`applymap`→`map`, `use_container_width`→`width`)
 
-## Pending APIs (need keys)
+## Pending APIs / Self-Built Solutions
 
-| Source | Signal | API Key Env Var |
-|--------|--------|-----------------|
-| Whale Alert | whale_transfer | `WHALE_ALERT_API_KEY` |
-| Arkham Intelligence | wallet_label | `ARKHAM_API_KEY` |
-| Glassnode | exchange flows | $29/mo |
-| Telegram alerts | alert bot | `TG_BOT_TOKEN`, `TG_CHAT_ID` |
+| Source | Status | Solution |
+|--------|--------|----------|
+| Whale Alert | ❌ No free tier | Self-built: DEXScreener API (free, no key) |
+| Arkham Intelligence | ❌ Credit card required | Self-built: DEXScreener API |
+| Glassnode | ❌ Paid $29/mo | Not needed — CoinGlass covers crypto |
+| Telegram alerts | Optional | Not critical |
+
+**DEXScreener API** — `https://api.dexscreener.com/latest/dex/tokens/{address}/swaps` — tested 200 OK from Windows. Pending: test from VPS, then rewrite `crypto_dex.py`.
 
 ## Design Decisions
 
@@ -243,8 +253,35 @@ Dashboard: `streamlit run smartflow/dashboard.py` → localhost:8501
 5. **APScheduler in-process** — no Celery, no Redis
 6. **Rate limit respect** — EDGAR max 10 req/sec
 7. **`raw_data` JSON** — store full source record always
+8. **S3 upload after each run** — scheduler uploads DB to `s3://smartflow-tommy-db/` after every collector run; Lambda always has fresh data
 
 ## Changelog
+
+### 2026-04-10 — Bug Fixes + VPS + Whale Tracker Rebuild
+
+**6 critical bug fixes:**
+
+1. **crypto_dex.py** — `get_recent_block_number()` returned static `19000000` (Sep 2023). Replaced with live ETH block number via `https://eth.public-rpc.com`. Falls back to static only if RPC fails.
+
+2. **edgar_xml.py (Form 4)** — Transaction code `A` (Acquired) and `D` (Disposed) were being mapped to BUY/SELL. These represent stock option exercises, gifts, etc. — not true market direction. Fixed: only `P`=BUY, `S`=SELL are true direction. `M`/`G`=TRANSFER. `F`/`W`/`A`/`D`=HOLD.
+
+3. **form144_xml.py** — Form 144 ticker was `None` for all signals. Added CIK→ticker lookup via SEC `company_tickers.json` (cached at startup). `issuer_cik` → SEC ticker.
+
+4. **sec_13f.py** — 13F holdings returned company name instead of ticker (e.g. "MICROSOFT CORP" instead of "MSFT"). Major rewrite: added 18K+ entry name→ticker cache using SEC `company_tickers.json`. Normalizes names (strips punctuation, common suffixes: INC/CORP/CO/LTD/LLC/HOLDINGS/GROUP/PARTNERS/LP/GP/etc.). Tested: WALMART IN→WMT ✅, MICROSOFT CORP→MSFT ✅, VISA INC→V ✅.
+
+5. **nq_si.py** — `expanding()` z-score was statistically meaningless (early period had tiny sample size). Changed to `rolling(window=20, min_periods=20)`.
+
+6. **hkex_ccass.py** — Same stock could fire both RED (SELL) and accumulation spike (BUY) simultaneously. Fixed: RED flag now blocks simultaneous accumulation signal. RED takes priority.
+
+**S3 upload in scheduler** — `scheduler.py` now uploads `smartflow.db` to `s3://smartflow-tommy-db/smartflow.db` after each collector run. Lambda always has fresh data.
+
+**VPS state (confirmed via SSH 2026-04-10):**
+- Process: `python3 -m smartflow schedule --all` (PID 41116)
+- SmartFlow code: `~/SmartFlow/` (git clone from GitHub, not the old no-git directory)
+- boto3 installed: `pip install -q boto3`
+- DB: `~/SmartFlow/data/smartflow.db` (3.1MB, ~2950 signals)
+
+**Whale tracker self-built** — Whale Alert has no free tier. Arkham requires credit card. Building own whale tracker via DEXScreener API (free, no key, tested 200 OK). Pending: test from VPS, then rewrite `crypto_dex.py`.
 
 ### 2026-04-10 — Lambda Daily Report Pipeline LIVE
 
