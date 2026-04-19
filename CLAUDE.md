@@ -207,6 +207,41 @@ Note: Whale Alert has no free tier. Arkham requires credit card. Self-built whal
 
 ---
 
+## Current State (2026-04-19)
+
+**VPS running** — PID managed via `~/SmartFlow/smartflow.pid`. Restart via `./smartflow_vps.sh`.
+
+### Scheduler Architecture (as of 2026-04-19)
+
+**Circuit breaker** — after 5 consecutive failures, a collector is backed off to 4h interval.
+Log message: `CIRCUIT OPEN — N consecutive failures`. To reset: restart the scheduler.
+
+**Hard timeout** — each collector runs in a ThreadPoolExecutor with a per-collector timeout
+(see `COLLECTOR_TIMEOUTS` in `config.py`). Hangs count as failures toward circuit breaker.
+
+**S3 upload** — only when `count > 0` new signals. Not on every run.
+
+**Disabled collectors** (`DISABLED_COLLECTORS` in config.py) — skipped entirely at startup:
+| Collector | Reason | Since |
+|-----------|--------|-------|
+| `dex_whale` | The Graph hosted service shut down (DNS → `error.thegraph.com`) | Jun 2024 |
+| `hkex_northbound` | `www3.hkexnews.hk/schin/SC/NorthboundTradingData.aspx` → 404 | Apr 2026 |
+| `congress` | QuiverQuant API 401 Unauthorized — free tier revoked | Apr 17, 2026 |
+| `whale_alert` | No free tier | Always |
+| `arkham_labels` | Requires credit card | Always |
+
+To re-enable a collector once fixed: remove from `DISABLED_COLLECTORS` in `config.py`, commit, pull on VPS, restart via `./smartflow_vps.sh`.
+
+### HKEX www3 Status
+- `www3.hkexnews.hk/sdw/search/searchsdw.aspx` (CCASS) — **alive** as of Apr 2026
+- `www3.hkexnews.hk/schin/SC/` (Stock Connect) — **dead** (404), hence northbound disabled
+- `www3.hkexnews.hk/search/titlesearch.xhtml` → migrated to `www1.hkexnews.hk` (done)
+
+### Known Broken (to fix)
+- **Congress trades**: QuiverQuant free tier revoked. Options: (1) pay for QuiverQuant, (2) use House Stock Watcher API (free), (3) scrape disclosure.gov directly.
+- **DEX whale**: The Graph deprecated. Options: (1) The Graph Network with API key, (2) use a different free Ethereum data source.
+- **HKEX Northbound**: Find new URL on HKEX website for Stock Connect turnover data.
+
 ## Current State (2026-04-10)
 
 **VPS running** — `python3 -m smartflow schedule --all` (PID 41116) on `18.139.210.59`. DB: `~/SmartFlow/data/smartflow.db` (3.1MB).
@@ -255,7 +290,46 @@ Dashboard: `streamlit run smartflow/dashboard.py` → localhost:8501
 7. **`raw_data` JSON** — store full source record always
 8. **S3 upload after each run** — scheduler uploads DB to `s3://smartflow-tommy-db/` after every collector run; Lambda always has fresh data
 
+## VPS Operations
+
+```bash
+# Restart scheduler (daily cron does this automatically at 06:00 UTC)
+ssh ubuntu@18.139.210.59
+cd ~/SmartFlow && ./smartflow_vps.sh
+
+# Check if running
+cat smartflow.pid && ps aux | grep $(cat smartflow.pid)
+
+# Tail live log (find today's log file)
+tail -f logs/smartflow_$(date +%Y%m%d)_*.log
+
+# Check circuit breaker status
+grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
+
+# Add/remove disabled collector
+# Edit smartflow/config.py → DISABLED_COLLECTORS, commit, pull, restart
+```
+
 ## Changelog
+
+### 2026-04-19 — Circuit Breaker + Dead Collector Cleanup + VPS Restart Fix
+
+**Root cause investigation** — found 6 problems that had accumulated since Apr 10:
+1. `smartflow_vps.sh` — no execute permission (cron silently failed for 9 days)
+2. `dex_whale` — The Graph hosted service dead, 1440 DNS error lines/day
+3. `hkex_northbound` — `www3.hkexnews.hk/schin` 404, 288 errors/day
+4. `hkex_ccass` + `hkex_dealings` — hanging silently; `as_completed()` had no timeout;
+   APScheduler `max_instances=1` caused starvation (no new signals for 7 days)
+5. Congress API — QuiverQuant 401 since Apr 17 (free tier revoked)
+6. S3 upload on every run including 0-signal runs (~2880 unnecessary PUTs/day)
+
+**Fixes:**
+- `smartflow_vps.sh` rewritten: PID file management, stray process cleanup, startup verification, pre-restart S3 backup
+- `config.py`: added `DISABLED_COLLECTORS`, `CIRCUIT_BREAKER_THRESHOLD/BACKOFF`, `COLLECTOR_TIMEOUTS`
+- `scheduler.py` rewritten: circuit breaker (5 fails → 4h backoff), hard timeout per collector (ThreadPoolExecutor + `future.result(timeout)`), S3 only on `count > 0`, disabled collector skip
+- `hkex_ccass.py`: `as_completed(timeout=800s)` prevents infinite hang
+- `hkex_dealings.py`: `page.set_default_timeout(15000)` + explicit timeouts on locator actions
+- Commit `491f162`, pushed to GitHub, deployed to VPS, new scheduler PID=380964
 
 ### 2026-04-10 — Bug Fixes + VPS + Whale Tracker Rebuild
 
