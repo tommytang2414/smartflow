@@ -48,6 +48,7 @@ DISABLED_COLLECTORS = {
     "congress",          # QuiverQuant API 401 since 2026-04-17 — free tier revoked
     "whale_alert",       # No free tier
     "arkham_labels",     # Requires credit card
+    "nq_si",             # Hardcoded Windows path C:/Users/user/nq-short-interest — not on VPS
 }
 
 # Circuit breaker: after this many consecutive failures, back off to CIRCUIT_BREAKER_BACKOFF
@@ -62,7 +63,7 @@ COLLECTOR_TIMEOUTS = {
     "hkex_ccass":     900,   # 15 min — 24+ stocks × Playwright/ASP.NET scraping
     "hkex_dealings":  600,   # 10 min — 10 stocks × Playwright
     "sec_13f":        600,   # 10 min — large XML parse
-    "sec_form4":      120,   # 2 min
+    "sec_form4":      300,   # 5 min — EDGAR can be slow; 120s was too tight
     "sec_form144":    120,
     "sec_13d":        120,
     "congress":       60,
