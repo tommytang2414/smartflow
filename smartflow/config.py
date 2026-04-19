@@ -40,6 +40,42 @@ UNUSUAL_WHALES_API_KEY = os.getenv("UNUSUAL_WHALES_API_KEY", "")
 TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 
+# Collectors that are permanently disabled (dead APIs, broken URLs)
+# Add/remove names here — scheduler will skip these entirely.
+DISABLED_COLLECTORS = {
+    "dex_whale",         # The Graph hosted service shut down 2024, DNS → error.thegraph.com
+    "hkex_northbound",   # www3.hkexnews.hk/schin/SC/NorthboundTradingData.aspx → 404 (HKEX decomm)
+    "congress",          # QuiverQuant API 401 since 2026-04-17 — free tier revoked
+    "whale_alert",       # No free tier
+    "arkham_labels",     # Requires credit card
+}
+
+# Circuit breaker: after this many consecutive failures, back off to CIRCUIT_BREAKER_BACKOFF
+CIRCUIT_BREAKER_THRESHOLD = 5
+CIRCUIT_BREAKER_BACKOFF = 14400  # 4 hours — collector stays at this interval until manually reset
+
+# Hard wall-clock timeout per collector (seconds). If a collector run exceeds this,
+# it is abandoned and counted as a failure toward the circuit breaker.
+# Python threads cannot be forcibly killed — the thread may linger, but the scheduler
+# moves on and the circuit breaker handles repeated hangs.
+COLLECTOR_TIMEOUTS = {
+    "hkex_ccass":     900,   # 15 min — 24+ stocks × Playwright/ASP.NET scraping
+    "hkex_dealings":  600,   # 10 min — 10 stocks × Playwright
+    "sec_13f":        600,   # 10 min — large XML parse
+    "sec_form4":      120,   # 2 min
+    "sec_form144":    120,
+    "sec_13d":        120,
+    "congress":       60,
+    "coinglass_whale": 30,
+    "coinglass_oi":   30,
+    "hkex_director":  120,
+    "hkex_northbound": 60,
+    "sfc_short":      120,
+    "nq_si":          60,
+    "dex_whale":      30,
+    "default":        180,   # fallback for any unlisted collector
+}
+
 # Scheduler intervals (seconds)
 POLL_INTERVALS = {
     "sec_form4": 300,       # 5 min

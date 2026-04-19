@@ -91,7 +91,9 @@ class HKEXDealingsCollector(BaseCollector):
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                            "Chrome/122.0.0.0 Safari/537.36"
             )
+            # 50s hard cap per page: goto(30s) + waits + search + parse, with margin
             page = context.new_page()
+            page.set_default_timeout(15000)
 
             try:
                 page.goto(
@@ -108,7 +110,7 @@ class HKEXDealingsCollector(BaseCollector):
                     pass
 
                 # Step 1: Fill stock code in autocomplete field
-                page.locator("#searchStockCode").fill(stock_code)
+                page.locator("#searchStockCode").fill(stock_code, timeout=15000)
                 page.wait_for_timeout(3000)
 
                 # Step 2: Click first autocomplete suggestion to set display value
@@ -120,7 +122,7 @@ class HKEXDealingsCollector(BaseCollector):
                     browser.close()
                     return []
 
-                suggestions.first.click()
+                suggestions.first.click(timeout=15000)
                 page.wait_for_timeout(2000)
 
                 # Step 2b: Set hidden stockId directly via JavaScript to ensure it's populated
@@ -155,7 +157,7 @@ class HKEXDealingsCollector(BaseCollector):
                 page.wait_for_timeout(500)
 
                 # Step 4: Click SEARCH button
-                page.locator(".filter__btn-applyFilters-js").click()
+                page.locator(".filter__btn-applyFilters-js").click(timeout=15000)
                 page.wait_for_timeout(5000)
 
                 # Step 5: Parse results table
