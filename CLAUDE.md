@@ -227,6 +227,7 @@ Log message: `CIRCUIT OPEN — N consecutive failures`. To reset: restart the sc
 | `dex_whale` | The Graph hosted service shut down (DNS → `error.thegraph.com`) | Jun 2024 |
 | `hkex_northbound` | `www3.hkexnews.hk/schin/SC/NorthboundTradingData.aspx` → 404 | Apr 2026 |
 | `congress` | QuiverQuant API 401 Unauthorized — free tier revoked | Apr 17, 2026 |
+| `nq_si` | Hardcoded Windows path `C:/Users/user/nq-short-interest` — not on VPS | Apr 19, 2026 |
 | `whale_alert` | No free tier | Always |
 | `arkham_labels` | Requires credit card | Always |
 
