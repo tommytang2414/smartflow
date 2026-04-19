@@ -23,7 +23,7 @@ import random
 import requests
 from datetime import date, datetime, timedelta
 from typing import List, Dict, Any, Optional
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, TimeoutError as FuturesTimeoutError
 from sqlalchemy.exc import IntegrityError
 
 from smartflow.collectors.base import BaseCollector
@@ -458,19 +458,31 @@ class CCASSCollector(BaseCollector):
 
         all_signals = []
 
-        # Parallel scraping with limited workers
+        # Parallel scraping with limited workers.
+        # as_completed timeout prevents infinite hang when www3.hkexnews.hk stops responding.
+        # Per-stock timeout = 90s (3 retry attempts × 30s each).
+        # Total timeout = 90s × ceil(stocks/workers) + buffer = ~800s for 24 stocks @ 3 workers.
+        TOTAL_TIMEOUT = 800
         with ThreadPoolExecutor(max_workers=self.workers) as executor:
             futures = {
                 executor.submit(self._process_stock, stock, target_date): stock
                 for stock in watchlist
             }
-            for future in as_completed(futures):
-                try:
-                    signals = future.result()
-                    all_signals.extend(signals)
-                except Exception as e:
-                    stock = futures[future]
-                    self.logger.warning(f"Worker failed for {stock['stock_code']}: {e}")
+            try:
+                for future in as_completed(futures, timeout=TOTAL_TIMEOUT):
+                    try:
+                        signals = future.result()
+                        all_signals.extend(signals)
+                    except Exception as e:
+                        stock = futures[future]
+                        self.logger.warning(f"Worker failed for {stock['stock_code']}: {e}")
+            except FuturesTimeoutError:
+                completed = sum(1 for f in futures if f.done())
+                self.logger.error(
+                    f"CCASS collection timed out after {TOTAL_TIMEOUT}s — "
+                    f"{completed}/{len(watchlist)} stocks completed. "
+                    f"www3.hkexnews.hk may be unresponsive."
+                )
 
         self.logger.info(
             f"CCASS collection done: {len(watchlist)} stocks, {len(all_signals)} alert signals"
