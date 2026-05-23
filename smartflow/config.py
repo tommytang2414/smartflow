@@ -43,10 +43,14 @@ TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 # Collectors that are permanently disabled (dead APIs, broken URLs)
 # Add/remove names here — scheduler will skip these entirely.
 DISABLED_COLLECTORS = {
-    # "dex_whale",       # RE-ENABLED: rewrote using DEXScreener API (free, tested 200 OK from VPS)
-    "hkex_northbound",    # HKEX decommissioned www3.hkexnews.hk/schin/SC/ → 404. Stock Connect page removed entirely from HKEX website. No known replacement URL.
+    # "congress",         # RE-ENABLED: QuiverQuant beta API (session cookie auth, http.client workaround)
+    # "dex_whale",        # RE-ENABLED: DEXScreener search API (free, 200 OK)
+    # "nq_si",            # RE-ENABLED: VPS data at ~/trading-dashboard/nq_data/ (no inline refresh — handled by cron)
+    "hkex_northbound",    # HKEX decommissioned Stock Connect page entirely — no known replacement URL
     "whale_alert",        # No free tier
     "arkham_labels",      # Requires credit card
+    # "nq_si",            # TEMP DISABLED: market_caps.json missing on VPS + nq-short-interest repo not on VPS
+    #                       To re-enable: create ~/trading-dashboard/nq_data/market_caps.json or clone nq-short-interest repo
 }
 
 # Circuit breaker: after this many consecutive failures, back off to CIRCUIT_BREAKER_BACKOFF

@@ -75,26 +75,26 @@ class NQSICollector(BaseCollector):
         return {k: v / total for k, v in caps.items()}
 
     def _update_cache_if_stale(self) -> bool:
-        """Re-run nq-short-interest data fetch if cache is older than 14 days."""
+        """Check if SI cache is stale; refresh is handled externally by smartflow_vps.sh cron.
+
+        On Windows dev: skip refresh entirely.
+        On VPS: data refresh is handled by smartflow_vps.sh (which runs nq-short-interest
+        data_fetcher.py independently) rather than inline here (the data_fetcher module
+        path is not on sys.path here).
+        """
+        if sys.platform == "win32":
+            return False
+
         si_path = _resolve_data_dir() / "short_interest.parquet"
         if si_path.exists():
             age_days = (datetime.now().timestamp() - si_path.stat().st_mtime) / 86400
-            if age_days < 14:
-                return False  # cache fresh
-
-        self.logger.info("NQ SI cache stale (>14 days), refreshing data...")
-        result = subprocess.run(
-            [sys.executable, "-c",
-             "from data_fetcher import fetch_all_data; fetch_all_data(force=True)"],
-            cwd=str(_resolve_data_dir().parent),
-            capture_output=True,
-            text=True,
-        )
-        if result.returncode != 0:
-            self.logger.error(f"SI data refresh failed: {result.stderr}")
-            return False
-        self.logger.info("NQ SI data refreshed.")
-        return True
+            if age_days >= 14:
+                self.logger.warning(
+                    f"NQ SI cache stale ({age_days:.0f} days old) — "
+                    "smartflow_vps.sh will refresh via cron; using stale data."
+                )
+            return False  # always skip inline refresh; cron handles it
+        return False
 
     def _compute_composite(self, si: pd.DataFrame, weights: dict[str, float]) -> pd.DataFrame:
         """Build composite SI index from per-stock data."""
