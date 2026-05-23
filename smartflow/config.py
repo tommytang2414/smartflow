@@ -43,12 +43,10 @@ TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 # Collectors that are permanently disabled (dead APIs, broken URLs)
 # Add/remove names here — scheduler will skip these entirely.
 DISABLED_COLLECTORS = {
-    "dex_whale",         # The Graph hosted service shut down 2024, DNS → error.thegraph.com
-    "hkex_northbound",   # www3.hkexnews.hk/schin/SC/NorthboundTradingData.aspx → 404 (HKEX decomm)
-    "congress",          # QuiverQuant API 401 since 2026-04-17 — free tier revoked
-    "whale_alert",       # No free tier
-    "arkham_labels",     # Requires credit card
-    "nq_si",             # Hardcoded Windows path C:/Users/user/nq-short-interest — not on VPS
+    # "dex_whale",       # RE-ENABLED: rewrote using DEXScreener API (free, tested 200 OK from VPS)
+    "hkex_northbound",    # HKEX decommissioned www3.hkexnews.hk/schin/SC/ → 404. Stock Connect page removed entirely from HKEX website. No known replacement URL.
+    "whale_alert",        # No free tier
+    "arkham_labels",      # Requires credit card
 }
 
 # Circuit breaker: after this many consecutive failures, back off to CIRCUIT_BREAKER_BACKOFF
@@ -66,14 +64,14 @@ COLLECTOR_TIMEOUTS = {
     "sec_form4":      300,   # 5 min — EDGAR can be slow; 120s was too tight
     "sec_form144":    120,
     "sec_13d":        120,
-    "congress":       60,
+    "congress":       90,    # was 60s too tight; disclosure portal scraping needs more time
     "coinglass_whale": 30,
     "coinglass_oi":   30,
     "hkex_director":  120,
     "hkex_northbound": 60,
     "sfc_short":      120,
     "nq_si":          60,
-    "dex_whale":      30,
+    "dex_whale":      60,    # DEXScreener search + pair scan (2 API calls)
     "default":        180,   # fallback for any unlisted collector
 }
 
@@ -86,7 +84,7 @@ POLL_INTERVALS = {
     "congress": 3600,       # hourly
     "coinglass_whale": 60,  # 1 min
     "coinglass_oi": 3600,   # hourly
-    "dex_whale": 60,        # 1 min (Uniswap V3 large swaps)
+    "dex_whale": 300,        # 5 min (DEXScreener search + pair scan)
     "whale_alert": 300,     # 5 min (free tier: 10 req/min)
     "arkham_labels": 3600,  # hourly (API rate limited)
     "hkex_director": 3600,

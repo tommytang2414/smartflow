@@ -313,6 +313,11 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-04-25 — Startup Cleanup
+
+- Removed `SmartFlow.lnk` from Windows Startup folder (`AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`)
+- SmartFlow now runs exclusively on VPS (`18.139.210.59`), no local autostart needed
+
 ### 2026-04-19 — Circuit Breaker + Dead Collector Cleanup + VPS Restart Fix
 
 **Root cause investigation** — found 6 problems that had accumulated since Apr 10:

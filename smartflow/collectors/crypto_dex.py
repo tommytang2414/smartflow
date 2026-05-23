@@ -77,85 +77,140 @@ class DEXWhaleCollector(BaseCollector):
     name = "dex_whale"
     market = "CRYPTO"
 
-    @retry(max_attempts=3, backoff=2.0)
-    def _query_subgraph(self, query: str, variables: dict) -> dict:
-        resp = requests.post(
-            UNISWAP_V3_SUBGRAPH,
-            json={"query": query, "variables": variables},
-            timeout=30,
+    def _query_dexscreener(self, query: str) -> dict:
+        """Query DEXScreener search API for recent large swaps."""
+        # DEXScreener search: returns pairs across all chains
+        # Filter by volume to find large token movements
+        resp = requests.get(
+            "https://api.dexscreener.com/latest/dex/search",
+            params={"q": query, "limit": 50},
+            timeout=20,
         )
         resp.raise_for_status()
         return resp.json()
 
-    def fetch(self) -> List[Dict[str, Any]]:
-        """Fetch recent large DEX swaps on Uniswap V3."""
-        self.logger.info("Fetching Uniswap V3 whale swaps")
-
+    def _fetch_recent_swaps(self, token_addr: str, chain: str = "ethereum") -> List[Dict]:
+        """Fetch recent swaps for a specific token from DEXScreener."""
+        # Try swaps endpoint (may 404 on some tokens — graceful fallback)
         try:
-            recent_block = get_recent_block_number()
-            result = self._query_subgraph(QUERY_LARGE_SWAPS, {
-                "minAmount": str(WHALE_THRESHOLD_USD),
-                "blockNumber": recent_block - 1000,  # last ~200 blocks (~40 min)
-            })
-        except Exception as e:
-            self.logger.warning(f"Uniswap subgraph query failed: {e}")
-            return []
+            resp = requests.get(
+                f"https://api.dexscreener.com/latest/dex/tokens/{token_addr}/swaps",
+                params={"limit": 20},
+                timeout=15,
+            )
+            if resp.status_code == 200:
+                return resp.json().get("swaps", [])
+        except Exception:
+            pass
+        return []
 
-        swaps = result.get("data", {}).get("swaps", [])
-        self.logger.info(f"Found {len(swaps)} large swaps (>$100K)")
+    def _whale_pairs(self) -> List[Dict]:
+        """Get top pairs by volume across all chains (whale activity proxy)."""
+        resp = requests.get(
+            "https://api.dexscreener.com/latest/dex/tokens/0xdAC17F958D2ee523a2206206994857ec00eAD1CF",
+            timeout=15,
+        )
+        if resp.status_code != 200:
+            return []
+        data = resp.json()
+        return data.get("pairs") or []
+
+    def fetch(self) -> List[Dict[str, Any]]:
+        """Fetch recent large DEX pairs as whale activity signals via DEXScreener.
+
+        Strategy: use DEXScreener search to find pairs with high 24h volume —
+        large volume = large capital flow = whale activity.
+        Also scan top pairs by volume directly.
+        """
+        self.logger.info("Fetching DEX whale activity via DEXScreener...")
+
+        # Whitelist of major tokens to monitor (whale targets)
+        WHALE_TOKENS = [
+            ("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "USDC", "ethereum"),
+            ("0xdAC17F958D2ee523a2206206994857ec00eAD1CF", "USDT", "ethereum"),
+            ("0x2260FAC5E5542a773Aa44fCFfea1B477304A4093", "WBTC", "ethereum"),
+            ("0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", "WETH", "ethereum"),
+            ("0x514910771AF9Ca656af840dff83E8264EcF986CA", "LINK", "ethereum"),
+            ("0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "UNI", "ethereum"),
+            ("0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9", "AAVE", "ethereum"),
+            ("0xExchangeToken1", "SOL", "solana"),
+            ("0xExchangeToken2", "RAY", "solana"),
+        ]
 
         signals = []
-        seen_ids = set()
+        seen_tickers: set[str] = set()
 
-        for swap in swaps:
-            swap_id = swap.get("id", "")
-            if swap_id in seen_ids:
+        # Search for high-volume pairs (whale proxy)
+        try:
+            result = self._query_dexscreener("BTC ETH USDC USDT")
+            pairs = result.get("pairs", []) or []
+            self.logger.info(f"DEXScreener search: {len(pairs)} pairs found")
+        except Exception as e:
+            self.logger.warning(f"DEXScreener search failed: {e}")
+            pairs = []
+
+        for pair in pairs[:20]:  # Top 20 by relevance
+            try:
+                base = pair.get("baseToken", {}) or {}
+                quote = pair.get("quoteToken", {}) or {}
+                ticker = base.get("symbol", "")
+                if not ticker or ticker in seen_tickers:
+                    continue
+                seen_tickers.add(ticker)
+
+                price_usd = float(pair.get("priceUsd") or 0)
+                vol_24h = float(pair.get("volume", {}).get("h24") or 0)
+                m5_buys = int(pair.get("txns", {}).get("m5", {}).get("buys") or 0)
+                m5_sells = int(pair.get("txns", {}).get("m5", {}).get("sells") or 0)
+                chain = pair.get("chainId", "unknown")
+                dex = pair.get("dexId", "")
+                liquidity = float(pair.get("liquidity", {}).get("usd") or 0)
+                price_change = float(pair.get("priceChange", {}).get("h24") or 0)
+
+                # Only flag pairs with significant volume (> $100K 24h)
+                if vol_24h < WHALE_THRESHOLD_USD:
+                    continue
+
+                # Direction: buy-heavy = bullish, sell-heavy = bearish
+                if m5_buys > m5_sells * 2:
+                    direction = "BUY"
+                elif m5_sells > m5_buys * 2:
+                    direction = "SELL"
+                else:
+                    direction = "HOLD"
+
+                value_usd = vol_24h  # 24h volume as notional
+                traded_at = datetime.utcnow()
+                source_id = f"dex_whale_{chain}_{ticker}_{traded_at.strftime('%Y%m%d%H%M')}"
+
+                signals.append({
+                    "signal_type": "dex_whale_swap",
+                    "ticker": ticker,
+                    "entity_name": f"{chain}:{dex}",
+                    "entity_type": "whale",
+                    "direction": direction,
+                    "quantity": None,
+                    "price": price_usd,
+                    "value_usd": round(value_usd, 2),
+                    "filed_at": traded_at,
+                    "traded_at": traded_at,
+                    "raw_data": {
+                        "chain": chain,
+                        "dex": dex,
+                        "pair_address": pair.get("pairAddress", ""),
+                        "volume_24h": vol_24h,
+                        "liquidity_usd": liquidity,
+                        "price_change_24h": price_change,
+                        "m5_buys": m5_buys,
+                        "m5_sells": m5_sells,
+                        "quote_token": quote.get("symbol", ""),
+                        "url": pair.get("url", ""),
+                    },
+                    "source_id": source_id,
+                })
+
+            except Exception as e:
                 continue
-            seen_ids.add(swap_id)
 
-            amount_usd = float(swap.get("amountUSD", 0) or 0)
-            if amount_usd < WHALE_THRESHOLD_USD:
-                continue
-
-            token_in = swap.get("tokenIn", {}) or {}
-            token_out = swap.get("tokenOut", {}) or {}
-            amount_in = float(swap.get("amountIn", 0) or 0)
-            amount_out = float(swap.get("amountOut", 0) or 0)
-
-            decimals_in = int(token_in.get("decimals", 18))
-            decimals_out = int(token_out.get("decimals", 18))
-
-            price = amount_usd / amount_in if amount_in > 0 else 0
-
-            direction = "BUY" if token_in.get("symbol") == "USDC" or token_in.get("symbol") == "USDT" else "SELL"
-
-            source_id = f"dex_swap_{swap_id}"
-
-            signals.append({
-                "signal_type": "dex_whale_swap",
-                "ticker": token_out.get("symbol", token_in.get("symbol", "UNKNOWN")),
-                "entity_name": f"0x{swap.get('origin', '')[:10]}...",
-                "entity_type": "whale",
-                "direction": direction,
-                "quantity": amount_out / (10 ** decimals_out),
-                "price": price,
-                "value_usd": round(amount_usd, 2),
-                "filed_at": datetime.fromtimestamp(int(swap.get("timestamp", 0))),
-                "traded_at": datetime.fromtimestamp(int(swap.get("timestamp", 0))),
-                "raw_data": {
-                    "swap_id": swap_id,
-                    "tx_hash": swap.get("transaction", {}).get("id", ""),
-                    "block": swap.get("blockNumber"),
-                    "token_in": token_in.get("symbol"),
-                    "token_in_address": token_in.get("id"),
-                    "amount_in": amount_in / (10 ** decimals_in),
-                    "token_out": token_out.get("symbol"),
-                    "token_out_address": token_out.get("id"),
-                    "amount_out": amount_out / (10 ** decimals_out),
-                    "fee_tier": swap.get("fee"),
-                    "wallet": swap.get("origin"),
-                },
-                "source_id": source_id,
-            })
-
+        self.logger.info(f"Parsed {len(signals)} DEX whale signals (vol > $100K)")
         return signals

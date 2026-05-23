@@ -13,6 +13,7 @@ Requires nq-short-interest data at: C:/Users/user/nq-short-interest/data/
 """
 
 import json
+import os
 import subprocess
 import sys
 from datetime import datetime
@@ -25,7 +26,22 @@ import pandas as pd
 from smartflow.collectors.base import BaseCollector
 from smartflow.utils import get_logger
 
-NQ_DATA_DIR = Path("C:/Users/user/nq-short-interest/data")
+# Default VPS path — overridden by NQ_DATA_DIR env var if set
+_NQ_DEFAULT_DIR = Path.home() / "trading-dashboard" / "nq_data"
+
+def _resolve_data_dir() -> Path:
+    """Resolve NQ data directory: env var takes priority, else default VPS path."""
+    if "NQ_DATA_DIR" in os.environ:
+        d = Path(os.environ["NQ_DATA_DIR"])
+        if d.exists():
+            return d
+        # Env var set but dir missing — try as absolute path
+        return Path(os.environ["NQ_DATA_DIR"])
+    # Default: check VPS location first, fall back to Windows path for dev
+    if _NQ_DEFAULT_DIR.exists():
+        return _NQ_DEFAULT_DIR
+    # Dev fallback (Windows local)
+    return Path("C:/Users/user/nq-short-interest/data")
 SIGNAL_THRESHOLD_ZSCORE = 1.5
 SI_HIGH_THRESHOLD = 0.05   # +5% MoM SI change → contrarian long
 SI_LOW_THRESHOLD = -0.05   # -5% MoM SI change → contrarian short
@@ -40,7 +56,7 @@ class NQSICollector(BaseCollector):
 
     def _load_si_data(self) -> pd.DataFrame:
         """Load cached short interest parquet."""
-        path = NQ_DATA_DIR / "short_interest.parquet"
+        path = _resolve_data_dir() / "short_interest.parquet"
         if not path.exists():
             self.logger.warning(f"SI cache not found: {path}")
             return pd.DataFrame()
@@ -48,7 +64,7 @@ class NQSICollector(BaseCollector):
 
     def _load_weights(self) -> dict[str, float]:
         """Load and normalize market-cap weights."""
-        path = NQ_DATA_DIR / "market_caps.json"
+        path = _resolve_data_dir() / "market_caps.json"
         if not path.exists():
             return {}
         with open(path) as f:
@@ -60,7 +76,7 @@ class NQSICollector(BaseCollector):
 
     def _update_cache_if_stale(self) -> bool:
         """Re-run nq-short-interest data fetch if cache is older than 14 days."""
-        si_path = NQ_DATA_DIR / "short_interest.parquet"
+        si_path = _resolve_data_dir() / "short_interest.parquet"
         if si_path.exists():
             age_days = (datetime.now().timestamp() - si_path.stat().st_mtime) / 86400
             if age_days < 14:
@@ -70,7 +86,7 @@ class NQSICollector(BaseCollector):
         result = subprocess.run(
             [sys.executable, "-c",
              "from data_fetcher import fetch_all_data; fetch_all_data(force=True)"],
-            cwd=str(NQ_DATA_DIR.parent),
+            cwd=str(_resolve_data_dir().parent),
             capture_output=True,
             text=True,
         )
