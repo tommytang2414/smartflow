@@ -2,10 +2,23 @@
 # Easy to add/remove tickers without editing Python code.
 
 [mega_cap]
-tickers = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO"]
+tickers = [
+    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO",
+    "ORCL", "CRM", "AMD", "QCOM", "TXN", "MU", "INTU", "NOW",
+]
 
 [large_cap]
-tickers = ["JPM", "V", "MA", "UNH", "XOM", "LLY", "JNJ", "PG", "HD", "CVX", "MRK", "ABBV", "PFE", "KO", "PEP", "COST", "TMO", "MCD", "WMT", "BAC"]
+tickers = [
+    "JPM", "V", "MA", "UNH", "XOM", "LLY", "JNJ", "PG", "HD", "CVX",
+    "MRK", "ABBV", "PFE", "KO", "PEP", "COST", "TMO", "MCD", "WMT", "BAC",
+    "GS", "MS", "BLK", "SCHW", "AXP", "SPGI",
+    "ISRG", "SYK", "ABT", "DHR", "MDT", "ZTS", "ELV",
+    "GILD", "AMGN", "REGN", "VRTX",
+    "CAT", "DE", "HON", "GE", "UPS", "RTX", "BA",
+    "MMM", "IBM", "INTC", "ADI", "LRCX", "KLAC", "AMAT",
+    "BKNG", "MAR", "HLT", "ABNB",
+    "LIN", "SHW", "APD", "FCX", "NEM", "BTG",
+]
 
 [sector_etfs]
 tickers = ["XLK", "XLF", "XLV", "XLE", "XLY", "XLI", "XRE", "XLB", "XLU", "SPY"]
