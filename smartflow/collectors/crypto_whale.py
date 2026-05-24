@@ -1,10 +1,12 @@
-"""Whale Alert API Collector.
+"""Whale Alert API Collector — DEPRECATED.
 
-Tracks large cryptocurrency transactions across multiple chains.
-Free tier: 10 requests/minute, transactions > $100K only.
+DEPRECATED (2026-05-23): Whale Alert has no free tier. The $99/month
+plan is required even for basic access. This collector is permanently
+disabled. Consider alternatives: DEXScreener (crypto_dex.py, free) or
+CoinGlass whale tracker (crypto_coinglass.py).
 
-Source: https://api.whale-alert.io/v1/transactions
-API Key: Set WHALE_ALERT_API_KEY in .env (free tier available)
+Historical source: https://api.whale-alert.io/v1/transactions
+API Key: Set WHALE_ALERT_API_KEY in .env (paid tier required)
 
 signal_type: whale_transfer_in, whale_transfer_out
 """

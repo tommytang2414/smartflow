@@ -1,0 +1,15 @@
+# SmartFlow US Stock Universe
+# Easy to add/remove tickers without editing Python code.
+
+[mega_cap]
+tickers = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO"]
+
+[large_cap]
+tickers = ["JPM", "V", "MA", "UNH", "XOM", "LLY", "JNJ", "PG", "HD", "CVX", "MRK", "ABBV", "PFE", "KO", "PEP", "COST", "TMO", "MCD", "WMT", "BAC"]
+
+[sector_etfs]
+tickers = ["XLK", "XLF", "XLV", "XLE", "XLY", "XLI", "XRE", "XLB", "XLU", "SPY"]
+
+[indices]
+# Market regime proxies
+tickers = ["SPY", "%5EVIX"]

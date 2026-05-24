@@ -76,6 +76,10 @@ COLLECTOR_TIMEOUTS = {
     "sfc_short":      120,
     "nq_si":          60,
     "dex_whale":      60,    # DEXScreener search + pair scan (2 API calls)
+    # US Stock market flow
+    "stock_volume":   120,   # 2 min — 28 stocks × Yahoo Finance
+    "stock_regime":   120,   # 2 min — SPY + VIX only (2 requests)
+    "stock_momentum": 300,   # 5 min — all tickers ranked together
     "default":        180,   # fallback for any unlisted collector
 }
 
@@ -101,4 +105,8 @@ POLL_INTERVALS = {
     "options_unusual": 300,
     "options_darkpool": 86400,
     "nq_si": 86400,   # daily (FINRA publishes bi-monthly, cache checked on each run)
+    # US Stock market flow
+    "stock_volume":   900,   # 15 min
+    "stock_regime":    900,   # 15 min
+    "stock_momentum": 3600,  # hourly — needs all tickers before scoring
 }

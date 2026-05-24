@@ -1,12 +1,14 @@
-"""Arkham Intelligence Collector.
+"""Arkham Intelligence Collector — DEPRECATED.
 
-Labels whale wallet addresses for the crypto pipeline.
-Arkham provides entity labels (e.g., "Binance Hot Wallet", "Justin Sun", "Jump Trading").
+DEPRECATED (2026-05-23): Arkham Intelligence requires a credit card to
+sign up — even their "free tier" requires billing setup. This collector is
+permanently disabled. Consider CoinGlass (crypto_coinglass.py) for whale
+label enrichment as an alternative.
 
-Source: https://api.arkhamintelligence.com/v1
+Historical source: https://api.arkhamintelligence.com/v1
 API Key: Free tier available at https://app.arkhamintelligence.com
 
-Use case: Label unknown whale addresses from CoinGlass/Whale Alert data.
+Use case: Label unknown whale addresses for the crypto pipeline.
 Run as enrichment after whale data is collected.
 
 signal_type: wallet_label (enrichment — adds labels to raw wallet data)

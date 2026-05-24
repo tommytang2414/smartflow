@@ -1,9 +1,10 @@
-"""HKEX Stock Connect Northbound/Southbound Flow Collector.
+"""HKEX Stock Connect Northbound/Southbound Flow Collector — DEPRECATED.
 
-Tracks daily Northbound (HK→China via Stock Connect) and Southbound (China→HK) trading volumes.
-High northbound flow = Hong Kong capital flowing into China = bullish for HK/China stocks.
+DEPRECATED (2026-05-23): HKEX decommissioned the entire Stock Connect page
+(www3.hkexnews.hk/schin/SC/) — all URLs return 404. No known replacement URL.
+This collector is permanently disabled. Source data: N/A.
 
-Source: https://www3.hkexnews.hk/schin/SC/index.html
+Historical source: https://www3.hkexnews.hk/schin/SC/index.html
 Method: ASP.NET ViewState POST scraping (same pattern as CCASS)
 """
 
