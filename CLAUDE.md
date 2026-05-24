@@ -33,6 +33,9 @@ C:\Users\user\SmartFlow\
 │   ├── finra_darkpool.py  # FINRA ATS dark pool ❌ Blocked
 │   ├── crypto_whale.py     # Whale Alert ❌ No free tier
 │   ├── crypto_arkham.py   # Arkham Intelligence ❌ No free tier
+│   ├── stock_volume.py    # US stock volume anomaly scanner ✅ (Yahoo Finance)
+│   ├── stock_regime.py    # Market regime + 52w high/low scanner ✅
+│   ├── stock_momentum.py  # Percentile-ranked momentum ✅
 │   │   ├── crypto_exchange.py # Glassnode/CoinGlass exchange flows ❌ TODO
 │   │   ├── options_tradier.py # Tradier RT options chain ❌ TODO
 │   │   └── options_darkpool.py # FINRA + unusual activity ❌ TODO
@@ -41,6 +44,8 @@ C:\Users\user\SmartFlow\
 │   │   ├── form144_xml.py     # Form 144 XML parser ✅ (CIK→ticker)
 │   │   └── hkex_html.py       # HKEX HTML parser ✅
 │   ├── scheduler.py           # APScheduler orchestrator ✅ DONE
+│   ├── helpers/
+│   │   └── yfinance.py       # Yahoo Finance v8 Chart API helper ✅
 │   ├── alert_bot.py          # Telegram alert bot ✅ BUILT
 │   ├── dashboard.py          # Streamlit dashboard ✅ BUILT
 │   └── __main__.py            # CLI entrypoint ✅ DONE
@@ -313,7 +318,22 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
-### 2026-04-25 — Startup Cleanup
+### 2026-05-24 — US Stock Market Flow Enhancement (Phase 1 & 2)
+
+**3 new collectors added:**
+- `stock_volume.py` — volume anomaly scanner (volume > 3x 20d avg). Source: Yahoo Finance v8 Chart API.
+- `stock_regime.py` — SPY/VIX composite (BULL/NEUTRAL/RISK_OFF) + 52w high/low per stock.
+- `stock_momentum.py` — percentile-ranked momentum across 1d/5d/20d/60d timeframes.
+
+**Infrastructure:**
+- `helpers/yfinance.py` — shared Yahoo Finance v8 Chart API helper. No key required.
+- `data/stock_universe.toml` — ticker universe config (38 stocks/ETFs), editable without code changes.
+
+**Poll intervals:** stock_volume 15min, stock_regime 15min, stock_momentum hourly.
+
+**Deprecation notices added** to crypto_whale.py, crypto_arkham.py, hkex_northbound.py docstrings.
+
+Commit `a563c8f`.
 
 - Removed `SmartFlow.lnk` from Windows Startup folder (`AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`)
 - SmartFlow now runs exclusively on VPS (`18.139.210.59`), no local autostart needed
