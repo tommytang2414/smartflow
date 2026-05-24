@@ -50,6 +50,9 @@ def _register_collectors():
     from smartflow.collectors.hkex_short import SFCShortCollector
     from smartflow.collectors.hkex_dealings import HKEXDealingsCollector
     from smartflow.collectors.nq_si import NQSICollector
+    from smartflow.collectors.stock_volume import StockVolumeCollector
+    from smartflow.collectors.stock_regime import StockRegimeCollector
+    from smartflow.collectors.stock_momentum import StockMomentumCollector
 
     COLLECTOR_REGISTRY.update({
         "sec_form4": SECInsiderCollector,
@@ -68,6 +71,9 @@ def _register_collectors():
         "sfc_short": SFCShortCollector,
         "hkex_dealings": HKEXDealingsCollector,
         "nq_si": NQSICollector,
+        "stock_volume": StockVolumeCollector,
+        "stock_regime": StockRegimeCollector,
+        "stock_momentum": StockMomentumCollector,
     })
 
 
