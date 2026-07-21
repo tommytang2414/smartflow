@@ -326,6 +326,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Corrected the local Lightsail private-key ACL after explicit approval by removing broad inherited access and retaining only the owner, `SYSTEM`, and `Administrators`; CLI SSH verification passed.
 - Removed only public `8080` and `8501`, leaving `22` and the active CCSP `5001` rule unchanged; tracked desired and rollback states under `ops/`.
 - Verified Watchtower remains healthy on localhost, external Watchtower access is blocked, CCSP still returns its expected unauthenticated 401, and SmartFlow PID plus database counters are unchanged.
+- Production deployment commit: `d8e1aed`.
 
 ### 2026-07-22 — Lambda Failure Monitoring
 

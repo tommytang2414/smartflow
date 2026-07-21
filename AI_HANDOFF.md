@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / audit base: `master` / `2d6a07f` (P0-008 deployment files/docs pending commit)
+- Branch / deployment commit: `master` / `d8e1aed`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 

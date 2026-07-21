@@ -442,6 +442,7 @@ Deployed minimal production change:
 Deployment record:
 
 - Applied: 2026-07-22 HKT.
+- Production deployment commit: `d8e1aed`.
 - Desired state: `ops/lightsail-public-ports-p0-008.json`; exact rollback state: `ops/lightsail-public-ports-before.json`.
 - The initial inline-JSON attempt failed before AWS parsing and made no change.
 - The first valid desired-state operation was conservatively rolled back when a TCP-only propagation check remained positive; rollback operation `ca750f1d-aebb-419f-b41a-634d5062573c` restored all four rules.
