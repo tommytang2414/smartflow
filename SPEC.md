@@ -956,7 +956,7 @@ s.close()
 SEC_EDGAR_EMAIL=tommytang.cc@gmail.com
 
 <span class="cm"># CoinGlass API key (from CryptoStrategy project)</span>
-COINGLASS_API_KEY=REDACTED_CREDENTIAL
+COINGLASS_API_KEY=replace_me
 
 <span class="cm"># Optional: Whale Alert (paid only, no free tier)</span>
 WHALE_ALERT_API_KEY=

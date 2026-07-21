@@ -217,11 +217,45 @@ Rollback:
 - Do not bulk re-enable legacy collectors.
 - The Phase 0 S3 snapshot remains the recovery baseline if the live DB changes unexpectedly.
 
+## Change P0-004 — Retire exposed CoinGlass credential
+
+Status: Current files and runtime remediated; provider revocation pending authenticated browser access
+
+Before-state:
+
+- The active credential was 32 characters long; its value is intentionally omitted.
+- Current tracked exposure existed in `CLAUDE.md` and `SPEC.md`.
+- The exact credential appeared in 36 file revisions across 23 Git commits.
+- Local and VPS `.env` files contained the credential but were not tracked by Git.
+- All CoinGlass and other legacy collectors were already contained by P0-003.
+
+Completed remediation:
+
+- Replaced current tracked plaintext values with `replace_me` placeholders.
+- Confirmed the exact credential no longer exists in the current tracked tree.
+- Cleared `COINGLASS_API_KEY` from the untracked local `.env`.
+- Cleared `COINGLASS_API_KEY` from the VPS `.env` without printing or exporting its value.
+- Restarted the VPS scheduler to clear the credential from process configuration; new PID `640336` loaded a zero-length value.
+- Verified all 19 collectors remain disabled, DB `PRAGMA quick_check=ok`, run high-water mark `231829`, and signal count `224298`.
+- Deleted the restricted temporary SSH key copy after verification; the original key was not modified.
+
+Remaining provider action:
+
+- Open an authenticated CoinGlass API dashboard session and revoke the exposed credential.
+- Do not generate or distribute a replacement until the corrected CoinGlass v2 collector is ready for its release gate.
+- Store any future replacement only in the approved runtime secret store; never in Git or project documentation.
+
+Git history decision:
+
+- Ordinary redaction does not remove the credential from existing Git objects.
+- History rewrite would require coordinated `git filter-repo` work and a force push. Do not perform it without separate explicit approval because it rewrites shared commit history.
+- Provider revocation is required regardless of whether history is later rewritten.
+
 ## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
 |---|---|---|
-| P0-004 | Rotate exposed CoinGlass credential | Confirm new credential independently; retain no plaintext secret in Git or runbook |
+| P0-004 | Revoke exposed CoinGlass credential at provider | Requires an authenticated CoinGlass browser session; current files and runtimes are already cleared |
 | P0-005 | Enable S3 versioning and snapshot retention | Record current versioning/lifecycle; rollback lifecycle independently without deleting versions |
 | P0-006 | Replace broad Lambda IAM policies | Save current attachments and policy documents; retain a tested rollback policy attachment sequence |
 | P0-007 | Add Lambda alarm and log retention | Record current log group/rule state; rollback alarm and retention separately |
@@ -229,4 +263,4 @@ Rollback:
 
 ## Next action
 
-Implement P0-004: rotate the exposed CoinGlass credential, remove plaintext secrets from current tracked documentation, and verify no production path depends on the retired key while all collectors remain contained.
+Complete P0-004 by revoking the exposed credential in an authenticated CoinGlass dashboard session. Then decide separately whether to rewrite Git history after assessing force-push coordination.

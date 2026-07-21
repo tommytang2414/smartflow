@@ -164,7 +164,7 @@ class MyCollector(BaseCollector):
 
 ```
 SEC_EDGAR_EMAIL=tommytang.cc@gmail.com    # Required for EDGAR User-Agent
-COINGLASS_API_KEY=REDACTED_CREDENTIAL  # CoinGlass (from CryptoStrategy)
+COINGLASS_API_KEY=replace_me  # Required only when the corrected collector is re-enabled
 TG_BOT_TOKEN=                             # Telegram bot token (for alerts)
 TG_CHAT_ID=                               # Telegram chat ID (for alerts)
 ```
@@ -330,6 +330,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Deployed containment mode to the production Lambda from commit `87af481`; manual invocation returned `status=containment`, sent the remediation notice, and confirmed no DB download or MiniMax call. Pre-change Lambda is preserved as version `1`.
 - Added the P0-003 collector containment policy: all 19 legacy collectors are disabled until their source-specific release gates pass, with guards in scheduler and manual CLI paths.
 - Deployed P0-003 to the VPS from commit `e0ecd2c`; all 19 collectors were skipped, one scheduler process remained healthy, and the collection-run high-water mark stayed at `231829` beyond the former 60-second interval.
+- Redacted the exposed CoinGlass credential from current tracked documentation and cleared it from local/VPS runtime environments. Provider revocation remains pending authenticated CoinGlass access; do not create a replacement until the v2 collector is release-ready.
 
 ### 2026-05-24 — US Stock Market Flow Enhancement (Phase 1 & 2)
 
