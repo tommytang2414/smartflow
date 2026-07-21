@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Lambda Least-Privilege IAM
+
+- Replaced `AmazonS3ReadOnlyAccess`, `AmazonSESFullAccess`, and `CloudWatchLogsFullAccess` on `smartflow-lambda-role` with tracked inline policy `SmartFlowLambdaRuntime` from commit `846c6dd`.
+- Restricted S3 to the live `smartflow.db`, SES to the exact sender/recipient route, and CloudWatch Logs to `/aws/lambda/smartflow-report`.
+- Initial SES verification failed because sandbox authorization also evaluated the recipient identity; rollback reattached all three policies, then the corrected condition-scoped policy was deployed.
+- Final containment invoke returned HTTP 200, sent the remediation email, wrote scoped logs, and skipped the DB and MiniMax path. The role now has zero attached managed policies.
+
 ### 2026-07-22 — S3 Versioning and Scoped Retention
 
 - Enabled versioning on `smartflow-tommy-db` and replaced the blanket 30-day expiry with the reviewed lifecycle in `ops/s3-lifecycle.json`.

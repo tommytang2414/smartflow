@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / commit: `master` / `99b9fdf` (P0-006 draft pending commit)
+- Branch / commit: `master` / `846c6dd` (P0-006 deployment docs pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -19,6 +19,7 @@
 - Deferred provider-side CoinGlass revocation at the owner's direction because the paid key belongs to a third party; SmartFlow files and runtimes remain cleared.
 - Completed P0-005: enabled S3 versioning, deployed scoped lifecycle rules from `ops/s3-lifecycle.json`, and changed restart backups to `backups/YYYYMMDD/smartflow.db`.
 - Audited P0-006 without mutating IAM and drafted `ops/lambda-runtime-policy.json` for the dedicated `smartflow-lambda-role`.
+- Completed P0-006: replaced all three broad managed policies with inline policy `SmartFlowLambdaRuntime` and committed the corrected SES route scope in `846c6dd`.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -33,7 +34,9 @@
 - The audit snapshot (`201,900,032` bytes) and live DB (`201,912,320` bytes) remained visible; snapshot encryption remained `AES256`.
 - VPS fast-forwarded to `d9ba3fb` without restarting PID `640336`; 19 collectors remained disabled and untracked runtime files were preserved.
 - IAM Access Analyzer returned zero findings for the draft; all 12 allow/deny policy simulations passed.
-- Confirmed `smartflow-report` is the only Lambda using the role, its trust principal is Lambda only, and the role currently has three broad managed policies with no inline policies.
+- Before P0-006, confirmed `smartflow-report` was the only Lambda using the role, its trust principal was Lambda only, and the role had three broad managed policies with no inline policies.
+- Proved rollback during the first SES test failure, then completed the corrected deployment: HTTP 200, `status=containment`, SES success log, DB/MiniMax skip log, and seven new log events.
+- Final IAM state: zero attached managed policies, one inline policy, and zero Access Analyzer findings.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -45,7 +48,9 @@
 - Provider-side CoinGlass revocation is an accepted residual risk for Phase 0 and must not be attempted without renewed approval from the third-party account owner.
 - S3 versioning cannot be returned to an unversioned state; rollback is `Suspended`, and existing versions remain.
 - `snapshots/` has no expiry rule; live DB non-current versions retain 30 days; operational backups and `short-alpha/` retain 30 days.
+- The Lambda role may read only the live DB object, send only from the configured sender to the configured recipient, and create/write only its own log group.
+- IAM rollback must reattach all three recorded managed policies and verify containment before removing or changing the inline policy.
 
 ## Next handoff
-- Obtain explicit approval for P0-006, then add inline policy `SmartFlowLambdaRuntime`, detach the three recorded broad managed policies one at a time, and verify containment email/logs plus simulated exact S3 access.
-- On any failure, reattach all three managed policies before removing the inline policy.
+- Prepare P0-007 with a read-only audit of Lambda error/throttle metrics, EventBridge retry/DLQ state, log retention, and available notification targets.
+- Do not create alarms, change retention, or alter EventBridge targets without explicit approval.

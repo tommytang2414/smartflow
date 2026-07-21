@@ -303,11 +303,9 @@ Rollback:
 - Versioning cannot return to an unversioned state; it can only be changed to `Suspended`. Existing versions remain until explicitly deleted or expired.
 - The backup key convention can be reverted in a new commit without restarting the currently running scheduler.
 
-## Pending Phase 0 changes
+## Change P0-006 — Replace broad Lambda IAM policies
 
-### P0-006 preparation — Lambda least-privilege policy
-
-Status: Drafted and validated; no IAM mutation applied
+Status: Completed, deployed, and verified
 
 Production before-state:
 
@@ -322,37 +320,57 @@ Production before-state:
 Required runtime calls:
 
 - `s3:HeadObject` and `download_file` for the exact `smartflow-tommy-db/smartflow.db` object; both are authorized by `s3:GetObject`.
-- `ses:SendEmail` from the verified `tommytang.cc@gmail.com` identity.
+- `ses:SendEmail` from verified `tommytang.cc@gmail.com` to verified `TOMMYTANG2414@GMAIL.COM`.
 - `logs:CreateLogGroup`, `logs:CreateLogStream`, and `logs:PutLogEvents` for `/aws/lambda/smartflow-report` only.
 
-Proposed replacement:
+Deployed replacement:
 
 - Tracked policy: `ops/lambda-runtime-policy.json`.
 - Allow `s3:GetObject` only on `arn:aws:s3:::smartflow-tommy-db/smartflow.db`.
-- Allow `ses:SendEmail` only from the verified sender identity.
+- Allow `ses:SendEmail` only when both exact verified identity resources are involved, `ses:FromAddress` is the configured sender, and every `ses:Recipients` value is the configured recipient.
 - Allow creation of only the named SmartFlow log group and writes only to its streams.
 - Do not allow bucket listing, snapshot reads, raw email, other sender identities, other log groups, log deletion, or wildcard service actions.
 
 Validation:
 
 - IAM Access Analyzer returned zero findings.
-- Twelve custom-policy simulations passed, covering the required allows and explicit implicit-deny cases above.
-- The policy has not been attached or applied to the production role.
+- The initial 12 custom-policy simulations passed for S3, sender identity, and CloudWatch scope.
+- Five condition-aware SES simulations passed for the approved route and denied wrong sender, wrong recipient, extra recipient, and raw email cases.
+- Staged principal-policy simulations passed after each managed policy was detached.
 
-Proposed deployment and rollback:
+Deployment:
 
-1. Add the tracked policy as inline policy `SmartFlowLambdaRuntime` while the three managed policies remain attached.
-2. Read the inline policy back and compare it with the tracked document.
-3. Detach the S3, SES, and CloudWatch managed policies individually, checking effective permissions after each change.
-4. After IAM propagation, invoke containment mode and verify SES delivery plus a new log event; use IAM simulation for the exact S3 allow and denied adjacent resources.
-5. On any failure, reattach all three recorded managed policies first, verify containment invocation, and only then remove the inline policy if rollback requires it.
+- Applied: 2026-07-22 02:50 HKT
+- Policy commit: `846c6dd`
+- Installed inline policy `SmartFlowLambdaRuntime` and removed all three broad AWS-managed policies.
+- The first end-to-end invocation failed safely because SES sandbox authorization also evaluated the verified recipient identity. The rollback path immediately reattached all three managed policies.
+- Corrected the policy to include both exact SES identity resources and conditions that lock the sender and recipient route.
+- A combined multi-resource S3 simulator check produced an ambiguous mapping during the second attempt; the S3 managed policy was automatically reattached, and deployment resumed only after independent per-resource checks passed.
+- Repeated the staged detach sequence after validation and retained only the corrected inline policy.
+
+Production verification:
+
+- Lambda invoke returned HTTP `200` with `status=containment` and no function error.
+- CloudWatch recorded both the successful SES send and `DB download and MiniMax call skipped` after broad log access was removed.
+- Seven new invocation log events were observed.
+- Role state after deployment: zero attached managed policies and one inline policy, `SmartFlowLambdaRuntime`.
+- Final Access Analyzer result: zero findings.
+- Exact S3 live-object access, the fixed SES route, and the named log group are allowed; adjacent snapshots, bucket listing, alternate senders/recipients, raw email, other log groups, and log deletion are denied.
+- The temporary Lambda invocation result file was deleted after verification.
+
+Rollback:
+
+1. Reattach `AmazonS3ReadOnlyAccess`, `AmazonSESFullAccess`, and `CloudWatchLogsFullAccess` before removing or changing the inline policy.
+2. Invoke containment mode and verify SES plus CloudWatch Logs.
+3. Remove `SmartFlowLambdaRuntime` only if a full rollback is required.
+
+## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
 |---|---|---|
-| P0-006 | Replace broad Lambda IAM policies | Draft validated; requires explicit approval before inline-policy attachment or managed-policy detachment |
 | P0-007 | Add Lambda alarm and log retention | Record current log group/rule state; rollback alarm and retention separately |
 | P0-008 | Reduce Lightsail ingress | Identify services and admin path first; change one port/rule at a time |
 
 ## Next action
 
-Obtain explicit owner approval for the validated P0-006 policy delta and deployment sequence before mutating IAM.
+Prepare P0-007 by capturing the current Lambda error/throttle metrics, EventBridge target retry configuration, log group retention, and available alarm notification targets before proposing production changes.
