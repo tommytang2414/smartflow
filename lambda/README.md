@@ -34,9 +34,9 @@ aws lambda update-function-code --function-name smartflow-report --zip-file file
 | EMAIL_TO | TOMMYTANG2414@GMAIL.COM |
 | MINIMAX_API_KEY | sk-cp-... |
 | PYTHONIOENCODING | utf-8 |
-| REPORT_MODE | `containment` during rehabilitation; `legacy` only for explicit rollback |
+| REPORT_MODE | Optional; defaults to `containment`. `legacy` is only for explicit rollback |
 
-`containment` is the approved production mode until the release gates in `PROJECT_PLAN.md` pass. An unsupported value fails closed instead of generating a report.
+`containment` is the approved production mode until the release gates in `PROJECT_PLAN.md` pass. The safe default avoids reading or rewriting the existing Lambda secrets during deployment. An unsupported value fails closed instead of generating a report.
 
 ## Manual Invoke
 

@@ -209,7 +209,7 @@ WATCH（觀望）：【代號】
 def handler(event, context):
     _log("Lambda started")
 
-    report_mode = os.environ.get("REPORT_MODE", "legacy").strip().lower()
+    report_mode = os.environ.get("REPORT_MODE", "containment").strip().lower()
     if report_mode == "containment":
         from datetime import datetime
 

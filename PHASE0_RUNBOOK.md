@@ -107,7 +107,7 @@ Status: Implemented and verified locally; production deployment pending
 
 Implementation:
 
-- Added `REPORT_MODE=containment` to the Lambda handler contract.
+- Added `REPORT_MODE=containment` to the Lambda handler contract and made it the safe default.
 - Containment mode sends a remediation notice and skips the S3 download, database queries, and MiniMax call.
 - Unsupported mode values fail closed.
 - `legacy` remains available only as an explicit rollback mode until the legacy report path is replaced.
@@ -122,15 +122,14 @@ Local verification:
 
 Production change sequence:
 
-1. Save the complete current Lambda environment configuration without writing secrets to Git or logs.
-2. Add `REPORT_MODE=containment` while preserving all existing environment values.
-3. Package and deploy the verified Lambda code.
-4. Invoke manually and confirm `status=containment`, the remediation email, and absence of S3/MiniMax execution in logs.
-5. Confirm the EventBridge rule remains enabled.
+1. Publish the complete current Lambda code/configuration as a rollback version without exporting environment secrets.
+2. Package and deploy the verified Lambda code; absent `REPORT_MODE`, it defaults to containment.
+3. Invoke manually and confirm `status=containment`, the remediation email, and absence of S3/MiniMax execution in logs.
+4. Confirm the EventBridge rule remains enabled.
 
 Rollback:
 
-- Set `REPORT_MODE=legacy` to restore the prior code path, or restore the captured function code package and environment configuration.
+- Set `REPORT_MODE=legacy` to restore the prior code path, or restore the published pre-containment Lambda version code.
 - Rollback is for operational recovery only; it re-enables known-untrusted directional output.
 
 ## Pending Phase 0 changes
