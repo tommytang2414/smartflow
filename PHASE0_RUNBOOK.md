@@ -152,7 +152,7 @@ Rollback:
 
 ## Change P0-003 — Disable legacy collectors
 
-Status: Implemented and verified locally; production deployment pending
+Status: Completed, deployed, and verified
 
 Production before-state:
 
@@ -183,6 +183,26 @@ Local verification:
 - A fake scheduler started with zero jobs.
 - `python -m smartflow collect --all` skipped 19 sources, printed no collection attempt, and did not add a `collection_runs` row.
 
+Production deployment:
+
+- Deployed: 2026-07-22 01:44 HKT
+- Git commit: `e0ecd2c`
+- VPS fast-forwarded from `047265f` to `e0ecd2c`.
+- Old scheduler PID `1835262` stopped cleanly.
+- New scheduler PID: `639960`
+- Pre-restart backup uploaded to `s3://smartflow-tommy-db/20260721/smartflow.db`.
+- Backup object length: `201,916,416` bytes; encryption: `AES256`.
+- Existing untracked `smartflow.pid` and `tmp_sf_audit.py` were preserved.
+
+Production verification:
+
+- Production config contains exactly 19 disabled collectors.
+- Startup log lists all 19 as skipped and contains no scheduled collector execution.
+- One SmartFlow scheduler process remained active after restart.
+- Live DB `PRAGMA quick_check`: `ok`.
+- Six in-flight pre-stop runs completed between the initial baseline and restart; the final high-water mark is run ID/count `231829`, signal count `224298`, latest run `2026-07-21 17:44:05 UTC`.
+- At `2026-07-21 17:45:33 UTC`, after the former 60-second CoinGlass interval elapsed, all three values remained unchanged.
+
 Production change sequence:
 
 1. Commit and push the containment set.
@@ -209,4 +229,4 @@ Rollback:
 
 ## Next action
 
-Finish P0-003 by committing the verified containment set, fast-forwarding the VPS, restarting the scheduler, and confirming production has zero collector jobs and no new collection runs.
+Implement P0-004: rotate the exposed CoinGlass credential, remove plaintext secrets from current tracked documentation, and verify no production path depends on the retired key while all collectors remain contained.
