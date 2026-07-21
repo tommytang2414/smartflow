@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `cc5d942`
+- Branch / starting commit: `master` / `9d7a0ac`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -32,6 +32,8 @@
 - Added isolated Phase 1 v2 raw-event, normalized-event, and structured collector-run schema foundations.
 - Added stable source identities and payload hashes plus a disposable-copy migration verifier; legacy `init_db()` remains untouched.
 - Replaced the ineffective thread timeout with a spawned-process runner that terminates and joins hung collectors.
+- Added atomic/idempotent v2 batch persistence with immutable raw-evidence conflict checks.
+- Added transaction-level SEC Form 4 normalization and proposed-intent Form 144 normalization with UTC timestamps and fixed-precision numerics.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -61,6 +63,7 @@
 - Full offline suite passed 14/14 tests.
 - Repeatable migration rehearsal passed on the 78.7 MB local legacy DB: 8 legacy tables and 319,825 rows unchanged; all v2 tables present; `PRAGMA quick_check=ok`.
 - Process-runner return, remote-error, and hard-timeout tests passed; full offline suite passed 17/17 tests.
+- Full offline suite now passes 24/24 tests; the repeatable legacy-copy migration rehearsal still passes with `quick_check=ok`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -80,4 +83,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Continue Phase 1 with transactional v2 batch persistence and transaction-level SEC normalization. Keep production schema and all collectors unchanged until source-specific release gates pass.
+- Continue Phase 1 with source health/freshness and wire a non-production SEC ingestion harness through raw capture → parser → normalizer → batch persistence. Keep production schema and all collectors unchanged.

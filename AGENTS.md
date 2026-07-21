@@ -55,6 +55,9 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Rehearse schema changes with `python ops/verify_v2_migration.py <legacy-db>`; the tool uses a disposable SQLite backup, applies the schema twice, compares every legacy table definition and row count, and runs `PRAGMA quick_check`.
 - Monetary and quantity fields use `Numeric(38, 12)`. Do not reintroduce binary floats into normalized v2 evidence.
 - `collector_runs_v2` must preserve the distinction between successful zero events (`empty`) and auth/schema/parser/source/timeout/persistence/internal failures.
+- Persist a raw filing and all normalized children through `persist_event_batch()` so the write commits once or rolls back completely.
+- Treat a reused source identity with a different payload hash or raw-evidence parent as an `EvidenceConflictError`; never update or silently replace stored evidence.
+- A parser behavior change requires a new `parser_version`; reruns of the same raw identity and parser version are idempotent.
 
 ## Collector execution
 

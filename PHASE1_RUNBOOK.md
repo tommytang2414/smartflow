@@ -15,11 +15,13 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Deterministic source-event IDs, payload hashes, fixed-precision quantities/values, and source evidence links.
 - Repeatable schema creation that does not run through legacy `init_db()`.
 - Process-isolated collector execution with enforceable termination on wall-clock timeout.
+- Atomic/idempotent raw-plus-normalized batch persistence with evidence-conflict rejection.
+- Transaction-level Form 4 events with P/S-only sides and Form 144 proposed-sale events with explicit execution status.
 
 ## Verification baseline
 
 ```text
-unittest: 17 passed
+unittest: 24 passed
 compileall: passed
 legacy migration rehearsal: applied twice
 legacy tables verified: 8
@@ -32,9 +34,8 @@ The rehearsal copied `data/smartflow.db` through SQLite's backup API into a temp
 
 ## Remaining before any collector release
 
-- Add batch persistence and idempotent raw/normalized writes.
 - Add source health and freshness evaluation.
-- Implement transaction-level Form 4 normalization and proposed-sale Form 144 normalization into v2.
+- Wire an offline SEC ingestion harness through raw capture, parser, normalizer, and v2 persistence.
 - Run parser agreement review across maintained fixtures and inspect sampled normalized output.
 - Rehearse against the dated production snapshot copy before any production schema change.
 

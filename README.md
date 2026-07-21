@@ -167,6 +167,8 @@ SQLite at `data/smartflow.db`. 8 legacy tables:
 
 The isolated Phase 1 foundation adds `raw_events`, `normalized_events_v2`, and `collector_runs_v2`. It is created explicitly through `smartflow.db.v2_schema`; legacy `init_db()` does not create or alter v2 tables.
 
+V2 ingestion writes a raw filing and its transaction-level normalized events in one database transaction. Reprocessing the same source identity and parser version is idempotent; changed evidence is rejected rather than overwritten.
+
 ---
 
 ## Collectors

@@ -318,6 +318,16 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Transaction-Level SEC Evidence Pipeline
+
+- Added atomic, idempotent v2 persistence for one immutable raw filing and all derived normalized events.
+- Rejects changed payloads and normalized identities attached to different raw evidence instead of overwriting or silently deduplicating them.
+- Added transaction-level Form 4 normalization with distinct action and side; only P/S events receive BUY/SELL sides and every event links to its filing evidence.
+- Added Form 144 normalization as `proposed_sale` with `side=SELL` and `execution_status=proposed`, keeping sale intent distinct from execution.
+- Preserved exact decimal inputs and normalized SEC timestamps to UTC.
+- Expanded the full offline suite to 24 passing tests and repeated the legacy-copy migration rehearsal successfully.
+- Kept v2 persistence and normalizers disconnected from production collectors pending individual release gates.
+
 ### 2026-07-22 — Enforceable Collector Timeouts
 
 - Replaced the scheduler's `ThreadPoolExecutor` timeout with a cross-platform spawned-process boundary.
