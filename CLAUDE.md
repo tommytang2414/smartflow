@@ -318,6 +318,15 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Offline SEC Ingestion Gate
+
+- Wired an offline Form 4/Form 144 ingestion service through raw XML capture, parser, transaction normalizer, atomic persistence, structured run outcome, and source-health refresh.
+- Successful reruns retain observed event counts while inserting zero duplicates.
+- Malformed XML preserves the raw filing and records `failure_kind=parser`; normalizer contract failures preserve raw evidence and record `failure_kind=schema`.
+- Added end-to-end tests for Form 4, Form 144, idempotent reruns, parser failure, schema failure, and health transitions.
+- Full offline suite passes 33 tests; legacy-copy migration rehearsal remains repeatable with `quick_check=ok`.
+- The service remains disconnected from production collectors; no collector, production schema, or report was enabled.
+
 ### 2026-07-22 — Source Health and Freshness Semantics
 
 - Added the v2 `source_health` current-state table with explicit healthy, stale, degraded, unknown, and disabled states.

@@ -18,11 +18,13 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Atomic/idempotent raw-plus-normalized batch persistence with evidence-conflict rejection.
 - Transaction-level Form 4 events with P/S-only sides and Form 144 proposed-sale events with explicit execution status.
 - Source-specific health evaluation where successful empty runs remain healthy and operational failures remain degraded.
+- Offline SEC ingestion from raw XML through parser, normalizer, atomic persistence, structured outcome, and health refresh.
+- Failed parser/schema cases preserve raw evidence and create explicit degraded health rather than empty success.
 
 ## Verification baseline
 
 ```text
-unittest: 29 passed
+unittest: 33 passed
 compileall: passed
 legacy migration rehearsal: applied twice
 legacy tables verified: 8
@@ -35,7 +37,8 @@ The rehearsal copied `data/smartflow.db` through SQLite's backup API into a temp
 
 ## Remaining before any collector release
 
-- Wire an offline SEC ingestion harness through raw capture, parser, normalizer, and v2 persistence.
+- Expand official SEC fixture coverage and perform a sampled parser-agreement review.
+- Record parent-observed process timeouts into `collector_runs_v2` once the v2 runtime adapter is connected.
 - Run parser agreement review across maintained fixtures and inspect sampled normalized output.
 - Rehearse against the dated production snapshot copy before any production schema change.
 

@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `c10331b`
+- Branch / starting commit: `master` / `0eacbfd`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -35,6 +35,8 @@
 - Added atomic/idempotent v2 batch persistence with immutable raw-evidence conflict checks.
 - Added transaction-level SEC Form 4 normalization and proposed-intent Form 144 normalization with UTC timestamps and fixed-precision numerics.
 - Added source-specific health/freshness evaluation and current-state persistence; successful empty runs are distinct from failures.
+- Wired offline SEC ingestion end to end from raw XML through parser/normalizer/persistence into structured run outcomes and health.
+- Parser and schema failures preserve raw evidence and remain operational failures; idempotent reruns insert no duplicates.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -64,7 +66,7 @@
 - Full offline suite passed 14/14 tests.
 - Repeatable migration rehearsal passed on the 78.7 MB local legacy DB: 8 legacy tables and 319,825 rows unchanged; all v2 tables present; `PRAGMA quick_check=ok`.
 - Process-runner return, remote-error, and hard-timeout tests passed; full offline suite passed 17/17 tests.
-- Full offline suite now passes 29/29 tests; migration rehearsal verifies `source_health` plus the three evidence/run tables with legacy rows unchanged.
+- Full offline suite now passes 33/33 tests, including end-to-end SEC success, rerun, parser-failure, and schema-failure paths.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -84,4 +86,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Wire a non-production SEC ingestion harness through raw capture → parser → normalizer → batch persistence → collector outcome/health. Keep production schema and all collectors unchanged.
+- Expand official SEC fixtures/sample review, then add source-run timeout outcome recording and SQLite snapshot/restore verification. Keep production schema and all collectors unchanged.
