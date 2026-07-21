@@ -11,11 +11,13 @@
 - Updated project guidance and changelog to freeze source expansion and preserve the legacy database.
 - Recorded the production S3, Lambda, EventBridge, IAM, CloudWatch, and Lightsail before-state in `PHASE0_RUNBOOK.md`.
 - Created the dated S3 baseline snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db` without changing the live DB key.
+- Implemented Lambda `REPORT_MODE=containment` locally; the production deployment is pending rollback-artifact capture.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
 - Baseline snapshot downloaded and opened read-only: `PRAGMA quick_check=ok`, `224,278` signals, `231,807` collection runs.
-- No application code, scheduler, report, IAM, firewall, or live DB change made in this batch.
+- No production scheduler, IAM, firewall, or live DB change made in this batch.
+- Python compilation passed; containment, invalid-mode fail-closed, and legacy rollback paths passed isolated handler tests.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.

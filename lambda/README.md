@@ -1,6 +1,6 @@
 # SmartFlow Lambda — Daily Report Generator
 
-Downloads SmartFlow DB from S3, runs analysis queries, generates AI research report via MiniMax, sends email via SES.
+Downloads SmartFlow DB from S3, runs analysis queries, generates AI research report via MiniMax, and sends email via SES. During rehabilitation, `REPORT_MODE=containment` sends a remediation notice without downloading the DB or calling MiniMax.
 
 ## Files
 
@@ -34,6 +34,9 @@ aws lambda update-function-code --function-name smartflow-report --zip-file file
 | EMAIL_TO | TOMMYTANG2414@GMAIL.COM |
 | MINIMAX_API_KEY | sk-cp-... |
 | PYTHONIOENCODING | utf-8 |
+| REPORT_MODE | `containment` during rehabilitation; `legacy` only for explicit rollback |
+
+`containment` is the approved production mode until the release gates in `PROJECT_PLAN.md` pass. An unsupported value fails closed instead of generating a report.
 
 ## Manual Invoke
 

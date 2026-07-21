@@ -12,13 +12,13 @@ def _log(msg: str):
     sys.stdout.buffer.write((msg + "\n").encode("utf-8", errors="replace"))
     sys.stdout.flush()
 
-VERSION = "v3-no-runtime-logging"
+VERSION = "v4-containment-mode"
 
 # ─── Config ─────────────────────────────────────────────────────────────────
 S3_BUCKET = os.environ["S3_BUCKET"]
 SES_FROM  = os.environ["SES_FROM"]
 EMAIL_TO  = os.environ["EMAIL_TO"]
-MINIMAX_API_KEY = os.environ["MINIMAX_API_KEY"]
+MINIMAX_API_KEY = os.environ.get("MINIMAX_API_KEY", "")
 MINIMAX_API_URL = "https://api.minimax.chat/v1/text/chatcompletion_v2"
 MODEL      = "MiniMax-M2.7"
 DB_PATH    = "/tmp/smartflow.db"
@@ -45,6 +45,9 @@ def call_minimax(prompt: str) -> str:
     import urllib.request
     import urllib.error
     import json
+
+    if not MINIMAX_API_KEY:
+        raise RuntimeError("MINIMAX_API_KEY is required in legacy report mode")
 
     payload = {
         "model": MODEL,
@@ -104,6 +107,22 @@ def send_email(report: str, subject: str):
         }
     )
     _log(f"Email sent to {EMAIL_TO}")
+
+def build_containment_notice() -> str:
+    from datetime import datetime
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    return f"""SmartFlow 資料品質修復通知 — {today}
+
+SmartFlow 目前正進行資料語義、collector health、report traceability 同 signal validation 修復。
+
+修復期間：
+- 暫停所有 LONG、SHORT 及方向性建議
+- 不會使用現有資料生成 AI 投資結論
+- Production raw data collection 會按已批准的 remediation plan 逐步檢查及收窄
+
+完成 parser correctness、evidence traceability、freshness 同 reliability release gates 前，任何舊有 SmartFlow signal 都只可視為未驗證研究資料。
+"""
 
 # ─── Prompt Builder ────────────────────────────────────────────────────────
 def build_prompt(brief: dict, /) -> str:
@@ -189,6 +208,19 @@ WATCH（觀望）：【代號】
 # ─── Lambda Handler ─────────────────────────────────────────────────────────
 def handler(event, context):
     _log("Lambda started")
+
+    report_mode = os.environ.get("REPORT_MODE", "legacy").strip().lower()
+    if report_mode == "containment":
+        from datetime import datetime
+
+        report = build_containment_notice()
+        today = datetime.now().strftime("%Y-%m-%d")
+        send_email(report, f"SmartFlow Daily -- REMEDIATION -- {today}")
+        _log("Containment notice sent; DB download and MiniMax call skipped")
+        return {"status": "containment", "chars": len(report)}
+
+    if report_mode != "legacy":
+        raise ValueError(f"Unsupported REPORT_MODE: {report_mode}")
 
     # 1. Download DB from S3
     download_db()

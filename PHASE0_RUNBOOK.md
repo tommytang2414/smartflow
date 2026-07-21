@@ -101,11 +101,42 @@ Limitation:
 
 - The bucket did not have versioning or Object Lock at snapshot time. Immutability is currently an operational rule, not an enforced retention control. Versioning and retention are separate Phase 0 changes.
 
+## Change P0-002 — Suppress authoritative directional report output
+
+Status: Implemented and verified locally; production deployment pending
+
+Implementation:
+
+- Added `REPORT_MODE=containment` to the Lambda handler contract.
+- Containment mode sends a remediation notice and skips the S3 download, database queries, and MiniMax call.
+- Unsupported mode values fail closed.
+- `legacy` remains available only as an explicit rollback mode until the legacy report path is replaced.
+
+Local verification:
+
+- Python compilation passed for `smartflow` and `lambda`.
+- Containment path returned `status=containment`.
+- Test doubles proved the containment path did not call DB download or MiniMax.
+- Unsupported mode test raised `ValueError` before report generation.
+- Legacy rollback path completed with test doubles in the expected download, MiniMax, email order.
+
+Production change sequence:
+
+1. Save the complete current Lambda environment configuration without writing secrets to Git or logs.
+2. Add `REPORT_MODE=containment` while preserving all existing environment values.
+3. Package and deploy the verified Lambda code.
+4. Invoke manually and confirm `status=containment`, the remediation email, and absence of S3/MiniMax execution in logs.
+5. Confirm the EventBridge rule remains enabled.
+
+Rollback:
+
+- Set `REPORT_MODE=legacy` to restore the prior code path, or restore the captured function code package and environment configuration.
+- Rollback is for operational recovery only; it re-enables known-untrusted directional output.
+
 ## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
 |---|---|---|
-| P0-002 | Suppress authoritative directional report output | Capture current EventBridge/Lambda config; rollback by restoring the prior schedule or function version |
 | P0-003 | Disable corrupt and structurally dead collectors | Record current enabled set and process state; rollback collectors individually |
 | P0-004 | Rotate exposed CoinGlass credential | Confirm new credential independently; retain no plaintext secret in Git or runbook |
 | P0-005 | Enable S3 versioning and snapshot retention | Record current versioning/lifecycle; rollback lifecycle independently without deleting versions |
@@ -115,4 +146,4 @@ Limitation:
 
 ## Next action
 
-Implement P0-002 as an application-controlled report mode that prevents unsupported `LONG`/`SHORT` output while preserving a data-health notification path. Verify locally before changing the active Lambda schedule or code.
+Finish P0-002 by recording the Lambda code/environment rollback artifacts, deploying containment mode, and verifying a manual invocation before the next EventBridge run.
