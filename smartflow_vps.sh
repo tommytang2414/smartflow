@@ -55,7 +55,7 @@ fi
 # --- Upload DB to S3 before restart ---
 log "Uploading current DB to S3 before restart..."
 aws s3 cp "$SCRIPT_DIR/data/smartflow.db" \
-    "s3://smartflow-tommy-db/$(date +%Y%m%d)/smartflow.db" >> "$LOGFILE" 2>&1 || \
+    "s3://smartflow-tommy-db/backups/$(date +%Y%m%d)/smartflow.db" >> "$LOGFILE" 2>&1 || \
     log "WARNING: S3 pre-restart upload failed (non-fatal)"
 
 # --- Start fresh scheduler ---

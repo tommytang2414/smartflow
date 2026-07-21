@@ -12,3 +12,10 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Implement and validate source semantics in v2 before historical reprocessing.
 - Treat production security, IAM, firewall, secret, scheduler, and reporting changes as individually reversible operations.
 - Record every production deployment and its verification in `CLAUDE.md` and `AI_HANDOFF.md`.
+
+## S3 recoverability
+
+- Bucket `smartflow-tommy-db` has versioning enabled; the reviewed lifecycle desired state is `ops/s3-lifecycle.json`.
+- `snapshots/` is the audit archive and has no expiry rule. Do not delete or overwrite objects under this prefix.
+- The live `smartflow.db` keeps non-current versions for 30 days. Operational backups use `backups/YYYYMMDD/smartflow.db` and expire after 30 days.
+- Preserve the separate `short-alpha/` 30-day retention rule when changing SmartFlow lifecycle policy.
