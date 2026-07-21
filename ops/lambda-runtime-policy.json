@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadCurrentSmartFlowDatabase",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::smartflow-tommy-db/smartflow.db"
+    },
+    {
+      "Sid": "SendSmartFlowEmail",
+      "Effect": "Allow",
+      "Action": "ses:SendEmail",
+      "Resource": "arn:aws:ses:ap-southeast-1:760981412816:identity/tommytang.cc@gmail.com"
+    },
+    {
+      "Sid": "CreateSmartFlowLogGroup",
+      "Effect": "Allow",
+      "Action": "logs:CreateLogGroup",
+      "Resource": "arn:aws:logs:ap-southeast-1:760981412816:log-group:/aws/lambda/smartflow-report"
+    },
+    {
+      "Sid": "WriteSmartFlowLambdaLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:ap-southeast-1:760981412816:log-group:/aws/lambda/smartflow-report:*"
+    }
+  ]
+}
