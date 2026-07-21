@@ -122,6 +122,10 @@ def _run_collector(name: str):
         logger.error(f"Unknown collector: {name}")
         return
 
+    if name in DISABLED_COLLECTORS:
+        logger.warning(f"[{name}] Collection blocked: collector is disabled")
+        return 0
+
     timeout = COLLECTOR_TIMEOUTS.get(name, COLLECTOR_TIMEOUTS["default"])
     count = 0
     error = None

@@ -150,11 +150,57 @@ Rollback:
 - Set `REPORT_MODE=legacy` to restore the prior code path, or restore the published pre-containment Lambda version code.
 - Rollback is for operational recovery only; it re-enables known-untrusted directional output.
 
+## Change P0-003 — Disable legacy collectors
+
+Status: Implemented and verified locally; production deployment pending
+
+Production before-state:
+
+- VPS Git HEAD: `047265fb38f8d334d4eccda3c83574340259f483`
+- Scheduler PID: `1835262`
+- Scheduler process start: 2026-05-24 08:29:02 UTC
+- Existing disabled set: `arkham_labels`, `hkex_northbound`, `whale_alert`
+- Last observed collection run ID: `231823`
+- Collection runs: `231823`
+- Signals: `224293`
+- Latest run start: `2026-07-21 17:41:05 UTC`
+- Untracked VPS runtime files: `smartflow.pid`, `tmp_sf_audit.py`; both must be preserved.
+- `smartflow_vps.sh` mode is `664`; deployment must invoke it with `bash`, not `./`.
+
+Containment policy:
+
+- All 19 registered legacy collectors are disabled.
+- Core sources remain disabled until corrected v2 semantics, official fixtures, health checks, and the source release gate pass.
+- Deferred/context sources remain disabled until their role and correctness are validated.
+- Dead, unavailable, and retired sources remain disabled.
+- The guard is enforced by scheduler filtering, `_run_collector`, and the manual CLI path.
+
+Local verification:
+
+- Python compilation passed.
+- The registered collector set exactly matched the disabled set: 19 of 19.
+- Direct `_run_collector` calls returned without invoking collector code.
+- A fake scheduler started with zero jobs.
+- `python -m smartflow collect --all` skipped 19 sources, printed no collection attempt, and did not add a `collection_runs` row.
+
+Production change sequence:
+
+1. Commit and push the containment set.
+2. Fast-forward the VPS repository while preserving untracked runtime files.
+3. Restart with `bash smartflow_vps.sh`; the script attempts a dated S3 backup before stopping collection.
+4. Verify new Git HEAD, new scheduler PID, zero scheduled jobs, the exact disabled set, and no new collection run after startup.
+5. Verify the live DB remains readable and its last pre-containment run is unchanged.
+
+Rollback:
+
+- Remove only the approved source name from `DISABLED_COLLECTORS`, deploy the commit, and restart the scheduler.
+- Do not bulk re-enable legacy collectors.
+- The Phase 0 S3 snapshot remains the recovery baseline if the live DB changes unexpectedly.
+
 ## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
 |---|---|---|
-| P0-003 | Disable corrupt and structurally dead collectors | Record current enabled set and process state; rollback collectors individually |
 | P0-004 | Rotate exposed CoinGlass credential | Confirm new credential independently; retain no plaintext secret in Git or runbook |
 | P0-005 | Enable S3 versioning and snapshot retention | Record current versioning/lifecycle; rollback lifecycle independently without deleting versions |
 | P0-006 | Replace broad Lambda IAM policies | Save current attachments and policy documents; retain a tested rollback policy attachment sequence |
@@ -163,4 +209,4 @@ Rollback:
 
 ## Next action
 
-Implement P0-003 by recording the current production collector configuration and process state, defining the minimum corrupt/dead disable set, and changing collectors separately from scheduler reliability work.
+Finish P0-003 by committing the verified containment set, fast-forwarding the VPS, restarting the scheduler, and confirming production has zero collector jobs and no new collection runs.

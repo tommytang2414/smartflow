@@ -328,6 +328,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Preserved and verified the pre-rehabilitation production DB at `s3://smartflow-tommy-db/snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db`; SQLite `PRAGMA quick_check` returned `ok`.
 - Added and locally verified Lambda `REPORT_MODE=containment`; it sends a remediation notice without downloading the DB, querying legacy signals, or calling MiniMax.
 - Deployed containment mode to the production Lambda from commit `87af481`; manual invocation returned `status=containment`, sent the remediation notice, and confirmed no DB download or MiniMax call. Pre-change Lambda is preserved as version `1`.
+- Added the P0-003 collector containment policy: all 19 legacy collectors are disabled until their source-specific release gates pass, with guards in scheduler and manual CLI paths.
 
 ### 2026-05-24 — US Stock Market Flow Enhancement (Phase 1 & 2)
 

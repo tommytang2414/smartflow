@@ -40,17 +40,32 @@ UNUSUAL_WHALES_API_KEY = os.getenv("UNUSUAL_WHALES_API_KEY", "")
 TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 
-# Collectors that are permanently disabled (dead APIs, broken URLs)
-# Add/remove names here — scheduler will skip these entirely.
+# Phase 0 containment: legacy collectors remain disabled until their source-specific
+# v2 semantics, fixtures, health checks, and release gate pass. Add/remove names here;
+# both scheduled and manual collection paths enforce this set.
 DISABLED_COLLECTORS = {
-    # "congress",         # RE-ENABLED: QuiverQuant beta API (session cookie auth, http.client workaround)
-    # "dex_whale",        # RE-ENABLED: DEXScreener search API (free, 200 OK)
-    # "nq_si",            # RE-ENABLED: VPS data at ~/trading-dashboard/nq_data/ (no inline refresh — handled by cron)
-    "hkex_northbound",    # HKEX decommissioned Stock Connect page entirely — no known replacement URL
-    "whale_alert",        # No free tier
-    "arkham_labels",      # Requires credit card
-    # "nq_si",            # TEMP DISABLED: market_caps.json missing on VPS + nq-short-interest repo not on VPS
-    #                       To re-enable: create ~/trading-dashboard/nq_data/market_caps.json or clone nq-short-interest repo
+    # Core sources awaiting corrected v2 interpretation.
+    "sec_form4",
+    "sec_form144",
+    "coinglass_whale",
+    "hkex_ccass",
+    "sfc_short",
+    # Deferred sources with known semantic, identity, or source-reliability defects.
+    "sec_13f",
+    "sec_13d",
+    "congress",
+    "coinglass_oi",
+    "dex_whale",
+    "hkex_director",
+    "hkex_dealings",
+    "nq_si",
+    "stock_volume",
+    "stock_regime",
+    "stock_momentum",
+    # Unavailable or retired sources.
+    "hkex_northbound",
+    "whale_alert",
+    "arkham_labels",
 }
 
 # Circuit breaker: after this many consecutive failures, back off to CIRCUIT_BREAKER_BACKOFF

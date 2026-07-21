@@ -20,6 +20,7 @@ from smartflow.db.models import SmartMoneySignal, CollectionRun, CCASSMetric, CC
 def cmd_collect(args):
     """Run a single collection."""
     from smartflow.scheduler import _register_collectors, _run_collector, COLLECTOR_REGISTRY
+    from smartflow.config import DISABLED_COLLECTORS
 
     init_db()
     _register_collectors()
@@ -36,6 +37,9 @@ def cmd_collect(args):
         if source not in COLLECTOR_REGISTRY:
             print(f"Unknown source: {source}")
             print(f"Available: {', '.join(COLLECTOR_REGISTRY.keys())}")
+            continue
+        if source in DISABLED_COLLECTORS:
+            print(f"Skipping disabled source: {source}")
             continue
         print(f"Collecting from {source}...")
         _run_collector(source)

@@ -7,6 +7,14 @@
 
 ---
 
+## Rehabilitation Status
+
+SmartFlow is in correctness-first rehabilitation. All legacy collectors and authoritative directional reports are contained until their source-specific release gates in `PROJECT_PLAN.md` pass. Collection commands currently skip disabled sources by design; existing data is available for audit and migration work only.
+
+See `PROJECT_PLAN.md` for the approved roadmap and `PHASE0_RUNBOOK.md` for production state and rollback records.
+
+---
+
 ## Markets & Signals
 
 | Market | Sources | Signal Types |
