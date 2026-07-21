@@ -35,6 +35,22 @@ SQLite quick_check: ok
 
 The rehearsal copied `data/smartflow.db` through SQLite's backup API into a temporary file. The verifier deleted only that generated temporary copy; the source DB was opened read-only and remained unchanged.
 
+## Production containment recheck
+
+After the offline Phase 1 work, a read-only production check confirmed:
+
+```text
+Lambda state: Active; Phase 0 deployment timestamp unchanged
+Lambda report behavior: absent REPORT_MODE uses the deployed containment-safe default
+Lightsail public ports: 22/tcp, 5001/tcp
+VPS scheduler PID: 640336
+production DB quick_check: ok
+collection run max/count: 231829 / 231829
+signal count: 224298
+```
+
+No Phase 1 commit was deployed to Lambda or the VPS.
+
 ## Remaining before any collector release
 
 - Expand official SEC fixture coverage and perform a sampled parser-agreement review.

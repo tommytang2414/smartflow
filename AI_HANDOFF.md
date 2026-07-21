@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `0eacbfd`
+- Branch / implementation commit: `master` / `63dbf93`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -67,6 +67,7 @@
 - Repeatable migration rehearsal passed on the 78.7 MB local legacy DB: 8 legacy tables and 319,825 rows unchanged; all v2 tables present; `PRAGMA quick_check=ok`.
 - Process-runner return, remote-error, and hard-timeout tests passed; full offline suite passed 17/17 tests.
 - Full offline suite now passes 33/33 tests, including end-to-end SEC success, rerun, parser-failure, and schema-failure paths.
+- Post-work production read-only check passed: Lambda remains active with its containment-safe default and unchanged Phase 0 deployment timestamp; Lightsail still exposes only `22` and `5001`; VPS scheduler PID remains `640336`; DB `quick_check=ok`; run ID/count remain `231829`; signal count remains `224298`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
