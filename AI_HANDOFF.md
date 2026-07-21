@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / commit: `master` / `fe90550` (P0-004 redaction changes pending commit)
+- Branch / commit: `master` / `06bca10` (history-rewrite documentation pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -11,9 +11,11 @@
 - Updated project guidance and changelog to freeze source expansion and preserve the legacy database.
 - Recorded the production S3, Lambda, EventBridge, IAM, CloudWatch, and Lightsail before-state in `PHASE0_RUNBOOK.md`.
 - Created the dated S3 baseline snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db` without changing the live DB key.
-- Deployed Lambda containment mode from commit `87af481`; pre-change production code/configuration is preserved as Lambda version `1`.
-- Deployed P0-003 to the VPS from commit `e0ecd2c`; all 19 legacy collectors are contained.
+- Deployed Lambda containment mode from rewritten commit `a26a22f`; pre-change production code/configuration is preserved as Lambda version `1`.
+- Deployed P0-003 to the VPS from rewritten commit `b8d9841`; all 19 legacy collectors are contained.
 - Redacted the CoinGlass credential from current tracked files and cleared local/VPS runtime values; provider revocation is pending authenticated browser access.
+- Rewrote and force-pushed all 24 commits; fresh-clone and VPS all-ref scans found zero credential hits.
+- Sanitized and preserved the VPS-only stash at `refs/archive/sanitized-vps-stash` (`e916e7f`).
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -31,7 +33,7 @@
 - Legacy production data must not be edited or deleted in place.
 - Core MVP sources: Form 4, Form 144, CoinGlass, CCASS, and SFC short positions.
 - Do not add new collectors during rehabilitation.
-- The exposed CoinGlass credential exists in historical Git objects across 23 commits; history rewrite requires separate explicit force-push approval.
+- Git history rewrite is complete. Provider-side revocation is still required because external clones/caches may retain the old value.
 
 ## Next handoff
 - Complete provider-side CoinGlass credential revocation after the user opens an authenticated browser session.

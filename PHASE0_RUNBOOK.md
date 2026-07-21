@@ -23,8 +23,8 @@ The legacy production database must not be edited or deleted in place.
 ### Git
 
 - Branch: `master`
-- Assessment baseline: `047265fb38f8d334d4eccda3c83574340259f483`
-- Rehabilitation plan: `53f6495`
+- Assessment baseline: `88debf5b741a41a48c225e7aafeee31c6882ed98`
+- Rehabilitation plan: `245bbf4`
 
 ### S3 production database
 
@@ -123,7 +123,7 @@ Local verification:
 Production deployment:
 
 - Deployed: 2026-07-22 01:37 HKT
-- Git commit: `87af481`
+- Git commit: `a26a22f` after the credential-history rewrite
 - Pre-change Lambda rollback version: `1`
 - Pre-change Lambda code SHA-256: `/I/uw0t0LJI2g2l+uzjv3TYTprj6wqzxI7J3lIVnkTg=`
 - Deployed `$LATEST` code SHA-256: `zmpt9MDUcUCMTx965okPe+GmgJrUL02HCfU9j8h8zWM=`
@@ -156,7 +156,7 @@ Status: Completed, deployed, and verified
 
 Production before-state:
 
-- VPS Git HEAD: `047265fb38f8d334d4eccda3c83574340259f483`
+- VPS Git HEAD: `88debf5b741a41a48c225e7aafeee31c6882ed98` after the credential-history rewrite
 - Scheduler PID: `1835262`
 - Scheduler process start: 2026-05-24 08:29:02 UTC
 - Existing disabled set: `arkham_labels`, `hkex_northbound`, `whale_alert`
@@ -186,8 +186,8 @@ Local verification:
 Production deployment:
 
 - Deployed: 2026-07-22 01:44 HKT
-- Git commit: `e0ecd2c`
-- VPS fast-forwarded from `047265f` to `e0ecd2c`.
+- Git commit: `b8d9841` after the credential-history rewrite
+- VPS originally fast-forwarded from pre-rewrite `047265f` to pre-rewrite `e0ecd2c`; both were later mapped to the valid rewritten commits above.
 - Old scheduler PID `1835262` stopped cleanly.
 - New scheduler PID: `639960`
 - Pre-restart backup uploaded to `s3://smartflow-tommy-db/20260721/smartflow.db`.
@@ -247,9 +247,14 @@ Remaining provider action:
 
 Git history decision:
 
-- Ordinary redaction does not remove the credential from existing Git objects.
-- History rewrite would require coordinated `git filter-repo` work and a force push. Do not perform it without separate explicit approval because it rewrites shared commit history.
-- Provider revocation is required regardless of whether history is later rewritten.
+- The user explicitly approved history rewrite and force push on 2026-07-22.
+- Rewrote all 24 commits with `git-filter-repo 2.47.0`; old remote tip `595318d` mapped to rewritten tip `06bca10`.
+- Force-pushed `master` with an expected-tip lease, then verified local, GitHub, and a fresh clone all resolved to the rewritten tip.
+- Fresh-clone all-history scans returned zero exact credential hits and zero 32-character CoinGlass assignment hits.
+- Realigned the VPS clone to rewritten history without changing `.env`, DB, logs, or untracked runtime files.
+- Sanitized and preserved the material VPS-only stash as `refs/archive/sanitized-vps-stash` at `e916e7f`; its file-level diff statistics remained unchanged.
+- Deleted all temporary files containing the old credential, including the rollback bundle and replacement spec, after verification.
+- Provider revocation remains required because external clones and hosting-provider caches cannot be assumed to disappear immediately after a history rewrite.
 
 ## Pending Phase 0 changes
 

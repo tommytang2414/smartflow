@@ -327,10 +327,11 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Started Phase 0 and recorded the production before-state in `PHASE0_RUNBOOK.md`.
 - Preserved and verified the pre-rehabilitation production DB at `s3://smartflow-tommy-db/snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db`; SQLite `PRAGMA quick_check` returned `ok`.
 - Added and locally verified Lambda `REPORT_MODE=containment`; it sends a remediation notice without downloading the DB, querying legacy signals, or calling MiniMax.
-- Deployed containment mode to the production Lambda from commit `87af481`; manual invocation returned `status=containment`, sent the remediation notice, and confirmed no DB download or MiniMax call. Pre-change Lambda is preserved as version `1`.
+- Deployed containment mode to the production Lambda from rewritten commit `a26a22f`; manual invocation returned `status=containment`, sent the remediation notice, and confirmed no DB download or MiniMax call. Pre-change Lambda is preserved as version `1`.
 - Added the P0-003 collector containment policy: all 19 legacy collectors are disabled until their source-specific release gates pass, with guards in scheduler and manual CLI paths.
-- Deployed P0-003 to the VPS from commit `e0ecd2c`; all 19 collectors were skipped, one scheduler process remained healthy, and the collection-run high-water mark stayed at `231829` beyond the former 60-second interval.
+- Deployed P0-003 to the VPS from rewritten commit `b8d9841`; all 19 collectors were skipped, one scheduler process remained healthy, and the collection-run high-water mark stayed at `231829` beyond the former 60-second interval.
 - Redacted the exposed CoinGlass credential from current tracked documentation and cleared it from local/VPS runtime environments. Provider revocation remains pending authenticated CoinGlass access; do not create a replacement until the v2 collector is release-ready.
+- Rewrote all 24 Git commits with `git-filter-repo` after explicit approval and force-pushed with a lease; fresh-clone and VPS all-ref scans found zero credential hits. The VPS-only stash was sanitized and preserved as `refs/archive/sanitized-vps-stash`.
 
 ### 2026-05-24 — US Stock Market Flow Enhancement (Phase 1 & 2)
 
@@ -347,7 +348,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 **Deprecation notices added** to crypto_whale.py, crypto_arkham.py, hkex_northbound.py docstrings.
 
-Commit `a563c8f`.
+Commit `f6c7a59` after the credential-history rewrite.
 
 - Removed `SmartFlow.lnk` from Windows Startup folder (`AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`)
 - SmartFlow now runs exclusively on VPS (`18.139.210.59`), no local autostart needed
@@ -369,7 +370,7 @@ Commit `a563c8f`.
 - `scheduler.py` rewritten: circuit breaker (5 fails → 4h backoff), hard timeout per collector (ThreadPoolExecutor + `future.result(timeout)`), S3 only on `count > 0`, disabled collector skip
 - `hkex_ccass.py`: `as_completed(timeout=800s)` prevents infinite hang
 - `hkex_dealings.py`: `page.set_default_timeout(15000)` + explicit timeouts on locator actions
-- Commit `491f162`, pushed to GitHub, deployed to VPS, new scheduler PID=380964
+- Commit `1ff8169` after the credential-history rewrite; deployed to VPS with scheduler PID=380964
 
 ### 2026-04-10 — Bug Fixes + VPS + Whale Tracker Rebuild
 
