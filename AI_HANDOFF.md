@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployment commit: `master` / `b5ae325` (P0-007 final verification docs pending commit)
+- Branch / deployment commit: `master` / `9b52956` (P0-007 receipt evidence pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -21,7 +21,7 @@
 - Audited P0-006 without mutating IAM and drafted `ops/lambda-runtime-policy.json` for the dedicated `smartflow-lambda-role`.
 - Completed P0-006: replaced all three broad managed policies with inline policy `SmartFlowLambdaRuntime` and committed the corrected SES route scope in `846c6dd`.
 - Applied P0-007 alarm and log-retention changes: the existing error alarm now treats missing data as `notBreaching`, and the Lambda log group retains 30 days.
-- Confirmed the SNS email subscription for `TOMMYTANG2414@GMAIL.COM` and published the labelled test alert; recipient receipt confirmation remains pending.
+- Confirmed the SNS email subscription for `TOMMYTANG2414@GMAIL.COM`, published the labelled test alert, and received recipient confirmation.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -41,6 +41,7 @@
 - Final IAM state: zero attached managed policies, one inline policy, and zero Access Analyzer findings.
 - P0-007 read-back confirmed the original alarm threshold/actions were preserved, `TreatMissingData=notBreaching`, and `retentionInDays=30`.
 - SNS read-back confirmed a concrete subscription ARN with `PendingConfirmation=false`; test publish returned message ID `1eba8770-9eb6-5471-b866-e5a95bb1a13b`.
+- The recipient confirmed delivery of the labelled P0-007 test body on 2026-07-22 HKT, completing the end-to-end notification check.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -58,5 +59,4 @@
 - Lambda logs retain 30 days. Removing the retention policy restores indefinite retention but cannot recover logs AWS has already expired.
 
 ## Next handoff
-- Confirm recipient receipt of the labelled P0-007 test email.
-- Then perform only a read-only P0-008 audit of Lightsail services, admin paths, and ingress; do not change firewall rules without a new explicit approval.
+- Perform only a read-only P0-008 audit of Lightsail services, admin paths, and ingress; do not change firewall rules without a new explicit approval.

@@ -322,7 +322,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 - Repaired the existing `smartflow-report-errors` alarm by setting missing data to `notBreaching` while preserving its one-error threshold and SNS actions.
 - Set `/aws/lambda/smartflow-report` retention to 30 days.
-- Added and confirmed `TOMMYTANG2414@GMAIL.COM` on `smartflow-lambda-alerts`; SNS accepted the labelled test message as `1eba8770-9eb6-5471-b866-e5a95bb1a13b`, with recipient receipt confirmation pending.
+- Added and confirmed `TOMMYTANG2414@GMAIL.COM` on `smartflow-lambda-alerts`; SNS accepted the labelled test message as `1eba8770-9eb6-5471-b866-e5a95bb1a13b`, and the recipient confirmed delivery.
 - Left the enabled daily EventBridge schedule, default retry behaviour, and absent DLQ unchanged for separate review.
 
 ### 2026-07-22 — Lambda Least-Privilege IAM

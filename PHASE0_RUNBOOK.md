@@ -366,7 +366,7 @@ Rollback:
 
 ## Change P0-007 — Make Lambda failures observable
 
-Status: Deployed and AWS-side verified; recipient test-email receipt pending
+Status: Completed, deployed, and verified
 
 Production before-state:
 
@@ -391,6 +391,7 @@ Verification:
 - Log group read-back shows `retentionInDays=30`.
 - SNS read-back shows the exact endpoint, a concrete subscription ARN, and `PendingConfirmation=false`.
 - Published the labelled test message `SmartFlow TEST - Lambda alert channel`; SNS accepted it as message `1eba8770-9eb6-5471-b866-e5a95bb1a13b`.
+- The recipient confirmed delivery of the exact labelled test body on 2026-07-22 HKT.
 - No EventBridge rule or target settings were changed.
 
 Rollback:
@@ -407,4 +408,4 @@ Rollback:
 
 ## Next action
 
-Confirm receipt of the labelled P0-007 test email, then begin P0-008 with a read-only Lightsail service, admin-path, and ingress audit before proposing any production firewall change.
+Begin P0-008 with a read-only Lightsail service, admin-path, and ingress audit before proposing any production firewall change.
