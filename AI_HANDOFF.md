@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / commit: `master` / `047265fb38f8d334d4eccda3c83574340259f483` before the planning commit
+- Branch / commit: `master` / `53f6495` (rehabilitation plan; Phase 0 runbook changes pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -9,10 +9,13 @@
 - Completed a code, production DB, and AWS runtime assessment.
 - Added `PROJECT_PLAN.md` with the approved 2026-07-22 to 2026-09-06 rehabilitation programme, release gates, source disposition, risks, and phased delivery sequence.
 - Updated project guidance and changelog to freeze source expansion and preserve the legacy database.
+- Recorded the production S3, Lambda, EventBridge, IAM, CloudWatch, and Lightsail before-state in `PHASE0_RUNBOOK.md`.
+- Created the dated S3 baseline snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db` without changing the live DB key.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
-- No application or production infrastructure change made in this batch.
+- Baseline snapshot downloaded and opened read-only: `PRAGMA quick_check=ok`, `224,278` signals, `231,807` collection runs.
+- No application code, scheduler, report, IAM, firewall, or live DB change made in this batch.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -22,5 +25,6 @@
 - Do not add new collectors during rehabilitation.
 
 ## Next handoff
-- Begin Phase 0 by recording a dated AWS/Lightsail/S3/Lambda baseline and creating a verified immutable DB snapshot.
-- Then suppress directional report language and define the disabled collector set as separate reversible changes.
+- Implement P0-002: add and locally verify a safe report mode that suppresses unsupported directional recommendations.
+- Deploy P0-002 only after recording the exact Lambda/EventBridge rollback sequence.
+- Then define the disabled collector set as a separate reversible change.

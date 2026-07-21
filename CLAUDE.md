@@ -324,6 +324,8 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Froze new-source expansion until the programme release gates pass.
 - Established that the legacy production database remains immutable and that Phase 0 must disable authoritative `LONG`/`SHORT` reporting or mark it explicitly unverified during remediation.
 - Defined a 2026-09-06 decision gate for retaining SmartFlow as directional intelligence or a descriptive research platform.
+- Started Phase 0 and recorded the production before-state in `PHASE0_RUNBOOK.md`.
+- Preserved and verified the pre-rehabilitation production DB at `s3://smartflow-tommy-db/snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db`; SQLite `PRAGMA quick_check` returned `ok`.
 
 ### 2026-05-24 — US Stock Market Flow Enhancement (Phase 1 & 2)
 
