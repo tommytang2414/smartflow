@@ -364,13 +364,46 @@ Rollback:
 2. Invoke containment mode and verify SES plus CloudWatch Logs.
 3. Remove `SmartFlowLambdaRuntime` only if a full rollback is required.
 
+## Change P0-007 — Make Lambda failures observable
+
+Status: Deployed; SNS email confirmation and end-to-end notification test pending
+
+Production before-state:
+
+- In the 30-day audit window, `smartflow-report` recorded 42 invocations, 14 errors, and zero throttles.
+- Existing alarm `smartflow-report-errors` already evaluated `AWS/Lambda Errors >= 1` over one 60-second period and published ALARM/OK actions to `smartflow-lambda-alerts`.
+- Missing data used the CloudWatch default, so the alarm repeatedly moved to `INSUFFICIENT_DATA` when the daily function was idle.
+- The SNS topic had zero subscriptions; historical alarm transitions therefore produced no operator notification.
+- `/aws/lambda/smartflow-report` had no retention policy and retained logs indefinitely.
+- EventBridge rule `smartflow-daily-report` remained enabled on `cron(0 0 * * ? *)`; its target had no explicit retry policy or dead-letter queue. Those settings were audited but deliberately left unchanged in P0-007.
+
+Deployed change:
+
+- Applied: 2026-07-22 HKT.
+- Updated the existing alarm rather than creating a duplicate; its metric, threshold, actions, and evaluation period are unchanged.
+- Set `TreatMissingData=notBreaching` so idle periods resolve to `OK` instead of daily `INSUFFICIENT_DATA` flapping.
+- Set the Lambda log group retention to 30 days.
+- Requested an email subscription for `TOMMYTANG2414@GMAIL.COM` on the existing SNS topic.
+
+Verification:
+
+- Alarm read-back shows `TreatMissingData=notBreaching` with both ALARM and OK actions still targeting `smartflow-lambda-alerts`.
+- Log group read-back shows `retentionInDays=30`.
+- SNS read-back shows the exact endpoint with `PendingConfirmation`; notification delivery cannot be tested until the recipient confirms the AWS email.
+- No EventBridge rule or target settings were changed.
+
+Rollback:
+
+1. Restore the prior alarm behaviour with `TreatMissingData=missing`, preserving the recorded metric and actions.
+2. Remove the log retention policy with `aws logs delete-retention-policy`; logs already expired by AWS cannot be recovered.
+3. Unsubscribe the exact SNS subscription ARN after confirmation, or leave an unconfirmed request to expire.
+
 ## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
 |---|---|---|
-| P0-007 | Add Lambda alarm and log retention | Record current log group/rule state; rollback alarm and retention separately |
 | P0-008 | Reduce Lightsail ingress | Identify services and admin path first; change one port/rule at a time |
 
 ## Next action
 
-Prepare P0-007 by capturing the current Lambda error/throttle metrics, EventBridge target retry configuration, log group retention, and available alarm notification targets before proposing production changes.
+Confirm the SNS email subscription for P0-007, verify the confirmed ARN, publish one clearly labelled test alert, and then begin the read-only P0-008 Lightsail service and ingress audit.

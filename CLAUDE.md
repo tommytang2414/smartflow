@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Lambda Failure Monitoring
+
+- Repaired the existing `smartflow-report-errors` alarm by setting missing data to `notBreaching` while preserving its one-error threshold and SNS actions.
+- Set `/aws/lambda/smartflow-report` retention to 30 days.
+- Added `TOMMYTANG2414@GMAIL.COM` to `smartflow-lambda-alerts`; AWS email confirmation and the end-to-end test notification remain pending.
+- Left the enabled daily EventBridge schedule, default retry behaviour, and absent DLQ unchanged for separate review.
+
 ### 2026-07-22 — Lambda Least-Privilege IAM
 
 - Replaced `AmazonS3ReadOnlyAccess`, `AmazonSESFullAccess`, and `CloudWatchLogsFullAccess` on `smartflow-lambda-role` with tracked inline policy `SmartFlowLambdaRuntime` from commit `846c6dd`.

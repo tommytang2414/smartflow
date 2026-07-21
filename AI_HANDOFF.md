@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / commit: `master` / `846c6dd` (P0-006 deployment docs pending commit)
+- Branch / commit: `master` / `d8a1bfd` (P0-007 deployment docs pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -20,6 +20,8 @@
 - Completed P0-005: enabled S3 versioning, deployed scoped lifecycle rules from `ops/s3-lifecycle.json`, and changed restart backups to `backups/YYYYMMDD/smartflow.db`.
 - Audited P0-006 without mutating IAM and drafted `ops/lambda-runtime-policy.json` for the dedicated `smartflow-lambda-role`.
 - Completed P0-006: replaced all three broad managed policies with inline policy `SmartFlowLambdaRuntime` and committed the corrected SES route scope in `846c6dd`.
+- Applied P0-007 alarm and log-retention changes: the existing error alarm now treats missing data as `notBreaching`, and the Lambda log group retains 30 days.
+- Requested the SNS email subscription for `TOMMYTANG2414@GMAIL.COM`; it remains `PendingConfirmation` until the recipient confirms the AWS email.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -37,6 +39,8 @@
 - Before P0-006, confirmed `smartflow-report` was the only Lambda using the role, its trust principal was Lambda only, and the role had three broad managed policies with no inline policies.
 - Proved rollback during the first SES test failure, then completed the corrected deployment: HTTP 200, `status=containment`, SES success log, DB/MiniMax skip log, and seven new log events.
 - Final IAM state: zero attached managed policies, one inline policy, and zero Access Analyzer findings.
+- P0-007 read-back confirmed the original alarm threshold/actions were preserved, `TreatMissingData=notBreaching`, and `retentionInDays=30`.
+- SNS read-back confirmed the intended email endpoint but not delivery; no test was published while the subscription remained unconfirmed.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -50,7 +54,9 @@
 - `snapshots/` has no expiry rule; live DB non-current versions retain 30 days; operational backups and `short-alpha/` retain 30 days.
 - The Lambda role may read only the live DB object, send only from the configured sender to the configured recipient, and create/write only its own log group.
 - IAM rollback must reattach all three recorded managed policies and verify containment before removing or changing the inline policy.
+- The Lambda error alarm must continue to reuse `smartflow-lambda-alerts`; idle daily periods are healthy missing data, not operational failures.
+- Lambda logs retain 30 days. Removing the retention policy restores indefinite retention but cannot recover logs AWS has already expired.
 
 ## Next handoff
-- Prepare P0-007 with a read-only audit of Lambda error/throttle metrics, EventBridge retry/DLQ state, log retention, and available notification targets.
-- Do not create alarms, change retention, or alter EventBridge targets without explicit approval.
+- Wait for the recipient to confirm the `smartflow-lambda-alerts` SNS email, then verify its confirmed ARN and publish one clearly labelled test alert.
+- After P0-007 delivery is verified, perform only a read-only P0-008 audit of Lightsail services, admin paths, and ingress; do not change firewall rules without a new explicit approval.

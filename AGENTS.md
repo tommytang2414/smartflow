@@ -25,3 +25,10 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - `smartflow-lambda-role` is dedicated to `smartflow-report` and uses only inline policy `SmartFlowLambdaRuntime`; the reviewed desired state is `ops/lambda-runtime-policy.json`.
 - Do not attach broad S3, SES, or CloudWatch policies during normal operation. The Lambda may read only `smartflow-tommy-db/smartflow.db`, send only along the configured sender/recipient route, and write only its own log group.
 - Full IAM rollback order is: reattach `AmazonS3ReadOnlyAccess`, `AmazonSESFullAccess`, and `CloudWatchLogsFullAccess`; verify containment invocation; only then remove or change the inline policy.
+
+## Lambda monitoring
+
+- Reuse alarm `smartflow-report-errors` and SNS topic `smartflow-lambda-alerts`; do not create duplicate monitoring resources.
+- The alarm treats missing data as `notBreaching` because the report Lambda runs daily, and `/aws/lambda/smartflow-report` retains logs for 30 days.
+- The notification route is not operational until the SNS email subscription is confirmed and a labelled test message is received.
+- EventBridge retry and dead-letter settings were audited but are outside P0-007; do not change them without a separate before-state, rollback plan, and approval.
