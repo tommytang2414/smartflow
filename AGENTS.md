@@ -32,3 +32,11 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - The alarm treats missing data as `notBreaching` because the report Lambda runs daily, and `/aws/lambda/smartflow-report` retains logs for 30 days.
 - The notification route uses the confirmed `TOMMYTANG2414@GMAIL.COM` subscription; the labelled P0-007 SNS test was accepted successfully.
 - EventBridge retry and dead-letter settings were audited but are outside P0-007; do not change them without a separate before-state, rollback plan, and approval.
+
+## Shared Lightsail host
+
+- `n8n-trading-bot` hosts SmartFlow plus unrelated CCSP Quiz, Watchtower, n8n, PostgreSQL, and Caddy workloads. Never infer that a listening port belongs to SmartFlow.
+- Lightsail is currently the effective ingress boundary because UFW is inactive and host INPUT policies accept traffic.
+- Port `5001` is an active CCSP API dependency; do not close or reconfigure it as part of SmartFlow without a separate dependency review.
+- Port `8080` is the unauthenticated Watchtower dashboard and `8501` has no listener. The reviewed P0-008 minimal proposal removes only these two public rules and preserves SSH plus `5001`.
+- Do not restrict public SSH until a tested Tailscale, SSM, or equivalent admin path exists. The stored Lightsail private key has intentionally protected ACLs; do not restore inherited access.

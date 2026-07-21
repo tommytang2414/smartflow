@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Lightsail Ingress Audit
+
+- Mapped every public Lightsail rule to the actual shared-host service before proposing closure; no production firewall rule was changed.
+- Identified `5001` as the active CCSP Quiz API, `8080` as an unauthenticated Watchtower dashboard, and `8501` as stale with no listener.
+- Confirmed UFW is inactive, SSH still permits direct root key login, IMDSv1 is enabled, Tailscale is absent, and the running SSM Agent is not registered as an alternate admin path.
+- Corrected the local Lightsail private-key ACL after explicit approval by removing broad inherited access and retaining only the owner, `SYSTEM`, and `Administrators`; CLI SSH verification passed.
+- Proposed the minimal reversible change of removing only public `8080` and `8501`, pending separate approval.
+
 ### 2026-07-22 — Lambda Failure Monitoring
 
 - Repaired the existing `smartflow-report-errors` alarm by setting missing data to `notBreaching` while preserving its one-error threshold and SNS actions.

@@ -400,6 +400,49 @@ Rollback:
 2. Remove the log retention policy with `aws logs delete-retention-policy`; logs already expired by AWS cannot be recovered.
 3. Unsubscribe the exact SNS subscription ARN after confirmation, or leave an unconfirmed request to expire.
 
+## Change P0-008 — Reduce Lightsail ingress
+
+Status: Read-only audit completed; production firewall change awaiting explicit approval
+
+Control-plane before-state:
+
+- Instance `n8n-trading-bot` is Ubuntu 22.04, dual-stack, and uses static IPv4 `18.139.210.59`.
+- Lightsail reports public TCP rules for `22`, `5001`, `8080`, and `8501`; all IPv4 rules allow `0.0.0.0/0`, while `8080` and `8501` also allow `::/0`.
+- Instance metadata permits IMDSv1 because `httpTokens=optional`.
+- No Lightsail instance snapshot was present at audit time.
+
+Host and service mapping:
+
+- The host firewall is inactive; IPv4 and IPv6 INPUT policies are `ACCEPT`. Lightsail is the effective ingress boundary.
+- `22`: OpenSSH listens on IPv4 and IPv6. Password and keyboard-interactive login are disabled, but the same Lightsail public key exists for both `ubuntu` and `root`; `PermitRootLogin without-password`, X11 forwarding, and TCP forwarding are enabled.
+- `5001`: CCSP Quiz Flask API, managed as user service `flask-ccsp.service`. Protected data and admin endpoints returned HTTP 401 without credentials, but the admin page is public, transport is plaintext HTTP, and the service advertises permissive CORS. This is an active non-SmartFlow dependency and must not be closed without its own migration decision.
+- `8080`: Watchtower FastAPI dashboard running from an abandoned SSH session. It has no authentication scheme and publicly exposes Swagger/OpenAPI plus 100 recent records for each of four WinWin monitoring probes. Its registered routes are read-only GET routes, so background monitoring does not require public inbound access.
+- `8501`: no listening process. Caddy still contains a stale `tommy-dash.duckdns.org -> localhost:8501` route.
+- Host-only exposure also includes Caddy on `80/443`, PostgreSQL on all interfaces at `5432`, and the n8n Docker binding on all interfaces at `5678`. These ports are not present in the recorded Lightsail public-port state; external application requests to the Caddy hostnames timed out.
+- Tailscale is not installed. Amazon SSM Agent is running locally but the instance is not registered in Systems Manager, so neither currently provides a tested replacement admin path.
+- IMDSv1 returned HTTP 200 from the instance. Fail2ban is inactive.
+- The CCSP and Watchtower processes still reference a deleted Python 3.10 executable after package updates; Watchtower is not supervised by a persistent service.
+
+Local key correction:
+
+- The only stored Lightsail key inherited access for `CodexSandboxUsers` and an unresolved SID, so Windows OpenSSH rejected it.
+- After explicit approval, inheritance was removed and access was limited to owner `DESKTOP-F347A7C\\User` (read), `SYSTEM` (full control), and `Administrators` (full control).
+- The private-key content and VPS authorized keys were not changed. Windows OpenSSH then connected successfully as `ubuntu`.
+- Original ACL rollback SDDL was captured before the change. Restoring it would reintroduce the broad inherited access and is not recommended.
+
+Proposed minimal production change:
+
+1. Atomically remove public rules for `8501` and `8080`, preserving `22` and `5001` exactly.
+2. Verify SSH remains available, `5001` still returns the expected unauthenticated 401 response, and both removed ports are unreachable externally.
+3. Verify Watchtower remains healthy on `localhost:8080`; use an SSH local-forward tunnel for administrative dashboard access.
+4. Verify the SmartFlow scheduler PID, collector containment, and database high-water marks are unchanged.
+
+Proposed rollback:
+
+- Restore TCP `8080` and `8501` from `0.0.0.0/0` and `::/0` using the captured four-rule before-state, then repeat external reachability checks.
+- Do not restrict `22` until a tested alternate admin path exists.
+- Treat root SSH, IMDSv2, CCSP HTTPS, host firewall, loopback bindings, and Watchtower service supervision as separately approved changes; they are not part of the minimal ingress mutation.
+
 ## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
@@ -408,4 +451,4 @@ Rollback:
 
 ## Next action
 
-Begin P0-008 with a read-only Lightsail service, admin-path, and ingress audit before proposing any production firewall change.
+Obtain explicit approval for the minimal P0-008 production change: remove only public `8080` and `8501`, verify all preserved services, and retain the captured four-rule rollback state.

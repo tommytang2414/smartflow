@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployment commit: `master` / `9b52956` (P0-007 receipt evidence pending commit)
+- Branch / audit base: `master` / `d0c56a8` (P0-008 audit docs pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -22,6 +22,8 @@
 - Completed P0-006: replaced all three broad managed policies with inline policy `SmartFlowLambdaRuntime` and committed the corrected SES route scope in `846c6dd`.
 - Applied P0-007 alarm and log-retention changes: the existing error alarm now treats missing data as `notBreaching`, and the Lambda log group retains 30 days.
 - Confirmed the SNS email subscription for `TOMMYTANG2414@GMAIL.COM`, published the labelled test alert, and received recipient confirmation.
+- Completed the P0-008 read-only Lightsail control-plane, external exposure, service, SSH, host-firewall, metadata, and admin-path audit.
+- Corrected the local Lightsail key ACL after explicit approval; the key content and VPS authorized keys were unchanged.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -42,6 +44,9 @@
 - P0-007 read-back confirmed the original alarm threshold/actions were preserved, `TreatMissingData=notBreaching`, and `retentionInDays=30`.
 - SNS read-back confirmed a concrete subscription ARN with `PendingConfirmation=false`; test publish returned message ID `1eba8770-9eb6-5471-b866-e5a95bb1a13b`.
 - The recipient confirmed delivery of the labelled P0-007 test body on 2026-07-22 HKT, completing the end-to-end notification check.
+- Lightsail rules expose `22`, `5001`, `8080`, and `8501` broadly; service mapping identified CCSP Quiz, Watchtower, and an unused port respectively.
+- Host audit confirmed UFW inactive, INPUT accept, direct root key login enabled, IMDSv1 available, no Tailscale, no registered SSM managed instance, and no listener on `8501`.
+- Windows OpenSSH connected successfully after the private-key ACL was limited to the owner, `SYSTEM`, and `Administrators`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -57,6 +62,8 @@
 - IAM rollback must reattach all three recorded managed policies and verify containment before removing or changing the inline policy.
 - The Lambda error alarm must continue to reuse `smartflow-lambda-alerts`; idle daily periods are healthy missing data, not operational failures.
 - Lambda logs retain 30 days. Removing the retention policy restores indefinite retention but cannot recover logs AWS has already expired.
+- The Lightsail instance is a shared host. Preserve public `5001` until the unrelated CCSP dependency is separately reviewed, and preserve `22` until a tested alternate admin path exists.
+- The minimal P0-008 proposal removes only public `8080` and `8501`; no production firewall change has yet been made.
 
 ## Next handoff
-- Perform only a read-only P0-008 audit of Lightsail services, admin paths, and ingress; do not change firewall rules without a new explicit approval.
+- Obtain explicit approval before atomically removing public `8080` and `8501`; preserve the captured four-rule state for rollback and verify SSH, CCSP, Watchtower localhost health, and SmartFlow containment afterward.
