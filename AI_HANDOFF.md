@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `ca27260`
+- Branch / starting commit: `master` / `cc5d942`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -31,6 +31,7 @@
 - Fixed Form 144 issuer ticker and relationship parsing; represented it as proposed-sale intent rather than an executed sale.
 - Added isolated Phase 1 v2 raw-event, normalized-event, and structured collector-run schema foundations.
 - Added stable source identities and payload hashes plus a disposable-copy migration verifier; legacy `init_db()` remains untouched.
+- Replaced the ineffective thread timeout with a spawned-process runner that terminates and joins hung collectors.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -59,6 +60,7 @@
 - Phase 1 SEC parser suite passed 7/7 tests; Python compilation and `git diff --check` passed.
 - Full offline suite passed 14/14 tests.
 - Repeatable migration rehearsal passed on the 78.7 MB local legacy DB: 8 legacy tables and 319,825 rows unchanged; all v2 tables present; `PRAGMA quick_check=ok`.
+- Process-runner return, remote-error, and hard-timeout tests passed; full offline suite passed 17/17 tests.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -78,4 +80,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Continue Phase 1 with v2 batch persistence and a process-isolated scheduler timeout. Keep production schema and all collectors unchanged until source-specific release gates pass.
+- Continue Phase 1 with transactional v2 batch persistence and transaction-level SEC normalization. Keep production schema and all collectors unchanged until source-specific release gates pass.

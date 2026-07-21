@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Enforceable Collector Timeouts
+
+- Replaced the scheduler's `ThreadPoolExecutor` timeout with a cross-platform spawned-process boundary.
+- A timed-out collector is now terminated and joined before the scheduler continues, so a hung worker cannot linger behind a false hard-timeout log.
+- Preserved circuit-breaker and conditional S3-upload behavior in the parent scheduler process.
+- Added tests for child return values, remote failures, and actual wall-clock termination; the full offline suite now passes 17 tests.
+- Kept the runtime change undeployed and all collectors disabled pending v2 persistence and source release gates.
+
 ### 2026-07-22 — V2 Evidence Schema Foundation
 
 - Added isolated `raw_events`, `normalized_events_v2`, and `collector_runs_v2` models without changing legacy `Base` or `init_db()`.

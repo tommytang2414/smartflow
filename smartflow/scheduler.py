@@ -10,7 +10,6 @@ Features:
 """
 
 import time
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from apscheduler.schedulers.blocking import BlockingScheduler
 from smartflow.config import (
     POLL_INTERVALS,
@@ -20,6 +19,7 @@ from smartflow.config import (
     COLLECTOR_TIMEOUTS,
 )
 from smartflow.utils import get_logger
+from smartflow.runtime import ProcessTimeoutError, run_in_process
 
 logger = get_logger("scheduler")
 
@@ -96,6 +96,12 @@ def _do_collect(name: str) -> int:
     return collector.run()
 
 
+def _do_collect_in_child(name: str) -> int:
+    """Populate the registry inside a spawned process, then run one collector."""
+    _register_collectors()
+    return _do_collect(name)
+
+
 def _open_circuit(name: str, fails: int, last_error: Exception):
     """Back off a collector to CIRCUIT_BREAKER_BACKOFF interval."""
     global _scheduler
@@ -130,16 +136,18 @@ def _run_collector(name: str):
     count = 0
     error = None
 
-    with ThreadPoolExecutor(max_workers=1, thread_name_prefix=f"sf-{name}") as executor:
-        future = executor.submit(_do_collect, name)
-        try:
-            count = future.result(timeout=timeout)
-        except FuturesTimeoutError:
-            error = RuntimeError(f"Hard timeout after {timeout}s — collector hung")
-            logger.error(f"[{name}] {error}")
-        except Exception as exc:
-            error = exc
-            logger.error(f"[{name}] Failed: {exc}")
+    try:
+        count = run_in_process(
+            "smartflow.scheduler:_do_collect_in_child",
+            args=(name,),
+            timeout_seconds=timeout,
+        )
+    except ProcessTimeoutError:
+        error = RuntimeError(f"Hard timeout after {timeout}s — collector process terminated")
+        logger.error(f"[{name}] {error}")
+    except Exception as exc:
+        error = exc
+        logger.error(f"[{name}] Failed: {exc}")
 
     if error is None:
         # Success — reset circuit breaker

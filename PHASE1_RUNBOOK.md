@@ -14,11 +14,12 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Separate v2 metadata for immutable raw evidence, normalized interpretation, and structured collector outcomes.
 - Deterministic source-event IDs, payload hashes, fixed-precision quantities/values, and source evidence links.
 - Repeatable schema creation that does not run through legacy `init_db()`.
+- Process-isolated collector execution with enforceable termination on wall-clock timeout.
 
 ## Verification baseline
 
 ```text
-unittest: 14 passed
+unittest: 17 passed
 compileall: passed
 legacy migration rehearsal: applied twice
 legacy tables verified: 8
@@ -32,7 +33,6 @@ The rehearsal copied `data/smartflow.db` through SQLite's backup API into a temp
 ## Remaining before any collector release
 
 - Add batch persistence and idempotent raw/normalized writes.
-- Replace the scheduler's thread timeout with a process-isolated hard timeout.
 - Add source health and freshness evaluation.
 - Implement transaction-level Form 4 normalization and proposed-sale Form 144 normalization into v2.
 - Run parser agreement review across maintained fixtures and inspect sampled normalized output.

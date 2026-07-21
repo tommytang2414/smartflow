@@ -73,9 +73,7 @@ CIRCUIT_BREAKER_THRESHOLD = 5
 CIRCUIT_BREAKER_BACKOFF = 14400  # 4 hours — collector stays at this interval until manually reset
 
 # Hard wall-clock timeout per collector (seconds). If a collector run exceeds this,
-# it is abandoned and counted as a failure toward the circuit breaker.
-# Python threads cannot be forcibly killed — the thread may linger, but the scheduler
-# moves on and the circuit breaker handles repeated hangs.
+# its isolated child process is terminated and the failure counts toward the circuit breaker.
 COLLECTOR_TIMEOUTS = {
     "hkex_ccass":     900,   # 15 min — 24+ stocks × Playwright/ASP.NET scraping
     "hkex_dealings":  600,   # 10 min — 10 stocks × Playwright
