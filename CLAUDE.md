@@ -318,6 +318,15 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — SEC Parser Correctness Foundation
+
+- Added deterministic SEC Form 4 and Form 144 fixtures plus focused `unittest` parser contracts.
+- Fixed Form 4 aggregation so non-market codes cannot default to `SELL` or inflate directional notional; mixed P/S filings now remain `MIXED`.
+- Preserved acquired/disposed codes and accepted official boolean relationship values such as `true`.
+- Fixed the SEC `company_tickers.json` `cik_str` mapping and Form 144 relationship extraction.
+- Reclassified Form 144 output as proposed-sale intent with no executed `traded_at`, and changed filing identities to accession-based source IDs.
+- Kept all production collectors disabled; this change is a tested Phase 1 foundation, not a production re-enable.
+
 ### 2026-07-22 — Lightsail Ingress Audit
 
 - Mapped every public Lightsail rule to the actual shared-host service before proposing closure; no production firewall rule was changed.

@@ -1,21 +1,18 @@
 """Parse SEC EDGAR Form 4 XML filings."""
 
-from typing import Dict, Any, List, Optional
 from datetime import datetime
+from typing import Any, Dict, Optional
+
 from lxml import etree
 
 
 def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
-    """Parse a Form 4 XML document into structured data.
-
-    Returns None if parsing fails or the filing is not a standard Form 4.
-    """
+    """Parse a Form 4 XML document into structured data."""
     try:
         root = etree.fromstring(xml_content.encode() if isinstance(xml_content, str) else xml_content)
     except etree.XMLSyntaxError:
         return None
 
-    # Try with and without namespace
     def find(element, path):
         result = element.find(path)
         if result is None:
@@ -25,10 +22,12 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         return result
 
     def find_text(element, path, default=""):
-        el = find(element, path)
-        return el.text.strip() if el is not None and el.text else default
+        item = find(element, path)
+        return item.text.strip() if item is not None and item.text else default
 
-    # Issuer info
+    def is_true(value: str) -> bool:
+        return value.strip().lower() in {"1", "true"}
+
     issuer = find(root, "issuer")
     if issuer is None:
         return None
@@ -37,7 +36,6 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     issuer_name = find_text(issuer, "issuerName")
     issuer_ticker = find_text(issuer, "issuerTradingSymbol")
 
-    # Reporting owner
     owner_el = find(root, "reportingOwner")
     if owner_el is None:
         return None
@@ -46,30 +44,32 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     owner_name = find_text(owner_id, "rptOwnerName") if owner_id is not None else ""
     owner_cik = find_text(owner_id, "rptOwnerCik") if owner_id is not None else ""
 
-    # Owner relationship
     relationship = find(owner_el, "reportingOwnerRelationship")
-    is_director = find_text(relationship, "isDirector") == "1" if relationship is not None else False
-    is_officer = find_text(relationship, "isOfficer") == "1" if relationship is not None else False
+    is_director = is_true(find_text(relationship, "isDirector")) if relationship is not None else False
+    is_officer = is_true(find_text(relationship, "isOfficer")) if relationship is not None else False
     officer_title = find_text(relationship, "officerTitle") if relationship is not None else ""
 
-    # Transactions (non-derivative)
     transactions = []
-    for txn_el in root.iter():
-        tag = txn_el.tag.split("}")[-1] if "}" in txn_el.tag else txn_el.tag
+    for transaction_element in root.iter():
+        tag = transaction_element.tag.split("}")[-1]
         if tag != "nonDerivativeTransaction":
             continue
 
-        security_title = find_text(txn_el, ".//securityTitle/value", "")
-        tx_date = find_text(txn_el, ".//transactionDate/value", "")
-        tx_code = find_text(txn_el, ".//transactionCoding/transactionCode", "")
+        security_title = find_text(transaction_element, ".//securityTitle/value", "")
+        transaction_date = find_text(transaction_element, ".//transactionDate/value", "")
+        transaction_code = find_text(transaction_element, ".//transactionCoding/transactionCode", "")
 
-        amounts = find(txn_el, ".//transactionAmounts")
+        amounts = find(transaction_element, ".//transactionAmounts")
         if amounts is None:
             continue
 
         shares = find_text(amounts, ".//transactionShares/value", "0")
         price_per_share = find_text(amounts, ".//transactionPricePerShare/value", "0")
-        acq_disp = find_text(amounts, ".//transactionAcquiredDisposedCode/value", "")
+        acquired_disposed = find_text(
+            amounts,
+            ".//transactionAcquiredDisposedCode/value",
+            "",
+        )
 
         try:
             shares_float = float(shares)
@@ -77,36 +77,54 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         except ValueError:
             continue
 
-        # transactionCode: P=Purchase, S=Sale — only these are true BUY/SELL
-        # M=Merger, G=Gift, F=Option exercise, W=Option grant
-        # A=Acquired (can be stock option exercise), D=Disposed (can be gift)
-        if tx_code == "P":
+        # Only P/S represent open-market or private purchase/sale direction.
+        # Preserve all other SEC codes without creating false buy/sell signals.
+        if transaction_code == "P":
             direction = "BUY"
-        elif tx_code == "S":
+        elif transaction_code == "S":
             direction = "SELL"
-        elif tx_code in ("M", "G"):
+        elif transaction_code == "G":
             direction = "TRANSFER"
         else:
-            direction = "HOLD"  # F, W, A, D — option exercise/grant/acquired/disposed (no cash market direction)
+            direction = "HOLD"
 
-        transactions.append({
-            "security": security_title,
-            "date": tx_date,
-            "code": tx_code,
-            "shares": shares_float,
-            "price": price_float,
-            "direction": direction,
-            "value": shares_float * price_float,
-        })
+        transactions.append(
+            {
+                "security": security_title,
+                "date": transaction_date,
+                "code": transaction_code,
+                "shares": shares_float,
+                "price": price_float,
+                "direction": direction,
+                "acquired_disposed": acquired_disposed,
+                "value": shares_float * price_float,
+            }
+        )
 
     if not transactions:
         return None
 
-    # Aggregate: total buy/sell value
-    total_value = sum(t["value"] for t in transactions)
-    net_direction = "BUY" if any(t["direction"] == "BUY" for t in transactions) else "SELL"
+    directional_transactions = [
+        transaction
+        for transaction in transactions
+        if transaction["direction"] in {"BUY", "SELL"}
+    ]
+    directions = {transaction["direction"] for transaction in directional_transactions}
+    if directions == {"BUY", "SELL"}:
+        net_direction = "MIXED"
+    elif directions == {"BUY"}:
+        net_direction = "BUY"
+    elif directions == {"SELL"}:
+        net_direction = "SELL"
+    elif all(transaction["direction"] == "TRANSFER" for transaction in transactions):
+        net_direction = "TRANSFER"
+    else:
+        net_direction = "HOLD"
 
-    # Use the first transaction's date
+    # Non-market grants, gifts and exercises must not inflate directional notional.
+    total_value = sum(transaction["value"] for transaction in directional_transactions)
+    total_shares = sum(transaction["shares"] for transaction in directional_transactions)
+
     traded_at = None
     if transactions[0]["date"]:
         try:
@@ -130,7 +148,7 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         "officer_title": officer_title,
         "direction": net_direction,
         "transactions": transactions,
-        "total_shares": sum(t["shares"] for t in transactions if t["direction"] == net_direction),
+        "total_shares": total_shares,
         "total_value": total_value,
         "traded_at": traded_at,
     }

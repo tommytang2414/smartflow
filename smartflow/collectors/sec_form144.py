@@ -141,28 +141,30 @@ class SECForm144Collector(BaseCollector):
                 if not parsed:
                     continue
 
-                source_id = f"form144_{parsed.get('filer_cik', '')}_{parsed.get('ticker', '')}_{parsed.get('traded_at', '')}"
-
-                traded_at = parsed.get("traded_at")
+                accession = filing.get("accession", "")
+                source_id = f"form144:{accession or index_url}"
+                proposed_sale_at = parsed.get("proposed_sale_at")
                 signals.append({
-                    "signal_type": "form144_presale",
+                    "signal_type": "form144_proposed_sale",
                     "ticker": parsed.get("ticker"),
                     "entity_name": parsed.get("filer_name"),
                     "entity_type": "insider",
-                    "direction": "SELL",
-                    "quantity": None,
+                    "direction": "HOLD",
+                    "quantity": parsed.get("no_of_units_sold"),
                     "price": None,
                     "value_usd": parsed.get("proposed_amount", 0.0),
                     "filed_at": datetime.utcnow(),
-                    "traded_at": traded_at,
+                    "traded_at": None,
                     "raw_data": {
                         "issuer_name": parsed.get("issuer_name", ""),
                         "filer_cik": parsed.get("filer_cik", ""),
                         "security_title": parsed.get("security_title", ""),
                         "proposed_amount": parsed.get("proposed_amount", 0.0),
-                        "proposed_date": traded_at.isoformat() if traded_at else None,
+                        "proposed_date": proposed_sale_at.isoformat() if proposed_sale_at else None,
+                        "execution_status": "proposed",
+                        "relationship": parsed.get("relationship", ""),
                         "filing_url": index_url,
-                        "accession": filing.get("accession", ""),
+                        "accession": accession,
                     },
                     "source_id": source_id,
                 })

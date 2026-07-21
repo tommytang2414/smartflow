@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployment commit: `master` / `d8e1aed`
+- Branch / starting commit: `master` / `5e2a4b7`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -26,6 +26,9 @@
 - Corrected the local Lightsail key ACL after explicit approval; the key content and VPS authorized keys were unchanged.
 - Completed P0-008: removed public Lightsail rules for `8080` and `8501`, preserving `22` and `5001`.
 - Completed all approved Phase 0 remediation items; production collectors and directional reporting remain contained.
+- Started Phase 1 with offline SEC parser contracts and official-source fixtures.
+- Fixed Form 4 false-SELL aggregation, non-market notional inflation, relationship booleans, mixed-direction handling, and accession-based source IDs.
+- Fixed Form 144 issuer ticker and relationship parsing; represented it as proposed-sale intent rather than an executed sale.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -51,6 +54,7 @@
 - Windows OpenSSH connected successfully after the private-key ACL was limited to the owner, `SYSTEM`, and `Administrators`.
 - Final Lightsail state contains only public `22` and `5001`; Watchtower is blocked externally but returns HTTP 200 on localhost, while CCSP still returns HTTP 401 without credentials.
 - Post-change SmartFlow verification passed: scheduler PID `640336`, `PRAGMA quick_check=ok`, collection run ID/count `231829`, and signal count `224298`.
+- Phase 1 SEC parser suite passed 7/7 tests; Python compilation and `git diff --check` passed.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -70,4 +74,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Start Phase 1 correctness foundation work from the documented source contracts and release gates. Do not re-enable production collectors or authoritative directional reporting.
+- Continue Phase 1 by adding the isolated v2 raw-event, normalized-event, and structured collector-run schema with a repeatable migration test against a copied legacy database. Do not deploy or re-enable collectors.

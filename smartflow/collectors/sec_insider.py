@@ -136,7 +136,8 @@ class SECInsiderCollector(BaseCollector):
                 if not parsed:
                     continue
 
-                source_id = f"form4_{parsed.get('entity_cik', '')}_{parsed.get('ticker', '')}_{parsed.get('traded_at', '')}"
+                accession = filing.get("accession", "")
+                source_id = f"form4:{accession or index_url}:{parsed.get('entity_cik', '')}"
                 signal_type = f"insider_{parsed['direction'].lower()}"
 
                 signals.append({
@@ -158,7 +159,7 @@ class SECInsiderCollector(BaseCollector):
                             for t in parsed["transactions"]
                         ],
                         "filing_url": index_url,
-                        "accession": filing.get("accession", ""),
+                        "accession": accession,
                     },
                     "source_id": source_id,
                 })

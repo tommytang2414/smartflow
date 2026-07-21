@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ownershipDocument>
+  <issuer>
+    <issuerCik>0002002660</issuerCik>
+    <issuerName>Pershing Square USA, Ltd.</issuerName>
+    <issuerTradingSymbol>PSUS</issuerTradingSymbol>
+  </issuer>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0001336528</rptOwnerCik>
+      <rptOwnerName>Pershing Square Capital Management, L.P.</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>true</isDirector>
+      <isOfficer>false</isOfficer>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <nonDerivativeTable>
+    <nonDerivativeTransaction>
+      <securityTitle><value>Common Shares</value></securityTitle>
+      <transactionDate><value>2026-04-30</value></transactionDate>
+      <transactionCoding><transactionCode>A</transactionCode></transactionCoding>
+      <transactionAmounts>
+        <transactionShares><value>96000000</value></transactionShares>
+        <transactionPricePerShare><value>50</value></transactionPricePerShare>
+        <transactionAcquiredDisposedCode><value>A</value></transactionAcquiredDisposedCode>
+      </transactionAmounts>
+    </nonDerivativeTransaction>
+    <nonDerivativeTransaction>
+      <securityTitle><value>Common Shares</value></securityTitle>
+      <transactionDate><value>2026-04-30</value></transactionDate>
+      <transactionCoding><transactionCode>J</transactionCode></transactionCoding>
+      <transactionAmounts>
+        <transactionShares><value>96000000</value></transactionShares>
+        <transactionPricePerShare><value>50</value></transactionPricePerShare>
+        <transactionAcquiredDisposedCode><value>D</value></transactionAcquiredDisposedCode>
+      </transactionAmounts>
+    </nonDerivativeTransaction>
+  </nonDerivativeTable>
+</ownershipDocument>

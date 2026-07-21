@@ -41,3 +41,10 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Public ingress now contains only `22` and `5001`; the reviewed desired state is `ops/lightsail-public-ports-p0-008.json` and the exact pre-change rollback is `ops/lightsail-public-ports-before.json`.
 - Port `8080` is the unauthenticated Watchtower dashboard and is intentionally edge-blocked; use an SSH local-forward to `127.0.0.1:8080` for administrative access. Port `8501` is also closed and has no listener.
 - Do not restrict public SSH until a tested Tailscale, SSM, or equivalent admin path exists. The stored Lightsail private key has intentionally protected ACLs; do not restore inherited access.
+
+## SEC source semantics
+
+- Form 4 direction is limited to transaction codes `P` (purchase) and `S` (sale). Preserve other codes without inferring an open-market direction; mixed P/S filings remain `MIXED`.
+- Form 144 is proposed-sale intent, not evidence of execution. Its approximate sale date is `proposed_sale_at`, never `traded_at`.
+- Parser contract fixtures live under `tests/fixtures/sec/` and must remain offline and deterministic. Add or update a fixture before changing either SEC parser.
+- Production SEC collectors remain disabled until the v2 raw-event, normalization, health, and release gates pass.

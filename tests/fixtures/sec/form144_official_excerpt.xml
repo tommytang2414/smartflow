@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<edgarSubmission xmlns="http://www.sec.gov/edgar/ownership">
+  <headerData>
+    <filerInfo>
+      <filer>
+        <filerCredentials><cik>0001181218</cik></filerCredentials>
+      </filer>
+    </filerInfo>
+  </headerData>
+  <formData>
+    <issuerInfo>
+      <issuerCik>0001326801</issuerCik>
+      <issuerName>Meta Platforms, Inc.</issuerName>
+      <nameOfPersonForWhoseAccountTheSecuritiesAreToBeSold>KIMMITT ROBERT M</nameOfPersonForWhoseAccountTheSecuritiesAreToBeSold>
+      <relationshipsToIssuer>
+        <relationshipToIssuer>Director</relationshipToIssuer>
+      </relationshipsToIssuer>
+    </issuerInfo>
+    <securitiesInformation>
+      <securitiesClassTitle>Class A Common Stock</securitiesClassTitle>
+      <noOfUnitsSold>465</noOfUnitsSold>
+      <aggregateMarketValue>352224</aggregateMarketValue>
+      <approxSaleDate>09/15/2025</approxSaleDate>
+    </securitiesInformation>
+  </formData>
+</edgarSubmission>
