@@ -11,7 +11,20 @@
       "Sid": "SendSmartFlowEmail",
       "Effect": "Allow",
       "Action": "ses:SendEmail",
-      "Resource": "arn:aws:ses:ap-southeast-1:760981412816:identity/tommytang.cc@gmail.com"
+      "Resource": [
+        "arn:aws:ses:ap-southeast-1:760981412816:identity/tommytang.cc@gmail.com",
+        "arn:aws:ses:ap-southeast-1:760981412816:identity/TOMMYTANG2414@GMAIL.COM"
+      ],
+      "Condition": {
+        "StringEquals": {
+          "ses:FromAddress": "tommytang.cc@gmail.com"
+        },
+        "ForAllValues:StringEquals": {
+          "ses:Recipients": [
+            "TOMMYTANG2414@GMAIL.COM"
+          ]
+        }
+      }
     },
     {
       "Sid": "CreateSmartFlowLogGroup",
