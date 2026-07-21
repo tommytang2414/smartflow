@@ -1,0 +1,37 @@
+{
+  "instanceName": "n8n-trading-bot",
+  "portInfos": [
+    {
+      "fromPort": 22,
+      "toPort": 22,
+      "protocol": "tcp",
+      "cidrs": ["0.0.0.0/0"],
+      "ipv6Cidrs": [],
+      "cidrListAliases": []
+    },
+    {
+      "fromPort": 5001,
+      "toPort": 5001,
+      "protocol": "tcp",
+      "cidrs": ["0.0.0.0/0"],
+      "ipv6Cidrs": [],
+      "cidrListAliases": []
+    },
+    {
+      "fromPort": 8080,
+      "toPort": 8080,
+      "protocol": "tcp",
+      "cidrs": ["0.0.0.0/0"],
+      "ipv6Cidrs": ["::/0"],
+      "cidrListAliases": []
+    },
+    {
+      "fromPort": 8501,
+      "toPort": 8501,
+      "protocol": "tcp",
+      "cidrs": ["0.0.0.0/0"],
+      "ipv6Cidrs": ["::/0"],
+      "cidrListAliases": []
+    }
+  ]
+}

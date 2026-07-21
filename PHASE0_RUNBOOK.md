@@ -1,8 +1,10 @@
 # SmartFlow Phase 0 Runbook
 
-Status: In progress
+Status: Completed and verified
 
 Started: 2026-07-22 01:31 HKT
+
+Completed: 2026-07-22 HKT
 
 Approved scope: production containment, recoverability, secret rotation, least-privilege IAM, and network exposure reduction under the controls in `PROJECT_PLAN.md`.
 
@@ -402,7 +404,7 @@ Rollback:
 
 ## Change P0-008 — Reduce Lightsail ingress
 
-Status: Read-only audit completed; production firewall change awaiting explicit approval
+Status: Completed, deployed, and verified
 
 Control-plane before-state:
 
@@ -430,14 +432,31 @@ Local key correction:
 - The private-key content and VPS authorized keys were not changed. Windows OpenSSH then connected successfully as `ubuntu`.
 - Original ACL rollback SDDL was captured before the change. Restoring it would reintroduce the broad inherited access and is not recommended.
 
-Proposed minimal production change:
+Deployed minimal production change:
 
-1. Atomically remove public rules for `8501` and `8080`, preserving `22` and `5001` exactly.
+1. Removed public rules for `8501` and `8080`, preserving `22` and `5001` exactly.
 2. Verify SSH remains available, `5001` still returns the expected unauthenticated 401 response, and both removed ports are unreachable externally.
 3. Verify Watchtower remains healthy on `localhost:8080`; use an SSH local-forward tunnel for administrative dashboard access.
 4. Verify the SmartFlow scheduler PID, collector containment, and database high-water marks are unchanged.
 
-Proposed rollback:
+Deployment record:
+
+- Applied: 2026-07-22 HKT.
+- Desired state: `ops/lightsail-public-ports-p0-008.json`; exact rollback state: `ops/lightsail-public-ports-before.json`.
+- The initial inline-JSON attempt failed before AWS parsing and made no change.
+- The first valid desired-state operation was conservatively rolled back when a TCP-only propagation check remained positive; rollback operation `ca750f1d-aebb-419f-b41a-634d5062573c` restored all four rules.
+- A subsequent close attempt reached the correct blocked HTTP state, but the verification harness treated the expected curl timeout as a terminating PowerShell error; rollback operation `e2eac6ff-ee4f-4cf0-893f-506efc299344` again restored all four rules.
+- After correcting the verifier, close operations `f7c16e30-d70c-4479-bd0a-a5cc42a3f24c` (`8501`) and `c57c914d-2edb-4190-bae6-64b610f451e0` (`8080`) completed successfully with no rollback.
+
+Production verification:
+
+- Lightsail read-back contains only public TCP `22` and `5001`.
+- External Watchtower access is blocked and `8501` remains unreachable.
+- SSH remains reachable; Watchtower health on `127.0.0.1:8080` returns HTTP 200.
+- CCSP `/api/data` still returns the expected HTTP 401 without credentials.
+- SmartFlow scheduler remains PID `640336`; SQLite `PRAGMA quick_check=ok`, collection run ID/count remain `231829`, and signal count remains `224298`.
+
+Rollback:
 
 - Restore TCP `8080` and `8501` from `0.0.0.0/0` and `::/0` using the captured four-rule before-state, then repeat external reachability checks.
 - Do not restrict `22` until a tested alternate admin path exists.
@@ -445,10 +464,8 @@ Proposed rollback:
 
 ## Pending Phase 0 changes
 
-| ID | Change | Required before-state / rollback |
-|---|---|---|
-| P0-008 | Reduce Lightsail ingress | Identify services and admin path first; change one port/rule at a time |
+None. Phase 0 containment, recoverability, least-privilege, monitoring, and bounded ingress work is complete.
 
 ## Next action
 
-Obtain explicit approval for the minimal P0-008 production change: remove only public `8080` and `8501`, verify all preserved services, and retain the captured four-rule rollback state.
+Begin Phase 1 correctness foundation work without re-enabling production collectors or authoritative directional reporting.

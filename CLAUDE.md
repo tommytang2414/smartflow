@@ -324,7 +324,8 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Identified `5001` as the active CCSP Quiz API, `8080` as an unauthenticated Watchtower dashboard, and `8501` as stale with no listener.
 - Confirmed UFW is inactive, SSH still permits direct root key login, IMDSv1 is enabled, Tailscale is absent, and the running SSM Agent is not registered as an alternate admin path.
 - Corrected the local Lightsail private-key ACL after explicit approval by removing broad inherited access and retaining only the owner, `SYSTEM`, and `Administrators`; CLI SSH verification passed.
-- Proposed the minimal reversible change of removing only public `8080` and `8501`, pending separate approval.
+- Removed only public `8080` and `8501`, leaving `22` and the active CCSP `5001` rule unchanged; tracked desired and rollback states under `ops/`.
+- Verified Watchtower remains healthy on localhost, external Watchtower access is blocked, CCSP still returns its expected unauthenticated 401, and SmartFlow PID plus database counters are unchanged.
 
 ### 2026-07-22 — Lambda Failure Monitoring
 

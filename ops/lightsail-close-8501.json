@@ -1,0 +1,11 @@
+{
+  "instanceName": "n8n-trading-bot",
+  "portInfo": {
+    "fromPort": 8501,
+    "toPort": 8501,
+    "protocol": "tcp",
+    "cidrs": ["0.0.0.0/0"],
+    "ipv6Cidrs": ["::/0"],
+    "cidrListAliases": []
+  }
+}

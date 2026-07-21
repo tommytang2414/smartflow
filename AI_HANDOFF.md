@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / audit base: `master` / `d0c56a8` (P0-008 audit docs pending commit)
+- Branch / audit base: `master` / `2d6a07f` (P0-008 deployment files/docs pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -24,6 +24,8 @@
 - Confirmed the SNS email subscription for `TOMMYTANG2414@GMAIL.COM`, published the labelled test alert, and received recipient confirmation.
 - Completed the P0-008 read-only Lightsail control-plane, external exposure, service, SSH, host-firewall, metadata, and admin-path audit.
 - Corrected the local Lightsail key ACL after explicit approval; the key content and VPS authorized keys were unchanged.
+- Completed P0-008: removed public Lightsail rules for `8080` and `8501`, preserving `22` and `5001`.
+- Completed all approved Phase 0 remediation items; production collectors and directional reporting remain contained.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -47,6 +49,8 @@
 - Lightsail rules expose `22`, `5001`, `8080`, and `8501` broadly; service mapping identified CCSP Quiz, Watchtower, and an unused port respectively.
 - Host audit confirmed UFW inactive, INPUT accept, direct root key login enabled, IMDSv1 available, no Tailscale, no registered SSM managed instance, and no listener on `8501`.
 - Windows OpenSSH connected successfully after the private-key ACL was limited to the owner, `SYSTEM`, and `Administrators`.
+- Final Lightsail state contains only public `22` and `5001`; Watchtower is blocked externally but returns HTTP 200 on localhost, while CCSP still returns HTTP 401 without credentials.
+- Post-change SmartFlow verification passed: scheduler PID `640336`, `PRAGMA quick_check=ok`, collection run ID/count `231829`, and signal count `224298`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -63,7 +67,7 @@
 - The Lambda error alarm must continue to reuse `smartflow-lambda-alerts`; idle daily periods are healthy missing data, not operational failures.
 - Lambda logs retain 30 days. Removing the retention policy restores indefinite retention but cannot recover logs AWS has already expired.
 - The Lightsail instance is a shared host. Preserve public `5001` until the unrelated CCSP dependency is separately reviewed, and preserve `22` until a tested alternate admin path exists.
-- The minimal P0-008 proposal removes only public `8080` and `8501`; no production firewall change has yet been made.
+- P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Obtain explicit approval before atomically removing public `8080` and `8501`; preserve the captured four-rule state for rollback and verify SSH, CCSP, Watchtower localhost health, and SmartFlow containment afterward.
+- Start Phase 1 correctness foundation work from the documented source contracts and release gates. Do not re-enable production collectors or authoritative directional reporting.
