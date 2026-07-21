@@ -159,3 +159,39 @@ class CollectorRunV2(V2Base):
             name="ck_collector_runs_v2_timeout_kind",
         ),
     )
+
+
+class SourceHealth(V2Base):
+    """Current operational health derived from collector outcomes and freshness policy."""
+
+    __tablename__ = "source_health"
+
+    source: Mapped[str] = mapped_column(String(64), primary_key=True)
+    expected_interval_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
+    freshness_sla_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
+    state: Mapped[str] = mapped_column(String(16), nullable=False)
+    reason: Mapped[str] = mapped_column(String(128), nullable=False)
+    last_run_status: Mapped[str | None] = mapped_column(String(16))
+    last_failure_kind: Mapped[str | None] = mapped_column(String(16))
+    last_run_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    last_success_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    last_event_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    checked_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=utc_now,
+        onupdate=utc_now,
+    )
+
+    __table_args__ = (
+        Index("ix_source_health_state", "state"),
+        CheckConstraint(
+            "expected_interval_seconds > 0 AND freshness_sla_seconds > 0",
+            name="ck_source_health_positive_intervals",
+        ),
+        CheckConstraint(
+            "state IN ('healthy', 'stale', 'degraded', 'unknown', 'disabled')",
+            name="ck_source_health_state",
+        ),
+    )

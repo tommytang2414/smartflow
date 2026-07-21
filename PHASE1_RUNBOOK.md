@@ -17,16 +17,17 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Process-isolated collector execution with enforceable termination on wall-clock timeout.
 - Atomic/idempotent raw-plus-normalized batch persistence with evidence-conflict rejection.
 - Transaction-level Form 4 events with P/S-only sides and Form 144 proposed-sale events with explicit execution status.
+- Source-specific health evaluation where successful empty runs remain healthy and operational failures remain degraded.
 
 ## Verification baseline
 
 ```text
-unittest: 24 passed
+unittest: 29 passed
 compileall: passed
 legacy migration rehearsal: applied twice
 legacy tables verified: 8
 legacy rows verified: 319825
-v2 tables created: raw_events, normalized_events_v2, collector_runs_v2
+v2 tables created: raw_events, normalized_events_v2, collector_runs_v2, source_health
 SQLite quick_check: ok
 ```
 
@@ -34,7 +35,6 @@ The rehearsal copied `data/smartflow.db` through SQLite's backup API into a temp
 
 ## Remaining before any collector release
 
-- Add source health and freshness evaluation.
 - Wire an offline SEC ingestion harness through raw capture, parser, normalizer, and v2 persistence.
 - Run parser agreement review across maintained fixtures and inspect sampled normalized output.
 - Rehearse against the dated production snapshot copy before any production schema change.

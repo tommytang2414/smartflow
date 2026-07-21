@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Source Health and Freshness Semantics
+
+- Added the v2 `source_health` current-state table with explicit healthy, stale, degraded, unknown, and disabled states.
+- Added source-specific cadence/SLA policies and deterministic evaluation from the latest run plus last successful collection timestamp.
+- A recent successful empty result is healthy; auth/schema/parser/source/timeout failures remain degraded and cannot masquerade as no events.
+- Added idempotent current-health persistence and tests for empty, timeout, stale, disabled, unknown, and state-update behavior.
+- Full offline suite passes 29 tests; the repeatable migration rehearsal now verifies four v2 tables without changing 8 legacy tables or 319,825 rows.
+
 ### 2026-07-22 — Transaction-Level SEC Evidence Pipeline
 
 - Added atomic, idempotent v2 persistence for one immutable raw filing and all derived normalized events.

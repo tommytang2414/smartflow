@@ -64,3 +64,9 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Scheduled collectors run through `smartflow.runtime.run_in_process()` using the `spawn` start method. Keep worker entry points importable as `module:function` paths.
 - Do not replace the process boundary with `ThreadPoolExecutor`; Python cannot terminate a hung worker thread, so the old timeout was not a hard wall-clock limit.
 - Timeout handling must terminate and join the child before the circuit breaker records the failure or the scheduler continues.
+
+## Source health
+
+- Health is based on recent successful collection, not event volume alone. A recent successful `empty` run is operationally healthy.
+- `degraded`, `error`, and `timeout` outcomes are unhealthy even if a prior run produced data; never convert them into empty success.
+- Use source-specific `freshness_sla_seconds`. `last_event_at` is evidence context and must not replace `last_success_at` for source availability.
