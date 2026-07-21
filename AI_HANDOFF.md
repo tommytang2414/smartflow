@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `5e2a4b7`
+- Branch / starting commit: `master` / `ca27260`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -29,6 +29,8 @@
 - Started Phase 1 with offline SEC parser contracts and official-source fixtures.
 - Fixed Form 4 false-SELL aggregation, non-market notional inflation, relationship booleans, mixed-direction handling, and accession-based source IDs.
 - Fixed Form 144 issuer ticker and relationship parsing; represented it as proposed-sale intent rather than an executed sale.
+- Added isolated Phase 1 v2 raw-event, normalized-event, and structured collector-run schema foundations.
+- Added stable source identities and payload hashes plus a disposable-copy migration verifier; legacy `init_db()` remains untouched.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -55,6 +57,8 @@
 - Final Lightsail state contains only public `22` and `5001`; Watchtower is blocked externally but returns HTTP 200 on localhost, while CCSP still returns HTTP 401 without credentials.
 - Post-change SmartFlow verification passed: scheduler PID `640336`, `PRAGMA quick_check=ok`, collection run ID/count `231829`, and signal count `224298`.
 - Phase 1 SEC parser suite passed 7/7 tests; Python compilation and `git diff --check` passed.
+- Full offline suite passed 14/14 tests.
+- Repeatable migration rehearsal passed on the 78.7 MB local legacy DB: 8 legacy tables and 319,825 rows unchanged; all v2 tables present; `PRAGMA quick_check=ok`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -74,4 +78,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Continue Phase 1 by adding the isolated v2 raw-event, normalized-event, and structured collector-run schema with a repeatable migration test against a copied legacy database. Do not deploy or re-enable collectors.
+- Continue Phase 1 with v2 batch persistence and a process-isolated scheduler timeout. Keep production schema and all collectors unchanged until source-specific release gates pass.

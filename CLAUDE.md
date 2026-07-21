@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — V2 Evidence Schema Foundation
+
+- Added isolated `raw_events`, `normalized_events_v2`, and `collector_runs_v2` models without changing legacy `Base` or `init_db()`.
+- Added deterministic source-event IDs, canonical payload hashing, source/raw evidence links, parser versions, quality state, structured failure taxonomy, and fixed-precision numeric fields.
+- Added explicit repeatable schema creation and a disposable-copy migration verifier.
+- Applied the schema twice to the local 78.7 MB legacy DB backup: 8 legacy tables and 319,825 rows were unchanged, all three v2 tables were present, and `PRAGMA quick_check` returned `ok`.
+- Expanded the offline suite to 14 passing tests, including uniqueness, precision, migration repeatability, legacy compatibility, and empty-vs-failure semantics.
+
 ### 2026-07-22 — SEC Parser Correctness Foundation
 
 - Added deterministic SEC Form 4 and Form 144 fixtures plus focused `unittest` parser contracts.

@@ -48,3 +48,10 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Form 144 is proposed-sale intent, not evidence of execution. Its approximate sale date is `proposed_sale_at`, never `traded_at`.
 - Parser contract fixtures live under `tests/fixtures/sec/` and must remain offline and deterministic. Add or update a fixture before changing either SEC parser.
 - Production SEC collectors remain disabled until the v2 raw-event, normalization, health, and release gates pass.
+
+## V2 database foundation
+
+- V2 models use a separate `V2Base`; never import them into legacy `Base` or make legacy `init_db()` create v2 tables automatically.
+- Rehearse schema changes with `python ops/verify_v2_migration.py <legacy-db>`; the tool uses a disposable SQLite backup, applies the schema twice, compares every legacy table definition and row count, and runs `PRAGMA quick_check`.
+- Monetary and quantity fields use `Numeric(38, 12)`. Do not reintroduce binary floats into normalized v2 evidence.
+- `collector_runs_v2` must preserve the distinction between successful zero events (`empty`) and auth/schema/parser/source/timeout/persistence/internal failures.

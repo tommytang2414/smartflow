@@ -11,7 +11,22 @@
 
 SmartFlow is in correctness-first rehabilitation. All legacy collectors and authoritative directional reports are contained until their source-specific release gates in `PROJECT_PLAN.md` pass. Collection commands currently skip disabled sources by design; existing data is available for audit and migration work only.
 
-See `PROJECT_PLAN.md` for the approved roadmap and `PHASE0_RUNBOOK.md` for production state and rollback records.
+See `PROJECT_PLAN.md` for the approved roadmap, `PHASE0_RUNBOOK.md` for production state and rollback records, and `PHASE1_RUNBOOK.md` for correctness-foundation progress.
+
+### Phase 1 development checks
+
+```bash
+# Offline parser and schema contracts
+python -m unittest discover -s tests -v
+
+# Rehearse the repeatable migration on a disposable backup of a legacy DB
+python ops/verify_v2_migration.py data/smartflow.db
+
+# Create v2 tables only in an explicit disposable/copy database
+python -m smartflow.db.v2_schema --database path/to/smartflow-copy.db
+```
+
+Do not apply v2 schema work to the production database or re-enable a collector until its release gate passes.
 
 ---
 
@@ -137,7 +152,7 @@ class MyCollector(BaseCollector):
 
 ### Database
 
-SQLite at `data/smartflow.db`. 7 tables:
+SQLite at `data/smartflow.db`. 8 legacy tables:
 
 | Table | Purpose |
 |-------|---------|
@@ -149,6 +164,8 @@ SQLite at `data/smartflow.db`. 7 tables:
 | `ccass_metrics` | Daily computed concentration metrics |
 | `northbound_flow` | Stock Connect northbound/southbound turnover |
 | `sfc_short_data` | Weekly SFC short position data |
+
+The isolated Phase 1 foundation adds `raw_events`, `normalized_events_v2`, and `collector_runs_v2`. It is created explicitly through `smartflow.db.v2_schema`; legacy `init_db()` does not create or alter v2 tables.
 
 ---
 
