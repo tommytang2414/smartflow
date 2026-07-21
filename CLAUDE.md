@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — Rehabilitation Programme Approved
+
+- Added `PROJECT_PLAN.md` covering the correctness-first business, functional, technical, security, reporting, and signal-validation roadmap.
+- Froze new-source expansion until the programme release gates pass.
+- Established that the legacy production database remains immutable and that Phase 0 must disable authoritative `LONG`/`SHORT` reporting or mark it explicitly unverified during remediation.
+- Defined a 2026-09-06 decision gate for retaining SmartFlow as directional intelligence or a descriptive research platform.
+
 ### 2026-05-24 — US Stock Market Flow Enhancement (Phase 1 & 2)
 
 **3 new collectors added:**
