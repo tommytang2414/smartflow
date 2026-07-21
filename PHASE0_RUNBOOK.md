@@ -103,7 +103,7 @@ Limitation:
 
 ## Change P0-002 — Suppress authoritative directional report output
 
-Status: Implemented and verified locally; production deployment pending
+Status: Completed, deployed, and verified
 
 Implementation:
 
@@ -119,6 +119,24 @@ Local verification:
 - Test doubles proved the containment path did not call DB download or MiniMax.
 - Unsupported mode test raised `ValueError` before report generation.
 - Legacy rollback path completed with test doubles in the expected download, MiniMax, email order.
+
+Production deployment:
+
+- Deployed: 2026-07-22 01:37 HKT
+- Git commit: `87af481`
+- Pre-change Lambda rollback version: `1`
+- Pre-change Lambda code SHA-256: `/I/uw0t0LJI2g2l+uzjv3TYTprj6wqzxI7J3lIVnkTg=`
+- Deployed `$LATEST` code SHA-256: `zmpt9MDUcUCMTx965okPe+GmgJrUL02HCfU9j8h8zWM=`
+- Deployment package SHA-256: `CE6A6DF4C0D471408C4F1F7AE6890F7BE1A6809AD42F4D8709F53D8FC87CCD63`
+- Existing Lambda environment variables were not read, exported, or changed; the code default activates containment.
+
+Production verification:
+
+- Manual invoke returned HTTP `200`, `status=containment`, and no function error.
+- SES remediation notice was sent successfully.
+- CloudWatch tail contained `DB download and MiniMax call skipped`.
+- CloudWatch tail did not contain a DB download or MiniMax call.
+- EventBridge remains enabled for the 08:00 HKT daily notification.
 
 Production change sequence:
 
@@ -145,4 +163,4 @@ Rollback:
 
 ## Next action
 
-Finish P0-002 by recording the Lambda code/environment rollback artifacts, deploying containment mode, and verifying a manual invocation before the next EventBridge run.
+Implement P0-003 by recording the current production collector configuration and process state, defining the minimum corrupt/dead disable set, and changing collectors separately from scheduler reliability work.

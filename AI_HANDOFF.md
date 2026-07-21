@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / commit: `master` / `53f6495` (rehabilitation plan; Phase 0 runbook changes pending commit)
+- Branch / commit: `master` / `87af481` (P0-002 deployment documentation pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -11,13 +11,14 @@
 - Updated project guidance and changelog to freeze source expansion and preserve the legacy database.
 - Recorded the production S3, Lambda, EventBridge, IAM, CloudWatch, and Lightsail before-state in `PHASE0_RUNBOOK.md`.
 - Created the dated S3 baseline snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db` without changing the live DB key.
-- Implemented Lambda `REPORT_MODE=containment` locally; the production deployment is pending rollback-artifact capture.
+- Deployed Lambda containment mode from commit `87af481`; pre-change production code/configuration is preserved as Lambda version `1`.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
 - Baseline snapshot downloaded and opened read-only: `PRAGMA quick_check=ok`, `224,278` signals, `231,807` collection runs.
 - No production scheduler, IAM, firewall, or live DB change made in this batch.
 - Python compilation passed; containment, invalid-mode fail-closed, and legacy rollback paths passed isolated handler tests.
+- Production manual invocation returned HTTP 200 and `status=containment`; SES send and skip log were present, while DB download and MiniMax logs were absent.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -27,6 +28,4 @@
 - Do not add new collectors during rehabilitation.
 
 ## Next handoff
-- Implement P0-002: add and locally verify a safe report mode that suppresses unsupported directional recommendations.
-- Deploy P0-002 only after recording the exact Lambda/EventBridge rollback sequence.
-- Then define the disabled collector set as a separate reversible change.
+- Implement P0-003: capture the live collector/process state and deploy the minimum corrupt/dead collector disable set as a separate reversible change.
