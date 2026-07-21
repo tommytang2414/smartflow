@@ -366,7 +366,7 @@ Rollback:
 
 ## Change P0-007 — Make Lambda failures observable
 
-Status: Deployed; SNS email confirmation and end-to-end notification test pending
+Status: Deployed and AWS-side verified; recipient test-email receipt pending
 
 Production before-state:
 
@@ -383,13 +383,14 @@ Deployed change:
 - Updated the existing alarm rather than creating a duplicate; its metric, threshold, actions, and evaluation period are unchanged.
 - Set `TreatMissingData=notBreaching` so idle periods resolve to `OK` instead of daily `INSUFFICIENT_DATA` flapping.
 - Set the Lambda log group retention to 30 days.
-- Requested an email subscription for `TOMMYTANG2414@GMAIL.COM` on the existing SNS topic.
+- Added and confirmed an email subscription for `TOMMYTANG2414@GMAIL.COM` on the existing SNS topic.
 
 Verification:
 
 - Alarm read-back shows `TreatMissingData=notBreaching` with both ALARM and OK actions still targeting `smartflow-lambda-alerts`.
 - Log group read-back shows `retentionInDays=30`.
-- SNS read-back shows the exact endpoint with `PendingConfirmation`; notification delivery cannot be tested until the recipient confirms the AWS email.
+- SNS read-back shows the exact endpoint, a concrete subscription ARN, and `PendingConfirmation=false`.
+- Published the labelled test message `SmartFlow TEST - Lambda alert channel`; SNS accepted it as message `1eba8770-9eb6-5471-b866-e5a95bb1a13b`.
 - No EventBridge rule or target settings were changed.
 
 Rollback:
@@ -406,4 +407,4 @@ Rollback:
 
 ## Next action
 
-Confirm the SNS email subscription for P0-007, verify the confirmed ARN, publish one clearly labelled test alert, and then begin the read-only P0-008 Lightsail service and ingress audit.
+Confirm receipt of the labelled P0-007 test email, then begin P0-008 with a read-only Lightsail service, admin-path, and ingress audit before proposing any production firewall change.
