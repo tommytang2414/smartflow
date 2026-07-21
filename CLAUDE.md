@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-22 — S3 Versioning and Scoped Retention
+
+- Enabled versioning on `smartflow-tommy-db` and replaced the blanket 30-day expiry with the reviewed lifecycle in `ops/s3-lifecycle.json`.
+- Retained `snapshots/` indefinitely, kept live DB non-current versions for 30 days, and retained operational backups plus `short-alpha/` objects for 30 days.
+- Changed VPS restart backups to `backups/YYYYMMDD/smartflow.db`; deployed commit `d9ba3fb` without restarting scheduler PID `640336`.
+- Verified the live lifecycle against the tracked desired state and confirmed the Phase 0 snapshot and current DB remained visible and encrypted.
+- Deferred CoinGlass provider revocation because the paid credential belongs to a third party; SmartFlow files and runtimes remain cleared.
+
 ### 2026-07-22 — Rehabilitation Programme Approved
 
 - Added `PROJECT_PLAN.md` covering the correctness-first business, functional, technical, security, reporting, and signal-validation roadmap.

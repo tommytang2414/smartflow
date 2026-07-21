@@ -219,7 +219,7 @@ Rollback:
 
 ## Change P0-004 — Retire exposed CoinGlass credential
 
-Status: Current files and runtime remediated; provider revocation pending authenticated browser access
+Status: Current files and runtime remediated; provider revocation deferred by owner
 
 Before-state:
 
@@ -239,9 +239,10 @@ Completed remediation:
 - Verified all 19 collectors remain disabled, DB `PRAGMA quick_check=ok`, run high-water mark `231829`, and signal count `224298`.
 - Deleted the restricted temporary SSH key copy after verification; the original key was not modified.
 
-Remaining provider action:
+Provider decision:
 
-- Open an authenticated CoinGlass API dashboard session and revoke the exposed credential.
+- The credential belongs to a paid third-party account. On 2026-07-22, the owner directed that provider-side revocation must not be attempted.
+- Record the residual risk as accepted for Phase 0: external clones or caches may still contain a credential that SmartFlow no longer stores or uses.
 - Do not generate or distribute a replacement until the corrected CoinGlass v2 collector is ready for its release gate.
 - Store any future replacement only in the approved runtime secret store; never in Git or project documentation.
 
@@ -254,18 +255,62 @@ Git history decision:
 - Realigned the VPS clone to rewritten history without changing `.env`, DB, logs, or untracked runtime files.
 - Sanitized and preserved the material VPS-only stash as `refs/archive/sanitized-vps-stash` at `e916e7f`; its file-level diff statistics remained unchanged.
 - Deleted all temporary files containing the old credential, including the rollback bundle and replacement spec, after verification.
-- Provider revocation remains required because external clones and hosting-provider caches cannot be assumed to disappear immediately after a history rewrite.
+- Provider revocation would remain the preferred control, but it is outside the approved scope because the credential is owned by a third party.
+
+## Change P0-005 — Enable S3 versioning and scoped retention
+
+Status: Completed, deployed, and verified
+
+Production before-state:
+
+- Bucket versioning was not enabled.
+- Lifecycle rule `auto-delete-30d` expired every object in the bucket after 30 days, including `snapshots/`.
+- The bucket contained four visible objects totalling approximately `577.71 MB`.
+- The Phase 0 audit snapshot was therefore scheduled to expire under the blanket rule.
+- Default encryption was `AES256`; all four S3 Public Access Block settings were enabled.
+
+Change:
+
+- Enabled versioning on `smartflow-tommy-db`.
+- Replaced the blanket lifecycle with the reviewed desired state in `ops/s3-lifecycle.json`.
+- The live `smartflow.db` current version does not expire; non-current versions expire after 30 days.
+- Audit objects under `snapshots/` have no expiration rule and remain retained indefinitely.
+- Operational objects under `backups/` expire after 30 days; non-current versions expire after 7 days.
+- Preserved 30-day expiry for the unrelated `short-alpha/` prefix and the existing `20260721/` legacy backup.
+- Incomplete multipart uploads are aborted after 7 days.
+- Changed `smartflow_vps.sh` to write future restart backups to `backups/YYYYMMDD/smartflow.db`.
+
+Production deployment:
+
+- Applied: 2026-07-22 02:30 HKT
+- Git commit: `d9ba3fb`
+- VPS repository fast-forwarded from `06bca10` to `d9ba3fb` while preserving untracked `smartflow.pid` and `tmp_sf_audit.py`.
+- The running scheduler was not restarted because the script change affects only future restart backups.
+
+Verification:
+
+- `get-bucket-versioning` returned `Enabled`.
+- The five live lifecycle rules semantically matched `ops/s3-lifecycle.json`.
+- The audit snapshot remained visible at `201,900,032` bytes with `AES256` encryption.
+- The live `smartflow.db` remained visible at `201,912,320` bytes.
+- `smartflow_vps.sh` passed Git Bash syntax validation locally and contains the new backup prefix on the VPS.
+- VPS scheduler PID remained `640336`; all 19 collectors remained disabled.
+- The restricted temporary SSH key copy used for deployment was deleted after verification; the source key was not changed.
+
+Rollback:
+
+- Lifecycle rules can be replaced independently with the recorded pre-change `auto-delete-30d` rule, but doing so would again expire audit snapshots and is not recommended.
+- Versioning cannot return to an unversioned state; it can only be changed to `Suspended`. Existing versions remain until explicitly deleted or expired.
+- The backup key convention can be reverted in a new commit without restarting the currently running scheduler.
 
 ## Pending Phase 0 changes
 
 | ID | Change | Required before-state / rollback |
 |---|---|---|
-| P0-004 | Revoke exposed CoinGlass credential at provider | Requires an authenticated CoinGlass browser session; current files and runtimes are already cleared |
-| P0-005 | Enable S3 versioning and snapshot retention | Record current versioning/lifecycle; rollback lifecycle independently without deleting versions |
 | P0-006 | Replace broad Lambda IAM policies | Save current attachments and policy documents; retain a tested rollback policy attachment sequence |
 | P0-007 | Add Lambda alarm and log retention | Record current log group/rule state; rollback alarm and retention separately |
 | P0-008 | Reduce Lightsail ingress | Identify services and admin path first; change one port/rule at a time |
 
 ## Next action
 
-Complete P0-004 by revoking the exposed credential in an authenticated CoinGlass dashboard session. Then decide separately whether to rewrite Git history after assessing force-push coordination.
+Prepare P0-006 by capturing the Lambda role's effective permissions and defining a resource-scoped replacement plus tested attachment rollback sequence.

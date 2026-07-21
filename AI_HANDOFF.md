@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / commit: `master` / `06bca10` (history-rewrite documentation pending commit)
+- Branch / commit: `master` / `d9ba3fb` (P0-005 implementation; handoff update pending commit)
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -13,19 +13,24 @@
 - Created the dated S3 baseline snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db` without changing the live DB key.
 - Deployed Lambda containment mode from rewritten commit `a26a22f`; pre-change production code/configuration is preserved as Lambda version `1`.
 - Deployed P0-003 to the VPS from rewritten commit `b8d9841`; all 19 legacy collectors are contained.
-- Redacted the CoinGlass credential from current tracked files and cleared local/VPS runtime values; provider revocation is pending authenticated browser access.
+- Redacted the CoinGlass credential from current tracked files and cleared local/VPS runtime values.
 - Rewrote and force-pushed all 24 commits; fresh-clone and VPS all-ref scans found zero credential hits.
 - Sanitized and preserved the VPS-only stash at `refs/archive/sanitized-vps-stash` (`e916e7f`).
+- Deferred provider-side CoinGlass revocation at the owner's direction because the paid key belongs to a third party; SmartFlow files and runtimes remain cleared.
+- Completed P0-005: enabled S3 versioning, deployed scoped lifecycle rules from `ops/s3-lifecycle.json`, and changed restart backups to `backups/YYYYMMDD/smartflow.db`.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
 - Baseline snapshot downloaded and opened read-only: `PRAGMA quick_check=ok`, `224,278` signals, `231,807` collection runs.
-- No production scheduler, IAM, firewall, or live DB change made in this batch.
+- P0-005 changed only S3 versioning/lifecycle and the future VPS backup path; it did not restart the scheduler or change IAM, firewall, or the live DB.
 - Python compilation passed; containment, invalid-mode fail-closed, and legacy rollback paths passed isolated handler tests.
 - Production manual invocation returned HTTP 200 and `status=containment`; SES send and skip log were present, while DB download and MiniMax logs were absent.
 - Collector containment tests passed: 19/19 registered collectors disabled, direct-run guard blocked execution, fake scheduler had zero jobs, and CLI added no collection run.
 - Production scheduler restarted as PID `639960`; DB quick check passed and run ID/count `231829` plus signal count `224298` remained unchanged beyond the prior one-minute interval.
 - VPS scheduler restarted as PID `640336` with zero-length CoinGlass configuration; all 19 collectors remained disabled and DB counters remained unchanged.
+- S3 versioning read-back returned `Enabled`; five lifecycle rules matched the tracked desired state semantically.
+- The audit snapshot (`201,900,032` bytes) and live DB (`201,912,320` bytes) remained visible; snapshot encryption remained `AES256`.
+- VPS fast-forwarded to `d9ba3fb` without restarting PID `640336`; 19 collectors remained disabled and untracked runtime files were preserved.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -33,8 +38,11 @@
 - Legacy production data must not be edited or deleted in place.
 - Core MVP sources: Form 4, Form 144, CoinGlass, CCASS, and SFC short positions.
 - Do not add new collectors during rehabilitation.
-- Git history rewrite is complete. Provider-side revocation is still required because external clones/caches may retain the old value.
+- Git history rewrite is complete; external clones/caches may still retain the old credential value.
+- Provider-side CoinGlass revocation is an accepted residual risk for Phase 0 and must not be attempted without renewed approval from the third-party account owner.
+- S3 versioning cannot be returned to an unversioned state; rollback is `Suspended`, and existing versions remain.
+- `snapshots/` has no expiry rule; live DB non-current versions retain 30 days; operational backups and `short-alpha/` retain 30 days.
 
 ## Next handoff
-- Complete provider-side CoinGlass credential revocation after the user opens an authenticated browser session.
-- Do not issue a replacement key until the corrected v2 collector is ready.
+- Prepare P0-006 by capturing the effective `smartflow-lambda-role` permissions and drafting a resource-scoped replacement plus exact rollback sequence.
+- Do not mutate IAM until the owner reviews the permission delta and explicitly approves it.
