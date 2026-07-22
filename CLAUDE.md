@@ -318,6 +318,12 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — Official SEC Fixture Agreement Gate
+
+- Expanded official-source coverage with actual Shift4 P-purchase and Coca-Cola S-sale Form 4 filings.
+- Added a machine-readable fixture manifest and verifier with a 95% release threshold.
+- Verified all four maintained official fixtures at 100% agreement; no production collector was enabled.
+
 ### 2026-07-22 — Offline SEC Ingestion Gate
 
 - Wired an offline Form 4/Form 144 ingestion service through raw XML capture, parser, transaction normalizer, atomic persistence, structured run outcome, and source-health refresh.

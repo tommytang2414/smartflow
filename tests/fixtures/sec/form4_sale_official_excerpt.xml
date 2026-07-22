@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ownershipDocument>
+  <schemaVersion>X0609</schemaVersion>
+  <documentType>4</documentType>
+  <periodOfReport>2026-05-07</periodOfReport>
+  <issuer>
+    <issuerCik>0000021344</issuerCik>
+    <issuerName>COCA COLA CO</issuerName>
+    <issuerTradingSymbol>KO</issuerTradingSymbol>
+  </issuer>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0001561264</rptOwnerCik>
+      <rptOwnerName>Quincey James</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>1</isDirector>
+      <isOfficer>1</isOfficer>
+      <officerTitle>Chairman</officerTitle>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <nonDerivativeTable>
+    <nonDerivativeTransaction>
+      <securityTitle><value>Common Stock, $.25 Par Value</value></securityTitle>
+      <transactionDate><value>2026-05-07</value></transactionDate>
+      <transactionCoding><transactionCode>S</transactionCode></transactionCoding>
+      <transactionAmounts>
+        <transactionShares><value>200000</value></transactionShares>
+        <transactionPricePerShare><value>78.9045</value></transactionPricePerShare>
+        <transactionAcquiredDisposedCode><value>D</value></transactionAcquiredDisposedCode>
+      </transactionAmounts>
+    </nonDerivativeTransaction>
+  </nonDerivativeTable>
+</ownershipDocument>

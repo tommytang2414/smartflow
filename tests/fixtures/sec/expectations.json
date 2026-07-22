@@ -1,0 +1,63 @@
+[
+  {
+    "name": "form4_purchase",
+    "parser": "form4",
+    "file": "form4_purchase_official_excerpt.xml",
+    "expected": {
+      "ticker": "FOUR",
+      "entity_name": "Isaacman Jared",
+      "direction": "BUY",
+      "transactions.0.code": "P",
+      "transactions.0.shares_raw": "45693",
+      "transactions.0.price_raw": "43.8349",
+      "transactions.0.acquired_disposed": "A",
+      "traded_at": "2026-03-02T00:00:00"
+    }
+  },
+  {
+    "name": "form4_sale",
+    "parser": "form4",
+    "file": "form4_sale_official_excerpt.xml",
+    "expected": {
+      "ticker": "KO",
+      "entity_name": "Quincey James",
+      "entity_type": "officer",
+      "officer_title": "Chairman",
+      "direction": "SELL",
+      "transactions.0.code": "S",
+      "transactions.0.shares_raw": "200000",
+      "transactions.0.price_raw": "78.9045",
+      "transactions.0.acquired_disposed": "D",
+      "traded_at": "2026-05-07T00:00:00"
+    }
+  },
+  {
+    "name": "form4_non_market",
+    "parser": "form4",
+    "file": "form4_non_market_official_excerpt.xml",
+    "expected": {
+      "ticker": "PSUS",
+      "direction": "HOLD",
+      "total_shares": 0,
+      "total_value": 0,
+      "transactions.0.code": "A",
+      "transactions.1.code": "J"
+    }
+  },
+  {
+    "name": "form144_proposed_sale",
+    "parser": "form144",
+    "file": "form144_official_excerpt.xml",
+    "ticker_cache": {
+      "1326801": "META"
+    },
+    "expected": {
+      "ticker": "META",
+      "issuer_name": "Meta Platforms, Inc.",
+      "relationship": "Director",
+      "no_of_units_sold": 465,
+      "proposed_amount": 352224,
+      "proposed_sale_at": "2025-09-15T00:00:00"
+    }
+  }
+]

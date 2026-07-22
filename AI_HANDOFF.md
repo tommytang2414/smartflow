@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / implementation commit: `master` / `63dbf93`
+- Branch / starting commit: `master` / `19b3f11`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -37,6 +37,7 @@
 - Added source-specific health/freshness evaluation and current-state persistence; successful empty runs are distinct from failures.
 - Wired offline SEC ingestion end to end from raw XML through parser/normalizer/persistence into structured run outcomes and health.
 - Parser and schema failures preserve raw evidence and remain operational failures; idempotent reruns insert no duplicates.
+- Added a machine-readable official SEC fixture agreement gate covering purchase, sale, non-market, and proposed-sale semantics.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -68,6 +69,7 @@
 - Process-runner return, remote-error, and hard-timeout tests passed; full offline suite passed 17/17 tests.
 - Full offline suite now passes 33/33 tests, including end-to-end SEC success, rerun, parser-failure, and schema-failure paths.
 - Post-work production read-only check passed: Lambda remains active with its containment-safe default and unchanged Phase 0 deployment timestamp; Lightsail still exposes only `22` and `5001`; VPS scheduler PID remains `640336`; DB `quick_check=ok`; run ID/count remain `231829`; signal count remains `224298`.
+- Official SEC fixture agreement passed 4/4 fixtures (100%) against the 95% gate.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -87,4 +89,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Expand official SEC fixtures/sample review, then add source-run timeout outcome recording and SQLite snapshot/restore verification. Keep production schema and all collectors unchanged.
+- Add parent-observed timeout outcome recording and SQLite snapshot/restore verification. Keep production schema and all collectors unchanged.

@@ -71,3 +71,11 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Health is based on recent successful collection, not event volume alone. A recent successful `empty` run is operationally healthy.
 - `degraded`, `error`, and `timeout` outcomes are unhealthy even if a prior run produced data; never convert them into empty success.
 - Use source-specific `freshness_sla_seconds`. `last_event_at` is evidence context and must not replace `last_success_at` for source availability.
+
+## Changelog
+
+### 2026-07-23 — Official SEC Fixture Agreement Gate
+
+- Added official P purchase and S sale Form 4 excerpts alongside the existing non-market Form 4 and proposed-sale Form 144 fixtures.
+- Added `expectations.json` and `ops/verify_sec_fixtures.py`; at least 95% of maintained official fixtures must pass every declared expectation.
+- Initial agreement result is 4/4 fixtures, 100%.
