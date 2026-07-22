@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `e9cbef8`
+- Branch / starting commit: `master` / `1603a8d`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -50,6 +50,10 @@
 - Audited local and immutable production-snapshot SFC legacy tables; both contain zero rows, so numeric legacy conversion is impossible and must not be fabricated.
 - Added bounded official SFC history rebuilding from 2026-04-10 plus a read-only legacy/v2 coverage audit.
 - Added a separate event-publication freshness gate after live rehearsal exposed that successful fetching could hide an overdue weekly report.
+- Audited CCASS official semantics and access terms; scripted search/database creation is a release blocker without written permission or an authorised data route.
+- Added the offline `ccass-v1` structured snapshot contract, non-directional holding/concentration events, synthetic fixtures, balance reconciliation, and raw-evidence ingestion.
+- Added normalized `attributes` for source-specific facts without overloading trade fields.
+- Added a read-only CCASS legacy audit; all existing directional CCASS signals are classified unsupported.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -94,6 +98,9 @@
 - Bounded 2026-04-10 to 2026-07-10 rebuild processed 14 reports and 17,019 events; identical rerun inserted zero duplicates.
 - Legacy coverage audit returned `no_legacy_history`: 0 legacy weeks/records versus 14 official v2 weeks and 17,019 events.
 - Publication freshness recheck returned `stale:last_event_exceeded_sla` for the latest 2026-07-10 report on 2026-07-23.
+- CCASS focused contract passes 7 tests: exact balances, duplicate rejection, no trade direction, transparent HHI/concentration, idempotent ingestion, parser evidence, and unsupported legacy direction audit.
+- Local CCASS audit: 133,955 holdings / 659 metrics / 352 SELL signals; supported directional signals: 0.
+- Immutable production snapshot audit: 316,811 holdings / 1,555 metrics / 850 directional signals (849 SELL, 1 BUY); supported directional signals: 0.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -101,6 +108,7 @@
 - Legacy production data must not be edited or deleted in place.
 - Core MVP sources: Form 4, Form 144, CoinGlass, CCASS, and SFC short positions.
 - SFC data represents anonymous aggregated reportable net short positions. It must never be described as turnover, an identified seller, or a `SELL` trade.
+- CCASS participant holdings are custody/settlement balances, not beneficial ownership or trades. HKEX access terms block scripted collection and database rebuilding without permission.
 - Do not add new collectors during rehabilitation.
 - Git history rewrite is complete; external clones/caches may still retain the old credential value.
 - Provider-side CoinGlass revocation is an accepted residual risk for Phase 0 and must not be attempted without renewed approval from the third-party account owner.
@@ -114,4 +122,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Begin the HKEX CCASS concentration contract, or prepare an explicit production v2 database/source-release plan. Keep production schema and collectors unchanged until separately approved.
+- Complete full CCASS regression/migration verification, then assess the remaining CoinGlass Hyperliquid contract without using the third-party paid key. Keep production schema and collectors unchanged.

@@ -75,6 +75,15 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - The bounded SFC rebuild starts at 2026-04-10, when the legacy collector first entered Git. Both local and immutable production-snapshot `sfc_short_data` tables contain zero rows, so there is no legacy numeric history to convert.
 - Use `ops/reprocess_sfc_history.py` only with a new explicit output database; it refuses to overwrite an existing file. Use `ops/audit_sfc_legacy.py` for read-only coverage comparison.
 
+## HKEX CCASS semantics and access
+
+- A CCASS participant balance is a custody/settlement account snapshot after settlement. HKSCC does not identify the participant's underlying clients or recognise their beneficial interests, so it is not evidence that the participant itself bought, sold, accumulated, or distributed shares.
+- Normalize participant rows as `custody_snapshot` with no side. Normalize concentration only as a descriptive `concentration_measurement`; never emit `BUY`, `SELL`, `RED/AMBER/GREEN`, “smart money”, “retail”, or “莊家” conclusions from CCASS alone.
+- A participant disappearing between snapshots is `not_in_current_snapshot`, not a sale. A balance delta is `custody_balance_change_not_trade_direction` because trades, transfers, deposits, withdrawals, and internal account movement are not distinguishable.
+- Current contract `ccass-v1` accepts structured snapshots only from an approved data route. Tests use synthetic fixtures under `tests/fixtures/ccass/`; do not copy HKEX holdings into fixtures.
+- HKEX CCASS search terms prohibit scripted/mechanical access and systematic database or derivative-work creation without written permission. Keep the legacy ViewState scraper disabled; no live adapter or historical v2 reprocessing is permitted until an approved licence/permission route is documented.
+- Use `ops/audit_ccass_legacy.py <database>` read-only. All legacy `hkex_ccass` directional signals are unsupported and must remain excluded from reporting.
+
 ## Collector execution
 
 - Scheduled collectors run through `smartflow.runtime.run_in_process()` using the `spawn` start method. Keep worker entry points importable as `module:function` paths.
@@ -94,6 +103,13 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — CCASS Non-Directional Contract and Compliance Gate
+
+- Reclassified CCASS data as participant custody/settlement snapshots rather than beneficial ownership or trades.
+- Added synthetic structured fixtures, exact balance parsing, descriptive concentration metrics, non-directional reconciliation, offline v2 ingestion, and raw-evidence failure handling.
+- Added a read-only legacy audit: the production snapshot has 316,811 holding rows, 1,555 metrics, and 850 unsupported directional signals.
+- Recorded HKEX's scripted-access/database restriction as a release blocker; no live scrape or historical copying was performed.
 
 ### 2026-07-23 — SFC Bounded History Rebuild and Publication Freshness
 

@@ -1,0 +1,29 @@
+{
+  "fixture_type": "synthetic_contract_fixture",
+  "stock_code": "700",
+  "stock_name": "EXAMPLE HOLDINGS",
+  "holding_date": "2026-07-21",
+  "holdings": [
+    {
+      "participant_id": "C00001",
+      "participant_name": "Example Custodian Bank",
+      "participant_type": "bank",
+      "shares": "3800",
+      "pct_of_issued_shares": "3.80"
+    },
+    {
+      "participant_id": "B00001",
+      "participant_name": "Example Broker One",
+      "participant_type": "broker",
+      "shares": "3700",
+      "pct_of_issued_shares": "3.70"
+    },
+    {
+      "participant_id": "B00003",
+      "participant_name": "Example Broker Three",
+      "participant_type": "broker",
+      "shares": "2500",
+      "pct_of_issued_shares": "2.50"
+    }
+  ]
+}

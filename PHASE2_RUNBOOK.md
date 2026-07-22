@@ -58,3 +58,22 @@ legacy coverage: 0 weeks / 0 records / no_legacy_history
 - Obtain an explicit production v2 database deployment and source-release approval before scheduling.
 
 No work in this runbook authorizes production deployment, legacy-table mutation, collector enablement, or directional reporting.
+
+## CCASS contract completed offline
+
+- Participant rows are custody/settlement account snapshots, not beneficial-owner or trade records.
+- Holding events use `action=custody_snapshot`, `side=None`.
+- Concentration events use `action=concentration_measurement`, `side=None`, with transparent top-1/top-5/HHI attributes and no traffic-light threshold.
+- Snapshot reconciliation emits custody balance changes only; missing/new participants do not imply sale/purchase.
+- Parser/schema failures preserve raw structured evidence and degrade source health.
+- Fixtures are synthetic because HKEX terms prohibit copying/systematic retrieval without permission.
+- Legacy audit classifies all 850 production-snapshot directional signals as unsupported.
+
+## CCASS release blocker
+
+The public HKEX CCASS search terms prohibit scripted or mechanical access and systematic database/derivative-work creation without written permission. The contained ViewState scraper must not be re-enabled. Production release requires one of:
+
+1. written HKEX permission/licence covering automated access and storage; or
+2. an authorised data provider/feed with documented redistribution and retention rights.
+
+Manual browser access is not a substitute for an automated production data licence.

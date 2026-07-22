@@ -318,6 +318,16 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — CCASS Non-Directional Contract and Compliance Gate
+
+- Official semantics confirm CCASS rows are participant holdings after settlement; HKSCC does not recognise the underlying client beneficial interests.
+- Removed directional meaning in the new v2 path: holdings use `custody_snapshot`, concentration uses `concentration_measurement`, and every event has `side=None`.
+- Added `attributes` JSON to v2 normalized events for participant type, issued-share percentage, transparent concentration inputs, HHI, and explicit interpretation limits.
+- Reconciliation reports custody balance changes only. Missing/new participants are not converted into sales/purchases.
+- Local audit: 133,955 holdings, 659 metrics, and 352 unsupported SELL signals. Immutable production snapshot: 316,811 holdings, 1,555 metrics, and 850 unsupported directions (849 SELL, 1 BUY).
+- HKEX terms prohibit scripted/mechanical access and systematic database creation without permission. The existing ViewState scraper remains disabled; fixtures are synthetic and no live scrape/history copy was performed.
+- Full offline verification covers 66 tests; production remains unchanged.
+
 ### 2026-07-23 — SFC Bounded History Rebuild and Publication Freshness
 
 - Audited both `data/smartflow.db` and immutable snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db`; each has zero `sfc_short_data` rows.
