@@ -14,6 +14,8 @@ Production state: unchanged; all legacy collectors and directional reporting rem
 4. SFC short positions
 5. HKEX CCASS
 
+CoinGlass remains in the original programme order but is owner-deferred because the available paid credential belongs to a third party. It is not an active implementation dependency and must not block work on approved sources or reporting foundations.
+
 SEC Form 4/Form 144 already have tested offline contracts from Phase 1. This run starts the SFC source slice because its legacy business meaning and CSV schema were materially incorrect.
 
 ## SFC contract completed

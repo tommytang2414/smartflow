@@ -318,6 +318,11 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — CoinGlass Owner Deferral Clarified
+
+- Recorded the owner's instruction not to continue CoinGlass work with the third-party paid key.
+- Removed CoinGlass from the active next-step handoff; do not use, validate, rotate, or build around that credential.
+
 ### 2026-07-23 — CCASS Non-Directional Contract and Compliance Gate
 
 - Official semantics confirm CCASS rows are participant holdings after settlement; HKSCC does not recognise the underlying client beneficial interests.

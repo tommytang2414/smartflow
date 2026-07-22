@@ -112,6 +112,7 @@
 - Do not add new collectors during rehabilitation.
 - Git history rewrite is complete; external clones/caches may still retain the old credential value.
 - Provider-side CoinGlass revocation is an accepted residual risk for Phase 0 and must not be attempted without renewed approval from the third-party account owner.
+- CoinGlass implementation is owner-deferred; do not use the third-party paid key or make it the next remediation step.
 - S3 versioning cannot be returned to an unversioned state; rollback is `Suspended`, and existing versions remain.
 - `snapshots/` has no expiry rule; live DB non-current versions retain 30 days; operational backups and `short-alpha/` retain 30 days.
 - The Lambda role may read only the live DB object, send only from the configured sender to the configured recipient, and create/write only its own log group.
@@ -122,4 +123,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Complete full CCASS regression/migration verification, then assess the remaining CoinGlass Hyperliquid contract without using the third-party paid key. Keep production schema and collectors unchanged.
+- Prepare the explicit production v2 database/source-release plan or begin the deterministic evidence-backed reporting contract. Keep production schema and collectors unchanged until separately approved.

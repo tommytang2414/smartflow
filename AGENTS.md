@@ -12,6 +12,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Implement and validate source semantics in v2 before historical reprocessing.
 - Treat production security, IAM, firewall, secret, scheduler, and reporting changes as individually reversible operations.
 - Record every production deployment and its verification in `CLAUDE.md` and `AI_HANDOFF.md`.
+- CoinGlass is owner-deferred because the available paid key belongs to a third party. Do not use, validate, rotate, or build around that key; proceed with the other approved sources.
 
 ## S3 recoverability
 
