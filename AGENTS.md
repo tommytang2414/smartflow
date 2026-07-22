@@ -51,6 +51,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Use `smartflow.ingestion.sec` for v2 SEC ingestion. Parser/schema failures must still preserve the raw XML, create a structured failed run, and degrade source health.
 - Multi-owner Form 4 filings produce one normalized event per transaction, not one per owner. Store every reporting owner in `entities` and use a deterministic group `entity_id` to avoid double-counting transaction value.
 - Current Form 4 parser contract is `sec-form4-v2`; bump `parser_version` whenever normalized behavior changes.
+- Use `smartflow.ingestion.sec_live` for future HTTP wiring: missing SEC contact identity or HTTP 401/403 is `auth`; request/non-2xx availability failure is `source`; HTTP 200 malformed content remains `parser` and preserves the response body as raw evidence.
 
 ## V2 database foundation
 
@@ -81,6 +82,12 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — SEC Live-Feed Failure Taxonomy
+
+- Added a non-production SEC HTTP adapter with explicit auth and source failure classification.
+- Successful responses flow into the existing parser/schema/persistence pipeline; malformed HTTP 200 XML is retained as raw evidence and recorded as parser failure.
+- Kept live collector wiring disabled pending the remaining SEC release checks.
 
 ### 2026-07-23 — Multi-Owner Form 4 Attribution
 

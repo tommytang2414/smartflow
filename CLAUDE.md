@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SEC Live-Feed Failure Taxonomy
+
+- Added Form 4/Form 144 HTTP ingestion wrappers that require a contact-bearing SEC User-Agent.
+- Classified missing identity and HTTP 401/403 as `auth`, request/non-2xx failures as `source`, and malformed successful responses as `parser` with raw-body preservation.
+- Verified healthy 200 responses continue through v2 normalization, persistence, outcome, and health refresh.
+- Full offline suite now covers 42 tests; the adapter remains disconnected from production collectors.
+
 ### 2026-07-23 — Multi-Owner Form 4 Attribution
 
 - Corrected the official Pershing Square fixture to all four reporting owners and all four transactions.

@@ -1,9 +1,9 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `8533354`
+- Branch / starting commit: `master` / `3722e91`
 - Last agent: Codex
-- Updated: 2026-07-22 HKT
+- Updated: 2026-07-23 HKT
 
 ## Completed
 - Completed a code, production DB, and AWS runtime assessment.
@@ -42,6 +42,7 @@
 - Added SQLite snapshot/restore tooling with overwrite protection, logical manifest comparison, integrity checks, and exact hash verification.
 - Preserved all owners in multi-owner Form 4 filings without duplicating transactions; normalized events now include `entities` and a deterministic group identity.
 - Fixed Form 4 UTC event-date parsing and bumped its normalized parser contract to `sec-form4-v2`.
+- Added the non-production SEC live HTTP adapter with auth/source/parser classification and raw-response preservation.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -78,6 +79,7 @@
 - Local legacy restore rehearsal passed for 78,663,680 bytes, 8 tables, and 319,825 rows.
 - Dated production S3 snapshot restore rehearsal passed for 201,900,032 bytes, 8 tables, and 774,475 rows; `quick_check=ok` and restored SHA-256 matched exactly.
 - Multi-owner parser/normalizer/ingestion tests pass; official SEC fixture agreement remains 4/4 (100%) and v2 migration remains repeatable.
+- SEC live-adapter success, auth, source, and malformed-parser paths pass; full suite contains 42 tests.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -97,4 +99,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Continue Phase 1 with live-feed SEC adapter failure classification, then begin the next core-source contract. Keep production schema and collectors unchanged.
+- Begin the next core-source contract, prioritizing SFC weekly short positions or CCASS concentration semantics. Keep production schema and collectors unchanged.

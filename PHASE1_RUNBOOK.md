@@ -25,11 +25,12 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - SQLite backup/restore verifier with overwrite refusal, schema/row comparison, integrity checks, and exact restored-file hash.
 - Multi-owner Form 4 attribution using one event per transaction, complete `entities`, and deterministic group identity.
 - Correct UTC `event_at` parsing under the `sec-form4-v2` parser contract.
+- Non-production SEC HTTP adapter with explicit auth/source/parser classification and raw-response preservation.
 
 ## Verification baseline
 
 ```text
-unittest: 37 passed
+unittest: 42 passed
 official SEC fixture agreement: 4/4, 100% (gate: 95%)
 compileall: passed
 legacy migration rehearsal: applied twice
@@ -61,7 +62,7 @@ No Phase 1 commit was deployed to Lambda or the VPS.
 
 ## Remaining before any collector release
 
-- Classify live-feed authentication, source, parser, and schema failures through the v2 SEC adapter.
+- Connect the SEC live adapter only after an explicit v2 database deployment plan and source release approval.
 - Enable WAL only as part of a reviewed v2 runtime database deployment; do not change the legacy production DB journal mode in place.
 
 No Phase 1 code in this runbook authorizes production deployment, collector enablement, or directional reporting.
