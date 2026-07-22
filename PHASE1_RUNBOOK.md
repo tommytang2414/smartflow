@@ -21,11 +21,12 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Offline SEC ingestion from raw XML through parser, normalizer, atomic persistence, structured outcome, and health refresh.
 - Failed parser/schema cases preserve raw evidence and create explicit degraded health rather than empty success.
 - Official SEC fixture agreement verifier covering P purchase, S sale, non-market Form 4, and proposed-sale Form 144 semantics.
+- Parent-observed timeout adapter that records terminated processes in `collector_runs_v2` and degrades source health.
 
 ## Verification baseline
 
 ```text
-unittest: 34 passed
+unittest: 35 passed
 official SEC fixture agreement: 4/4, 100% (gate: 95%)
 compileall: passed
 legacy migration rehearsal: applied twice
@@ -55,7 +56,6 @@ No Phase 1 commit was deployed to Lambda or the VPS.
 
 ## Remaining before any collector release
 
-- Record parent-observed process timeouts into `collector_runs_v2` once the v2 runtime adapter is connected.
 - Rehearse against the dated production snapshot copy before any production schema change.
 
 No Phase 1 code in this runbook authorizes production deployment, collector enablement, or directional reporting.

@@ -74,6 +74,12 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 ## Changelog
 
+### 2026-07-23 — Parent-Observed Timeout Outcomes
+
+- Added shared v2 outcome/health recording and a parent-process runtime adapter.
+- A terminated child now produces `status=timeout`, `failure_kind=timeout`, parent-observer metadata, and degraded source health in v2.
+- Kept the adapter disconnected from the production scheduler until the v2 schema deployment gate passes.
+
 ### 2026-07-23 — Official SEC Fixture Agreement Gate
 
 - Added official P purchase and S sale Form 4 excerpts alongside the existing non-market Form 4 and proposed-sale Form 144 fixtures.

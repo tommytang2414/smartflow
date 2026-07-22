@@ -4,18 +4,13 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Callable
 
-from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from smartflow.db.models_v2 import CollectorRunV2, NormalizedEventV2
 from smartflow.db.v2_repository import BatchPersistResult, persist_event_batch
 from smartflow.events import payload_sha256
-from smartflow.health import (
-    SourceHealthPolicy,
-    evaluate_source_health,
-    record_source_health,
-)
+from smartflow.health import SourceHealthPolicy
 from smartflow.normalizers.sec import normalize_form4, normalize_form144
+from smartflow.outcomes import record_collector_outcome, refresh_source_health
 from smartflow.parsers.edgar_xml import parse_form4_xml
 from smartflow.parsers.form144_xml import parse_form144_xml
 
@@ -44,74 +39,6 @@ SOURCE_POLICIES = {
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
-
-
-def _record_outcome(
-    session: Session,
-    *,
-    collector: str,
-    started_at: datetime,
-    finished_at: datetime,
-    status: str,
-    failure_kind: str | None,
-    records_normalized: int,
-    records_persisted: int,
-    error: Exception | None = None,
-) -> CollectorRunV2:
-    run = CollectorRunV2(
-        collector=collector,
-        started_at=started_at,
-        finished_at=finished_at,
-        status=status,
-        failure_kind=failure_kind,
-        error_code=type(error).__name__ if error else None,
-        error_message=str(error)[:500] if error else None,
-        records_observed=1,
-        records_normalized=records_normalized,
-        records_persisted=records_persisted,
-    )
-    session.add(run)
-    session.commit()
-    return run
-
-
-def _refresh_health(
-    session: Session,
-    *,
-    source: str,
-    run: CollectorRunV2,
-    checked_at: datetime,
-) -> None:
-    last_success_at = session.scalar(
-        select(func.max(CollectorRunV2.finished_at)).where(
-            CollectorRunV2.collector == source,
-            CollectorRunV2.status.in_(("success", "empty")),
-        )
-    )
-    last_event_at = session.scalar(
-        select(func.max(NormalizedEventV2.event_at)).where(
-            NormalizedEventV2.source == source,
-        )
-    )
-    policy = SOURCE_POLICIES[source]
-    assessment = evaluate_source_health(
-        policy,
-        checked_at=checked_at,
-        last_run_status=run.status,
-        last_run_at=run.finished_at,
-        last_success_at=last_success_at,
-        last_failure_kind=run.failure_kind,
-    )
-    record_source_health(
-        session,
-        policy=policy,
-        assessment=assessment,
-        last_run_status=run.status,
-        last_failure_kind=run.failure_kind,
-        last_run_at=run.finished_at,
-        last_success_at=last_success_at,
-        last_event_at=last_event_at,
-    )
 
 
 def _ingest_sec_xml(
@@ -176,32 +103,44 @@ def _ingest_sec_xml(
                 stage = "persistence"
 
         finished_at = _utc_now()
-        run = _record_outcome(
+        run = record_collector_outcome(
             session,
             collector=source,
             started_at=started_at,
             finished_at=finished_at,
             status="error",
             failure_kind=stage,
+            records_observed=1,
             records_normalized=len(normalized_events),
             records_persisted=0,
             error=error,
         )
-        _refresh_health(session, source=source, run=run, checked_at=finished_at)
+        refresh_source_health(
+            session,
+            policy=SOURCE_POLICIES[source],
+            run=run,
+            checked_at=finished_at,
+        )
         raise
 
     finished_at = _utc_now()
-    run = _record_outcome(
+    run = record_collector_outcome(
         session,
         collector=source,
         started_at=started_at,
         finished_at=finished_at,
         status="success",
         failure_kind=None,
+        records_observed=1,
         records_normalized=len(normalized_events),
         records_persisted=persist_result.normalized_inserted,
     )
-    _refresh_health(session, source=source, run=run, checked_at=finished_at)
+    refresh_source_health(
+        session,
+        policy=SOURCE_POLICIES[source],
+        run=run,
+        checked_at=finished_at,
+    )
     return SECIngestionResult(
         raw_inserted=persist_result.raw_inserted,
         normalized_inserted=persist_result.normalized_inserted,

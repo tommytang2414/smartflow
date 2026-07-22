@@ -318,6 +318,12 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — Parent-Observed Timeout Outcomes
+
+- Extracted structured outcome and health refresh logic for reuse by ingestion and runtime code.
+- Added a v2 process adapter that records timeout evidence from the surviving parent after the child is terminated and joined.
+- Verified a 10-second child is terminated at 0.2 seconds and recorded as timeout/degraded; production wiring remains intentionally disabled.
+
 ### 2026-07-23 — Official SEC Fixture Agreement Gate
 
 - Expanded official-source coverage with actual Shift4 P-purchase and Coca-Cola S-sale Form 4 filings.

@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `19b3f11`
+- Branch / starting commit: `master` / `ad56061`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -38,6 +38,7 @@
 - Wired offline SEC ingestion end to end from raw XML through parser/normalizer/persistence into structured run outcomes and health.
 - Parser and schema failures preserve raw evidence and remain operational failures; idempotent reruns insert no duplicates.
 - Added a machine-readable official SEC fixture agreement gate covering purchase, sale, non-market, and proposed-sale semantics.
+- Added shared v2 outcome recording plus a parent-process adapter that records terminated timeouts and degraded health.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -70,6 +71,7 @@
 - Full offline suite now passes 33/33 tests, including end-to-end SEC success, rerun, parser-failure, and schema-failure paths.
 - Post-work production read-only check passed: Lambda remains active with its containment-safe default and unchanged Phase 0 deployment timestamp; Lightsail still exposes only `22` and `5001`; VPS scheduler PID remains `640336`; DB `quick_check=ok`; run ID/count remain `231829`; signal count remains `224298`.
 - Official SEC fixture agreement passed 4/4 fixtures (100%) against the 95% gate.
+- Full suite passes 35 tests; a 10-second child terminated at the 0.2-second boundary and produced a v2 timeout run plus degraded source health.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -89,4 +91,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Add parent-observed timeout outcome recording and SQLite snapshot/restore verification. Keep production schema and all collectors unchanged.
+- Add SQLite snapshot/restore verification, then rehearse it on the local legacy DB and dated production snapshot copy. Keep production schema and collectors unchanged.
