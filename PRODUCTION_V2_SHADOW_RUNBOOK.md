@@ -1,6 +1,6 @@
 # Production v2 Shadow Release Runbook
 
-Status: Prepared; production execution requires approval of the exact release manifest.
+Status: Deployed and verified on 2026-07-23 03:06 HKT.
 
 Release ID: `V2-SHADOW-001`
 
@@ -117,3 +117,13 @@ Do not permanently delete the quarantined directory without a separate deletion 
 Successful execution changes the status only to **shadow schema installed**. All collectors remain disabled and reports remain in containment.
 
 The next eligible production change is a separately reviewed SEC-only shadow runner that writes raw/normalized evidence to this database, has no S3/report output, and cannot produce trade recommendations. SFC remains blocked while the official publication is stale; CCASS remains blocked pending an approved licensed route; CoinGlass remains owner-deferred.
+
+## 8. Deployment record
+
+- Approval: user authorised Codex to execute the complete `V2-SHADOW-001 @ 656b893` manifest.
+- Release commit: `656b893b184d51fc2d18c884ad49ab6f982753ef`.
+- VPS test result: 69/69 passed.
+- Shadow DB: 69,632 bytes; SHA-256 `8532c46ca9b63de2c7774a003cc9f7df8f058d50c58f357291c61537a413adaa`.
+- Schema verification: four expected v2 tables, zero rows, `journal_mode=wal`, `foreign_keys=on`, `quick_check=ok`, no WAL/SHM sidecars, and no shadow process.
+- Zero-drift verification: live commit `d9ba3fb`, scheduler PID `640336`, run high-water mark `231829`, signal count `224298`, and legacy `quick_check=ok` remained unchanged.
+- AWS verification: live S3 object metadata, Lambda deployment/configuration, EventBridge schedule, CloudWatch alarm, and Lightsail public ports `22`/`5001` remained unchanged.

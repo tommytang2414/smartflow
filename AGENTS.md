@@ -113,6 +113,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Added tests for schema identity, zero-row state, WAL mode, foreign-key validation, integrity, read-only verification, and overwrite refusal.
 - Prepared `V2-SHADOW-001` as a separate production checkout with no scheduler, source, S3, Lambda, report, IAM, or firewall connection.
 - Recorded the production before-state, exact mutation boundary, acceptance checks, and recoverable quarantine rollback in `PRODUCTION_V2_SHADOW_RUNBOOK.md`.
+- Deployed the isolated checkout and empty v2 DB to `/home/ubuntu/SmartFlow-shadow`; 69/69 VPS tests and all schema/integrity/isolation checks passed.
+- Confirmed zero drift in the live repo, scheduler, legacy DB, S3 object, Lambda, EventBridge, alarm, and firewall. Production deployment commit: `656b893`.
 
 ### 2026-07-23 — CCASS Non-Directional Contract and Compliance Gate
 

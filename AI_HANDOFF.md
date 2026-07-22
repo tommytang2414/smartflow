@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / release-package parent: `master` / `ed63fc1`
+- Branch / deployed release commit: `master` / `656b893`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -54,7 +54,7 @@
 - Added the offline `ccass-v1` structured snapshot contract, non-directional holding/concentration events, synthetic fixtures, balance reconciliation, and raw-evidence ingestion.
 - Added normalized `attributes` for source-specific facts without overloading trade fields.
 - Added a read-only CCASS legacy audit; all existing directional CCASS signals are classified unsupported.
-- Prepared `V2-SHADOW-001`: an isolated `/home/ubuntu/SmartFlow-shadow` checkout with an empty v2 DB and no connection to the live scheduler, legacy DB, S3, Lambda, reports, IAM, or firewall.
+- Deployed `V2-SHADOW-001` at exact commit `656b893`: `/home/ubuntu/SmartFlow-shadow` now contains an empty v2 DB and has no connection to the live scheduler, legacy DB, S3, Lambda, reports, IAM, or firewall.
 - Added `ops/manage_v2_shadow.py`; it refuses `smartflow.db`, existing targets, and sidecars, atomically publishes a verified empty WAL database, and supports immutable read-only verification.
 - Recorded the exact production before-state, bounded mutation manifest, acceptance checks, and recoverable quarantine rollback in `PRODUCTION_V2_SHADOW_RUNBOOK.md`.
 
@@ -108,6 +108,8 @@
 - Full offline suite passes 69/69 tests; Python compilation and `git diff --check` pass.
 - Local shadow rehearsal created a 69,632-byte DB with exactly four v2 tables, zero rows, `journal_mode=wal`, `foreign_keys=on`, and `quick_check=ok`; immutable verification preserved its byte hash.
 - Disposable migration rehearsal still preserves 8 legacy tables and 319,825 rows with `quick_check=ok`.
+- VPS deployment passed 69/69 tests. The 69,632-byte shadow DB has SHA-256 `8532c46ca9b63de2c7774a003cc9f7df8f058d50c58f357291c61537a413adaa`, exactly four v2 tables, zero rows, WAL mode, foreign-key validation, `quick_check=ok`, no sidecars, and no running shadow process.
+- Post-deploy zero-drift audit passed: live commit `d9ba3fb`, PID `640336`, run high-water mark `231829`, signal count `224298`, legacy DB integrity, S3 metadata, Lambda/EventBridge/alarm state, and public ports `22`/`5001` are unchanged.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -128,7 +130,7 @@
 - Lambda logs retain 30 days. Removing the retention policy restores indefinite retention but cannot recover logs AWS has already expired.
 - The Lightsail instance is a shared host. Preserve public `5001` until the unrelated CCSP dependency is separately reviewed, and preserve `22` until a tested alternate admin path exists.
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
-- `V2-SHADOW-001` is schema-only and is not go-live. Production execution requires approval of the exact post-push commit manifest; it must not restart or update `/home/ubuntu/SmartFlow`.
+- `V2-SHADOW-001` is deployed but remains schema-only, not business go-live. It must remain disconnected until a source-specific shadow runner passes its own release gate.
 
 ## Next handoff
-- Push the release package, present the exact commit-bound `V2-SHADOW-001` mutation manifest for approval, then execute only that schema-only shadow deployment if approved. The subsequent SEC-only shadow runner is a separate security/change gate.
+- Prepare the SEC-only shadow runner as the next bounded release: v2 DB only, no S3/report output, fail-closed SEC contact identity, source health enabled, and no trade recommendation path. Keep SFC, CCASS, and CoinGlass blocked under their recorded constraints.

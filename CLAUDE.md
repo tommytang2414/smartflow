@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — Production v2 Shadow Schema
+
+- Deployed exact commit `656b893` to the isolated `/home/ubuntu/SmartFlow-shadow` checkout without changing or restarting `/home/ubuntu/SmartFlow`.
+- Created `data/smartflow-v2-shadow.db` with only the four v2 foundation tables and zero rows; WAL, foreign-key validation, `quick_check`, sidecar cleanup, and SHA-256 verification passed.
+- VPS full suite passed 69/69 tests. No process runs from the shadow checkout and it has no scheduler, S3, Lambda, or reporting connection.
+- Verified zero drift: live PID `640336`, run high-water mark `231829`, signal count `224298`, legacy DB integrity, live S3 metadata, Lambda/EventBridge/alarm state, and public ports `22`/`5001` are unchanged.
+- Production deployment commit: `656b893`.
+
 ### 2026-07-23 — CoinGlass Owner Deferral Clarified
 
 - Recorded the owner's instruction not to continue CoinGlass work with the third-party paid key.
