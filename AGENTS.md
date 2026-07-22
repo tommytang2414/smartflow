@@ -63,6 +63,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Persist a raw filing and all normalized children through `persist_event_batch()` so the write commits once or rolls back completely.
 - Treat a reused source identity with a different payload hash or raw-evidence parent as an `EvidenceConflictError`; never update or silently replace stored evidence.
 - A parser behavior change requires a new `parser_version`; reruns of the same raw identity and parser version are idempotent.
+- Use `ops/manage_v2_shadow.py create <path>` only for a new, explicit shadow filename. It refuses `smartflow.db`, existing targets, and SQLite sidecars, builds beside the target, verifies an empty WAL database, and publishes without overwrite.
+- The first production v2 footprint belongs in `/home/ubuntu/SmartFlow-shadow`; do not update or restart `/home/ubuntu/SmartFlow` for the schema-only release. Follow `PRODUCTION_V2_SHADOW_RUNBOOK.md` and keep the shadow DB disconnected from scheduler, S3, Lambda, and reports.
 
 ## SFC short-position semantics
 
@@ -104,6 +106,13 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — Isolated v2 Shadow Release Package
+
+- Added a fail-closed tool to create or read-only verify a new, empty v2 WAL database without accepting the legacy `smartflow.db` name or overwriting an existing path.
+- Added tests for schema identity, zero-row state, WAL mode, foreign-key validation, integrity, read-only verification, and overwrite refusal.
+- Prepared `V2-SHADOW-001` as a separate production checkout with no scheduler, source, S3, Lambda, report, IAM, or firewall connection.
+- Recorded the production before-state, exact mutation boundary, acceptance checks, and recoverable quarantine rollback in `PRODUCTION_V2_SHADOW_RUNBOOK.md`.
 
 ### 2026-07-23 — CCASS Non-Directional Contract and Compliance Gate
 

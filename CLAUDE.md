@@ -587,7 +587,7 @@ Commit `f6c7a59` after the credential-history rewrite.
 - DB stays on VPS at `~/SmartFlow/data/smartflow.db`
 - Stale `hkex_dealings` running status fixed in DB
 
-**SSH key** — correct key for `18.139.210.59`: `C:\Users\user\PycharmProjects\CryptoStrategy\mcp_server\LightsailDefaultKey-ap-southeast-1.pem`, user `ubuntu` (NOT `bitnami` or the `Kronos` path).
+**SSH access** — use user `ubuntu`. The historical `PycharmProjects\CryptoStrategy` key path is stale as of 2026-07-23; resolve an existing `LightsailDefaultKey-ap-southeast-1.pem` at runtime and validate it before SSH. Do not copy, move, or loosen the protected key ACL as part of a SmartFlow deploy.
 
 **Windows scheduler removed** — `SmartFlow_Scheduler` Windows Task Scheduler task deleted. All collection now on VPS.
 
