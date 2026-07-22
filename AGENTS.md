@@ -72,7 +72,19 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - `degraded`, `error`, and `timeout` outcomes are unhealthy even if a prior run produced data; never convert them into empty success.
 - Use source-specific `freshness_sla_seconds`. `last_event_at` is evidence context and must not replace `last_success_at` for source availability.
 
+## SQLite recoverability
+
+- Use `ops/verify_snapshot_restore.py <database>` for a local rehearsal or pass `--s3-bucket` plus `--s3-key` for a dated S3 snapshot.
+- Snapshot creation uses SQLite's backup API; restore refuses to overwrite an existing target and must pass schema, row-count, `quick_check`, and byte-hash comparisons.
+- S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
+
 ## Changelog
+
+### 2026-07-23 — SQLite Snapshot and Restore Rehearsal
+
+- Added consistent SQLite backup, exact restore, manifest comparison, SHA-256 verification, and overwrite protection.
+- Verified the local legacy DB and the dated production S3 snapshot through disposable restore rehearsals.
+- Production snapshot result: 201,900,032 bytes, 8 tables, 774,475 rows, `quick_check=ok`, byte-identical restore.
 
 ### 2026-07-23 — Parent-Observed Timeout Outcomes
 

@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SQLite Snapshot and Restore Rehearsal
+
+- Added SQLite backup/restore helpers and a CLI verifier for local databases or S3 snapshot objects.
+- Restore targets are never overwritten; verification compares schema, row counts, `quick_check`, and SHA-256 bytes.
+- Local legacy rehearsal passed for 78,663,680 bytes, 8 tables, and 319,825 rows.
+- Dated production snapshot rehearsal passed for 201,900,032 bytes, 8 tables, and 774,475 rows; snapshot and restored SHA-256 values matched.
+- S3 remained read-only and generated local temporary files were cleaned automatically.
+
 ### 2026-07-23 — Parent-Observed Timeout Outcomes
 
 - Extracted structured outcome and health refresh logic for reuse by ingestion and runtime code.

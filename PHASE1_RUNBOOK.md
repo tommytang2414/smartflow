@@ -22,11 +22,12 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Failed parser/schema cases preserve raw evidence and create explicit degraded health rather than empty success.
 - Official SEC fixture agreement verifier covering P purchase, S sale, non-market Form 4, and proposed-sale Form 144 semantics.
 - Parent-observed timeout adapter that records terminated processes in `collector_runs_v2` and degrades source health.
+- SQLite backup/restore verifier with overwrite refusal, schema/row comparison, integrity checks, and exact restored-file hash.
 
 ## Verification baseline
 
 ```text
-unittest: 35 passed
+unittest: 37 passed
 official SEC fixture agreement: 4/4, 100% (gate: 95%)
 compileall: passed
 legacy migration rehearsal: applied twice
@@ -34,6 +35,8 @@ legacy tables verified: 8
 legacy rows verified: 319825
 v2 tables created: raw_events, normalized_events_v2, collector_runs_v2, source_health
 SQLite quick_check: ok
+local restore: 78,663,680 bytes / 8 tables / 319,825 rows / byte-identical
+production snapshot restore: 201,900,032 bytes / 8 tables / 774,475 rows / byte-identical
 ```
 
 The rehearsal copied `data/smartflow.db` through SQLite's backup API into a temporary file. The verifier deleted only that generated temporary copy; the source DB was opened read-only and remained unchanged.
@@ -56,6 +59,8 @@ No Phase 1 commit was deployed to Lambda or the VPS.
 
 ## Remaining before any collector release
 
-- Rehearse against the dated production snapshot copy before any production schema change.
+- Classify live-feed authentication, source, parser, and schema failures through the v2 SEC adapter.
+- Preserve all reporting owners in multi-owner Form 4 filings before the SEC collector gate.
+- Enable WAL only as part of a reviewed v2 runtime database deployment; do not change the legacy production DB journal mode in place.
 
 No Phase 1 code in this runbook authorizes production deployment, collector enablement, or directional reporting.

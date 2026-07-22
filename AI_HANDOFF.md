@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `ad56061`
+- Branch / starting commit: `master` / `71f639f`
 - Last agent: Codex
 - Updated: 2026-07-22 HKT
 
@@ -39,6 +39,7 @@
 - Parser and schema failures preserve raw evidence and remain operational failures; idempotent reruns insert no duplicates.
 - Added a machine-readable official SEC fixture agreement gate covering purchase, sale, non-market, and proposed-sale semantics.
 - Added shared v2 outcome recording plus a parent-process adapter that records terminated timeouts and degraded health.
+- Added SQLite snapshot/restore tooling with overwrite protection, logical manifest comparison, integrity checks, and exact hash verification.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -72,6 +73,8 @@
 - Post-work production read-only check passed: Lambda remains active with its containment-safe default and unchanged Phase 0 deployment timestamp; Lightsail still exposes only `22` and `5001`; VPS scheduler PID remains `640336`; DB `quick_check=ok`; run ID/count remain `231829`; signal count remains `224298`.
 - Official SEC fixture agreement passed 4/4 fixtures (100%) against the 95% gate.
 - Full suite passes 35 tests; a 10-second child terminated at the 0.2-second boundary and produced a v2 timeout run plus degraded source health.
+- Local legacy restore rehearsal passed for 78,663,680 bytes, 8 tables, and 319,825 rows.
+- Dated production S3 snapshot restore rehearsal passed for 201,900,032 bytes, 8 tables, and 774,475 rows; `quick_check=ok` and restored SHA-256 matched exactly.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -91,4 +94,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Add SQLite snapshot/restore verification, then rehearse it on the local legacy DB and dated production snapshot copy. Keep production schema and collectors unchanged.
+- Continue Phase 1 with live-feed SEC adapter failure classification and multi-owner Form 4 semantics, or begin the next core-source contract. Keep production schema and collectors unchanged.
