@@ -70,7 +70,7 @@ def discover_sfc_short_csv_links(
     return sorted(links.values(), key=lambda link: (link.reporting_date, link.url), reverse=True)
 
 
-def _fetch_text(http_session: Any, *, url: str, timeout_seconds: float = 30) -> str:
+def fetch_sfc_text(http_session: Any, *, url: str, timeout_seconds: float = 30) -> str:
     try:
         response = http_session.get(
             url,
@@ -120,7 +120,7 @@ def ingest_latest_sfc_short_report(
     """Discover and ingest the newest dated report without guessing its URL."""
     started_at = datetime.now(timezone.utc)
     try:
-        index_html = _fetch_text(http_session, url=index_url)
+        index_html = fetch_sfc_text(http_session, url=index_url)
     except SFCSourceError as error:
         _record_failure(
             session,
@@ -158,7 +158,7 @@ def ingest_latest_sfc_short_report(
         raise
 
     try:
-        csv_content = _fetch_text(http_session, url=latest.url)
+        csv_content = fetch_sfc_text(http_session, url=latest.url)
     except SFCSourceError as error:
         _record_failure(
             session,
