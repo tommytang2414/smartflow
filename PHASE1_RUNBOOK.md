@@ -23,6 +23,8 @@ Production state: unchanged; all 19 legacy collectors and directional reporting 
 - Official SEC fixture agreement verifier covering P purchase, S sale, non-market Form 4, and proposed-sale Form 144 semantics.
 - Parent-observed timeout adapter that records terminated processes in `collector_runs_v2` and degrades source health.
 - SQLite backup/restore verifier with overwrite refusal, schema/row comparison, integrity checks, and exact restored-file hash.
+- Multi-owner Form 4 attribution using one event per transaction, complete `entities`, and deterministic group identity.
+- Correct UTC `event_at` parsing under the `sec-form4-v2` parser contract.
 
 ## Verification baseline
 
@@ -60,7 +62,6 @@ No Phase 1 commit was deployed to Lambda or the VPS.
 ## Remaining before any collector release
 
 - Classify live-feed authentication, source, parser, and schema failures through the v2 SEC adapter.
-- Preserve all reporting owners in multi-owner Form 4 filings before the SEC collector gate.
 - Enable WAL only as part of a reviewed v2 runtime database deployment; do not change the legacy production DB journal mode in place.
 
 No Phase 1 code in this runbook authorizes production deployment, collector enablement, or directional reporting.

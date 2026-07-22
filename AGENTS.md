@@ -49,6 +49,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Parser contract fixtures live under `tests/fixtures/sec/` and must remain offline and deterministic. Add or update a fixture before changing either SEC parser.
 - Production SEC collectors remain disabled until the v2 raw-event, normalization, health, and release gates pass.
 - Use `smartflow.ingestion.sec` for v2 SEC ingestion. Parser/schema failures must still preserve the raw XML, create a structured failed run, and degrade source health.
+- Multi-owner Form 4 filings produce one normalized event per transaction, not one per owner. Store every reporting owner in `entities` and use a deterministic group `entity_id` to avoid double-counting transaction value.
+- Current Form 4 parser contract is `sec-form4-v2`; bump `parser_version` whenever normalized behavior changes.
 
 ## V2 database foundation
 
@@ -79,6 +81,12 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — Multi-Owner Form 4 Attribution
+
+- Preserved every reporting owner and role from group Form 4 filings.
+- Added normalized `entities` and a deterministic group entity while retaining one event per transaction to prevent duplicated notional.
+- Fixed `_utc_date()` so Form 4 event timestamps are now populated as UTC; bumped the parser contract to `sec-form4-v2`.
 
 ### 2026-07-23 — SQLite Snapshot and Restore Rehearsal
 

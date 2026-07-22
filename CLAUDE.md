@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — Multi-Owner Form 4 Attribution
+
+- Corrected the official Pershing Square fixture to all four reporting owners and all four transactions.
+- Form 4 parsing now preserves all owners and role flags; normalization stores them in `entities` under one deterministic group entity per filing transaction.
+- Avoided multiplying the same transaction across owners, which would overstate shares and value.
+- Fixed unreachable date parsing that had left Form 4 normalized `event_at` empty; timestamps now normalize to UTC.
+- Bumped Form 4 parser version to `sec-form4-v2`; official fixture agreement remains 100%.
+
 ### 2026-07-23 — SQLite Snapshot and Restore Rehearsal
 
 - Added SQLite backup/restore helpers and a CLI verifier for local databases or S3 snapshot objects.

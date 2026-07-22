@@ -27,14 +27,21 @@ class SECNormalizerTests(unittest.TestCase):
             source_url="https://www.sec.gov/form4.xml",
         )
 
-        self.assertEqual(len(events), 2)
-        self.assertEqual([event["side"] for event in events], [None, None])
+        self.assertEqual(len(events), 4)
+        self.assertEqual([event["side"] for event in events], [None, None, None, None])
         self.assertEqual(
             [event["action"] for event in events],
-            ["grant_or_award", "other_acquisition_or_disposition"],
+            [
+                "grant_or_award",
+                "other_acquisition_or_disposition",
+                "grant_or_award",
+                "grant_or_award",
+            ],
         )
         self.assertNotEqual(events[0]["source_event_id"], events[1]["source_event_id"])
         self.assertTrue(all(event["execution_status"] == "reported" for event in events))
+        self.assertTrue(all(len(event["entities"]) == 4 for event in events))
+        self.assertTrue(all(event["entity_id"].startswith("sec_form4_group:") for event in events))
 
     def test_form4_purchase_and_sale_keep_separate_sides(self):
         events = normalize_form4(
@@ -47,6 +54,8 @@ class SECNormalizerTests(unittest.TestCase):
 
         self.assertEqual([event["side"] for event in events], ["BUY", "SELL"])
         self.assertEqual([event["value"] for event in events], [Decimal("250"), Decimal("250")])
+        self.assertTrue(all(event["event_at"].tzinfo == timezone.utc for event in events))
+        self.assertTrue(all(event["parser_version"] == "sec-form4-v2" for event in events))
 
     def test_form144_is_sell_intent_with_proposed_execution_status(self):
         parsed = parse_form144_xml(

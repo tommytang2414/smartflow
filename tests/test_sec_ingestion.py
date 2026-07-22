@@ -48,14 +48,17 @@ class SECIngestionTests(unittest.TestCase):
 
             self.assertEqual(
                 (first.raw_inserted, first.normalized_inserted, first.normalized_observed),
-                (1, 2, 2),
+                (1, 4, 4),
             )
             self.assertEqual(
                 (second.raw_inserted, second.normalized_inserted, second.normalized_observed),
-                (0, 0, 2),
+                (0, 0, 4),
             )
             self.assertEqual(session.scalar(select(func.count(RawEvent.id))), 1)
-            self.assertEqual(session.scalar(select(func.count(NormalizedEventV2.id))), 2)
+            self.assertEqual(session.scalar(select(func.count(NormalizedEventV2.id))), 4)
+            stored_event = session.scalar(select(NormalizedEventV2).limit(1))
+            self.assertEqual(len(stored_event.entities), 4)
+            self.assertTrue(stored_event.entity_id.startswith("sec_form4_group:"))
             self.assertEqual(session.scalar(select(func.count(CollectorRunV2.id))), 2)
             self.assertEqual(session.get(SourceHealth, "sec_form4").state, "healthy")
 

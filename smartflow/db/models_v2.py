@@ -72,6 +72,7 @@ class NormalizedEventV2(V2Base):
     ticker: Mapped[str | None] = mapped_column(String(32))
     entity_id: Mapped[str | None] = mapped_column(String(128))
     entity_name: Mapped[str | None] = mapped_column(Text)
+    entities: Mapped[list | None] = mapped_column(JSON)
     quantity: Mapped[Decimal | None] = mapped_column(Numeric(38, 12))
     price: Mapped[Decimal | None] = mapped_column(Numeric(38, 12))
     value: Mapped[Decimal | None] = mapped_column(Numeric(38, 12))

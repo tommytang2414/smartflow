@@ -49,8 +49,16 @@ class Form4ParserTests(unittest.TestCase):
         self.assertEqual(parsed["entity_type"], "director")
         self.assertEqual(parsed["total_shares"], 0)
         self.assertEqual(parsed["total_value"], 0)
-        self.assertEqual([item["code"] for item in parsed["transactions"]], ["A", "J"])
-        self.assertEqual([item["acquired_disposed"] for item in parsed["transactions"]], ["A", "D"])
+        self.assertEqual(
+            [item["code"] for item in parsed["transactions"]],
+            ["A", "J", "A", "A"],
+        )
+        self.assertEqual(
+            [item["acquired_disposed"] for item in parsed["transactions"]],
+            ["A", "D", "A", "A"],
+        )
+        self.assertEqual(len(parsed["reporting_owners"]), 4)
+        self.assertEqual(parsed["reporting_owners"][3]["entity_cik"], "0002129160")
 
     def test_purchase_and_sale_are_directional(self):
         purchase = parse_form4_xml(form4_with_codes("P"))
@@ -60,6 +68,7 @@ class Form4ParserTests(unittest.TestCase):
         self.assertEqual(sale["direction"], "SELL")
         self.assertEqual(purchase["total_shares"], 10)
         self.assertEqual(sale["total_value"], 250)
+        self.assertEqual(purchase["reporting_owners"][0]["entity_type"], "officer")
 
     def test_mixed_purchase_and_sale_is_not_collapsed_to_buy(self):
         parsed = parse_form4_xml(form4_with_codes("P", "S"))

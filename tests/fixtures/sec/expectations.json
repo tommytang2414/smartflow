@@ -41,7 +41,11 @@
       "total_shares": 0,
       "total_value": 0,
       "transactions.0.code": "A",
-      "transactions.1.code": "J"
+      "transactions.1.code": "J",
+      "transactions.2.code": "A",
+      "transactions.3.code": "A",
+      "reporting_owners.0.entity_cik": "0002027456",
+      "reporting_owners.3.entity_cik": "0002129160"
     }
   },
   {

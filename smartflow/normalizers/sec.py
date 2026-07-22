@@ -7,7 +7,7 @@ from typing import Any
 from smartflow.events import make_source_event_id
 
 
-FORM4_PARSER_VERSION = "sec-form4-v1"
+FORM4_PARSER_VERSION = "sec-form4-v2"
 FORM144_PARSER_VERSION = "sec-form144-v1"
 
 FORM4_ACTIONS = {
@@ -34,6 +34,10 @@ def _decimal(value: Any) -> Decimal | None:
 def _utc_date(value: str) -> datetime | None:
     if not value:
         return None
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
 
 
 def _ensure_utc(value: datetime | None) -> datetime | None:
@@ -42,10 +46,6 @@ def _ensure_utc(value: datetime | None) -> datetime | None:
     if value.tzinfo is None:
         return value.replace(tzinfo=timezone.utc)
     return value.astimezone(timezone.utc)
-    try:
-        return datetime.strptime(value, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-    except ValueError:
-        return None
 
 
 def normalize_form4(
@@ -59,6 +59,31 @@ def normalize_form4(
     """Create one normalized event per Form 4 transaction."""
     if not accession.strip():
         raise ValueError("Form 4 accession is required")
+
+    reporting_owners = parsed.get("reporting_owners") or [
+        {
+            "entity_cik": parsed.get("entity_cik"),
+            "entity_name": parsed.get("entity_name"),
+            "entity_type": parsed.get("entity_type"),
+            "officer_title": parsed.get("officer_title"),
+        }
+    ]
+    owner_identifiers = [
+        owner.get("entity_cik") or owner.get("entity_name")
+        for owner in reporting_owners
+        if owner.get("entity_cik") or owner.get("entity_name")
+    ]
+    if len(reporting_owners) > 1:
+        entity_id = make_source_event_id(
+            "sec_form4_group",
+            *(sorted(owner_identifiers) or [accession]),
+        )
+        entity_name = "; ".join(
+            owner.get("entity_name", "") for owner in reporting_owners if owner.get("entity_name")
+        )
+    else:
+        entity_id = parsed.get("entity_cik")
+        entity_name = parsed.get("entity_name")
 
     events = []
     for index, transaction in enumerate(parsed.get("transactions", [])):
@@ -86,8 +111,9 @@ def normalize_form4(
                 "market": "US",
                 "security_id": parsed.get("issuer_cik"),
                 "ticker": parsed.get("ticker"),
-                "entity_id": parsed.get("entity_cik"),
-                "entity_name": parsed.get("entity_name"),
+                "entity_id": entity_id,
+                "entity_name": entity_name,
+                "entities": reporting_owners,
                 "quantity": quantity,
                 "price": price,
                 "value": quantity * price if quantity is not None and price is not None else None,
@@ -135,6 +161,13 @@ def normalize_form144(
             "ticker": parsed.get("ticker"),
             "entity_id": parsed.get("filer_cik"),
             "entity_name": parsed.get("filer_name"),
+            "entities": [
+                {
+                    "entity_cik": parsed.get("filer_cik"),
+                    "entity_name": parsed.get("filer_name"),
+                    "relationship": parsed.get("relationship"),
+                }
+            ],
             "quantity": _decimal(parsed.get("no_of_units_sold")),
             "price": None,
             "value": _decimal(parsed.get("proposed_amount")),

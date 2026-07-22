@@ -28,6 +28,9 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     def is_true(value: str) -> bool:
         return value.strip().lower() in {"1", "true"}
 
+    def elements_by_local_name(element, name):
+        return [item for item in element.iter() if item.tag.split("}")[-1] == name]
+
     issuer = find(root, "issuer")
     if issuer is None:
         return None
@@ -36,18 +39,51 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     issuer_name = find_text(issuer, "issuerName")
     issuer_ticker = find_text(issuer, "issuerTradingSymbol")
 
-    owner_el = find(root, "reportingOwner")
-    if owner_el is None:
+    reporting_owners = []
+    for owner_element in elements_by_local_name(root, "reportingOwner"):
+        owner_id = find(owner_element, "reportingOwnerId")
+        relationship = find(owner_element, "reportingOwnerRelationship")
+        is_director = (
+            is_true(find_text(relationship, "isDirector")) if relationship is not None else False
+        )
+        is_officer = (
+            is_true(find_text(relationship, "isOfficer")) if relationship is not None else False
+        )
+        is_ten_percent_owner = (
+            is_true(find_text(relationship, "isTenPercentOwner"))
+            if relationship is not None
+            else False
+        )
+        is_other = (
+            is_true(find_text(relationship, "isOther")) if relationship is not None else False
+        )
+        entity_type = "insider"
+        if is_officer:
+            entity_type = "officer"
+        elif is_director:
+            entity_type = "director"
+        elif is_ten_percent_owner:
+            entity_type = "ten_percent_owner"
+
+        reporting_owners.append(
+            {
+                "entity_name": find_text(owner_id, "rptOwnerName") if owner_id is not None else "",
+                "entity_cik": find_text(owner_id, "rptOwnerCik") if owner_id is not None else "",
+                "entity_type": entity_type,
+                "officer_title": (
+                    find_text(relationship, "officerTitle") if relationship is not None else ""
+                ),
+                "is_director": is_director,
+                "is_officer": is_officer,
+                "is_ten_percent_owner": is_ten_percent_owner,
+                "is_other": is_other,
+            }
+        )
+
+    if not reporting_owners:
         return None
 
-    owner_id = find(owner_el, "reportingOwnerId")
-    owner_name = find_text(owner_id, "rptOwnerName") if owner_id is not None else ""
-    owner_cik = find_text(owner_id, "rptOwnerCik") if owner_id is not None else ""
-
-    relationship = find(owner_el, "reportingOwnerRelationship")
-    is_director = is_true(find_text(relationship, "isDirector")) if relationship is not None else False
-    is_officer = is_true(find_text(relationship, "isOfficer")) if relationship is not None else False
-    officer_title = find_text(relationship, "officerTitle") if relationship is not None else ""
+    primary_owner = reporting_owners[0]
 
     transactions = []
     for transaction_element in root.iter():
@@ -134,20 +170,15 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         except ValueError:
             pass
 
-    entity_type = "insider"
-    if is_officer:
-        entity_type = "officer"
-    elif is_director:
-        entity_type = "director"
-
     return {
         "ticker": issuer_ticker.upper() if issuer_ticker else None,
         "issuer_name": issuer_name,
         "issuer_cik": issuer_cik,
-        "entity_name": owner_name,
-        "entity_cik": owner_cik,
-        "entity_type": entity_type,
-        "officer_title": officer_title,
+        "entity_name": primary_owner["entity_name"],
+        "entity_cik": primary_owner["entity_cik"],
+        "entity_type": primary_owner["entity_type"],
+        "officer_title": primary_owner["officer_title"],
+        "reporting_owners": reporting_owners,
         "direction": net_direction,
         "transactions": transactions,
         "total_shares": total_shares,

@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <ownershipDocument>
+  <schemaVersion>X0609</schemaVersion>
+  <documentType>4</documentType>
+  <periodOfReport>2026-04-30</periodOfReport>
   <issuer>
     <issuerCik>0002002660</issuerCik>
     <issuerName>Pershing Square USA, Ltd.</issuerName>
@@ -7,12 +10,50 @@
   </issuer>
   <reportingOwner>
     <reportingOwnerId>
-      <rptOwnerCik>0001336528</rptOwnerCik>
-      <rptOwnerName>Pershing Square Capital Management, L.P.</rptOwnerName>
+      <rptOwnerCik>0002027456</rptOwnerCik>
+      <rptOwnerName>Pershing Square Management, LLC</rptOwnerName>
     </reportingOwnerId>
     <reportingOwnerRelationship>
       <isDirector>true</isDirector>
       <isOfficer>false</isOfficer>
+      <isTenPercentOwner>true</isTenPercentOwner>
+      <isOther>true</isOther>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0002129159</rptOwnerCik>
+      <rptOwnerName>Pershing Square Partner Group LLC</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>true</isDirector>
+      <isOfficer>false</isOfficer>
+      <isTenPercentOwner>true</isTenPercentOwner>
+      <isOther>true</isOther>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0002026053</rptOwnerCik>
+      <rptOwnerName>PERSHING SQUARE INC.</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>true</isDirector>
+      <isOfficer>false</isOfficer>
+      <isTenPercentOwner>true</isTenPercentOwner>
+      <isOther>true</isOther>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0002129160</rptOwnerCik>
+      <rptOwnerName>Pershing Square PSUS Holdings, LLC</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>true</isDirector>
+      <isOfficer>false</isOfficer>
+      <isTenPercentOwner>true</isTenPercentOwner>
+      <isOther>true</isOther>
     </reportingOwnerRelationship>
   </reportingOwner>
   <nonDerivativeTable>
@@ -34,6 +75,26 @@
         <transactionShares><value>96000000</value></transactionShares>
         <transactionPricePerShare><value>50</value></transactionPricePerShare>
         <transactionAcquiredDisposedCode><value>D</value></transactionAcquiredDisposedCode>
+      </transactionAmounts>
+    </nonDerivativeTransaction>
+    <nonDerivativeTransaction>
+      <securityTitle><value>Common Shares</value></securityTitle>
+      <transactionDate><value>2026-04-30</value></transactionDate>
+      <transactionCoding><transactionCode>A</transactionCode></transactionCoding>
+      <transactionAmounts>
+        <transactionShares><value>3657680</value></transactionShares>
+        <transactionPricePerShare><value>50</value></transactionPricePerShare>
+        <transactionAcquiredDisposedCode><value>A</value></transactionAcquiredDisposedCode>
+      </transactionAmounts>
+    </nonDerivativeTransaction>
+    <nonDerivativeTransaction>
+      <securityTitle><value>Common Shares</value></securityTitle>
+      <transactionDate><value>2026-04-30</value></transactionDate>
+      <transactionCoding><transactionCode>A</transactionCode></transactionCoding>
+      <transactionAmounts>
+        <transactionShares><value>1000000</value></transactionShares>
+        <transactionPricePerShare><value>50</value></transactionPricePerShare>
+        <transactionAcquiredDisposedCode><value>A</value></transactionAcquiredDisposedCode>
       </transactionAmounts>
     </nonDerivativeTransaction>
   </nonDerivativeTable>
