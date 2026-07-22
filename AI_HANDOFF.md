@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployed release commit: `master` / `656b893`
+- Branch / deployed SEC shadow commit: `master` / `560dc30`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -113,6 +113,9 @@
 - Prepared `SEC-SHADOW-001`: bounded exact-form SEC discovery, secure HTTP controls, aggregate source outcomes, guarded v2 runtime DB access, one-shot CLI, and read-only reliability audit.
 - Live disposable rehearsal initially failed closed on a valid derivative-only Form 4, exposing the old parser gap. Added official accession `0001628280-26-049165` as a fixture and bumped Form 4 to `sec-form4-v3` with no false side/notional.
 - Official SEC fixture agreement is 5/5 (100%); full suite passes 81 tests. Repeated live 2+2 ingestion inserted zero duplicates; live 5+5 ingestion completed with both sources healthy and `quick_check=ok`.
+- Deployed `SEC-SHADOW-001` at `560dc30` after snapshotting the empty DB. VPS 81/81 tests passed; production stored five raw/normalized filings per source with 100% initial run reliability and healthy source state.
+- Production semantics audit: four Form 4 derivative events `side=NONE`, one Form 4 sale `reported`, and five Form 144 notices `proposed`; DB `quick_check=ok` and no shadow process, cron, or persistent contact env exists.
+- Post-release zero-drift audit confirmed live commit/PID/legacy counters, S3 metadata, Lambda/EventBridge/alarm, and public ports remain unchanged.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -136,4 +139,4 @@
 - `V2-SHADOW-001` is deployed but remains schema-only, not business go-live. It must remain disconnected until a source-specific shadow runner passes its own release gate.
 
 ## Next handoff
-- Commit/push `SEC-SHADOW-001`, deploy its exact commit to the isolated checkout, snapshot before the one-shot 5+5 run, and verify zero downstream/live drift. Do not add the observation cron until its separate security/change manifest is approved.
+- Prepare the 14-day observation scheduler package with a hard parent-process timeout, least-privilege contact environment file, shared flock, Form 4/Form 144 cadence, bounded log retention, reliability audit, and exact rollback. Do not mutate cron or persistent environment before its security/change manifest is approved.

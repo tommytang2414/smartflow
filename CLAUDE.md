@@ -325,6 +325,9 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Live disposable testing exposed valid derivative-only Form 4 filings. Parser contract `sec-form4-v3` preserves derivative fields but assigns no side or directional notional unless the official transaction code is `P` or `S`.
 - Official fixtures pass 5/5 (100%); full suite passes 81 tests. Repeated live 2+2 ingestion inserted zero duplicates, and bounded 5+5 ingestion left both sources healthy with `quick_check=ok`.
 - `SEC-SHADOW-001` remains v2 DB only: no legacy signals, report, messaging, S3, Lambda, or scheduler output.
+- Deployed exact commit `560dc30` to `/home/ubuntu/SmartFlow-shadow`; VPS 81/81 tests passed and the one-shot 5+5 run left both source-health rows healthy.
+- Production stored ten immutable raw filings and ten normalized events: four derivative Form 4 events stayed non-directional, one Form 4 sale remained reported, and five Form 144 notices remained proposed.
+- Verified the pre-release empty snapshot, post-run DB integrity, no persistent contact environment/cron/process, and zero drift in live SmartFlow/AWS controls. Production deployment commit: `560dc30`.
 
 ### 2026-07-23 — Production v2 Shadow Schema
 

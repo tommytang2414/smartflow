@@ -117,6 +117,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Live disposable rehearsal exposed derivative-only Form 4 filings that the old parser rejected; added an official derivative fixture and `sec-form4-v3` without assigning false direction or notional.
 - Official SEC fixture agreement is 5/5 (100%); full suite passes 81 tests. Repeated 2+2 live rehearsal was idempotent, and a 5+5 live rehearsal produced healthy aggregate outcomes with `quick_check=ok`.
 - Prepared the bounded production one-shot, snapshot, zero-downstream boundary, and recoverable rollback in `SEC_SHADOW_RELEASE_RUNBOOK.md`.
+- Deployed exact commit `560dc30`; the VPS passed 81 tests and ingested five raw/normalized filings for each SEC source with both aggregate health states healthy.
+- Preserved derivative-only Form 4 events without direction, kept all Form 144 notices proposed, and confirmed zero drift in every live/downstream control. Production deployment commit: `560dc30`.
 
 ### 2026-07-23 — Isolated v2 Shadow Release Package
 

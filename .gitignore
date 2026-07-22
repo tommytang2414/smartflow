@@ -4,8 +4,11 @@
 
 # Data
 data/*.db
+data/*.db-wal
+data/*.db-shm
 data/*.parquet
 data/*.csv
+backups/
 
 # Logs
 logs/*.log

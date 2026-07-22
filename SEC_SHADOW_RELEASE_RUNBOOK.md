@@ -1,6 +1,6 @@
 # SEC-only v2 Shadow Release Runbook
 
-Status: Prepared for the approved one-shot production shadow release.
+Status: Deployed and verified on 2026-07-23 HKT.
 
 Release ID: `SEC-SHADOW-001`
 
@@ -44,6 +44,7 @@ This release performs one bounded SEC Form 4 and Form 144 ingestion into the iso
 - Both source-health rows reflect the aggregate run outcome.
 - DB `quick_check=ok`; the snapshot can be opened and has the recorded empty schema.
 - No process, cron, S3/Lambda/report change, or legacy DB change occurs.
+- With no active writer, a zero-byte WAL and its shared-memory sidecar are normal SQLite WAL housekeeping; do not delete them merely to make the directory look clean.
 
 ## Recoverable rollback
 
@@ -58,3 +59,14 @@ If any acceptance gate fails:
 ## Observation scheduler gate
 
 This one-shot release does not start the 14-day reliability clock. A later scheduler change requires a separate manifest covering a least-privilege contact environment file, flock lock, exact Form 4/Form 144 cadence, logs/retention, health audit, and rollback.
+
+## Deployment record
+
+- Release commit: `560dc301e32ac1c4a0d4dd3018748d2ffe07e925`.
+- Pre-release snapshot: `/home/ubuntu/SmartFlow-shadow/backups/SEC-SHADOW-001-20260722T192536Z/pre-sec-shadow.db`.
+- Snapshot SHA-256: `43ad8ffb4dba22f79b5a8ff110c81d79602134c6bbed541b0fec15adddc5f842`; four v2 tables, zero rows, `quick_check=ok`.
+- VPS test result: 81/81 passed.
+- Production one-shot result: five Form 4 and five Form 144 raw filings; five normalized events for each source; both aggregate runs succeeded and both health rows were healthy.
+- Semantics: four Form 4 derivative events had `side=NONE`; one Form 4 sale was `reported`; all five Form 144 notices remained `proposed`.
+- Post-run DB SHA-256: `dbd318b709225f4d821129921fa167402049d31bc8861a1e2359a8c6b1a25160`; `quick_check=ok`; no shadow process, cron, or persistent contact environment exists.
+- Zero-drift verification: live repo/PID/legacy counters, S3 object, Lambda, EventBridge, CloudWatch alarm, and Lightsail firewall remained unchanged.
