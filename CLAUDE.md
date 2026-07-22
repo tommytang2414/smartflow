@@ -318,12 +318,21 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SFC Bounded History Rebuild and Publication Freshness
+
+- Audited both `data/smartflow.db` and immutable snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db`; each has zero `sfc_short_data` rows.
+- Bounded official reconstruction to 2026-04-10, the first Git appearance of `hkex_short.py`, instead of downloading unrelated pre-project history.
+- Added `ops/reprocess_sfc_history.py`, which requires a new output path and refuses overwrite, plus read-only `ops/audit_sfc_legacy.py`.
+- Disposable live rebuild processed 14 official reports and 17,019 events through v2. The identical rerun observed all 17,019 but inserted zero raw reports or normalized events.
+- Added optional event-publication freshness to source health. A successful fetch no longer hides an overdue weekly publication: 2026-07-10 is `stale` on 2026-07-23 with `last_event_exceeded_sla`.
+- No production database, schema, scheduler, or collector changed.
+
 ### 2026-07-23 — SFC Discovery and Weekly Reconciliation
 
 - Added read-only discovery from the official SFC archive index instead of guessed annual URL patterns.
 - Rejects non-SFC links and archive-link/CSV reporting-date mismatches; index drift preserves the HTML evidence and remains a parser failure.
 - Added week-over-week reconciliation with explicit `newly_reported` and `not_in_current_report` states; absence is never coerced to zero.
-- Live disposable rehearsal discovered 10 July 2026 and normalized all 1,233 rows with healthy source state.
+- Live disposable rehearsal discovered 10 July 2026 and normalized all 1,233 rows; the later publication-freshness gate correctly classifies that report as stale on 23 July.
 - Full two-week reconciliation compared 1,231 versus 1,233 rows: 761 changed, 470 unchanged, and 2 newly reported.
 - Production collectors and schema remain unchanged.
 

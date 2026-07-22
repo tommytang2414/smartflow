@@ -17,6 +17,7 @@ SFC_SHORT_POLICY = SourceHealthPolicy(
     source="sfc_short",
     expected_interval_seconds=7 * 24 * 60 * 60,
     freshness_sla_seconds=10 * 24 * 60 * 60,
+    event_freshness_sla_seconds=10 * 24 * 60 * 60,
 )
 
 

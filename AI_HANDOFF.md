@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `67d260a`
+- Branch / starting commit: `master` / `e9cbef8`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -47,6 +47,9 @@
 - Preserved malformed SFC CSV responses as raw evidence and classified schema drift as parser failure rather than successful emptiness.
 - Added read-only official-index discovery, dated-link/CSV agreement, SFC URL validation, and full live report ingestion into a disposable v2 database.
 - Added two-week SFC reconciliation with non-zero-coercing missing-row semantics.
+- Audited local and immutable production-snapshot SFC legacy tables; both contain zero rows, so numeric legacy conversion is impossible and must not be fabricated.
+- Added bounded official SFC history rebuilding from 2026-04-10 plus a read-only legacy/v2 coverage audit.
+- Added a separate event-publication freshness gate after live rehearsal exposed that successful fetching could hide an overdue weekly report.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -86,8 +89,11 @@
 - SEC live-adapter success, auth, source, and malformed-parser paths pass; full suite contains 42 tests.
 - SFC parser/normalizer/ingestion tests pass against an official 2026-07-10 fixture; full suite contains 48 tests.
 - Legacy-copy migration remains repeatable and local snapshot restore remains byte-identical after the SFC slice.
-- Live SFC rehearsal discovered 2026-07-10, preserved one raw report, normalized 1,233 events, and returned healthy source state.
+- Live SFC rehearsal discovered 2026-07-10, preserved one raw report, and normalized 1,233 events.
 - Live 2026-07-03 versus 2026-07-10 reconciliation covered 1,231/1,233 rows: 761 changed, 470 unchanged, and 2 newly reported.
+- Bounded 2026-04-10 to 2026-07-10 rebuild processed 14 reports and 17,019 events; identical rerun inserted zero duplicates.
+- Legacy coverage audit returned `no_legacy_history`: 0 legacy weeks/records versus 14 official v2 weeks and 17,019 events.
+- Publication freshness recheck returned `stale:last_event_exceeded_sla` for the latest 2026-07-10 report on 2026-07-23.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -108,4 +114,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Design the bounded SFC historical reprocessing and legacy reconciliation report, or begin the CCASS concentration contract. Keep production schema and collectors unchanged.
+- Begin the HKEX CCASS concentration contract, or prepare an explicit production v2 database/source-release plan. Keep production schema and collectors unchanged until separately approved.

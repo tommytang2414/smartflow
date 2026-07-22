@@ -3,6 +3,7 @@ import unittest
 from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
+from unittest.mock import patch
 
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
@@ -84,8 +85,9 @@ class SFCShortIngestionTests(unittest.TestCase):
             "observed_at": OBSERVED_AT,
         }
         with Session(self.engine) as session:
-            first = ingest_sfc_short_csv(session, **arguments)
-            second = ingest_sfc_short_csv(session, **arguments)
+            with patch("smartflow.ingestion.sfc._utc_now", return_value=OBSERVED_AT):
+                first = ingest_sfc_short_csv(session, **arguments)
+                second = ingest_sfc_short_csv(session, **arguments)
 
             self.assertEqual((first.raw_inserted, first.normalized_inserted), (1, 3))
             self.assertEqual((second.raw_inserted, second.normalized_inserted), (0, 0))

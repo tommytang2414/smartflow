@@ -72,6 +72,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Current parser contract is `sfc-short-v1`; fixtures live under `tests/fixtures/sfc/`. The legacy `hkex_short.py` turnover/percentage logic remains contained and must not feed v2.
 - Discover reports from dated official CSV links in the SFC index; never guess URL patterns. The archive-link date and CSV row date must agree.
 - In week-over-week reconciliation, an absent stock is `not_in_current_report`, not a zero position. A new row is `newly_reported`, not proof that the short position was newly opened.
+- The bounded SFC rebuild starts at 2026-04-10, when the legacy collector first entered Git. Both local and immutable production-snapshot `sfc_short_data` tables contain zero rows, so there is no legacy numeric history to convert.
+- Use `ops/reprocess_sfc_history.py` only with a new explicit output database; it refuses to overwrite an existing file. Use `ops/audit_sfc_legacy.py` for read-only coverage comparison.
 
 ## Collector execution
 
@@ -83,7 +85,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 - Health is based on recent successful collection, not event volume alone. A recent successful `empty` run is operationally healthy.
 - `degraded`, `error`, and `timeout` outcomes are unhealthy even if a prior run produced data; never convert them into empty success.
-- Use source-specific `freshness_sla_seconds`. `last_event_at` is evidence context and must not replace `last_success_at` for source availability.
+- Use source-specific `freshness_sla_seconds` for collection availability. Publication sources may additionally require `event_freshness_sla_seconds`; both gates must pass, and `last_event_at` must not replace `last_success_at`.
 
 ## SQLite recoverability
 
@@ -93,12 +95,19 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 ## Changelog
 
+### 2026-07-23 — SFC Bounded History Rebuild and Publication Freshness
+
+- Added a non-overwriting official-archive reprocessor bounded from the collector's 2026-04-10 introduction date.
+- Added a read-only legacy/v2 coverage audit; local and immutable production snapshot both contain zero legacy SFC weeks.
+- Rebuilt 14 official reports and 17,019 events in a disposable database; an identical rerun inserted zero duplicate evidence or events.
+- Added event-publication freshness as a separate health gate. The current 2026-07-10 report is correctly `stale` on 2026-07-23 despite a successful fetch.
+
 ### 2026-07-23 — SFC Discovery and Weekly Reconciliation
 
 - Added official-index discovery, SFC-only URL validation, and source/parser failure classification.
 - Enforced agreement between the dated archive link and the CSV reporting date.
 - Added exact two-week position reconciliation without converting missing rows to zero.
-- Rehearsed the live read-only path in a disposable database: one raw report produced 1,233 healthy normalized events.
+- Rehearsed the live read-only path in a disposable database: one raw report produced 1,233 normalized events.
 
 ### 2026-07-23 — SFC Weekly Short-Position Contract
 

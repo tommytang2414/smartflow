@@ -33,23 +33,28 @@ SEC Form 4/Form 144 already have tested offline contracts from Phase 1. This run
 - Archive-link date and CSV reporting date must match.
 - HTTP/index failures are distinct from parser failures; rejected index HTML is retained as evidence.
 - Consecutive reports reconcile exact share/value changes. Missing rows remain unknown/not reported rather than becoming zero.
+- Local and immutable production-snapshot legacy tables contain zero SFC rows; there is no legacy numeric history to convert.
+- Historical rebuilding is bounded to 2026-04-10, when the collector first entered Git, and always targets a new standalone v2 database.
+- SFC health requires both a recent successful fetch and a publication no older than ten days.
 
 ## Verification baseline
 
 ```text
-SFC focused tests: 13 passed
-full unittest suite: 55 passed
+SFC focused/history tests: 16 passed
+full unittest suite: 59 passed
 official SEC fixture agreement: 4/4, 100%
 compileall: passed
 legacy migration rehearsal: repeatable; 8 tables / 319825 rows unchanged
 local snapshot restore: byte-identical; quick_check=ok
-live SFC report: 2026-07-10 / 1233 normalized rows / healthy
+live SFC report: 2026-07-10 / 1233 normalized rows / stale:last_event_exceeded_sla
 live two-week reconciliation: 1231 -> 1233 rows / 761 changed / 470 unchanged / 2 newly reported
+bounded history: 2026-04-10 -> 2026-07-10 / 14 reports / 17019 events
+idempotent history rerun: 0 raw inserts / 0 normalized inserts
+legacy coverage: 0 weeks / 0 records / no_legacy_history
 ```
 
 ## Remaining SFC definition of done
 
-- Define historical reprocessing bounds and a reconciliation report against the contained legacy table.
 - Obtain an explicit production v2 database deployment and source-release approval before scheduling.
 
 No work in this runbook authorizes production deployment, legacy-table mutation, collector enablement, or directional reporting.

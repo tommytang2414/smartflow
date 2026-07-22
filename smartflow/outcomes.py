@@ -70,6 +70,7 @@ def refresh_source_health(
         last_run_at=run.finished_at,
         last_success_at=last_success_at,
         last_failure_kind=run.failure_kind,
+        last_event_at=last_event_at,
     )
     record_source_health(
         session,

@@ -26,12 +26,18 @@ class SourceHealthPolicy:
     expected_interval_seconds: int
     freshness_sla_seconds: int
     enabled: bool = True
+    event_freshness_sla_seconds: int | None = None
 
     def __post_init__(self):
         if not self.source.strip():
             raise ValueError("source is required")
         if self.expected_interval_seconds <= 0 or self.freshness_sla_seconds <= 0:
             raise ValueError("health intervals must be positive")
+        if (
+            self.event_freshness_sla_seconds is not None
+            and self.event_freshness_sla_seconds <= 0
+        ):
+            raise ValueError("event freshness interval must be positive")
 
 
 @dataclass(frozen=True)
@@ -49,11 +55,13 @@ def evaluate_source_health(
     last_run_at: datetime | None,
     last_success_at: datetime | None,
     last_failure_kind: str | None = None,
+    last_event_at: datetime | None = None,
 ) -> HealthAssessment:
     """Evaluate source availability; a successful empty run counts as operational."""
     checked_at = _ensure_utc(checked_at)
     last_run_at = _ensure_utc(last_run_at)
     last_success_at = _ensure_utc(last_success_at)
+    last_event_at = _ensure_utc(last_event_at)
 
     if not policy.enabled:
         return HealthAssessment("disabled", "source_disabled", checked_at)
@@ -72,6 +80,12 @@ def evaluate_source_health(
     success_age_seconds = (checked_at - last_success_at).total_seconds()
     if success_age_seconds > policy.freshness_sla_seconds:
         return HealthAssessment("stale", "last_success_exceeded_sla", checked_at)
+    if policy.event_freshness_sla_seconds is not None:
+        if last_event_at is None:
+            return HealthAssessment("stale", "no_event_for_freshness_check", checked_at)
+        event_age_seconds = (checked_at - last_event_at).total_seconds()
+        if event_age_seconds > policy.event_freshness_sla_seconds:
+            return HealthAssessment("stale", "last_event_exceeded_sla", checked_at)
     return HealthAssessment("healthy", f"recent_{last_run_status}", checked_at)
 
 

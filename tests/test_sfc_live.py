@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
@@ -70,12 +71,13 @@ class SFCLiveAdapterTests(unittest.TestCase):
             [FakeResponse(200, index_html()), FakeResponse(200, csv_content)]
         )
         with Session(self.engine) as session:
-            link, result = ingest_latest_sfc_short_report(
-                session,
-                http_session=http_session,
-                observed_at=OBSERVED_AT,
-                index_url=INDEX_URL,
-            )
+            with patch("smartflow.ingestion.sfc._utc_now", return_value=OBSERVED_AT):
+                link, result = ingest_latest_sfc_short_report(
+                    session,
+                    http_session=http_session,
+                    observed_at=OBSERVED_AT,
+                    index_url=INDEX_URL,
+                )
             self.assertEqual(link.reporting_date.isoformat(), "2026-07-10")
             self.assertEqual(result.normalized_inserted, 3)
             self.assertEqual(session.scalar(select(func.count(NormalizedEventV2.id))), 3)

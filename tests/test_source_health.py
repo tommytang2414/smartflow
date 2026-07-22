@@ -50,6 +50,25 @@ class SourceHealthEvaluationTests(unittest.TestCase):
         self.assertEqual(assessment.state, "degraded")
         self.assertEqual(assessment.reason, "last_run_timeout:timeout")
 
+    def test_recent_fetch_with_old_publication_is_stale_when_policy_requires_it(self):
+        policy = SourceHealthPolicy(
+            "weekly_publication",
+            7 * 86400,
+            10 * 86400,
+            event_freshness_sla_seconds=10 * 86400,
+        )
+        assessment = evaluate_source_health(
+            policy,
+            checked_at=NOW,
+            last_run_status="success",
+            last_run_at=NOW,
+            last_success_at=NOW,
+            last_event_at=NOW - timedelta(days=11),
+        )
+
+        self.assertEqual(assessment.state, "stale")
+        self.assertEqual(assessment.reason, "last_event_exceeded_sla")
+
     def test_old_success_is_stale(self):
         assessment = evaluate_source_health(
             self.policy,
