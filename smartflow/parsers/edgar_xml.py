@@ -88,8 +88,9 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     transactions = []
     for transaction_element in root.iter():
         tag = transaction_element.tag.split("}")[-1]
-        if tag != "nonDerivativeTransaction":
+        if tag not in {"nonDerivativeTransaction", "derivativeTransaction"}:
             continue
+        instrument_type = "derivative" if tag == "derivativeTransaction" else "non_derivative"
 
         security_title = find_text(transaction_element, ".//securityTitle/value", "")
         transaction_date = find_text(transaction_element, ".//transactionDate/value", "")
@@ -104,6 +105,26 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         acquired_disposed = find_text(
             amounts,
             ".//transactionAcquiredDisposedCode/value",
+            "",
+        )
+        exercise_price = find_text(
+            transaction_element,
+            ".//conversionOrExercisePrice/value",
+            "",
+        )
+        expiration_date = find_text(
+            transaction_element,
+            ".//expirationDate/value",
+            "",
+        )
+        underlying_security = find_text(
+            transaction_element,
+            ".//underlyingSecurityTitle/value",
+            "",
+        )
+        underlying_shares = find_text(
+            transaction_element,
+            ".//underlyingSecurityShares/value",
             "",
         )
 
@@ -135,6 +156,11 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
                 "price_raw": price_per_share,
                 "direction": direction,
                 "acquired_disposed": acquired_disposed,
+                "instrument_type": instrument_type,
+                "exercise_price_raw": exercise_price,
+                "expiration_date": expiration_date,
+                "underlying_security": underlying_security,
+                "underlying_shares_raw": underlying_shares,
                 "value": shares_float * price_float,
             }
         )

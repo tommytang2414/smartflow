@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SEC-only v2 Shadow Runtime
+
+- Added a production-isolated SEC Form 4/Form 144 shadow runner with strict SEC URL allowlisting, exact-form filtering, accession deduplication, two-request/second throttling, no redirects, bounded responses, and fail-closed contact identity.
+- Aggregate source runs now distinguish success/empty from auth/source/parser/schema/persistence failures without allowing later filings to mask an earlier error.
+- Live disposable testing exposed valid derivative-only Form 4 filings. Parser contract `sec-form4-v3` preserves derivative fields but assigns no side or directional notional unless the official transaction code is `P` or `S`.
+- Official fixtures pass 5/5 (100%); full suite passes 81 tests. Repeated live 2+2 ingestion inserted zero duplicates, and bounded 5+5 ingestion left both sources healthy with `quick_check=ok`.
+- `SEC-SHADOW-001` remains v2 DB only: no legacy signals, report, messaging, S3, Lambda, or scheduler output.
+
 ### 2026-07-23 — Production v2 Shadow Schema
 
 - Deployed exact commit `656b893` to the isolated `/home/ubuntu/SmartFlow-shadow` checkout without changing or restarting `/home/ubuntu/SmartFlow`.

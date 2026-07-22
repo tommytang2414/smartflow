@@ -28,7 +28,7 @@ class SECIngestionResult:
     raw_inserted: int
     normalized_inserted: int
     normalized_observed: int
-    run_id: int
+    run_id: int | None
 
 
 SOURCE_POLICIES = {
@@ -53,6 +53,7 @@ def _ingest_sec_xml(
     http_status: int,
     parse: Callable[[str], dict[str, Any] | None],
     normalize: Callable[..., list[dict[str, Any]]],
+    record_outcome: bool,
 ) -> SECIngestionResult:
     if not accession.strip():
         raise ValueError("SEC accession is required")
@@ -102,18 +103,41 @@ def _ingest_sec_xml(
                 error = evidence_error
                 stage = "persistence"
 
+        if record_outcome:
+            finished_at = _utc_now()
+            run = record_collector_outcome(
+                session,
+                collector=source,
+                started_at=started_at,
+                finished_at=finished_at,
+                status="error",
+                failure_kind=stage,
+                records_observed=1,
+                records_normalized=len(normalized_events),
+                records_persisted=0,
+                error=error,
+            )
+            refresh_source_health(
+                session,
+                policy=SOURCE_POLICIES[source],
+                run=run,
+                checked_at=finished_at,
+            )
+        raise
+
+    run_id = None
+    if record_outcome:
         finished_at = _utc_now()
         run = record_collector_outcome(
             session,
             collector=source,
             started_at=started_at,
             finished_at=finished_at,
-            status="error",
-            failure_kind=stage,
+            status="success",
+            failure_kind=None,
             records_observed=1,
             records_normalized=len(normalized_events),
-            records_persisted=0,
-            error=error,
+            records_persisted=persist_result.normalized_inserted,
         )
         refresh_source_health(
             session,
@@ -121,31 +145,12 @@ def _ingest_sec_xml(
             run=run,
             checked_at=finished_at,
         )
-        raise
-
-    finished_at = _utc_now()
-    run = record_collector_outcome(
-        session,
-        collector=source,
-        started_at=started_at,
-        finished_at=finished_at,
-        status="success",
-        failure_kind=None,
-        records_observed=1,
-        records_normalized=len(normalized_events),
-        records_persisted=persist_result.normalized_inserted,
-    )
-    refresh_source_health(
-        session,
-        policy=SOURCE_POLICIES[source],
-        run=run,
-        checked_at=finished_at,
-    )
+        run_id = run.id
     return SECIngestionResult(
         raw_inserted=persist_result.raw_inserted,
         normalized_inserted=persist_result.normalized_inserted,
         normalized_observed=len(normalized_events),
-        run_id=run.id,
+        run_id=run_id,
     )
 
 
@@ -158,6 +163,7 @@ def ingest_form4_xml(
     filed_at: datetime | None,
     observed_at: datetime,
     http_status: int = 200,
+    record_outcome: bool = True,
 ) -> SECIngestionResult:
     return _ingest_sec_xml(
         session,
@@ -170,6 +176,7 @@ def ingest_form4_xml(
         http_status=http_status,
         parse=parse_form4_xml,
         normalize=normalize_form4,
+        record_outcome=record_outcome,
     )
 
 
@@ -183,6 +190,7 @@ def ingest_form144_xml(
     observed_at: datetime,
     http_status: int = 200,
     cik_ticker_cache: dict[str, str] | None = None,
+    record_outcome: bool = True,
 ) -> SECIngestionResult:
     def parse(content: str):
         return parse_form144_xml(content, cik_ticker_cache=cik_ticker_cache)
@@ -198,4 +206,5 @@ def ingest_form144_xml(
         http_status=http_status,
         parse=parse,
         normalize=normalize_form144,
+        record_outcome=record_outcome,
     )

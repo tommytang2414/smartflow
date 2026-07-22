@@ -39,6 +39,19 @@ def form4_with_codes(*codes: str) -> str:
 
 
 class Form4ParserTests(unittest.TestCase):
+    def test_official_derivative_only_filing_is_preserved_without_direction(self):
+        parsed = parse_form4_xml(
+            (FIXTURES / "form4_derivative_official_excerpt.xml").read_text(encoding="utf-8")
+        )
+
+        self.assertIsNotNone(parsed)
+        self.assertEqual(parsed["direction"], "HOLD")
+        self.assertEqual(parsed["total_shares"], 0)
+        self.assertEqual(parsed["total_value"], 0)
+        self.assertEqual(parsed["transactions"][0]["instrument_type"], "derivative")
+        self.assertEqual(parsed["transactions"][0]["code"], "J")
+        self.assertEqual(parsed["transactions"][0]["underlying_security"], "Class A Common Stock")
+
     def test_official_non_market_excerpt_is_not_a_sale(self):
         parsed = parse_form4_xml(
             (FIXTURES / "form4_non_market_official_excerpt.xml").read_text(encoding="utf-8")

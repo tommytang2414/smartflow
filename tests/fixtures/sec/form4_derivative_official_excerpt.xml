@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ownershipDocument>
+  <documentType>4</documentType>
+  <periodOfReport>2026-07-21</periodOfReport>
+  <issuer>
+    <issuerCik>0000922621</issuerCik>
+    <issuerName>ERIE INDEMNITY CO</issuerName>
+    <issuerTradingSymbol>ERIE</issuerTradingSymbol>
+  </issuer>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0002130451</rptOwnerCik>
+      <rptOwnerName>Edwards William David</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>1</isDirector>
+      <isOfficer>0</isOfficer>
+      <isTenPercentOwner>0</isTenPercentOwner>
+      <isOther>0</isOther>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <nonDerivativeTable />
+  <derivativeTable>
+    <derivativeTransaction>
+      <securityTitle><value>Directors' Deferred Compensation Share Credits</value></securityTitle>
+      <transactionDate><value>2026-07-21</value></transactionDate>
+      <transactionCoding>
+        <transactionFormType>4</transactionFormType>
+        <transactionCode>J</transactionCode>
+        <equitySwapInvolved>0</equitySwapInvolved>
+      </transactionCoding>
+      <transactionAmounts>
+        <transactionShares><value>1.762</value></transactionShares>
+        <transactionPricePerShare><value>215.82</value></transactionPricePerShare>
+        <transactionAcquiredDisposedCode><value>A</value></transactionAcquiredDisposedCode>
+      </transactionAmounts>
+      <underlyingSecurity>
+        <underlyingSecurityTitle><value>Class A Common Stock</value></underlyingSecurityTitle>
+        <underlyingSecurityShares><value>1.762</value></underlyingSecurityShares>
+      </underlyingSecurity>
+      <postTransactionAmounts>
+        <sharesOwnedFollowingTransaction><value>1.762</value></sharesOwnedFollowingTransaction>
+      </postTransactionAmounts>
+      <ownershipNature><directOrIndirectOwnership><value>D</value></directOrIndirectOwnership></ownershipNature>
+    </derivativeTransaction>
+  </derivativeTable>
+</ownershipDocument>

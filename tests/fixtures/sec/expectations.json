@@ -49,6 +49,25 @@
     }
   },
   {
+    "name": "form4_derivative",
+    "parser": "form4",
+    "file": "form4_derivative_official_excerpt.xml",
+    "expected": {
+      "ticker": "ERIE",
+      "entity_name": "Edwards William David",
+      "direction": "HOLD",
+      "total_shares": 0,
+      "total_value": 0,
+      "transactions.0.code": "J",
+      "transactions.0.instrument_type": "derivative",
+      "transactions.0.shares_raw": "1.762",
+      "transactions.0.price_raw": "215.82",
+      "transactions.0.acquired_disposed": "A",
+      "transactions.0.underlying_security": "Class A Common Stock",
+      "transactions.0.underlying_shares_raw": "1.762"
+    }
+  },
+  {
     "name": "form144_proposed_sale",
     "parser": "form144",
     "file": "form144_official_excerpt.xml",

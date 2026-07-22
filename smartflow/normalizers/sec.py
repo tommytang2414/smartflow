@@ -7,7 +7,7 @@ from typing import Any
 from smartflow.events import make_source_event_id
 
 
-FORM4_PARSER_VERSION = "sec-form4-v2"
+FORM4_PARSER_VERSION = "sec-form4-v3"
 FORM144_PARSER_VERSION = "sec-form144-v1"
 
 FORM4_ACTIONS = {
@@ -92,6 +92,7 @@ def normalize_form4(
         price = _decimal(transaction.get("price_raw", transaction.get("price")))
         event_at = _utc_date(str(transaction.get("date", "")))
         side = {"P": "BUY", "S": "SELL"}.get(transaction_code)
+        instrument_type = transaction.get("instrument_type", "non_derivative")
         quality_reasons = []
         if not parsed.get("ticker"):
             quality_reasons.append("missing_ticker")
@@ -104,7 +105,11 @@ def normalize_form4(
             {
                 "source": "sec_form4",
                 "source_event_id": make_source_event_id("sec_form4", accession, index),
-                "event_type": "form4_transaction",
+                "event_type": (
+                    "form4_derivative_transaction"
+                    if instrument_type == "derivative"
+                    else "form4_transaction"
+                ),
                 "action": FORM4_ACTIONS.get(transaction_code, "other"),
                 "side": side,
                 "execution_status": "reported",
@@ -114,9 +119,23 @@ def normalize_form4(
                 "entity_id": entity_id,
                 "entity_name": entity_name,
                 "entities": reporting_owners,
+                "attributes": {
+                    "instrument_type": instrument_type,
+                    "transaction_code": transaction_code,
+                    "acquired_disposed": transaction.get("acquired_disposed"),
+                    "security_title": transaction.get("security"),
+                    "exercise_price": transaction.get("exercise_price_raw"),
+                    "expiration_date": transaction.get("expiration_date"),
+                    "underlying_security": transaction.get("underlying_security"),
+                    "underlying_shares": transaction.get("underlying_shares_raw"),
+                },
                 "quantity": quantity,
                 "price": price,
-                "value": quantity * price if quantity is not None and price is not None else None,
+                "value": (
+                    quantity * price
+                    if side is not None and quantity is not None and price is not None
+                    else None
+                ),
                 "currency": "USD",
                 "event_at": event_at,
                 "filed_at": _ensure_utc(filed_at),

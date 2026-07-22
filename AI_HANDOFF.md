@@ -110,6 +110,9 @@
 - Disposable migration rehearsal still preserves 8 legacy tables and 319,825 rows with `quick_check=ok`.
 - VPS deployment passed 69/69 tests. The 69,632-byte shadow DB has SHA-256 `8532c46ca9b63de2c7774a003cc9f7df8f058d50c58f357291c61537a413adaa`, exactly four v2 tables, zero rows, WAL mode, foreign-key validation, `quick_check=ok`, no sidecars, and no running shadow process.
 - Post-deploy zero-drift audit passed: live commit `d9ba3fb`, PID `640336`, run high-water mark `231829`, signal count `224298`, legacy DB integrity, S3 metadata, Lambda/EventBridge/alarm state, and public ports `22`/`5001` are unchanged.
+- Prepared `SEC-SHADOW-001`: bounded exact-form SEC discovery, secure HTTP controls, aggregate source outcomes, guarded v2 runtime DB access, one-shot CLI, and read-only reliability audit.
+- Live disposable rehearsal initially failed closed on a valid derivative-only Form 4, exposing the old parser gap. Added official accession `0001628280-26-049165` as a fixture and bumped Form 4 to `sec-form4-v3` with no false side/notional.
+- Official SEC fixture agreement is 5/5 (100%); full suite passes 81 tests. Repeated live 2+2 ingestion inserted zero duplicates; live 5+5 ingestion completed with both sources healthy and `quick_check=ok`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -133,4 +136,4 @@
 - `V2-SHADOW-001` is deployed but remains schema-only, not business go-live. It must remain disconnected until a source-specific shadow runner passes its own release gate.
 
 ## Next handoff
-- Prepare the SEC-only shadow runner as the next bounded release: v2 DB only, no S3/report output, fail-closed SEC contact identity, source health enabled, and no trade recommendation path. Keep SFC, CCASS, and CoinGlass blocked under their recorded constraints.
+- Commit/push `SEC-SHADOW-001`, deploy its exact commit to the isolated checkout, snapshot before the one-shot 5+5 run, and verify zero downstream/live drift. Do not add the observation cron until its separate security/change manifest is approved.
