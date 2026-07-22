@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SFC Weekly Short-Position Contract
+
+- Replaced the legacy semantic assumption in the new v2 path: SFC publishes aggregated reportable net short positions, not weekly short-selling turnover or per-stock short percentages.
+- Added strict official CSV parsing for report date, stock code/name, aggregate shares, and aggregate HKD value using exact decimal values.
+- Normalized one anonymous `position_snapshot` with `side=SHORT` per stock; no `SELL` action or reporting entity is inferred.
+- Parser drift and malformed data preserve the raw CSV, record `failure_kind=parser`, and degrade health; the weekly source uses a ten-day freshness SLA.
+- Full offline suite now covers 48 tests. Production collectors and schema remain unchanged.
+
 ### 2026-07-23 — SEC Live-Feed Failure Taxonomy
 
 - Added Form 4/Form 144 HTTP ingestion wrappers that require a contact-bearing SEC User-Agent.

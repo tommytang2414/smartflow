@@ -63,6 +63,14 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Treat a reused source identity with a different payload hash or raw-evidence parent as an `EvidenceConflictError`; never update or silently replace stored evidence.
 - A parser behavior change requires a new `parser_version`; reruns of the same raw identity and parser version are idempotent.
 
+## SFC short-position semantics
+
+- The official weekly file is an aggregate of reportable net short positions at the reporting date. It is not short-selling turnover, a trade feed, or an identified short seller's position.
+- The v2 contract is `event_type=aggregated_reportable_short_position`, `action=position_snapshot`, `side=SHORT`, with no reporting entity. Never translate it into a `SELL` action.
+- The official CSV has exactly five columns: date, stock code, stock name, aggregated shares, and aggregated HKD value. Treat header drift, mixed dates, duplicate codes, and invalid numerics as parser failures.
+- Preserve rejected CSV bodies as raw evidence. The `sfc_short` health policy expects a weekly run and uses a ten-day freshness SLA to tolerate publication holidays.
+- Current parser contract is `sfc-short-v1`; fixtures live under `tests/fixtures/sfc/`. The legacy `hkex_short.py` turnover/percentage logic remains contained and must not feed v2.
+
 ## Collector execution
 
 - Scheduled collectors run through `smartflow.runtime.run_in_process()` using the `spawn` start method. Keep worker entry points importable as `module:function` paths.
@@ -82,6 +90,13 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — SFC Weekly Short-Position Contract
+
+- Added an official SFC CSV fixture and strict five-column parser for aggregated reportable short positions.
+- Normalized each stock as an anonymous weekly `SHORT` position snapshot without inventing turnover, a seller, or a `SELL` trade.
+- Added immutable raw evidence, idempotent v2 persistence, explicit parser failures, and weekly source-health semantics.
+- Kept the legacy collector and all production wiring disabled.
 
 ### 2026-07-23 — SEC Live-Feed Failure Taxonomy
 

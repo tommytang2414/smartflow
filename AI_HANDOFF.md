@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `3722e91`
+- Branch / starting commit: `master` / `761c27c`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -43,6 +43,8 @@
 - Preserved all owners in multi-owner Form 4 filings without duplicating transactions; normalized events now include `entities` and a deterministic group identity.
 - Fixed Form 4 UTC event-date parsing and bumped its normalized parser contract to `sec-form4-v2`.
 - Added the non-production SEC live HTTP adapter with auth/source/parser classification and raw-response preservation.
+- Started Phase 2 with the official SFC weekly CSV contract, exact-decimal parser, anonymous position-snapshot normalizer, and v2 ingestion path.
+- Preserved malformed SFC CSV responses as raw evidence and classified schema drift as parser failure rather than successful emptiness.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -80,12 +82,15 @@
 - Dated production S3 snapshot restore rehearsal passed for 201,900,032 bytes, 8 tables, and 774,475 rows; `quick_check=ok` and restored SHA-256 matched exactly.
 - Multi-owner parser/normalizer/ingestion tests pass; official SEC fixture agreement remains 4/4 (100%) and v2 migration remains repeatable.
 - SEC live-adapter success, auth, source, and malformed-parser paths pass; full suite contains 42 tests.
+- SFC parser/normalizer/ingestion tests pass against an official 2026-07-10 fixture; full suite contains 48 tests.
+- Legacy-copy migration remains repeatable and local snapshot restore remains byte-identical after the SFC slice.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
 - Phase 0 security remediation is approved, but every production mutation requires a before-state, backup, bounded change, verification, and rollback.
 - Legacy production data must not be edited or deleted in place.
 - Core MVP sources: Form 4, Form 144, CoinGlass, CCASS, and SFC short positions.
+- SFC data represents anonymous aggregated reportable net short positions. It must never be described as turnover, an identified seller, or a `SELL` trade.
 - Do not add new collectors during rehabilitation.
 - Git history rewrite is complete; external clones/caches may still retain the old credential value.
 - Provider-side CoinGlass revocation is an accepted residual risk for Phase 0 and must not be attempted without renewed approval from the third-party account owner.
@@ -99,4 +104,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Begin the next core-source contract, prioritizing SFC weekly short positions or CCASS concentration semantics. Keep production schema and collectors unchanged.
+- Add read-only SFC report discovery/fetch classification and reconcile at least two official weeks before considering historical v2 reprocessing. Keep production schema and collectors unchanged.
