@@ -1,0 +1,5 @@
+# SMARTFLOW_SEC_SHADOW_BEGIN
+*/5 * * * * /usr/bin/flock -w 120 /home/ubuntu/SmartFlow-shadow/data/sec-shadow.lock /bin/bash /home/ubuntu/SmartFlow-shadow/ops/run_sec_shadow_scheduled.sh sec_form4 >> /home/ubuntu/SmartFlow-shadow/logs/sec-shadow-form4.log 2>&1
+2 * * * * /usr/bin/flock -w 120 /home/ubuntu/SmartFlow-shadow/data/sec-shadow.lock /bin/bash /home/ubuntu/SmartFlow-shadow/ops/run_sec_shadow_scheduled.sh sec_form144 >> /home/ubuntu/SmartFlow-shadow/logs/sec-shadow-form144.log 2>&1
+17 0 * * * /usr/bin/flock -w 120 /home/ubuntu/SmartFlow-shadow/data/sec-shadow.lock /usr/bin/python3 /home/ubuntu/SmartFlow-shadow/ops/audit_sec_shadow.py /home/ubuntu/SmartFlow-shadow/data/smartflow-v2-shadow.db --since-hours 24 >> /home/ubuntu/SmartFlow-shadow/logs/sec-shadow-audit.log 2>&1
+# SMARTFLOW_SEC_SHADOW_END

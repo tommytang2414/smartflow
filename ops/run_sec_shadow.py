@@ -2,18 +2,17 @@
 
 import argparse
 import json
-import os
 import sys
 from dataclasses import asdict
 from pathlib import Path
 
-import requests
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from smartflow.db.v2_engine import open_v2_shadow_engine
-from smartflow.ingestion.sec_shadow import run_sec_shadow_source
+from smartflow.ingestion.sec import SOURCE_POLICIES
+from smartflow.runtime_v2 import run_in_process_with_v2_timeout
 
 
 def main() -> None:
@@ -25,24 +24,26 @@ def main() -> None:
         default="all",
     )
     parser.add_argument("--limit", type=int, default=5)
+    parser.add_argument("--timeout-seconds", type=float, default=240)
     args = parser.parse_args()
 
     sources = (
         ("sec_form4", "sec_form144") if args.source == "all" else (args.source,)
     )
     engine = open_v2_shadow_engine(args.database)
+    engine.dispose()
+    session_factory = sessionmaker(bind=engine)
     try:
-        with requests.Session() as http_session, Session(engine) as database_session:
-            results = [
-                run_sec_shadow_source(
-                    database_session,
-                    source=source,
-                    limit=args.limit,
-                    contact_email=os.getenv("SEC_EDGAR_EMAIL", ""),
-                    http_session=http_session,
-                )
-                for source in sources
-            ]
+        results = [
+            run_in_process_with_v2_timeout(
+                "smartflow.sec_shadow_job:run_sec_shadow_job",
+                policy=SOURCE_POLICIES[source],
+                session_factory=session_factory,
+                args=(str(args.database.resolve()), source, args.limit),
+                timeout_seconds=args.timeout_seconds,
+            )
+            for source in sources
+        ]
     except Exception as error:
         print(json.dumps({"status": "error", "error_code": type(error).__name__}))
         raise SystemExit(1) from error

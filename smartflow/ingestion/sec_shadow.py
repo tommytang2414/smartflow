@@ -9,8 +9,10 @@ from urllib.parse import urlencode, urljoin, urlparse
 
 from bs4 import BeautifulSoup
 from lxml import etree
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from smartflow.db.models_v2 import NormalizedEventV2, RawEvent
 from smartflow.db.v2_repository import EvidenceConflictError
 from smartflow.ingestion.sec import (
     SOURCE_POLICIES,
@@ -261,6 +263,7 @@ def run_sec_shadow_source(
     normalized_observed = 0
     normalized_inserted = 0
     selected_filings = 0
+    cached_filings = 0
 
     try:
         active_client = client or SECClient(
@@ -274,11 +277,44 @@ def run_sec_shadow_source(
             limit=limit,
         )
         selected_filings = len(filings)
+        accessions = [filing.accession for filing in filings]
+        stored_raw_events = (
+            session.scalars(
+                select(RawEvent).where(
+                    RawEvent.source == source,
+                    RawEvent.source_event_id.in_(accessions),
+                )
+            ).all()
+            if accessions
+            else []
+        )
+        normalized_by_raw_id = {
+            raw_event_id: count
+            for raw_event_id, count in session.execute(
+                select(NormalizedEventV2.raw_event_id, func.count(NormalizedEventV2.id))
+                .where(
+                    NormalizedEventV2.raw_event_id.in_(
+                        [raw_event.id for raw_event in stored_raw_events]
+                    )
+                )
+                .group_by(NormalizedEventV2.raw_event_id)
+            )
+        }
+        complete_accessions = {
+            raw_event.source_event_id: normalized_by_raw_id[raw_event.id]
+            for raw_event in stored_raw_events
+            if normalized_by_raw_id.get(raw_event.id, 0) > 0
+        }
+        cached_filings = len(complete_accessions)
+        normalized_observed += sum(complete_accessions.values())
+        filings_to_fetch = [
+            filing for filing in filings if filing.accession not in complete_accessions
+        ]
         ticker_cache = None
-        if source == "sec_form144" and filings:
+        if source == "sec_form144" and filings_to_fetch:
             ticker_cache = build_cik_ticker_cache(active_client.get_json(SEC_TICKERS_URL))
 
-        for filing in filings:
+        for filing in filings_to_fetch:
             index_html = active_client.get_text(filing.index_url)
             xml_url = resolve_primary_xml_url(
                 index_html,
@@ -318,6 +354,7 @@ def run_sec_shadow_source(
                 "mode": "v2_shadow",
                 "limit": limit,
                 "raw_inserted": raw_inserted,
+                "cached_filings": cached_filings,
             },
         )
         refresh_source_health(
@@ -344,6 +381,7 @@ def run_sec_shadow_source(
             "mode": "v2_shadow",
             "limit": limit,
             "raw_inserted": raw_inserted,
+            "cached_filings": cached_filings,
         },
     )
     refresh_source_health(

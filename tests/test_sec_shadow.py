@@ -60,14 +60,17 @@ class FakeSECClient:
     def __init__(self, text_by_url: dict[str, str], json_by_url: dict[str, dict] | None = None):
         self.text_by_url = text_by_url
         self.json_by_url = json_by_url or {}
+        self.requests = []
 
     def get_text(self, url: str) -> str:
+        self.requests.append(url)
         for key, value in self.text_by_url.items():
             if key in url:
                 return value
         raise AssertionError(f"unexpected URL: {url}")
 
     def get_json(self, url: str) -> dict:
+        self.requests.append(url)
         return self.json_by_url[url]
 
 
@@ -168,19 +171,21 @@ class SECShadowRunTests(unittest.TestCase):
         )
 
     def test_form4_run_is_aggregate_and_idempotent(self):
+        first_client = self.form4_client()
+        second_client = self.form4_client()
         with Session(self.engine) as session:
             first = run_sec_shadow_source(
                 session,
                 source="sec_form4",
                 limit=5,
-                client=self.form4_client(),
+                client=first_client,
                 observed_at=NOW,
             )
             second = run_sec_shadow_source(
                 session,
                 source="sec_form4",
                 limit=5,
-                client=self.form4_client(),
+                client=second_client,
                 observed_at=NOW,
             )
 
@@ -190,6 +195,8 @@ class SECShadowRunTests(unittest.TestCase):
             self.assertEqual(session.scalar(select(func.count(NormalizedEventV2.id))), 1)
             self.assertEqual(session.scalar(select(func.count(CollectorRunV2.id))), 2)
             self.assertEqual(session.get(SourceHealth, "sec_form4").state, "healthy")
+            self.assertEqual(len(first_client.requests), 3)
+            self.assertEqual(len(second_client.requests), 1)
 
     def test_form144_uses_official_ticker_metadata_and_proposed_semantics(self):
         index_url = "https://www.sec.gov/Archives/edgar/data/2/form144-index.htm"

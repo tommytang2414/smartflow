@@ -56,6 +56,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Use `smartflow.ingestion.sec_shadow` and `ops/run_sec_shadow.py` for bounded shadow runs. The client permits only approved `https://www.sec.gov` paths, uses `owner=only`, filters exact forms, deduplicates accessions, throttles to two requests/second, disables redirects, and caps responses at 10 MB.
 - Form `4/A` and `144/A` are intentionally excluded until amendment/version semantics are defined. Do not silently merge an amendment into immutable accession evidence.
 - Aggregate one `collector_runs_v2` outcome per source execution; individual filing ingestion must not let a later success hide an earlier failure.
+- Scheduled SEC shadow runs must use the tracked `ops/run_sec_shadow_scheduled.sh` and `ops/sec-shadow-crontab.txt`: contact-only mode-600 env, shared flock, child-process timeout, no downstream output. Follow `SEC_SHADOW_OBSERVATION_RUNBOOK.md` before any persistent env or cron mutation.
+- Treat an accession with existing raw evidence and normalized children as a cache hit; routine health polls should fetch only the Atom feed, not redownload immutable filings.
 
 ## V2 database foundation
 
@@ -109,6 +111,13 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — SEC Shadow Observation Package
+
+- Added accession-aware caching so unchanged health polls make one SEC feed request and avoid repeated XML downloads.
+- Moved each source run behind the existing spawned-process hard-timeout adapter; a terminated child is recorded by the parent as a timeout and degraded health.
+- Added a fail-closed scheduled wrapper and exact marker-delimited crontab for five-minute Form 4, hourly Form 144, shared SQLite flock, and daily read-only audit.
+- Prepared the security/privacy implications, 14-day/99% gate, and exact reversible mutations in `SEC_SHADOW_OBSERVATION_RUNBOOK.md`; persistent environment and cron remain undeployed pending approval.
 
 ### 2026-07-23 — SEC-only Shadow Ingestion Release
 

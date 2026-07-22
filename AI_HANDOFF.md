@@ -116,6 +116,8 @@
 - Deployed `SEC-SHADOW-001` at `560dc30` after snapshotting the empty DB. VPS 81/81 tests passed; production stored five raw/normalized filings per source with 100% initial run reliability and healthy source state.
 - Production semantics audit: four Form 4 derivative events `side=NONE`, one Form 4 sale `reported`, and five Form 144 notices `proposed`; DB `quick_check=ok` and no shadow process, cron, or persistent contact env exists.
 - Post-release zero-drift audit confirmed live commit/PID/legacy counters, S3 metadata, Lambda/EventBridge/alarm, and public ports remain unchanged.
+- Prepared `SEC-OBS-001`: cache-aware polling, per-source child-process timeout with parent-recorded timeout health, strict contact-only wrapper, shared flock, exact cron block, and daily audit.
+- Full suite passes 82 tests; a process-isolated live 1+1 rerun used cache hits, inserted zero duplicates, kept both sources healthy, and passed `quick_check`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -139,4 +141,4 @@
 - `V2-SHADOW-001` is deployed but remains schema-only, not business go-live. It must remain disconnected until a source-specific shadow runner passes its own release gate.
 
 ## Next handoff
-- Prepare the 14-day observation scheduler package with a hard parent-process timeout, least-privilege contact environment file, shared flock, Form 4/Form 144 cadence, bounded log retention, reliability audit, and exact rollback. Do not mutate cron or persistent environment before its security/change manifest is approved.
+- Obtain explicit approval for the persistent env/crontab manifest in `SEC_SHADOW_OBSERVATION_RUNBOOK.md`; then deploy the exact release commit, manually verify both wrappers, install the marker-delimited cron block, and verify the first scheduled executions. No business go-live follows automatically.

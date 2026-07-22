@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SEC Shadow Observation Controls
+
+- Added accession caching so unchanged scheduled polls use only the Atom feed rather than repeatedly downloading immutable filing XML.
+- Added a 240-second spawned-process boundary around each source; the parent records terminated timeouts into v2 and degrades health.
+- Added a strict contact-only scheduled wrapper, shared flock, tracked five-minute/hourly cron block, and daily read-only audit.
+- Persistent contact environment and cron installation are documented in `SEC_SHADOW_OBSERVATION_RUNBOOK.md` and remain behind the security/change approval gate.
+
 ### 2026-07-23 — SEC-only v2 Shadow Runtime
 
 - Added a production-isolated SEC Form 4/Form 144 shadow runner with strict SEC URL allowlisting, exact-form filtering, accession deduplication, two-request/second throttling, no redirects, bounded responses, and fail-closed contact identity.
