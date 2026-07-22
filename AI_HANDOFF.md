@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / starting commit: `master` / `761c27c`
+- Branch / starting commit: `master` / `67d260a`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -45,6 +45,8 @@
 - Added the non-production SEC live HTTP adapter with auth/source/parser classification and raw-response preservation.
 - Started Phase 2 with the official SFC weekly CSV contract, exact-decimal parser, anonymous position-snapshot normalizer, and v2 ingestion path.
 - Preserved malformed SFC CSV responses as raw evidence and classified schema drift as parser failure rather than successful emptiness.
+- Added read-only official-index discovery, dated-link/CSV agreement, SFC URL validation, and full live report ingestion into a disposable v2 database.
+- Added two-week SFC reconciliation with non-zero-coercing missing-row semantics.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -84,6 +86,8 @@
 - SEC live-adapter success, auth, source, and malformed-parser paths pass; full suite contains 42 tests.
 - SFC parser/normalizer/ingestion tests pass against an official 2026-07-10 fixture; full suite contains 48 tests.
 - Legacy-copy migration remains repeatable and local snapshot restore remains byte-identical after the SFC slice.
+- Live SFC rehearsal discovered 2026-07-10, preserved one raw report, normalized 1,233 events, and returned healthy source state.
+- Live 2026-07-03 versus 2026-07-10 reconciliation covered 1,231/1,233 rows: 761 changed, 470 unchanged, and 2 newly reported.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -104,4 +108,4 @@
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 
 ## Next handoff
-- Add read-only SFC report discovery/fetch classification and reconcile at least two official weeks before considering historical v2 reprocessing. Keep production schema and collectors unchanged.
+- Design the bounded SFC historical reprocessing and legacy reconciliation report, or begin the CCASS concentration contract. Keep production schema and collectors unchanged.

@@ -70,6 +70,8 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - The official CSV has exactly five columns: date, stock code, stock name, aggregated shares, and aggregated HKD value. Treat header drift, mixed dates, duplicate codes, and invalid numerics as parser failures.
 - Preserve rejected CSV bodies as raw evidence. The `sfc_short` health policy expects a weekly run and uses a ten-day freshness SLA to tolerate publication holidays.
 - Current parser contract is `sfc-short-v1`; fixtures live under `tests/fixtures/sfc/`. The legacy `hkex_short.py` turnover/percentage logic remains contained and must not feed v2.
+- Discover reports from dated official CSV links in the SFC index; never guess URL patterns. The archive-link date and CSV row date must agree.
+- In week-over-week reconciliation, an absent stock is `not_in_current_report`, not a zero position. A new row is `newly_reported`, not proof that the short position was newly opened.
 
 ## Collector execution
 
@@ -90,6 +92,13 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-23 — SFC Discovery and Weekly Reconciliation
+
+- Added official-index discovery, SFC-only URL validation, and source/parser failure classification.
+- Enforced agreement between the dated archive link and the CSV reporting date.
+- Added exact two-week position reconciliation without converting missing rows to zero.
+- Rehearsed the live read-only path in a disposable database: one raw report produced 1,233 healthy normalized events.
 
 ### 2026-07-23 — SFC Weekly Short-Position Contract
 

@@ -1,7 +1,7 @@
 """Offline SFC weekly CSV ingestion into v2 evidence and health records."""
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from sqlalchemy.orm import Session
 
@@ -40,9 +40,11 @@ def ingest_sfc_short_csv(
     published_at: datetime | None,
     observed_at: datetime,
     http_status: int = 200,
+    expected_reporting_date: date | None = None,
+    started_at: datetime | None = None,
 ) -> SFCShortIngestionResult:
     """Persist one complete weekly SFC report as immutable raw evidence."""
-    started_at = _utc_now()
+    started_at = started_at or _utc_now()
     raw_payload = {"content_type": "text/csv", "csv": csv_content}
     raw_event = {
         "source": "sfc_short",
@@ -60,6 +62,14 @@ def ingest_sfc_short_csv(
     stage = "parser"
     try:
         parsed = parse_sfc_short_csv(csv_content)
+        if (
+            expected_reporting_date is not None
+            and parsed["reporting_date"] != expected_reporting_date
+        ):
+            raise ValueError(
+                "SFC CSV reporting date does not match its dated archive link: "
+                f"{parsed['reporting_date']} != {expected_reporting_date}"
+            )
         raw_source_event_id = make_source_event_id(
             "sfc_short_report", parsed["reporting_date"].isoformat()
         )

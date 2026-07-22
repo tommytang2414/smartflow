@@ -318,6 +318,15 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-23 — SFC Discovery and Weekly Reconciliation
+
+- Added read-only discovery from the official SFC archive index instead of guessed annual URL patterns.
+- Rejects non-SFC links and archive-link/CSV reporting-date mismatches; index drift preserves the HTML evidence and remains a parser failure.
+- Added week-over-week reconciliation with explicit `newly_reported` and `not_in_current_report` states; absence is never coerced to zero.
+- Live disposable rehearsal discovered 10 July 2026 and normalized all 1,233 rows with healthy source state.
+- Full two-week reconciliation compared 1,231 versus 1,233 rows: 761 changed, 470 unchanged, and 2 newly reported.
+- Production collectors and schema remain unchanged.
+
 ### 2026-07-23 — SFC Weekly Short-Position Contract
 
 - Replaced the legacy semantic assumption in the new v2 path: SFC publishes aggregated reportable net short positions, not weekly short-selling turnover or per-stock short percentages.
