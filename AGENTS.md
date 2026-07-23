@@ -56,7 +56,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Use `smartflow.ingestion.sec_shadow` and `ops/run_sec_shadow.py` for bounded shadow runs. The client permits only approved `https://www.sec.gov` paths, uses `owner=only`, filters exact forms, deduplicates accessions, throttles to two requests/second, disables redirects, and caps responses at 10 MB.
 - Form `4/A` and `144/A` are intentionally excluded until amendment/version semantics are defined. Do not silently merge an amendment into immutable accession evidence.
 - Aggregate one `collector_runs_v2` outcome per source execution; individual filing ingestion must not let a later success hide an earlier failure.
-- Scheduled SEC shadow runs must use the tracked `ops/run_sec_shadow_scheduled.sh` and `ops/sec-shadow-crontab.txt`: contact-only mode-600 env, shared flock, child-process timeout, no downstream output. Follow `SEC_SHADOW_OBSERVATION_RUNBOOK.md` before any persistent env or cron mutation.
+- Scheduled SEC shadow runs use the tracked `ops/run_sec_shadow_scheduled.sh` and `ops/sec-shadow-crontab.txt`: contact-only mode-600 env, shared flock, child-process timeout, no downstream output. `SEC-OBS-001` is active at exact commit `6d9f809`; do not alter its env/cron except through the documented rollback or a separately approved manifest.
 - Treat an accession with existing raw evidence and normalized children as a cache hit; routine health polls should fetch only the Atom feed, not redownload immutable filings.
 
 ## V2 database foundation
@@ -112,12 +112,15 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 ## Changelog
 
-### 2026-07-23 — SEC Shadow Observation Package
+### 2026-07-23 — SEC Shadow Observation Deployment
 
 - Added accession-aware caching so unchanged health polls make one SEC feed request and avoid repeated XML downloads.
 - Moved each source run behind the existing spawned-process hard-timeout adapter; a terminated child is recorded by the parent as a timeout and degraded health.
 - Added a fail-closed scheduled wrapper and exact marker-delimited crontab for five-minute Form 4, hourly Form 144, shared SQLite flock, and daily read-only audit.
-- Prepared the security/privacy implications, 14-day/99% gate, and exact reversible mutations in `SEC_SHADOW_OBSERVATION_RUNBOOK.md`; persistent environment and cron remain undeployed pending approval.
+- Deployed exact commit `6d9f809` to the isolated production-shadow checkout after owner approval; VPS 82/82 tests and both manual wrapper runs passed.
+- Installed the protected one-value contact environment and exact marker-delimited cron block after preserving the prior crontab and a verified pre-observation DB snapshot.
+- First scheduled Form 4 and Form 144 runs completed successfully with no failure kind. The 14-day/99% gate runs from 2026-07-23 00:02:05 UTC through 2026-08-06 00:02:05 UTC.
+- Post-start health, integrity, log privacy, cron isolation, and live/AWS zero-drift checks passed. This production-shadow deployment does not authorise business go-live. Production deployment commit: `6d9f809`.
 
 ### 2026-07-23 — SEC-only Shadow Ingestion Release
 

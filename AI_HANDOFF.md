@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployed SEC shadow commit: `master` / `560dc30`
+- Branch / deployed SEC shadow commit: `master` / `6d9f809`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -57,6 +57,9 @@
 - Deployed `V2-SHADOW-001` at exact commit `656b893`: `/home/ubuntu/SmartFlow-shadow` now contains an empty v2 DB and has no connection to the live scheduler, legacy DB, S3, Lambda, reports, IAM, or firewall.
 - Added `ops/manage_v2_shadow.py`; it refuses `smartflow.db`, existing targets, and sidecars, atomically publishes a verified empty WAL database, and supports immutable read-only verification.
 - Recorded the exact production before-state, bounded mutation manifest, acceptance checks, and recoverable quarantine rollback in `PRODUCTION_V2_SHADOW_RUNBOOK.md`.
+- Deployed owner-approved `SEC-OBS-001` at exact commit `6d9f809` with a protected contact-only environment, shared-lock Form 4/Form 144 schedules, and daily read-only audit.
+- Preserved the prior crontab and verified SQLite snapshot under `/home/ubuntu/SmartFlow-shadow/backups/SEC-OBS-001-20260722T235245Z/`; snapshot SHA-256 is `6295086ad052662c540cef37bf759ca57d79437be67b1f8e799c00f35897c3db`.
+- The first shell assertion attempt rolled back correctly and left its mode-600 contact file disabled as `sec-shadow.env.disabled-20260722T235139Z`; no cron or process survived that attempt.
 
 ## Verification
 - Documentation structure and internal phase dependencies reviewed.
@@ -118,6 +121,10 @@
 - Post-release zero-drift audit confirmed live commit/PID/legacy counters, S3 metadata, Lambda/EventBridge/alarm, and public ports remain unchanged.
 - Prepared `SEC-OBS-001`: cache-aware polling, per-source child-process timeout with parent-recorded timeout health, strict contact-only wrapper, shared flock, exact cron block, and daily audit.
 - Full suite passes 82 tests; a process-isolated live 1+1 rerun used cache hits, inserted zero duplicates, kept both sources healthy, and passed `quick_check`.
+- VPS deployment passed 82/82 tests; manual Form 4 run `3` and Form 144 run `4` both succeeded before cron installation.
+- First scheduled Form 4 run `5` and Form 144 run `7` both completed successfully with no failure kind. The 14-day observation clock started at 2026-07-23 00:02:05 UTC and ends at 2026-08-06 00:02:05 UTC.
+- Post-start audit returned 100% initial reliability and healthy state for both sources, `quick_check=ok`, 14/11 raw Form 4/Form 144 filings, and 44/11 normalized events; scheduler logs contain no contact PII.
+- Exact cron block and unrelated-crontab comparison passed. Live commit `d9ba3fb`, PID `640336`, legacy counters, both DB integrity checks, S3, Lambda, EventBridge, alarm, and public ports `22`/`5001` remained unchanged.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -139,6 +146,7 @@
 - The Lightsail instance is a shared host. Preserve public `5001` until the unrelated CCSP dependency is separately reviewed, and preserve `22` until a tested alternate admin path exists.
 - P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
 - `V2-SHADOW-001` is deployed but remains schema-only, not business go-live. It must remain disconnected until a source-specific shadow runner passes its own release gate.
+- `SEC-OBS-001` is an isolated production-shadow observation only. Do not connect it to legacy signals, reports, messaging, S3, Lambda, or business output before the full 14-day/99% gate and a separate go-live approval.
 
 ## Next handoff
-- Obtain explicit approval for the persistent env/crontab manifest in `SEC_SHADOW_OBSERVATION_RUNBOOK.md`; then deploy the exact release commit, manually verify both wrappers, install the marker-delimited cron block, and verify the first scheduled executions. No business go-live follows automatically.
+- Leave `SEC-OBS-001` unchanged while the scheduled daily audit and source runs collect 14 complete days of evidence. On or after 2026-08-06 00:02:05 UTC, run the final 14-day reliability, health, failure-taxonomy, accession reconciliation, semantic, snapshot-restore, and zero-drift gate in `SEC_SHADOW_OBSERVATION_RUNBOOK.md`; obtain separate approval before any business go-live or downstream connection.

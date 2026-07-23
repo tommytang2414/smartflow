@@ -1,8 +1,12 @@
 # SEC Shadow 14-day Observation Runbook
 
-Status: Awaiting explicit approval of the persistent environment and cron manifest.
+Status: Active production-shadow observation; not authorised for business go-live.
 
 Release ID: `SEC-OBS-001`
+
+Approved/deployed commit: `6d9f8099a9b3b47ba13c532d8b6165ff9facd717`
+
+Observation window: 2026-07-23 00:02:05 UTC (08:02:05 HKT) through 2026-08-06 00:02:05 UTC (08:02:05 HKT).
 
 ## Recommended option
 
@@ -59,6 +63,19 @@ Required final state:
 - no downstream or live-system drift.
 
 The observation window does not authorize business go-live or directional reporting.
+
+## Deployment record
+
+- The owner approved `SEC-OBS-001` at exact commit `6d9f809`.
+- The first deployment attempt failed during a shell-only environment assertion after all 82 tests passed. The rollback restored the prior crontab, disabled the environment file as `sec-shadow.env.disabled-20260722T235139Z`, and returned the checkout to `560dc30`; no cron entry or process remained.
+- The successful deployment preserved the pre-observation crontab and a SQLite backup under `/home/ubuntu/SmartFlow-shadow/backups/SEC-OBS-001-20260722T235245Z/`. `pre-observation.db` passed `quick_check` and has SHA-256 `6295086ad052662c540cef37bf759ca57d79437be67b1f8e799c00f35897c3db`.
+- The VPS passed 82/82 tests and shell validation before persistent scheduling was installed. The protected environment directory is owned by `ubuntu` at mode `700`; the one-line contact file is owned by `ubuntu` at mode `600`.
+- Manual run IDs `3` (Form 4) and `4` (Form 144) completed successfully before cron installation.
+- The first Form 4 cron run was ID `5`, from 2026-07-22 23:55:03 UTC to 23:55:04 UTC, with `status=success`, two persisted events, and no failure kind.
+- The first Form 144 cron run was ID `7`, from 2026-07-23 00:02:03 UTC to 00:02:05 UTC, with `status=success`, one persisted event, and no failure kind. Its completion starts the 14-day clock.
+- The post-start audit reported `quick_check=ok`, healthy state and 100% initial reliability for both sources, 14/11 raw Form 4/Form 144 filings, and 44/11 normalized events. Contact PII was absent from both scheduler logs.
+- The marker block matches `ops/sec-shadow-crontab.txt` byte-for-byte and all unrelated crontab lines match the backup. `data/sec-shadow.lock` is the expected untracked runtime lock file.
+- Zero-drift verification preserved live commit `d9ba3fb`, scheduler PID `640336`, legacy run count/high-water mark `231829`, signal count `224298`, both database integrity checks, the S3 object, Lambda configuration, EventBridge schedule, CloudWatch alarm, and Lightsail public ports `22`/`5001`.
 
 ## Rollback
 

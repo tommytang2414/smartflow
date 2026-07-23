@@ -323,7 +323,10 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Added accession caching so unchanged scheduled polls use only the Atom feed rather than repeatedly downloading immutable filing XML.
 - Added a 240-second spawned-process boundary around each source; the parent records terminated timeouts into v2 and degrades health.
 - Added a strict contact-only scheduled wrapper, shared flock, tracked five-minute/hourly cron block, and daily read-only audit.
-- Persistent contact environment and cron installation are documented in `SEC_SHADOW_OBSERVATION_RUNBOOK.md` and remain behind the security/change approval gate.
+- Owner-approved `SEC-OBS-001` was deployed at exact commit `6d9f809` after a verified crontab/SQLite backup; VPS 82/82 tests and both manual wrappers passed.
+- Installed the protected contact-only environment, exact five-minute/hourly cron block, and daily audit without touching live SmartFlow or AWS downstream systems.
+- First scheduled Form 4 and Form 144 runs completed successfully with no failure kind. The 14-day/99% observation gate runs from 2026-07-23 00:02:05 UTC through 2026-08-06 00:02:05 UTC.
+- Post-start audit found both sources healthy at 100% initial reliability, `quick_check=ok`, no contact PII in logs, exact cron isolation, and zero drift in legacy DB/scheduler and AWS controls. Production deployment commit: `6d9f809`.
 
 ### 2026-07-23 — SEC-only v2 Shadow Runtime
 
