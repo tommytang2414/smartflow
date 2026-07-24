@@ -77,6 +77,16 @@ The observation window does not authorize business go-live or directional report
 - The marker block matches `ops/sec-shadow-crontab.txt` byte-for-byte and all unrelated crontab lines match the backup. `data/sec-shadow.lock` is the expected untracked runtime lock file.
 - Zero-drift verification preserved live commit `d9ba3fb`, scheduler PID `640336`, legacy run count/high-water mark `231829`, signal count `224298`, both database integrity checks, the S3 object, Lambda configuration, EventBridge schedule, CloudWatch alarm, and Lightsail public ports `22`/`5001`.
 
+## Observation checkpoints
+
+### Day 1 — 2026-07-24 00:02 UTC
+
+- Form 144 completed 24/24 healthy runs (100%). Form 4 completed 287/288 healthy runs (99.65%), above the 99% final threshold at this checkpoint.
+- Form 4 run `212` was the only failure: a 30-second SEC upstream request failure at 2026-07-23 15:50 UTC. It was correctly classified as `failure_kind=source`, persisted no partial raw or normalized records, and the next scheduled run recovered without intervention.
+- Current health is `healthy` for both sources. The database contains 52 Form 144 raw/normalized records and 218 Form 4 raw filings with 508 transaction-level normalized events; `quick_check=ok` and `foreign_key_check` returned no violations.
+- Every raw accession has normalized children, there are no orphan normalized events, no non-P/S Form 4 event has direction, every Form 144 event remains a proposed sale, and no failure is represented as an empty success.
+- The tracked cron block, protected environment mode, log privacy check, legacy scheduler/database counters, S3 object, Lambda, EventBridge, and CloudWatch alarm remain unchanged.
+
 ## Rollback
 
 1. Restore the exact backed-up crontab, removing only the marker-delimited SEC shadow block.

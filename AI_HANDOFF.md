@@ -125,6 +125,8 @@
 - First scheduled Form 4 run `5` and Form 144 run `7` both completed successfully with no failure kind. The 14-day observation clock started at 2026-07-23 00:02:05 UTC and ends at 2026-08-06 00:02:05 UTC.
 - Post-start audit returned 100% initial reliability and healthy state for both sources, `quick_check=ok`, 14/11 raw Form 4/Form 144 filings, and 44/11 normalized events; scheduler logs contain no contact PII.
 - Exact cron block and unrelated-crontab comparison passed. Live commit `d9ba3fb`, PID `640336`, legacy counters, both DB integrity checks, S3, Lambda, EventBridge, alarm, and public ports `22`/`5001` remained unchanged.
+- Day-1 checkpoint at 2026-07-24 00:02 UTC: Form 144 is 24/24 healthy; Form 4 is 287/288 healthy (99.65%). Run `212` was a correctly classified transient SEC source failure with zero partial writes and automatic next-run recovery.
+- Day-1 reconciliation passed: `quick_check=ok`, no foreign-key violations, every raw accession has normalized children, no orphan events, no false Form 4 direction, all Form 144 events remain proposed, and no failure is stored as empty success. Cron/env/log privacy and live/AWS zero-drift checks also pass.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.

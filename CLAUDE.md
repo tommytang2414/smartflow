@@ -327,6 +327,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Installed the protected contact-only environment, exact five-minute/hourly cron block, and daily audit without touching live SmartFlow or AWS downstream systems.
 - First scheduled Form 4 and Form 144 runs completed successfully with no failure kind. The 14-day/99% observation gate runs from 2026-07-23 00:02:05 UTC through 2026-08-06 00:02:05 UTC.
 - Post-start audit found both sources healthy at 100% initial reliability, `quick_check=ok`, no contact PII in logs, exact cron isolation, and zero drift in legacy DB/scheduler and AWS controls. Production deployment commit: `6d9f809`.
+- Day-1 read-only checkpoint: Form 144 passed 24/24 runs; Form 4 passed 287/288 (99.65%). One correctly classified SEC source failure persisted no partial evidence and recovered at the next interval. Integrity, accession reconciliation, directional/proposed semantics, current health, and zero-drift checks pass.
 
 ### 2026-07-23 — SEC-only v2 Shadow Runtime
 

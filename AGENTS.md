@@ -121,6 +121,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Installed the protected one-value contact environment and exact marker-delimited cron block after preserving the prior crontab and a verified pre-observation DB snapshot.
 - First scheduled Form 4 and Form 144 runs completed successfully with no failure kind. The 14-day/99% gate runs from 2026-07-23 00:02:05 UTC through 2026-08-06 00:02:05 UTC.
 - Post-start health, integrity, log privacy, cron isolation, and live/AWS zero-drift checks passed. This production-shadow deployment does not authorise business go-live. Production deployment commit: `6d9f809`.
+- Day-1 checkpoint: Form 144 is 24/24 healthy and Form 4 is 287/288 healthy (99.65%). The sole Form 4 SEC source error wrote no partial data and recovered on the next run; integrity, accession reconciliation, semantics, isolation, and current health checks pass.
 
 ### 2026-07-23 — SEC-only Shadow Ingestion Release
 
