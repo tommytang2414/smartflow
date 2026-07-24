@@ -127,6 +127,9 @@
 - Exact cron block and unrelated-crontab comparison passed. Live commit `d9ba3fb`, PID `640336`, legacy counters, both DB integrity checks, S3, Lambda, EventBridge, alarm, and public ports `22`/`5001` remained unchanged.
 - Day-1 checkpoint at 2026-07-24 00:02 UTC: Form 144 is 24/24 healthy; Form 4 is 287/288 healthy (99.65%). Run `212` was a correctly classified transient SEC source failure with zero partial writes and automatic next-run recovery.
 - Day-1 reconciliation passed: `quick_check=ok`, no foreign-key violations, every raw accession has normalized children, no orphan events, no false Form 4 direction, all Form 144 events remain proposed, and no failure is stored as empty success. Cron/env/log privacy and live/AWS zero-drift checks also pass.
+- The owner requested the final gate early on 2026-07-25 HKT. Verdict is `NO-GO`: only 1.718/14 days elapsed, Form 4 reliability was 481/495 (97.1717%), and current Form 4 health was degraded at the evaluation snapshot; Form 144 remained 41/41 (100%).
+- Two valid transactionless Form 4 accessions (`0001461219-26-000003`, `0001461237-26-000005`) have immutable raw evidence but no normalized child. They contain an administrative resignation notice, `notSubjectToSection16=1`, and no transaction/holding; `sec-form4-v3` rejects no-transaction filings, producing 12 parser failures while the accession remained in the feed window.
+- Final-gate checks that passed: explicit failure taxonomy, zero semantic violations, `quick_check`, foreign keys, no orphan/duplicate identities, schedule continuity, byte-identical pre/current snapshot restores, cron/env/log privacy, and live/AWS zero drift. Full evidence is in `SEC_SHADOW_GO_LIVE_GATE_2026-07-25.md`.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -151,4 +154,4 @@
 - `SEC-OBS-001` is an isolated production-shadow observation only. Do not connect it to legacy signals, reports, messaging, S3, Lambda, or business output before the full 14-day/99% gate and a separate go-live approval.
 
 ## Next handoff
-- Leave `SEC-OBS-001` unchanged while the scheduled daily audit and source runs collect 14 complete days of evidence. On or after 2026-08-06 00:02:05 UTC, run the final 14-day reliability, health, failure-taxonomy, accession reconciliation, semantic, snapshot-restore, and zero-drift gate in `SEC_SHADOW_OBSERVATION_RUNBOOK.md`; obtain separate approval before any business go-live or downstream connection.
+- Do not go live. Prepare a reviewed `sec-form4-v4` transactionless-administrative filing contract with official fixtures, non-directional normalization, immutable-evidence reprocessing, regression tests, and a new reversible deployment manifest. Obtain explicit approval before changing the running parser/scheduler, then restart a fresh 14-day observation after the fix; preserve all existing failure history.

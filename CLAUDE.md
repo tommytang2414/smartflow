@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-25 — SEC Shadow Early Go-Live Gate — NO-GO
+
+- The requested final gate ran read-only at 1.718/14 elapsed days. Form 144 passed 41/41; Form 4 passed 481/495 (97.1717%) and was degraded at the snapshot.
+- Two valid transactionless Form 4 filings with `notSubjectToSection16=1` and an administrative resignation remark have no transaction/holding. `sec-form4-v3` preserves their raw evidence but rejects them, causing 12 parser failures while they remain in the feed window.
+- Direction/proposed semantics, DB integrity, schedule gaps, byte-identical snapshot restores, cron/env/log privacy, and live/AWS zero drift passed.
+- Business go-live is blocked. Add a non-directional administrative Form 4 contract, reprocess the immutable evidence, deploy under separate approval, and restart a full 14-day observation without rewriting failure history.
+
 ### 2026-07-23 — SEC Shadow Observation Controls
 
 - Added accession caching so unchanged scheduled polls use only the Atom feed rather than repeatedly downloading immutable filing XML.

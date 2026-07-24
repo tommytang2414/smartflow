@@ -87,6 +87,14 @@ The observation window does not authorize business go-live or directional report
 - Every raw accession has normalized children, there are no orphan normalized events, no non-P/S Form 4 event has direction, every Form 144 event remains a proposed sale, and no failure is represented as an empty success.
 - The tracked cron block, protected environment mode, log privacy check, legacy scheduler/database counters, S3 object, Lambda, EventBridge, and CloudWatch alarm remain unchanged.
 
+### Early final-gate request — 2026-07-25 01:16 HKT
+
+- Verdict: `NO-GO`. Only 1.718 of 14 required days had elapsed.
+- Form 144 remained 41/41 healthy (100%), but Form 4 fell to 481/495 healthy (97.1717%) after 12 parser failures and two SEC source failures. Form 4 health was degraded at the evaluation snapshot.
+- Two valid transactionless Form 4 accessions were preserved as raw evidence but have no normalized child. They contain `notSubjectToSection16=1` and an administrative resignation remark, with no transaction or holding; `sec-form4-v3` currently rejects filings with no transactions.
+- Semantics, database integrity, schedule continuity, snapshot restore, runtime/privacy controls, and live/AWS zero drift passed. Full evidence and the required remediation are recorded in `SEC_SHADOW_GO_LIVE_GATE_2026-07-25.md`.
+- A parser-contract fix and a new approved deployment are required. The 14-day observation clock must restart after remediation; existing failure evidence must not be erased or relabelled.
+
 ## Rollback
 
 1. Restore the exact backed-up crontab, removing only the marker-delimited SEC shadow block.

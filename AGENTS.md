@@ -112,6 +112,12 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 ## Changelog
 
+### 2026-07-25 — SEC Shadow Early Go-Live Gate — NO-GO
+
+- Ran the complete gate read-only after 1.718 of 14 required days. Form 144 was 100%, but Form 4 was 97.1717% and degraded at the evaluation snapshot.
+- Identified two valid transactionless Form 4 administrative filings that `sec-form4-v3` rejects because they have no transactions; immutable raw evidence is intact, but accession reconciliation fails.
+- Integrity, semantics, schedule continuity, snapshot restore, privacy controls, and live/AWS isolation passed. A parser-contract remediation, separate deployment approval, and a fresh 14-day observation are required before business go-live.
+
 ### 2026-07-23 — SEC Shadow Observation Deployment
 
 - Added accession-aware caching so unchanged health polls make one SEC feed request and avoid repeated XML downloads.
