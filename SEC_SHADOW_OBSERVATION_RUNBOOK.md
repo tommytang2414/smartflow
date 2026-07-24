@@ -1,12 +1,16 @@
 # SEC Shadow 14-day Observation Runbook
 
-Status: Active production-shadow observation; not authorised for business go-live.
+Status: Original window failed and was superseded; replacement v4 production-shadow observation active. Business go-live remains unauthorised.
 
 Release ID: `SEC-OBS-001`
 
-Approved/deployed commit: `6d9f8099a9b3b47ba13c532d8b6165ff9facd717`
+Original deployed commit: `6d9f8099a9b3b47ba13c532d8b6165ff9facd717`
 
-Observation window: 2026-07-23 00:02:05 UTC (08:02:05 HKT) through 2026-08-06 00:02:05 UTC (08:02:05 HKT).
+Failed original window: 2026-07-23 00:02:05 UTC through the early `NO-GO` gate.
+
+Replacement release: `SEC-FORM4-V4-001` at `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`.
+
+Active observation window: 2026-07-24 18:02:07 UTC (2026-07-25 02:02:07 HKT) through 2026-08-07 18:02:07 UTC (2026-08-08 02:02:07 HKT).
 
 ## Recommended option
 
@@ -94,6 +98,13 @@ The observation window does not authorize business go-live or directional report
 - Two valid transactionless Form 4 accessions were preserved as raw evidence but have no normalized child. They contain `notSubjectToSection16=1` and an administrative resignation remark, with no transaction or holding; `sec-form4-v3` currently rejects filings with no transactions.
 - Semantics, database integrity, schedule continuity, snapshot restore, runtime/privacy controls, and live/AWS zero drift passed. Full evidence and the required remediation are recorded in `SEC_SHADOW_GO_LIVE_GATE_2026-07-25.md`.
 - A parser-contract fix and a new approved deployment are required. The 14-day observation clock must restart after remediation; existing failure evidence must not be erased or relabelled.
+
+### Form 4 v4 replacement window — 2026-07-25 02:02 HKT
+
+- Deployed approved commit `fcd5e91` under the shared lock after a verified DB/crontab backup, 90/90 VPS tests, and 7/7 official fixture agreement.
+- Added one hash-pinned, non-directional administrative child to each rejected raw accession; identical rerun inserted zero, raw reconciliation reached zero missing children, and all 14 historical failures remained unchanged.
+- Manual and first scheduled runs succeeded for both sources. Form 144 run `555` completed at 2026-07-24 18:02:07 UTC and starts the replacement 14-day clock.
+- Both sources are healthy. DB integrity/current restore, event contract, cron/env/log privacy, and live/AWS zero-drift checks pass.
 
 ## Rollback
 

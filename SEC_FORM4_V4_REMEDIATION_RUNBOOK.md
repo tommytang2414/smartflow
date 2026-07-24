@@ -1,12 +1,14 @@
 # SEC Form 4 v4 Remediation Runbook
 
-Status: Awaiting exact production mutation approval.
+Status: Deployed; replacement 14-day production-shadow observation active.
 
 Release ID: `SEC-FORM4-V4-001`
 
 Release commit: `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`
 
 Approval format: `APPROVE SEC-FORM4-V4-001 @ fcd5e91`
+
+Replacement observation window: 2026-07-24 18:02:07 UTC (2026-07-25 02:02:07 HKT) through 2026-08-07 18:02:07 UTC (2026-08-08 02:02:07 HKT).
 
 ## Purpose
 
@@ -73,6 +75,18 @@ Each accession produces exactly one event:
 - Manual and first scheduled Form 4/Form 144 runs succeed; both current health rows are healthy.
 - Exact cron block, env ownership/mode, log privacy, legacy commit/PID/DB counters, S3, Lambda, EventBridge, alarm, and public ports remain unchanged.
 - A new 14-complete-day observation starts only after both first scheduled executions succeed.
+
+## Deployment record
+
+- The owner approved `SEC-FORM4-V4-001 @ fcd5e91`.
+- Acquired the existing shared lock and preserved the exact pre-change crontab plus a consistent DB backup under `/home/ubuntu/SmartFlow-shadow/backups/SEC-FORM4-V4-001-20260724T173626Z/`.
+- `pre-remediation.db` has SHA-256 `98fd94a100040ebbf18c6823c4054537f16c4182460a65849f9557324e1d01df`; its disposable restore rehearsal was byte-identical and returned `quick_check=ok`.
+- Deployed exact release commit `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`. VPS tests passed 90/90, official fixtures passed 7/7, and compilation passed before DB mutation.
+- Hash-pinned reprocessing inserted one v4 child for each approved raw accession; an identical rerun inserted zero. Raw-without-child became zero and all 14 historical failure rows remained unchanged.
+- Manual Form 4 run `548` and Form 144 run `549` succeeded. The first scheduled Form 4 run `550` and Form 144 run `555` also succeeded with no failure kind.
+- The later scheduled run completion, Form 144 run `555` at 2026-07-24 18:02:07 UTC, starts the replacement 14-day observation.
+- Post-deploy checks found both sources healthy, zero contract/foreign-key violations, `quick_check=ok`, byte-identical current-DB restore, no contact PII in logs, an unchanged cron/env boundary, and no lingering shadow process.
+- Live commit `d9ba3fb`, PID `640336`, legacy run count/high-water mark `231829`, signal count `224298`, S3 metadata, Lambda, EventBridge, alarm, and public ports `22`/`5001` remained unchanged.
 
 ## Rollback
 

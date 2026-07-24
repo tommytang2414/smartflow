@@ -1,7 +1,7 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployed SEC shadow commit: `master` / `6d9f809`
+- Branch / deployed SEC shadow commit: `master` / `fcd5e91`
 - Verified Form 4 v4 release candidate: `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
@@ -133,6 +133,8 @@
 - Final-gate checks that passed: explicit failure taxonomy, zero semantic violations, `quick_check`, foreign keys, no orphan/duplicate identities, schedule continuity, byte-identical pre/current snapshot restores, cron/env/log privacy, and live/AWS zero drift. Full evidence is in `SEC_SHADOW_GO_LIVE_GATE_2026-07-25.md`.
 - Implemented the local `sec-form4-v4` remediation: two official transactionless fixtures, restrictive administrative parsing, non-directional/null-value normalization, cache regression coverage, and a SHA-pinned exact-accession reprocessor.
 - Disposable rehearsal against a current production SQLite backup inserted one v4 child for each raw accession, inserted zero on an identical rerun, reduced raw-without-child to zero, preserved all 14 failure rows, and passed `quick_check`.
+- Deployed approved `SEC-FORM4-V4-001` at exact commit `fcd5e91` under the shared lock after preserving the crontab and a consistent DB backup at `/home/ubuntu/SmartFlow-shadow/backups/SEC-FORM4-V4-001-20260724T173626Z/`.
+- Production reprocessing inserted one administrative v4 child for each exact hash-pinned raw accession and zero on rerun; all 14 historical failure rows remain unchanged.
 
 ## Decisions / constraints
 - Current directional report output is untrusted until the documented gates pass.
@@ -157,4 +159,4 @@
 - `SEC-OBS-001` is an isolated production-shadow observation only. Do not connect it to legacy signals, reports, messaging, S3, Lambda, or business output before the full 14-day/99% gate and a separate go-live approval.
 
 ## Next handoff
-- Obtain `APPROVE SEC-FORM4-V4-001 @ fcd5e91`. Only then deploy/reprocess under the shared lock and restart a fresh 14-day observation; preserve all existing failure history.
+- Leave the replacement v4 observation unchanged. On or after 2026-08-07 18:02:07 UTC, run the full 14-day reliability, current-health, failure-taxonomy, accession reconciliation, semantic, snapshot-restore, and live/AWS zero-drift gate. Business go-live still requires a separate approval.

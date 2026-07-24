@@ -324,7 +324,9 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - `sec-form4-v4` accepts only the observed fail-closed shape: Form 4, `notSubjectToSection16=true`, non-empty remarks, and no transaction/holding. It emits one `form4_administrative_notice` with `no_reportable_transaction`, no side, and null quantity/price/value.
 - Added `ops/reprocess_sec_form4_raw.py`, requiring an exact accession and matching immutable payload SHA-256. It adds only the missing normalized child and leaves raw evidence, failure history, and source health unchanged.
 - Full suite passes 90/90; official fixture agreement is 7/7. A disposable current-production snapshot inserted both children, produced zero insert on rerun, preserved all 14 failure rows, reconciled raw evidence, and passed `quick_check`.
-- Production code/DB/scheduler remain unchanged pending `APPROVE SEC-FORM4-V4-001 @ fcd5e91` under `SEC_FORM4_V4_REMEDIATION_RUNBOOK.md`.
+- Deployed exact commit `fcd5e91` under the shared lock after a consistent DB/crontab backup; VPS 90/90 tests and 7/7 fixtures passed before DB mutation.
+- Hash-pinned production reprocessing inserted both administrative children and zero on rerun, while preserving all 14 historical failures. Manual and first scheduled runs passed for both sources.
+- Post-deploy health, event contract, DB/restore, cron/env/log privacy, and live/AWS zero-drift checks passed. The replacement 14-day window runs through 2026-08-07 18:02:07 UTC. Production deployment commit: `fcd5e91`.
 
 ### 2026-07-25 — SEC Shadow Early Go-Live Gate — NO-GO
 
