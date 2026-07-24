@@ -1,0 +1,3 @@
+# SMARTFLOW_SEC_BETA_PUBLISH_BEGIN
+55 23 * * * /usr/bin/flock -w 120 /home/ubuntu/SmartFlow-shadow/data/sec-shadow.lock /usr/bin/python3 /home/ubuntu/SmartFlow-shadow/ops/publish_sec_beta_snapshot.py >> /home/ubuntu/SmartFlow-shadow/logs/sec-beta-publish.log 2>&1
+# SMARTFLOW_SEC_BETA_PUBLISH_END

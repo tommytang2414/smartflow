@@ -21,6 +21,16 @@
       }
     },
     {
+      "ID": "sec-beta-snapshot-version-retention",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "beta/sec-v2-shadow.db"
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 30
+      }
+    },
+    {
       "ID": "operational-backups-retention",
       "Status": "Enabled",
       "Filter": {

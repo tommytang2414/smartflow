@@ -2,10 +2,10 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "ReadCurrentSmartFlowDatabase",
+      "Sid": "ReadSecV2BetaSnapshot",
       "Effect": "Allow",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::smartflow-tommy-db/smartflow.db"
+      "Resource": "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-shadow.db"
     },
     {
       "Sid": "SendSmartFlowEmail",

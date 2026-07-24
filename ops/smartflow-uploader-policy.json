@@ -1,0 +1,19 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "WriteApprovedSmartFlowObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": [
+        "arn:aws:s3:::smartflow-tommy-db/smartflow.db",
+        "arn:aws:s3:::smartflow-tommy-db/backups/*/smartflow.db",
+        "arn:aws:s3:::smartflow-tommy-db/????????/smartflow.db",
+        "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-shadow.db"
+      ]
+    }
+  ]
+}

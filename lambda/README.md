@@ -1,56 +1,54 @@
-# SmartFlow Lambda — Daily Report Generator
+# SmartFlow Lambda — Daily Informational Email
 
-Downloads SmartFlow DB from S3, runs analysis queries, generates AI research report via MiniMax, and sends email via SES. During rehabilitation, `REPORT_MODE=containment` sends a remediation notice without downloading the DB or calling MiniMax.
+`smartflow-report` has two fail-closed modes:
+
+- `containment` is the default and sends only the remediation notice.
+- `informational_beta` reads the isolated SEC v2 snapshot and renders a deterministic filing brief.
+
+The beta path does not import `queries.py`, read legacy `smartflow.db`, call MiniMax, or produce directional recommendations. An unsupported `REPORT_MODE`, including the retired `legacy` value, fails closed.
 
 ## Files
 
-- `lambda_function.py` — AWS Lambda handler (v3, 2026-04-10)
-- `queries.py` — SQLite query module (shared with VPS)
-- `SKILL.md` — Claude Code analyst skill definition
+- `lambda_function.py` — Lambda routing, S3 download and SES delivery
+- `beta_report.py` — read-only v2 validation and deterministic report rendering
+- `queries.py` — retained legacy reference only; not packaged or reachable
+- `SKILL.md` — retained legacy reference only; not a production report contract
 
-## Deploy
+## Beta contract
 
-```bash
-# Package
-python -c "
-import zipfile, os
-src = r'C:\Users\user\SmartFlow\lambda'
-with zipfile.ZipFile(r'C:\tmp\smartflow_lambda.zip', 'w', zipfile.ZIP_DEFLATED) as z:
-    z.write(os.path.join(src, 'lambda_function.py'), 'lambda_function.py')
-    z.write(os.path.join(src, 'queries.py'), 'queries.py')
-"
+- S3 input: `s3://smartflow-tommy-db/beta/sec-v2-shadow.db`
+- Required schema: exactly the four v2 tables
+- Trusted parser versions: `sec-form4-v4`, `sec-form144-v1`
+- Required health: both SEC sources healthy, recent and without a current failure
+- Detail window: previous 24 hours, bounded to 5,000 rows
+- Detail limit: 20 items per purchase, sale and proposed-sale category
+- Evidence: every detailed item links to an allowlisted `https://www.sec.gov/Archives/` URL
+- Failure behavior: send a sanitized `BETA PAUSED — DATA HEALTH` notice without filing details
 
-# Update Lambda
-aws lambda update-function-code --function-name smartflow-report --zip-file fileb://C:/tmp/smartflow_lambda.zip
-```
+Form 4 `P` and `S` events are described as reported purchases and sales. Form 144 notices are always labelled proposed and not executed. Warning/invalid events and superseded parser versions are counted but excluded from detail.
 
-## Environment Variables (Lambda)
-
-| Variable | Value |
-|----------|-------|
-| S3_BUCKET | smartflow-tommy-db |
-| DB_PATH | /tmp/smartflow.db |
-| SES_FROM | tommytang.cc@gmail.com |
-| EMAIL_TO | TOMMYTANG2414@GMAIL.COM |
-| MINIMAX_API_KEY | sk-cp-... |
-| PYTHONIOENCODING | utf-8 |
-| REPORT_MODE | Optional; defaults to `containment`. `legacy` is only for explicit rollback |
-
-`containment` is the approved production mode until the release gates in `PROJECT_PLAN.md` pass. The safe default avoids reading or rewriting the existing Lambda secrets during deployment. An unsupported value fails closed instead of generating a report.
-
-## Manual Invoke
-
-```bash
-aws lambda invoke --function-name smartflow-report /tmp/result.json
-```
-
-## CloudWatch Logs
+## Package
 
 ```powershell
-aws logs get-log-events --log-group-name /aws/lambda/smartflow-report --log-stream-name "2026/04/10/[\$LATEST]xxxxxxxxxxxx"
+py -3 -X utf8 -c "import zipfile; from pathlib import Path; src=Path('lambda'); out=Path($env:TEMP)/'smartflow_lambda.zip'; z=zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED); [z.write(src/name,name) for name in ('lambda_function.py','beta_report.py')]; z.close(); print(out)"
 ```
 
-## EventBridge
+Do not package `queries.py`.
 
-Rule: `smartflow-daily-report`
-Schedule: `cron(0 0 * * ? *)` = 00:00 UTC = 08:00 HK time daily
+## Environment variables
+
+| Variable | Purpose |
+|---|---|
+| `S3_BUCKET` | `smartflow-tommy-db` |
+| `SES_FROM` | verified sender |
+| `EMAIL_TO` | exact verified recipient |
+| `PYTHONIOENCODING` | `utf-8` |
+| `REPORT_MODE` | absent/`containment`, or explicitly `informational_beta` |
+
+`MINIMAX_API_KEY` and legacy `DB_PATH` are not used by v5 and should be removed when beta mode is activated.
+
+## Schedule
+
+EventBridge rule `smartflow-daily-report` remains `cron(0 0 * * ? *)`, or 08:00 HKT. The VPS publishes a consistent snapshot at 23:55 UTC under the same lock used by the SEC shadow collectors.
+
+Production activation and rollback are controlled by `SEC_INFORMATIONAL_BETA_RUNBOOK.md`.

@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-25 — SEC Informational Beta Email Package
+
+- Added a deterministic SEC-only email path for the existing `smartflow-report` Lambda. It reads only the isolated v2 beta snapshot, uses no LLM, and emits no directional recommendation.
+- Added fail-closed exact-schema, SQLite integrity, source-health/freshness, parser-version, SEC URL and event-semantic validation. Unsafe state sends only a sanitized pause notice.
+- Added a consistent shadow snapshot publisher, 23:55 UTC shared-lock cron, exact beta S3 key, scoped uploader/Lambda IAM policies and 30-day non-current beta version retention.
+- A real production snapshot dry run included only `sec-form4-v4` and `sec-form144-v1`; 407 superseded v3 events were excluded. Full suite passes 102 tests.
+- `SEC-BETA-EMAIL-001` remains local only pending owner approval at the exact pushed commit; production Lambda, IAM, S3, VPS and cron are unchanged.
+
 ### 2026-07-25 — Form 4 v4 Administrative Remediation
 
 - Added official fixtures for accessions `0001461219-26-000003` and `0001461237-26-000005`, both valid transactionless administrative Form 4 filings.

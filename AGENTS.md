@@ -24,8 +24,17 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 ## Lambda IAM
 
 - `smartflow-lambda-role` is dedicated to `smartflow-report` and uses only inline policy `SmartFlowLambdaRuntime`; the reviewed desired state is `ops/lambda-runtime-policy.json`.
-- Do not attach broad S3, SES, or CloudWatch policies during normal operation. The Lambda may read only `smartflow-tommy-db/smartflow.db`, send only along the configured sender/recipient route, and write only its own log group.
+- Do not attach broad S3, SES, or CloudWatch policies during normal operation. Production containment currently reads no DB; the prepared beta desired state replaces legacy-object access with exact read access to `beta/sec-v2-shadow.db`, preserves the configured sender/recipient route, and writes only its own log group.
 - Full IAM rollback order is: reattach `AmazonS3ReadOnlyAccess`, `AmazonSESFullAccess`, and `CloudWatchLogsFullAccess`; verify containment invocation; only then remove or change the inline policy.
+
+## Informational beta email
+
+- `SEC-BETA-EMAIL-001` is prepared but not production-authorised. Follow `SEC_INFORMATIONAL_BETA_RUNBOOK.md`; IAM, Lambda environment/code, S3 lifecycle/object, VPS checkout and cron changes require approval at the exact pushed implementation commit.
+- The beta Lambda packages only `lambda_function.py` and `beta_report.py`. Never package or call legacy `queries.py`, restore the `legacy` mode, or provision `MINIMAX_API_KEY`.
+- The only input is a consistent SQLite backup at `beta/sec-v2-shadow.db`; never upload the live WAL database file directly.
+- Detailed output is limited to trusted `sec-form4-v4` P/S transactions and `sec-form144-v1` proposed-sale notices. Superseded parsers and warning/invalid events are counted but excluded.
+- Any schema, integrity, foreign-key, source-health, freshness, SEC URL or semantic failure must send only a sanitized `BETA PAUSED` notice.
+- `smartflow-uploader` is currently over-privileged with `AmazonS3FullAccess`. The prepared desired state is the write-only object policy in `ops/smartflow-uploader-policy.json`; do not expand its resource patterns.
 
 ## Lambda monitoring
 
@@ -48,11 +57,11 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Form 4 direction is limited to transaction codes `P` (purchase) and `S` (sale). Preserve other codes without inferring an open-market direction; mixed P/S filings remain `MIXED`.
 - Form 144 is proposed-sale intent, not evidence of execution. Its approximate sale date is `proposed_sale_at`, never `traded_at`.
 - Parser contract fixtures live under `tests/fixtures/sec/` and must remain offline and deterministic. Add or update a fixture before changing either SEC parser.
-- Production SEC collectors remain disabled until the v2 raw-event, normalization, health, and release gates pass.
+- Legacy production SEC collectors remain disabled. The isolated v2 SEC shadow collectors are active only under their approved schedule and boundaries.
 - Use `smartflow.ingestion.sec` for v2 SEC ingestion. Parser/schema failures must still preserve the raw XML, create a structured failed run, and degrade source health.
 - Multi-owner Form 4 filings produce one normalized event per transaction, not one per owner. Store every reporting owner in `entities` and use a deterministic group `entity_id` to avoid double-counting transaction value.
-- The deployed shadow still uses `sec-form4-v3`; it preserves both non-derivative and derivative transactions. Derivative plan credits and other non-P/S transactions must not receive a side or directional notional.
-- The prepared `sec-form4-v4` contract also accepts a transactionless administrative filing only when it is Form 4, `notSubjectToSection16=true`, has remarks, and has neither transactions nor holdings. Normalize it as `form4_administrative_notice` / `no_reportable_transaction` with no side or monetary/quantity fields; all other transactionless shapes remain parser failures.
+- The deployed shadow uses `sec-form4-v4`; historical v3 rows remain immutable but are not trusted for beta email detail. Both contracts preserve non-derivative and derivative transactions, and non-P/S transactions must not receive a side or directional notional.
+- `sec-form4-v4` also accepts a transactionless administrative filing only when it is Form 4, `notSubjectToSection16=true`, has remarks, and has neither transactions nor holdings. Normalize it as `form4_administrative_notice` / `no_reportable_transaction` with no side or monetary/quantity fields; all other transactionless shapes remain parser failures.
 - Use `ops/reprocess_sec_form4_raw.py` only for an exact accession and approved immutable payload SHA-256. It may add the v4 child but must not update raw evidence, collector-run failures, or source health.
 - Use `smartflow.ingestion.sec_live` for future HTTP wiring: missing SEC contact identity or HTTP 401/403 is `auth`; request/non-2xx availability failure is `source`; HTTP 200 malformed content remains `parser` and preserves the response body as raw evidence.
 - Use `smartflow.ingestion.sec_shadow` and `ops/run_sec_shadow.py` for bounded shadow runs. The client permits only approved `https://www.sec.gov` paths, uses `owner=only`, filters exact forms, deduplicates accessions, throttles to two requests/second, disables redirects, and caps responses at 10 MB.
@@ -113,6 +122,15 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-25 — SEC Informational Beta Email Package
+
+- Replaced the legacy AI-report implementation with fail-closed `containment` and deterministic `informational_beta` modes; the beta has no LLM, legacy DB or directional recommendations.
+- Added exact v2 schema/integrity/health/freshness/SEC-URL/semantic gates, trusted parser allowlisting, evidence links and sanitized pause notices.
+- Added a consistent SQLite snapshot publisher, isolated S3 key, exact publisher cron, scoped Lambda/uploader IAM desired states and beta object version retention.
+- Real production snapshot dry run produced a 9,771-character report using only Form 4 v4/Form 144 v1; 407 superseded Form 4 v3 events were excluded and no v3 detail leaked.
+- Full suite passes 102 tests. AWS Access Analyzer found zero policy issues and IAM simulations allow only documented beta/live/backup object paths while denying unrelated keys.
+- Production state remains unchanged pending exact approval of `SEC-BETA-EMAIL-001` at the pushed implementation commit.
 
 ### 2026-07-25 — Form 4 v4 Administrative Remediation
 
