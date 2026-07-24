@@ -120,7 +120,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Added a fail-closed administrative parser/normalizer contract with no direction, quantity, price, or value, while continuing to reject all other undefined transactionless shapes.
 - Added an exact-accession, SHA-pinned, idempotent raw-evidence reprocessor that does not rewrite collector outcomes or health.
 - Full suite passes 90 tests. A disposable production-snapshot rehearsal inserted two normalized children, inserted zero on rerun, reconciled all raw evidence, preserved 14 failure rows, and returned `quick_check=ok`.
-- Prepared the bounded production mutation, acceptance checks, and rollback in `SEC_FORM4_V4_REMEDIATION_RUNBOOK.md`; production remains unchanged pending exact commit approval.
+- Prepared the bounded production mutation, acceptance checks, and rollback in `SEC_FORM4_V4_REMEDIATION_RUNBOOK.md`; production remains unchanged pending approval of release candidate `fcd5e91`.
 
 ### 2026-07-25 — SEC Shadow Early Go-Live Gate — NO-GO
 

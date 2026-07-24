@@ -2,6 +2,7 @@
 
 ## Current state
 - Branch / deployed SEC shadow commit: `master` / `6d9f809`
+- Verified Form 4 v4 release candidate: `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`
 - Last agent: Codex
 - Updated: 2026-07-23 HKT
 
@@ -156,4 +157,4 @@
 - `SEC-OBS-001` is an isolated production-shadow observation only. Do not connect it to legacy signals, reports, messaging, S3, Lambda, or business output before the full 14-day/99% gate and a separate go-live approval.
 
 ## Next handoff
-- Commit and push the verified remediation, record its exact release commit in `SEC_FORM4_V4_REMEDIATION_RUNBOOK.md`, and obtain approval in the form `APPROVE SEC-FORM4-V4-001 @ <release-commit>`. Only then deploy/reprocess under the shared lock and restart a fresh 14-day observation; preserve all existing failure history.
+- Obtain `APPROVE SEC-FORM4-V4-001 @ fcd5e91`. Only then deploy/reprocess under the shared lock and restart a fresh 14-day observation; preserve all existing failure history.

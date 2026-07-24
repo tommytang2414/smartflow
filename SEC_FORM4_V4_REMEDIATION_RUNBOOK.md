@@ -1,10 +1,12 @@
 # SEC Form 4 v4 Remediation Runbook
 
-Status: Release candidate implemented and verified locally; production mutation requires exact commit approval.
+Status: Awaiting exact production mutation approval.
 
 Release ID: `SEC-FORM4-V4-001`
 
-Approval format: `APPROVE SEC-FORM4-V4-001 @ <release-commit>`
+Release commit: `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`
+
+Approval format: `APPROVE SEC-FORM4-V4-001 @ fcd5e91`
 
 ## Purpose
 
