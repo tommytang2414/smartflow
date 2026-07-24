@@ -33,6 +33,31 @@ class SECIngestionTests(unittest.TestCase):
         self.engine.dispose()
         self.temporary_directory.cleanup()
 
+    def test_transactionless_form4_persists_one_administrative_event_idempotently(self):
+        xml = (
+            FIXTURES / "form4_administrative_fund_i_official_excerpt.xml"
+        ).read_text(encoding="utf-8")
+        arguments = {
+            "xml_content": xml,
+            "accession": "0001461219-26-000003",
+            "source_url": "https://www.sec.gov/administrative-form4.xml",
+            "filed_at": FILED_AT,
+            "observed_at": OBSERVED_AT,
+        }
+        with Session(self.engine) as session:
+            first = ingest_form4_xml(session, **arguments)
+            second = ingest_form4_xml(session, **arguments)
+            event = session.scalar(select(NormalizedEventV2))
+
+            self.assertEqual((first.raw_inserted, first.normalized_inserted), (1, 1))
+            self.assertEqual((second.raw_inserted, second.normalized_inserted), (0, 0))
+            self.assertEqual(event.event_type, "form4_administrative_notice")
+            self.assertEqual(event.action, "no_reportable_transaction")
+            self.assertIsNone(event.side)
+            self.assertIsNone(event.quantity)
+            self.assertIsNone(event.price)
+            self.assertIsNone(event.value)
+
     def test_form4_end_to_end_and_idempotent_rerun(self):
         xml = (FIXTURES / "form4_non_market_official_excerpt.xml").read_text(encoding="utf-8")
         arguments = {

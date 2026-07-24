@@ -318,6 +318,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-25 — Form 4 v4 Administrative Remediation
+
+- Added official fixtures for accessions `0001461219-26-000003` and `0001461237-26-000005`, both valid transactionless administrative Form 4 filings.
+- `sec-form4-v4` accepts only the observed fail-closed shape: Form 4, `notSubjectToSection16=true`, non-empty remarks, and no transaction/holding. It emits one `form4_administrative_notice` with `no_reportable_transaction`, no side, and null quantity/price/value.
+- Added `ops/reprocess_sec_form4_raw.py`, requiring an exact accession and matching immutable payload SHA-256. It adds only the missing normalized child and leaves raw evidence, failure history, and source health unchanged.
+- Full suite passes 90/90; official fixture agreement is 7/7. A disposable current-production snapshot inserted both children, produced zero insert on rerun, preserved all 14 failure rows, reconciled raw evidence, and passed `quick_check`.
+- Production code/DB/scheduler remain unchanged pending exact release approval under `SEC_FORM4_V4_REMEDIATION_RUNBOOK.md`.
+
 ### 2026-07-25 — SEC Shadow Early Go-Live Gate — NO-GO
 
 - The requested final gate ran read-only at 1.718/14 elapsed days. Form 144 passed 41/41; Form 4 passed 481/495 (97.1717%) and was degraded at the snapshot.

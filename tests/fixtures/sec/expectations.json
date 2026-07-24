@@ -68,6 +68,34 @@
     }
   },
   {
+    "name": "form4_administrative_fund_i",
+    "parser": "form4",
+    "file": "form4_administrative_fund_i_official_excerpt.xml",
+    "expected": {
+      "ticker": "NA",
+      "entity_name": "Douglas Brian",
+      "direction": "HOLD",
+      "transactions": [],
+      "is_transactionless_administrative": true,
+      "not_subject_to_section16": true,
+      "period_of_report": "2026-06-26"
+    }
+  },
+  {
+    "name": "form4_administrative_fund_ii",
+    "parser": "form4",
+    "file": "form4_administrative_fund_ii_official_excerpt.xml",
+    "expected": {
+      "ticker": "NA",
+      "entity_name": "Douglas Brian",
+      "direction": "HOLD",
+      "transactions": [],
+      "is_transactionless_administrative": true,
+      "not_subject_to_section16": true,
+      "period_of_report": "2026-07-24"
+    }
+  },
+  {
     "name": "form144_proposed_sale",
     "parser": "form144",
     "file": "form144_official_excerpt.xml",

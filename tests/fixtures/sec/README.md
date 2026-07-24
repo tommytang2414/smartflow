@@ -7,6 +7,8 @@ These minimized XML fixtures preserve the relevant structure and values from off
 - `form4_sale_official_excerpt.xml`: minimized from accession `0000021344-26-000137`, an actual Coca-Cola `S` transaction. Source: https://www.sec.gov/Archives/edgar/data/21344/000002134426000137/form4.xml
 - `form144_official_excerpt.xml`: minimized from accession `0001921094-25-001148`, a Form 144 notice for Meta Platforms. Source: https://www.sec.gov/Archives/edgar/data/1326801/000192109425001148/primary_doc.xml
 - `form4_derivative_official_excerpt.xml`: minimized from accession `0001628280-26-049165`, a derivative-only Form 4 for Erie Indemnity. Source: https://www.sec.gov/Archives/edgar/data/922621/000162828026049165/wk-form4_1784747789.xml
+- `form4_administrative_fund_i_official_excerpt.xml`: minimized from accession `0001461219-26-000003`, a transactionless Form 4 administrative resignation notice. Source: https://www.sec.gov/Archives/edgar/data/1461219/000146121926000003/primary_doc.xml
+- `form4_administrative_fund_ii_official_excerpt.xml`: minimized from accession `0001461237-26-000005`, the corresponding transactionless notice for a second issuer. Source: https://www.sec.gov/Archives/edgar/data/1461237/000146123726000005/primary_doc.xml
 
 `expectations.json` is the machine-readable agreement contract. Run `python ops/verify_sec_fixtures.py`; the Phase 1 gate requires at least 95% of maintained official fixtures to pass every declared expectation.
 

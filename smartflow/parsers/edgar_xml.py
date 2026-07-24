@@ -84,6 +84,10 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         return None
 
     primary_owner = reporting_owners[0]
+    document_type = find_text(root, "documentType")
+    period_of_report = find_text(root, "periodOfReport")
+    not_subject_to_section16 = is_true(find_text(root, "notSubjectToSection16"))
+    remarks = find_text(root, "remarks")
 
     transactions = []
     for transaction_element in root.iter():
@@ -165,7 +169,15 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
             }
         )
 
-    if not transactions:
+    is_transactionless_administrative = (
+        not transactions
+        and document_type == "4"
+        and not_subject_to_section16
+        and bool(remarks)
+        and not elements_by_local_name(root, "nonDerivativeHolding")
+        and not elements_by_local_name(root, "derivativeHolding")
+    )
+    if not transactions and not is_transactionless_administrative:
         return None
 
     directional_transactions = [
@@ -180,7 +192,9 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         net_direction = "BUY"
     elif directions == {"SELL"}:
         net_direction = "SELL"
-    elif all(transaction["direction"] == "TRANSFER" for transaction in transactions):
+    elif transactions and all(
+        transaction["direction"] == "TRANSFER" for transaction in transactions
+    ):
         net_direction = "TRANSFER"
     else:
         net_direction = "HOLD"
@@ -190,7 +204,7 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     total_shares = sum(transaction["shares"] for transaction in directional_transactions)
 
     traded_at = None
-    if transactions[0]["date"]:
+    if transactions and transactions[0]["date"]:
         try:
             traded_at = datetime.strptime(transactions[0]["date"], "%Y-%m-%d")
         except ValueError:
@@ -205,6 +219,11 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         "entity_type": primary_owner["entity_type"],
         "officer_title": primary_owner["officer_title"],
         "reporting_owners": reporting_owners,
+        "document_type": document_type,
+        "period_of_report": period_of_report,
+        "not_subject_to_section16": not_subject_to_section16,
+        "remarks": remarks,
+        "is_transactionless_administrative": is_transactionless_administrative,
         "direction": net_direction,
         "transactions": transactions,
         "total_shares": total_shares,

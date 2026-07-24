@@ -39,6 +39,37 @@ def form4_with_codes(*codes: str) -> str:
 
 
 class Form4ParserTests(unittest.TestCase):
+    def test_official_transactionless_administrative_filings_are_preserved(self):
+        for fixture, period in (
+            ("form4_administrative_fund_i_official_excerpt.xml", "2026-06-26"),
+            ("form4_administrative_fund_ii_official_excerpt.xml", "2026-07-24"),
+        ):
+            with self.subTest(fixture=fixture):
+                parsed = parse_form4_xml((FIXTURES / fixture).read_text(encoding="utf-8"))
+
+                self.assertIsNotNone(parsed)
+                self.assertTrue(parsed["is_transactionless_administrative"])
+                self.assertTrue(parsed["not_subject_to_section16"])
+                self.assertEqual(parsed["period_of_report"], period)
+                self.assertEqual(parsed["transactions"], [])
+                self.assertEqual(parsed["direction"], "HOLD")
+                self.assertIn("resigned", parsed["remarks"])
+
+    def test_other_transactionless_form4_remains_rejected(self):
+        self.assertIsNone(
+            parse_form4_xml(
+                """
+                <ownershipDocument>
+                  <documentType>4</documentType>
+                  <issuer><issuerCik>1</issuerCik><issuerName>Issuer</issuerName></issuer>
+                  <reportingOwner>
+                    <reportingOwnerId><rptOwnerCik>2</rptOwnerCik><rptOwnerName>Owner</rptOwnerName></reportingOwnerId>
+                  </reportingOwner>
+                </ownershipDocument>
+                """
+            )
+        )
+
     def test_official_derivative_only_filing_is_preserved_without_direction(self):
         parsed = parse_form4_xml(
             (FIXTURES / "form4_derivative_official_excerpt.xml").read_text(encoding="utf-8")

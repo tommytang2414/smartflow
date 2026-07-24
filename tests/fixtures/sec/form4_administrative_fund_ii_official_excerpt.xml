@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ownershipDocument>
+  <schemaVersion>X0609</schemaVersion>
+  <documentType>4</documentType>
+  <periodOfReport>2026-07-24</periodOfReport>
+  <notSubjectToSection16>1</notSubjectToSection16>
+  <issuer>
+    <issuerCik>0001461237</issuerCik>
+    <issuerName>GRAHAM ALTERNATIVE INVESTMENT FUND II LLC</issuerName>
+    <issuerTradingSymbol>NA</issuerTradingSymbol>
+  </issuer>
+  <reportingOwner>
+    <reportingOwnerId>
+      <rptOwnerCik>0001572732</rptOwnerCik>
+      <rptOwnerName>Douglas Brian</rptOwnerName>
+    </reportingOwnerId>
+    <reportingOwnerRelationship>
+      <isDirector>0</isDirector>
+      <isOfficer>1</isOfficer>
+      <isTenPercentOwner>0</isTenPercentOwner>
+      <isOther>0</isOther>
+      <officerTitle>CEO of Manager</officerTitle>
+    </reportingOwnerRelationship>
+  </reportingOwner>
+  <remarks>Effective June 26, 2026, Brian Douglas resigned as Chief Executive Officer of Graham Capital Management, L.P., Manager of the Issuer.</remarks>
+</ownershipDocument>

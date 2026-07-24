@@ -51,7 +51,9 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Production SEC collectors remain disabled until the v2 raw-event, normalization, health, and release gates pass.
 - Use `smartflow.ingestion.sec` for v2 SEC ingestion. Parser/schema failures must still preserve the raw XML, create a structured failed run, and degrade source health.
 - Multi-owner Form 4 filings produce one normalized event per transaction, not one per owner. Store every reporting owner in `entities` and use a deterministic group `entity_id` to avoid double-counting transaction value.
-- Current Form 4 parser contract is `sec-form4-v3`; it preserves both non-derivative and derivative transactions. Derivative plan credits and other non-P/S transactions must not receive a side or directional notional.
+- The deployed shadow still uses `sec-form4-v3`; it preserves both non-derivative and derivative transactions. Derivative plan credits and other non-P/S transactions must not receive a side or directional notional.
+- The prepared `sec-form4-v4` contract also accepts a transactionless administrative filing only when it is Form 4, `notSubjectToSection16=true`, has remarks, and has neither transactions nor holdings. Normalize it as `form4_administrative_notice` / `no_reportable_transaction` with no side or monetary/quantity fields; all other transactionless shapes remain parser failures.
+- Use `ops/reprocess_sec_form4_raw.py` only for an exact accession and approved immutable payload SHA-256. It may add the v4 child but must not update raw evidence, collector-run failures, or source health.
 - Use `smartflow.ingestion.sec_live` for future HTTP wiring: missing SEC contact identity or HTTP 401/403 is `auth`; request/non-2xx availability failure is `source`; HTTP 200 malformed content remains `parser` and preserves the response body as raw evidence.
 - Use `smartflow.ingestion.sec_shadow` and `ops/run_sec_shadow.py` for bounded shadow runs. The client permits only approved `https://www.sec.gov` paths, uses `owner=only`, filters exact forms, deduplicates accessions, throttles to two requests/second, disables redirects, and caps responses at 10 MB.
 - Form `4/A` and `144/A` are intentionally excluded until amendment/version semantics are defined. Do not silently merge an amendment into immutable accession evidence.
@@ -111,6 +113,14 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-25 — Form 4 v4 Administrative Remediation
+
+- Added two official fixtures for the transactionless filings that failed the early go-live gate and raised fixture agreement to 7/7.
+- Added a fail-closed administrative parser/normalizer contract with no direction, quantity, price, or value, while continuing to reject all other undefined transactionless shapes.
+- Added an exact-accession, SHA-pinned, idempotent raw-evidence reprocessor that does not rewrite collector outcomes or health.
+- Full suite passes 90 tests. A disposable production-snapshot rehearsal inserted two normalized children, inserted zero on rerun, reconciled all raw evidence, preserved 14 failure rows, and returned `quick_check=ok`.
+- Prepared the bounded production mutation, acceptance checks, and rollback in `SEC_FORM4_V4_REMEDIATION_RUNBOOK.md`; production remains unchanged pending exact commit approval.
 
 ### 2026-07-25 — SEC Shadow Early Go-Live Gate — NO-GO
 

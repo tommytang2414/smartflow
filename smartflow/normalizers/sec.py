@@ -7,7 +7,7 @@ from typing import Any
 from smartflow.events import make_source_event_id
 
 
-FORM4_PARSER_VERSION = "sec-form4-v3"
+FORM4_PARSER_VERSION = "sec-form4-v4"
 FORM144_PARSER_VERSION = "sec-form144-v1"
 
 FORM4_ACTIONS = {
@@ -84,6 +84,60 @@ def normalize_form4(
     else:
         entity_id = parsed.get("entity_cik")
         entity_name = parsed.get("entity_name")
+
+    if parsed.get("is_transactionless_administrative"):
+        if parsed.get("transactions"):
+            raise ValueError("administrative Form 4 must not contain transactions")
+        event_at = _utc_date(str(parsed.get("period_of_report", "")))
+        ticker = parsed.get("ticker")
+        normalized_ticker = (
+            None
+            if str(ticker or "").strip().upper() in {"", "NA", "N/A", "NONE"}
+            else ticker
+        )
+        quality_reasons = []
+        if normalized_ticker is None:
+            quality_reasons.append("issuer_trading_symbol_not_applicable")
+        if event_at is None:
+            quality_reasons.append("missing_or_invalid_period_of_report")
+
+        return [
+            {
+                "source": "sec_form4",
+                "source_event_id": make_source_event_id(
+                    "sec_form4",
+                    accession,
+                    "administrative",
+                ),
+                "event_type": "form4_administrative_notice",
+                "action": "no_reportable_transaction",
+                "side": None,
+                "execution_status": "reported",
+                "market": "US",
+                "security_id": parsed.get("issuer_cik"),
+                "ticker": normalized_ticker,
+                "entity_id": entity_id,
+                "entity_name": entity_name,
+                "entities": reporting_owners,
+                "attributes": {
+                    "not_subject_to_section16": True,
+                    "period_of_report": parsed.get("period_of_report"),
+                    "remarks": parsed.get("remarks"),
+                    "issuer_trading_symbol": ticker,
+                },
+                "quantity": None,
+                "price": None,
+                "value": None,
+                "currency": None,
+                "event_at": event_at,
+                "filed_at": _ensure_utc(filed_at),
+                "observed_at": _ensure_utc(observed_at),
+                "source_url": source_url,
+                "parser_version": FORM4_PARSER_VERSION,
+                "quality_status": "warning" if quality_reasons else "valid",
+                "quality_reasons": quality_reasons,
+            }
+        ]
 
     events = []
     for index, transaction in enumerate(parsed.get("transactions", [])):

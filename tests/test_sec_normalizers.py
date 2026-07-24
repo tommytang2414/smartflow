@@ -15,6 +15,32 @@ FILED_AT = datetime(2026, 5, 1, 0, 0, tzinfo=timezone.utc)
 
 
 class SECNormalizerTests(unittest.TestCase):
+    def test_transactionless_form4_is_a_non_directional_administrative_notice(self):
+        parsed = parse_form4_xml(
+            (FIXTURES / "form4_administrative_fund_i_official_excerpt.xml").read_text(
+                encoding="utf-8"
+            )
+        )
+        event = normalize_form4(
+            parsed,
+            accession="0001461219-26-000003",
+            filed_at=FILED_AT,
+            observed_at=OBSERVED_AT,
+            source_url="https://www.sec.gov/form4.xml",
+        )[0]
+
+        self.assertEqual(event["event_type"], "form4_administrative_notice")
+        self.assertEqual(event["action"], "no_reportable_transaction")
+        self.assertEqual(event["execution_status"], "reported")
+        self.assertIsNone(event["side"])
+        self.assertIsNone(event["quantity"])
+        self.assertIsNone(event["price"])
+        self.assertIsNone(event["value"])
+        self.assertIsNone(event["ticker"])
+        self.assertEqual(event["event_at"].isoformat(), "2026-06-26T00:00:00+00:00")
+        self.assertTrue(event["attributes"]["not_subject_to_section16"])
+        self.assertIn("resigned", event["attributes"]["remarks"])
+
     def test_form4_derivative_event_has_no_false_side_or_notional(self):
         parsed = parse_form4_xml(
             (FIXTURES / "form4_derivative_official_excerpt.xml").read_text(encoding="utf-8")
@@ -74,7 +100,7 @@ class SECNormalizerTests(unittest.TestCase):
         self.assertEqual([event["side"] for event in events], ["BUY", "SELL"])
         self.assertEqual([event["value"] for event in events], [Decimal("250"), Decimal("250")])
         self.assertTrue(all(event["event_at"].tzinfo == timezone.utc for event in events))
-        self.assertTrue(all(event["parser_version"] == "sec-form4-v3" for event in events))
+        self.assertTrue(all(event["parser_version"] == "sec-form4-v4" for event in events))
 
     def test_form144_is_sell_intent_with_proposed_execution_status(self):
         parsed = parse_form144_xml(

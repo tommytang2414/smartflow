@@ -198,6 +198,41 @@ class SECShadowRunTests(unittest.TestCase):
             self.assertEqual(len(first_client.requests), 3)
             self.assertEqual(len(second_client.requests), 1)
 
+    def test_transactionless_form4_becomes_a_cache_hit_after_first_run(self):
+        accession = "0001461219-26-000003"
+        index_url = "https://www.sec.gov/Archives/edgar/data/1/admin-index.htm"
+        raw_url = "https://www.sec.gov/Archives/edgar/data/1/admin.xml"
+        feed = atom_feed(feed_entry("4", accession, index_url))
+        xml = (
+            FIXTURES / "form4_administrative_fund_i_official_excerpt.xml"
+        ).read_text(encoding="utf-8")
+        first_client = FakeSECClient(
+            {"type=4&": feed, index_url: index_html("4", raw_url), raw_url: xml}
+        )
+        second_client = FakeSECClient({"type=4&": feed})
+
+        with Session(self.engine) as session:
+            first = run_sec_shadow_source(
+                session,
+                source="sec_form4",
+                limit=5,
+                client=first_client,
+                observed_at=NOW,
+            )
+            second = run_sec_shadow_source(
+                session,
+                source="sec_form4",
+                limit=5,
+                client=second_client,
+                observed_at=NOW,
+            )
+
+            self.assertEqual((first.raw_inserted, first.normalized_inserted), (1, 1))
+            self.assertEqual((second.raw_inserted, second.normalized_inserted), (0, 0))
+            self.assertEqual(len(second_client.requests), 1)
+            self.assertEqual(session.scalar(select(func.count(RawEvent.id))), 1)
+            self.assertEqual(session.scalar(select(func.count(NormalizedEventV2.id))), 1)
+
     def test_form144_uses_official_ticker_metadata_and_proposed_semantics(self):
         index_url = "https://www.sec.gov/Archives/edgar/data/2/form144-index.htm"
         raw_url = "https://www.sec.gov/Archives/edgar/data/2/form144.xml"
