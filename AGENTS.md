@@ -29,12 +29,12 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 ## Informational beta email
 
-- `SEC-BETA-EMAIL-001` is prepared but not production-authorised. Follow `SEC_INFORMATIONAL_BETA_RUNBOOK.md`; IAM, Lambda environment/code, S3 lifecycle/object, VPS checkout and cron changes require approval at the exact pushed implementation commit.
+- `SEC-BETA-EMAIL-001` is production-active at exact commit `0ece0ff`. Follow `SEC_INFORMATIONAL_BETA_RUNBOOK.md`; further IAM, Lambda environment/code, S3 lifecycle/object, VPS checkout or cron changes require a new approved manifest.
 - The beta Lambda packages only `lambda_function.py` and `beta_report.py`. Never package or call legacy `queries.py`, restore the `legacy` mode, or provision `MINIMAX_API_KEY`.
 - The only input is a consistent SQLite backup at `beta/sec-v2-shadow.db`; never upload the live WAL database file directly.
 - Detailed output is limited to trusted `sec-form4-v4` P/S transactions and `sec-form144-v1` proposed-sale notices. Superseded parsers and warning/invalid events are counted but excluded.
 - Any schema, integrity, foreign-key, source-health, freshness, SEC URL or semantic failure must send only a sanitized `BETA PAUSED` notice.
-- `smartflow-uploader` is currently over-privileged with `AmazonS3FullAccess`. The prepared desired state is the write-only object policy in `ops/smartflow-uploader-policy.json`; do not expand its resource patterns.
+- `smartflow-uploader` now has only inline `SmartFlowUploaderScoped` from `ops/smartflow-uploader-policy.json`; `AmazonS3FullAccess` is detached. Do not expand its write-only resource patterns.
 
 ## Lambda monitoring
 
@@ -130,7 +130,10 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Added a consistent SQLite snapshot publisher, isolated S3 key, exact publisher cron, scoped Lambda/uploader IAM desired states and beta object version retention.
 - Real production snapshot dry run produced a 9,771-character report using only Form 4 v4/Form 144 v1; 407 superseded Form 4 v3 events were excluded and no v3 detail leaked.
 - Full suite passes 102 tests. AWS Access Analyzer found zero policy issues and IAM simulations allow only documented beta/live/backup object paths while denying unrelated keys.
-- Production state remains unchanged pending exact approval of `SEC-BETA-EMAIL-001` at the pushed implementation commit.
+- Deployed owner-approved `SEC-BETA-EMAIL-001` at exact commit `0ece0ff`; manual Lambda invocation returned `informational_beta`, SES accepted the 18,684-character message, and CloudWatch recorded zero errors or sensitive log content.
+- Published a 5,701,632-byte beta snapshot with verified SHA-256 `1d832a557f7643c7f4e85aaa6a8a7cca010ccabbb78c30a4e702c350e4f2c627`, SSE-S3, versioning, four-table restore and 2,256 verified rows.
+- Replaced VPS `AmazonS3FullAccess` with scoped write-only IAM, replaced Lambda legacy-object read with exact beta-object read, removed the MiniMax secret, and installed the exact 23:55 UTC publisher cron.
+- Post-deploy checks passed for DB health/integrity, cron preservation, legacy PID/counters, EventBridge, alarm/log retention, live S3 object, firewall and IAM allow/deny boundaries. Production deployment commit: `0ece0ff`.
 
 ### 2026-07-25 — Form 4 v4 Administrative Remediation
 

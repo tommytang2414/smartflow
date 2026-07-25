@@ -324,7 +324,10 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Added fail-closed exact-schema, SQLite integrity, source-health/freshness, parser-version, SEC URL and event-semantic validation. Unsafe state sends only a sanitized pause notice.
 - Added a consistent shadow snapshot publisher, 23:55 UTC shared-lock cron, exact beta S3 key, scoped uploader/Lambda IAM policies and 30-day non-current beta version retention.
 - A real production snapshot dry run included only `sec-form4-v4` and `sec-form144-v1`; 407 superseded v3 events were excluded. Full suite passes 102 tests.
-- `SEC-BETA-EMAIL-001` remains local only pending owner approval at the exact pushed commit; production Lambda, IAM, S3, VPS and cron are unchanged.
+- Deployed owner-approved `SEC-BETA-EMAIL-001` at exact commit `0ece0ff`. The existing 08:00 HKT Lambda returned `informational_beta`, SES accepted the 18,684-character manual message, and CloudWatch showed zero errors/sensitive log content.
+- Published and byte-hash verified the 5,701,632-byte v2 snapshot with SSE-S3/versioning; restore verified exactly four tables and 2,256 rows.
+- Removed VPS `AmazonS3FullAccess`, activated scoped write-only uploader IAM, switched Lambda to exact beta-object read, removed its unused MiniMax secret, and installed the exact shared-lock 23:55 UTC publisher cron.
+- Post-deploy cron/DB/legacy scheduler/EventBridge/monitoring/S3/firewall zero-drift checks passed. Production deployment commit: `0ece0ff`.
 
 ### 2026-07-25 — Form 4 v4 Administrative Remediation
 

@@ -2,7 +2,7 @@
 
 Change ID: `SEC-BETA-EMAIL-001`
 
-Status: local implementation complete; **no production mutation is authorised until the owner approves this exact change ID at the pushed implementation commit**.
+Status: production-active after owner approval of `SEC-BETA-EMAIL-001 @ 0ece0ff`.
 
 ## Purpose and boundary
 
@@ -97,3 +97,16 @@ CloudTrail management-event lookup cannot prove S3 object usage because bucket d
 7. Verify containment email, Lambda logs, IAM read-back, cron equality, SEC health, legacy scheduler/DB and firewall.
 
 Removing `MINIMAX_API_KEY` is intentionally not rolled back. A legacy AI report would require a separate security review and new secret provisioning.
+
+## Deployment record — 2026-07-25 HKT
+
+- Deployed exact commit `0ece0ff1ecb4fefb6f8e12f1722793cef579046b`.
+- Preserved containment rollback as Lambda version `2`.
+- Preserved the exact pre-change crontab and commit evidence under `/home/ubuntu/SmartFlow-shadow/backups/SEC-BETA-EMAIL-001-20260725T042033Z/`.
+- Replaced `AmazonS3FullAccess` on `smartflow-uploader` with inline `SmartFlowUploaderScoped`; tested allowed SmartFlow paths and denied unrelated writes/reads/deletes.
+- Published `beta/sec-v2-shadow.db`: 5,701,632 bytes, SHA-256 `1d832a557f7643c7f4e85aaa6a8a7cca010ccabbb78c30a4e702c350e4f2c627`, SSE-S3, version ID `zNSVfBpfYb5wE.lgSSYFE5ziXXxNvbkD`.
+- Restore verification passed exactly four tables, 2,256 rows, `quick_check=ok`, foreign keys and byte-identical restore.
+- Lambda code SHA-256 is `qZjHts9qXYJdlFKUYCV3nNhmor9mDsfg9Hg7fYYAySQ=`; environment contains only the existing route values plus `REPORT_MODE=informational_beta`.
+- Manual invoke returned `informational_beta` with 18,684 characters; SES accepted the message and CloudWatch logs contained no email/API-key/contact PII.
+- Installed cron SHA-256 is `200416ed19326dafbbb15056b64e5aae389b077c65c6ca5c5c717af54ad0158c`; it is exactly the pre-state plus the approved beta marker block.
+- Post-deploy verification found both SEC sources healthy, both databases intact, legacy PID/counters unchanged, EventBridge/monitoring/live S3/firewall unchanged and zero Lambda errors.

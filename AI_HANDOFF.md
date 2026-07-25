@@ -1,17 +1,17 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployed SEC shadow commit: `master` / `fcd5e91`
+- Branch / deployed SEC shadow commit: `master` / `0ece0ff`
 - Verified Form 4 v4 release candidate: `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`
-- Local SEC informational beta: implemented and verified; production not yet authorised or changed
+- SEC informational beta: production-active under `SEC-BETA-EMAIL-001 @ 0ece0ff`
 - Last agent: Codex
 - Updated: 2026-07-25 HKT
 
 ## Completed
-- Prepared `SEC-BETA-EMAIL-001` for the existing email route: deterministic SEC v2 filing brief, no LLM/legacy DB/directional recommendation, trusted-parser allowlist, evidence links and fail-closed pause notices.
+- Deployed `SEC-BETA-EMAIL-001` for the existing email route at exact commit `0ece0ff`: deterministic SEC v2 filing brief, no LLM/legacy DB/directional recommendation, trusted-parser allowlist, evidence links and fail-closed pause notices.
 - Added a consistent SQLite snapshot publisher, exact 23:55 UTC publisher cron, isolated beta S3 key, scoped Lambda/uploader IAM desired states and lifecycle retention.
 - Audited the current AWS/VPS route. `smartflow-uploader` is the over-privileged IAM user with `AmazonS3FullAccess`; production Lambda remains in containment with no `REPORT_MODE`.
-- Created `SEC_INFORMATIONAL_BETA_RUNBOOK.md` with the exact production mutation boundary, security implications, acceptance gates and rollback. No production state was mutated.
+- Executed `SEC_INFORMATIONAL_BETA_RUNBOOK.md` after exact owner approval, preserving rollback Lambda version `2` and the pre-change crontab under `/home/ubuntu/SmartFlow-shadow/backups/SEC-BETA-EMAIL-001-20260725T042033Z/`.
 - Completed a code, production DB, and AWS runtime assessment.
 - Added `PROJECT_PLAN.md` with the approved 2026-07-22 to 2026-09-06 rehabilitation programme, release gates, source disposition, risks, and phased delivery sequence.
 - Updated project guidance and changelog to freeze source expansion and preserve the legacy database.
@@ -72,7 +72,12 @@
 - Real production shadow snapshot dry run passed all gates and produced a 9,771-character report with 1 Form 4 v4 purchase, 4 Form 4 v4 sales and 33 Form 144 v1 proposed-sale notices. It excluded 407 superseded parser events and 10 warning/invalid events.
 - Both desired IAM policies pass AWS Access Analyzer with zero findings. Simulations allow documented beta/live/backup paths and deny unrelated or legacy reads.
 - Shared-VPS code/config dependency scan found AWS SDK/CLI and `smartflow-tommy-db` references only in the SmartFlow checkouts; no unrelated workload dependency on `smartflow-uploader` was found. S3 data events are not available in CloudTrail, so post-scope manual legacy/beta uploads remain mandatory.
-- Production read-only audit confirmed Lambda containment, exact existing SES route/schedule, versioned S3, v4 shadow commit and healthy SEC source rows. No AWS/VPS mutation was made.
+- Pre-deployment read-only audit confirmed Lambda containment, exact existing SES route/schedule, versioned S3, v4 shadow commit and healthy SEC source rows before the authorised mutation began.
+- Production manual invocation returned `informational_beta` with 18,684 characters; SES accepted the email and CloudWatch showed zero Lambda errors or sensitive log hits.
+- The beta S3 object is 5,701,632 bytes, SSE-S3 encrypted and versioned; raw SHA-256 matches metadata, and restore verification passed four tables/2,256 rows.
+- Uploader and Lambda IAM read back exactly from the tracked policies; unrelated writes, reads and deletes are implicitly denied. Both roles/users have zero broad managed policies.
+- Installed crontab equals the exact 1,111-byte pre-state plus `ops/sec-beta-crontab.txt`; both SEC sources remain healthy, both DBs pass integrity, and legacy commit/PID/counters remain unchanged.
+- EventBridge remains enabled at 08:00 HKT, Lambda alarm/log retention remain correct, live legacy S3 metadata is unchanged, and public ports remain only `22`/`5001`.
 - Documentation structure and internal phase dependencies reviewed.
 - Baseline snapshot downloaded and opened read-only: `PRAGMA quick_check=ok`, `224,278` signals, `231,807` collection runs.
 - P0-005 changed only S3 versioning/lifecycle and the future VPS backup path; it did not restart the scheduler or change IAM, firewall, or the live DB.
@@ -147,7 +152,7 @@
 - Production reprocessing inserted one administrative v4 child for each exact hash-pinned raw accession and zero on rerun; all 14 historical failure rows remain unchanged.
 
 ## Decisions / constraints
-- Do not deploy `SEC-BETA-EMAIL-001` until the owner approves the exact pushed implementation commit.
+- `SEC-BETA-EMAIL-001` is active. Any change to its IAM, environment, code, S3 key/lifecycle, sender/recipient or publisher cron requires a new approved manifest.
 - Beta activation removes `MINIMAX_API_KEY` and legacy `DB_PATH` from Lambda; the legacy AI report is not a rollback path.
 - Existing EventBridge schedule and SES route stay unchanged. The beta publisher uses the same SEC shadow lock and an isolated S3 object.
 - The 14-day v4 observation continues independently; informational beta is not the full SmartFlow business go-live.
@@ -173,5 +178,5 @@
 - `SEC-OBS-001` is an isolated production-shadow observation only. Do not connect it to legacy signals, reports, messaging, S3, Lambda, or business output before the full 14-day/99% gate and a separate go-live approval.
 
 ## Next handoff
-- Finish local packaging/policy/schema verification, commit and push `SEC-BETA-EMAIL-001`, then request approval using the exact commit hash from `SEC_INFORMATIONAL_BETA_RUNBOOK.md`. Do not mutate AWS/VPS before that approval.
+- Observe the first automatic publisher at 2026-07-25 23:55 UTC and the first scheduled beta Lambda at 2026-07-26 00:00 UTC; verify publisher/Lambda logs, current S3 version metadata and zero Lambda errors.
 - Leave the replacement v4 observation unchanged. On or after 2026-08-07 18:02:07 UTC, run the full 14-day reliability, current-health, failure-taxonomy, accession reconciliation, semantic, snapshot-restore, and live/AWS zero-drift gate. Business go-live still requires a separate approval.
