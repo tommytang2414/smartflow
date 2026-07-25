@@ -203,7 +203,8 @@ Form 144永遠維持：
 ### 5.1 Model and endpoint
 
 - Model: `MiniMax-M3`
-- Endpoint: `https://api.minimax.io/v1/chat/completions`
+- Region: Mainland China Token Plan (`minimaxi.com`)
+- Endpoint: `https://api.minimaxi.com/v1/text/chatcompletion_v2`
 - Thinking: adaptive
 - Maximum completion: bounded
 - Calls: one per daily report；最多一次validation retry
@@ -582,10 +583,10 @@ Business Owner於2026-07-25批准本proposal並授權開始實作。
 
 ## 15. Reference sources
 
-- MiniMax API Overview and supported M3 model: https://platform.minimax.io/docs/api-reference/api-overview
-- MiniMax OpenAI-compatible Chat Completions: https://platform.minimax.io/docs/api-reference/text-chat-openai
-- MiniMax Token Plan: https://platform.minimax.io/subscribe/token-plan
-- MiniMax API Privacy Policy: https://platform.minimax.io/protocol/privacy-policy
+- MiniMax Mainland API Overview: https://platform.minimaxi.com/docs/api-reference/api-overview
+- MiniMax M3 Mainland endpoint: https://www.minimaxi.com/models/text/m3
+- MiniMax Mainland Token Plan: https://platform.minimaxi.com/subscribe/token-plan
+- MiniMax Mainland API FAQ: https://platform.minimaxi.com/docs/faq/about-apis
 - AWS Lambda Pricing: https://aws.amazon.com/lambda/pricing/
 - AWS SES Pricing: https://aws.amazon.com/ses/pricing/
 - AWS SES Attachments: https://docs.aws.amazon.com/ses/latest/dg/attachments.html

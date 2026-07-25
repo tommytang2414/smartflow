@@ -47,9 +47,9 @@ Do not package `queries.py`.
 | `PYTHONIOENCODING` | `utf-8` |
 | `REPORT_MODE` | absent/`containment`, or explicitly `informational_beta` |
 | `MINIMAX_MODEL` | exact model name; default `MiniMax-M3` |
-| `MINIMAX_API_KEY` | optional secret; absent means deterministic fallback |
+| `MINIMAX_API_KEY` | optional mainland Token Plan secret; absent means deterministic fallback |
 
-Never commit or log `MINIMAX_API_KEY`. Legacy `DB_PATH` is not used. M3 activation requires an independently valid API key; a web subscription does not prove API entitlement.
+Production is pinned to the mainland service at `https://api.minimaxi.com/v1/text/chatcompletion_v2`. Mainland (`minimaxi.com`) and global (`minimax.io`) accounts and keys are not interchangeable. Never commit or log `MINIMAX_API_KEY`. Legacy `DB_PATH` is not used.
 
 ## Schedule
 

@@ -35,6 +35,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Output is limited to trusted `sec-form4-v4` P/S transactions and `sec-form144-v1` proposed-sale notices. Superseded parsers and warning/invalid events are excluded from facts and CSV.
 - Deterministic code owns result, action, metrics and evidence. MiniMax-M3 may produce prose only after strict validation; any missing/failed/invalid M3 response uses deterministic fallback.
 - Never send names, raw XML, URLs, remarks, contact data or secrets to M3. Never log the prompt, response body or API key.
+- The owner uses the mainland MiniMax Token Plan. Production must use `api.minimaxi.com/v1/text/chatcompletion_v2`; global `minimax.io` accounts and keys are separate. Adaptive M3 requires a 4,096-token completion bound or it may end at `length` before returning the JSON brief.
 - Any schema, integrity, foreign-key, source-health, freshness, hash or semantic failure must send only a sanitized `BETA PAUSED` notice and skip M3.
 - `smartflow-uploader` retains scoped write-only access for the current DB, decision pack and monthly dated archive; Lambda can read only the pack/markers and write only markers. Do not expand these patterns.
 - A missing sent marker returns S3 `403` because Lambda intentionally lacks `ListBucket`; `_marker_exists()` treats it as absent only after constructing and validating the exact marker key. Do not add bucket listing just to obtain `404`.
@@ -125,6 +126,13 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — Mainland MiniMax M3 Region Fix
+
+- Corrected the M3 provider from the global `minimax.io` platform to the owner's mainland `minimaxi.com` Token Plan and pinned the official mainland ChatCompletion v2 endpoint.
+- Verified the existing secret against mainland `MiniMax-M3`: HTTP 200, exact model and successful authentication; no key value was printed or committed.
+- Raised the bounded completion to 4,096 tokens because adaptive reasoning exhausted the former 1,200-token limit, and safely accepts only an exact standalone JSON code fence when M3 ignores the raw-JSON instruction.
+- Real production fact-pack preflight passed the full local output validator with unchanged `MIXED` / `MANUAL_REVIEW` labels and three allowlisted evidence IDs. Full suite passes 118 tests.
 
 ### 2026-07-25 — M3 Business Owner Brief Design and Implementation
 

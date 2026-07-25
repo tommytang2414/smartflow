@@ -58,7 +58,8 @@ Monthly archive creation occurs only on HKT day 1 and uses an if-absent write. T
 
 ## MiniMax-M3 control
 
-- Exact endpoint: `https://api.minimax.io/v1/chat/completions`.
+- Region: mainland China Token Plan (`minimaxi.com`), not the global `minimax.io` platform.
+- Exact endpoint: `https://api.minimaxi.com/v1/text/chatcompletion_v2`.
 - Exact model: `MiniMax-M3`.
 - Maximum two bounded attempts.
 - Facts sent to M3 exclude names, raw XML, URLs, remarks and contact data.
@@ -67,7 +68,7 @@ Monthly archive creation occurs only on HKT day 1 and uses an if-absent write. T
 - Missing key, authentication failure, timeout, provider error or rejected output immediately uses deterministic fallback. There is no paid-provider fallback.
 - Never log the API key, prompt, response body, email address or source contact identity.
 
-`MINIMAX_API_KEY` must be an active API credential obtained after the account owner accepts the provider terms. Do not reuse an invalid historical key or infer API entitlement from a web subscription.
+`MINIMAX_API_KEY` must be an active mainland Token Plan key. Mainland and global accounts/keys are separate; an HTTP 401 against `minimax.io` does not prove that a mainland key is invalid.
 
 ## IAM boundary
 

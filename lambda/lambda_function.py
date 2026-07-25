@@ -23,10 +23,11 @@ SES_FROM = os.environ["SES_FROM"]
 EMAIL_TO = os.environ["EMAIL_TO"]
 DECISION_PACK_KEY = "beta/sec-v2-decision-pack.json"
 SENT_MARKER_PREFIX = "beta/sec-owner-sent/"
-MINIMAX_HOST = "api.minimax.io"
-MINIMAX_PATH = "/v1/chat/completions"
+MINIMAX_HOST = "api.minimaxi.com"
+MINIMAX_PATH = "/v1/text/chatcompletion_v2"
 MINIMAX_MODEL = os.environ.get("MINIMAX_MODEL", "MiniMax-M3")
 M3_TIMEOUT_SECONDS = 45
+M3_MAX_TOKENS = 4_096
 
 
 def send_email(report: str, subject: str) -> None:
@@ -121,7 +122,7 @@ def _call_m3(messages: list[dict[str, str]]) -> dict:
             "messages": messages,
             "thinking": {"type": "adaptive"},
             "temperature": 0.1,
-            "max_tokens": 1_200,
+            "max_tokens": M3_MAX_TOKENS,
         },
         ensure_ascii=False,
         separators=(",", ":"),

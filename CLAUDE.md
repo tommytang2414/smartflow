@@ -318,6 +318,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-26 — Mainland MiniMax M3 Region Fix
+
+- Root cause of the fallback was region mismatch: the owner has a mainland Token Plan, while the implementation and preflight used the separate global platform.
+- Pinned production to `api.minimaxi.com/v1/text/chatcompletion_v2` and verified the existing environment secret returns HTTP 200 with exact `MiniMax-M3`.
+- Raised the bounded completion from 1,200 to 4,096 tokens so adaptive reasoning can finish, and added strict standalone JSON-fence handling without accepting surrounding commentary.
+- A real production fact-pack passed the complete M3 validator with deterministic `MIXED` / `MANUAL_REVIEW` and three allowlisted evidence IDs. Full suite passes 118 tests.
+
 ### 2026-07-25 — M3 Business Owner Brief Design and Implementation
 
 - Added `SMARTFLOW_M3_OWNER_BRIEF_PROPOSAL` in Markdown/DOCX and `SEC_M3_OWNER_BRIEF_RUNBOOK.md` covering business design, architecture, privacy, IAM, cost, risks, deployment and rollback.

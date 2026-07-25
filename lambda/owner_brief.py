@@ -664,7 +664,8 @@ def build_m3_messages(pack: dict[str, Any]) -> list[dict[str, str]]:
         "provided typed facts only. Return one JSON object with exactly: headline, "
         "summary, risk_note, result, business_action, evidence_ids. Do not add facts, "
         "numbers, tickers, links, people, trading instructions or HTML. Form 144 is "
-        "always proposed and not confirmed executed. Do not expose reasoning."
+        "always proposed and not confirmed executed. Return raw JSON without a "
+        "Markdown code fence. Do not expose reasoning."
     )
     user = json.dumps(facts, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
@@ -679,6 +680,11 @@ def _strip_thinking(content: str) -> str:
         text = match.group(1)
     if "<think" in text.casefold() or "</think" in text.casefold():
         raise M3OutputError("M3_REASONING_LEAK")
+    fenced = re.fullmatch(r"```(?:json)?\s*(\{.*\})\s*```", text, re.DOTALL | re.I)
+    if fenced:
+        text = fenced.group(1)
+    if "```" in text:
+        raise M3OutputError("M3_OUTPUT_JSON_INVALID")
     return text
 
 

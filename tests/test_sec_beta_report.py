@@ -566,6 +566,25 @@ class OwnerBriefContractTests(unittest.TestCase):
         )
         self.assertEqual(output["result"], "MIXED")
 
+    def test_exact_json_fence_is_accepted_but_commentary_is_rejected(self):
+        response = self._m3_response(self._valid_output())
+        content = response["choices"][0]["message"]["content"]
+        response["choices"][0]["message"]["content"] = f"```json\n{content}\n```"
+        output = validate_m3_response(
+            response,
+            pack=self.pack,
+            expected_model="MiniMax-M3",
+        )
+        self.assertEqual(output["result"], "MIXED")
+
+        response["choices"][0]["message"]["content"] = f"Commentary\n{content}"
+        with self.assertRaisesRegex(M3OutputError, "M3_OUTPUT_JSON_INVALID"):
+            validate_m3_response(
+                response,
+                pack=self.pack,
+                expected_model="MiniMax-M3",
+            )
+
     def test_m3_timeout_uses_deterministic_fallback(self):
         with patch.object(LAMBDA, "_call_m3", side_effect=TimeoutError):
             narrative, ai_used = LAMBDA._generate_narrative(self.pack)
@@ -692,6 +711,11 @@ class SecBetaLambdaTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "Unsupported REPORT_MODE"):
             LAMBDA.handler({}, None)
+
+    def test_mainland_m3_region_and_endpoint_are_pinned(self):
+        self.assertEqual(LAMBDA.MINIMAX_HOST, "api.minimaxi.com")
+        self.assertEqual(LAMBDA.MINIMAX_PATH, "/v1/text/chatcompletion_v2")
+        self.assertEqual(LAMBDA.M3_MAX_TOKENS, 4_096)
 
     def test_missing_marker_403_is_absent_without_list_bucket_permission(self):
         class MissingMarker(Exception):
