@@ -48,9 +48,17 @@ source. Form 13F requires a new comparable-quarter contract before use.
 - Disclosed ranges and exact amounts are preserved without midpoint estimation.
 - Missing tickers remain warnings and are excluded from ticker-level ranking.
 - Image-only scanned forms create non-directional `unparsed_document` OCR warnings.
+- Completed DocIDs with normalized children are cache hits; raw-only failures
+  remain retryable and the newest-unseen backlog advances rather than
+  redownloading the same top 25.
 - One aggregate outcome and source-health refresh per bounded batch.
 - Latest-25 disposable rehearsal: 25 PDFs, 137 events, 30 warning events,
   healthy aggregate outcome and `quick_check=ok`.
+- Time-separated 50-report rehearsal from 1 January to 22 July 2026: 47 parsed,
+  three OCR warnings, 556 events, one open-ended spouse/dependent-child amount
+  and zero parser failures after the v2 layout fixes.
+- Positively identified amendments use `congress-house-ptr-v2` and remain
+  non-directional reconciliation warnings until original-row linkage exists.
 
 Raw-storage sample: 25 PDFs used 1.68 MB and the complete disposable SQLite
 database used 2.52 MB; the current 313-report index is estimated at roughly
@@ -60,10 +68,11 @@ Legacy audit: 1,499 rows, all without official report-row traceability; 1,236
 range disclosures were stored only as their lower bound. Preserve them as audit
 history and do not migrate them as ground truth.
 
-Remaining House release work: larger time-separated layout/amendment validation,
-production retention definition and separate source-release approval. Senate
-remains blocked behind its user acknowledgement and separate access/session
-design.
+The exact isolated DB/runtime/cron/audit/S3/IAM/retention/rollback manifest is in
+`CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`. Production still requires approval
+of the exact release commit, followed by a 14-day/99% observation gate. The
+current SEC email remains unchanged. Senate remains blocked behind its user
+acknowledgement and separate access/session design.
 
 ## SFC contract completed
 

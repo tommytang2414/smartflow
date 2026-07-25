@@ -31,6 +31,16 @@
       }
     },
     {
+      "ID": "congress-house-shadow-version-retention",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "beta/congress-house-v2-shadow.db"
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 30
+      }
+    },
+    {
       "ID": "operational-backups-retention",
       "Status": "Enabled",
       "Filter": {

@@ -74,6 +74,54 @@ class HouseCongressContractTests(unittest.TestCase):
         event = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)[0]
         self.assertFalse(event["attributes"]["amount_is_range"])
 
+    def test_narrower_date_boundary_and_cross_page_amount_are_supported(self):
+        pages = [
+            [
+                {"top": 325.97, "x0": 103.95, "text": "Example"},
+                {"top": 325.97, "x0": 220.00, "text": "[ST]"},
+                {"top": 325.97, "x0": 260.70, "text": "P"},
+                {"top": 325.97, "x0": 325.20, "text": "12/30/2025"},
+                {"top": 325.97, "x0": 379.90, "text": "12/30/2025"},
+                {"top": 325.97, "x0": 444.40, "text": "$250,001"},
+                {"top": 325.97, "x0": 493.20, "text": "-"},
+            ],
+            [
+                {"top": 80.0, "x0": 445.0, "text": "Amount"},
+                {"top": 120.0, "x0": 445.0, "text": "$500,000"},
+            ],
+        ]
+
+        transaction = parse_house_ptr_word_pages(
+            pages,
+            report=self.report,
+        )["transactions"][0]
+
+        self.assertEqual(transaction["notification_date"].isoformat(), "2025-12-30")
+        self.assertEqual(transaction["amount_lower"], Decimal("250001"))
+        self.assertEqual(transaction["amount_upper"], Decimal("500000"))
+
+    def test_spouse_or_child_open_amount_range_is_preserved(self):
+        pages = [[
+            {"top": 325.97, "x0": 64.90, "text": "SP"},
+            {"top": 325.97, "x0": 103.95, "text": "Example"},
+            {"top": 325.97, "x0": 220.00, "text": "[OT]"},
+            {"top": 325.97, "x0": 260.70, "text": "P"},
+            {"top": 325.97, "x0": 325.20, "text": "04/28/2026"},
+            {"top": 325.97, "x0": 379.90, "text": "04/30/2026"},
+            {"top": 325.97, "x0": 444.40, "text": "Spouse/DC"},
+            {"top": 325.97, "x0": 490.00, "text": "Over"},
+            {"top": 340.00, "x0": 444.40, "text": "$1,000,000"},
+        ]]
+
+        transaction = parse_house_ptr_word_pages(
+            pages,
+            report=self.report,
+        )["transactions"][0]
+
+        self.assertEqual(transaction["amount_lower"], Decimal("1000000"))
+        self.assertIsNone(transaction["amount_upper"])
+        self.assertTrue(transaction["amount_is_range"])
+
     def test_normalizer_preserves_disclosed_range_without_midpoint(self):
         parsed = parse_house_ptr_word_pages(self.pages, report=self.report)
         events = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)
@@ -109,6 +157,44 @@ class HouseCongressContractTests(unittest.TestCase):
         )
         self.assertEqual(event["quality_status"], "warning")
         self.assertIn("image_only_pdf_requires_ocr", event["quality_reasons"])
+
+    def test_amendment_is_preserved_as_non_directional_reconciliation_warning(self):
+        pages = json.loads(json.dumps(self.pages))
+        pages[0].extend(
+            [
+                {"top": 90.0, "x0": 100.0, "text": "This"},
+                {"top": 90.0, "x0": 130.0, "text": "filing"},
+                {"top": 90.0, "x0": 170.0, "text": "serves"},
+                {"top": 90.0, "x0": 220.0, "text": "as"},
+                {"top": 90.0, "x0": 240.0, "text": "an"},
+                {"top": 90.0, "x0": 260.0, "text": "amendment"},
+                {"top": 90.0, "x0": 330.0, "text": "to"},
+                {"top": 90.0, "x0": 350.0, "text": "that"},
+                {"top": 90.0, "x0": 390.0, "text": "report."},
+            ]
+        )
+
+        parsed = parse_house_ptr_word_pages(pages, report=self.report)
+        event = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)[0]
+
+        self.assertEqual(
+            parsed["document_status"],
+            "requires_amendment_reconciliation",
+        )
+        self.assertEqual(parsed["transactions"], [])
+        self.assertEqual(
+            (event["event_type"], event["action"], event["side"]),
+            (
+                "congress_document_notice",
+                "amendment_requires_reconciliation",
+                None,
+            ),
+        )
+        self.assertEqual(event["quality_status"], "warning")
+        self.assertIn(
+            "amendment_requires_original_report_reconciliation",
+            event["quality_reasons"],
+        )
 
 
 if __name__ == "__main__":

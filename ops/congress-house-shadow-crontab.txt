@@ -1,0 +1,5 @@
+# SMARTFLOW_CONGRESS_HOUSE_SHADOW_BEGIN
+27 * * * * /usr/bin/flock -w 60 /home/ubuntu/SmartFlow-shadow/data/congress-house-shadow.lock /bin/bash /home/ubuntu/SmartFlow-shadow/ops/run_congress_house_shadow_scheduled.sh >> /home/ubuntu/SmartFlow-shadow/logs/congress-house-shadow.log 2>&1
+37 0 * * * /usr/bin/flock -w 60 /home/ubuntu/SmartFlow-shadow/data/congress-house-shadow.lock /usr/bin/python3 /home/ubuntu/SmartFlow-shadow/ops/audit_congress_house_shadow.py /home/ubuntu/SmartFlow-shadow/data/congress-house-v2-shadow.db --since-hours 24 >> /home/ubuntu/SmartFlow-shadow/logs/congress-house-audit.log 2>&1
+47 23 * * * /usr/bin/flock -w 60 /home/ubuntu/SmartFlow-shadow/data/congress-house-shadow.lock /usr/bin/python3 /home/ubuntu/SmartFlow-shadow/ops/publish_congress_house_shadow.py >> /home/ubuntu/SmartFlow-shadow/logs/congress-house-publish.log 2>&1
+# SMARTFLOW_CONGRESS_HOUSE_SHADOW_END

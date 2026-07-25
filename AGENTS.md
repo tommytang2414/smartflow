@@ -117,7 +117,7 @@ before the documented release gates pass.
   or present it as an exact trade value.
 - House `FilingType=P` identifies PTRs in the official yearly XML index. Individual
   transaction rows remain in separate official PDFs.
-- Use `congress-house-ptr-v1` for House row extraction. Create one event per report
+- Use `congress-house-ptr-v2` for House row extraction. Create one event per report
   row using chamber + DocID + row identity; use stable member/state identity for
   actor deduplication across reports.
 - Extract tickers only when disclosed in the official row. Missing tickers are a
@@ -129,6 +129,15 @@ before the documented release gates pass.
   `unparsed_document` warning events with no direction or ticker. Never record
   them as empty success or infer their visible transaction without an approved
   OCR contract.
+- Positively identified amendments create a non-directional
+  `amendment_requires_reconciliation` warning. Do not count their transaction
+  rows until an original-to-amendment reconciliation contract exists.
+- A House DocID is a cache hit only when raw evidence has at least one normalized
+  child. Use the separate `congress-house-v2-shadow.db`; adding Congress health
+  to the SEC DB would fail its exact-source publisher gate.
+- The proposed production package is `CONGRESS-HOUSE-SHADOW-001`. Follow
+  `CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`; its IAM, lifecycle and crontab
+  changes require exact-commit approval before deployment.
 - One House batch records one aggregate collector outcome. Any actual parser,
   source or persistence failure must remain visible and degrade source health;
   document-level missing tickers and explicit OCR warnings remain quality flags.
@@ -171,6 +180,23 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — House Congress Shadow Release Package
+
+- Added cache-aware newest-unseen acquisition, 50 MiB batch protection and
+  healthy empty polls without redownloading completed PDFs.
+- Added `congress-house-ptr-v2`: amendments fail closed as non-directional
+  reconciliation warnings; open spouse/dependent-child ranges, narrow date
+  columns and cross-page amounts are preserved.
+- A 50-report sample spanning 1 January to 22 July 2026 produced 556 events,
+  three OCR warnings and zero parser failures; an official text-layer amendment
+  was correctly excluded from direction.
+- Prepared a separate Congress DB, hard-timeout runner, hash-locked venv, hourly
+  cron, daily audit and bounded S3 snapshot publisher with exact IAM/lifecycle
+  desired states.
+- Added the before-state, cost/risk analysis, zero-downstream gates and
+  recoverable rollback in `CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`.
+- No VPS, AWS, scheduler, report, email or production database changed.
 
 ### 2026-07-26 — Congress Legacy Audit and Raw-Storage Measurement
 

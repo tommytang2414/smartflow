@@ -325,6 +325,25 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-26 — House Congress Shadow Release Package
+
+- Added cache-aware newest-unseen House acquisition. Completed raw-plus-child
+  DocIDs are not redownloaded, raw-only failures remain retryable, empty polls
+  are healthy, and each batch is capped at 25 reports/50 MiB/300 seconds.
+- Bumped the contract to `congress-house-ptr-v2`. Explicit amendments become
+  non-directional reconciliation warnings; cross-page amounts, narrow date
+  columns and the open `Spouse/DC Over $1,000,000` range now parse exactly.
+- The time-separated 50-report official sample spanning 1 January through
+  22 July 2026 produced 556 events, three OCR warnings and zero parser errors.
+  A separate official text-layer amendment check remained non-directional.
+- Prepared an isolated Congress DB/runtime/scheduler/audit/S3 publisher rather
+  than contaminating the SEC-only DB. The dedicated PDF venv is version/hash
+  locked and the uploader expansion remains write-only to exact Congress paths.
+- Recorded exact production before-state, IAM simulations, retention/cost
+  estimate, 14-day gate and evidence-preserving rollback in
+  `CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`.
+- No production resource changed; deployment requires exact-manifest approval.
+
 ### 2026-07-26 — Mainland MiniMax M3 Region Fix
 
 - Root cause of the fallback was region mismatch: the owner has a mainland Token Plan, while the implementation and preflight used the separate global platform.

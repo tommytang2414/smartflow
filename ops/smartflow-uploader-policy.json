@@ -14,7 +14,9 @@
         "arn:aws:s3:::smartflow-tommy-db/????????/smartflow.db",
         "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-shadow.db",
         "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-decision-pack.json",
-        "arn:aws:s3:::smartflow-tommy-db/snapshots/sec-v2/*"
+        "arn:aws:s3:::smartflow-tommy-db/snapshots/sec-v2/*",
+        "arn:aws:s3:::smartflow-tommy-db/beta/congress-house-v2-shadow.db",
+        "arn:aws:s3:::smartflow-tommy-db/snapshots/congress-house-v2/*"
       ]
     }
   ]

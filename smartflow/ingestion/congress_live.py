@@ -10,8 +10,10 @@ from datetime import datetime, timezone
 from typing import Any
 from urllib.parse import urlparse
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from smartflow.db.models_v2 import NormalizedEventV2, RawEvent
 from smartflow.db.v2_repository import persist_event_batch
 from smartflow.events import make_source_event_id, payload_sha256
 from smartflow.ingestion.congress import (
@@ -32,6 +34,7 @@ HOUSE_HOST = "disclosures-clerk.house.gov"
 HOUSE_USER_AGENT = "SmartFlow personal research (tommytang.cc@gmail.com)"
 MAX_HOUSE_INDEX_BYTES = 2 * 1024 * 1024
 MAX_HOUSE_INDEX_XML_BYTES = 10 * 1024 * 1024
+MAX_HOUSE_BATCH_PDF_BYTES = 50 * 1024 * 1024
 READ_CHUNK_BYTES = 64 * 1024
 CONTENT_TYPES = {
     "index": {
@@ -52,7 +55,11 @@ class HouseSourceError(RuntimeError):
 
 @dataclass(frozen=True)
 class HouseBatchResult:
+    reports_available: int
+    reports_cached: int
     reports_observed: int
+    reports_remaining: int
+    pdf_bytes_observed: int
     raw_inserted: int
     normalized_inserted: int
     normalized_observed: int
@@ -188,6 +195,25 @@ def _preserve_rejected_index(
     )
 
 
+def _completed_house_doc_ids(session: Session) -> set[str]:
+    source_event_ids = session.scalars(
+        select(RawEvent.source_event_id)
+        .join(
+            NormalizedEventV2,
+            NormalizedEventV2.raw_event_id == RawEvent.id,
+        )
+        .where(
+            RawEvent.source == "congress",
+            RawEvent.source_event_id.like("house:%"),
+        )
+        .distinct()
+    )
+    return {
+        source_event_id.removeprefix("house:")
+        for source_event_id in source_event_ids
+    }
+
+
 def _record_batch(
     session: Session,
     *,
@@ -196,6 +222,10 @@ def _record_batch(
     failure_kind: str | None,
     observed_at: datetime,
     reports_observed: int,
+    reports_available: int,
+    reports_cached: int,
+    reports_remaining: int,
+    pdf_bytes_observed: int,
     normalized_observed: int,
     normalized_inserted: int,
     warning_events: int,
@@ -212,7 +242,14 @@ def _record_batch(
         records_normalized=normalized_observed,
         records_persisted=normalized_inserted,
         error=error,
-        details={"chamber": "house", "warning_events": warning_events},
+        details={
+            "chamber": "house",
+            "reports_available": reports_available,
+            "reports_cached": reports_cached,
+            "reports_remaining": reports_remaining,
+            "pdf_bytes_observed": pdf_bytes_observed,
+            "warning_events": warning_events,
+        },
     )
     refresh_source_health(
         session,
@@ -237,6 +274,10 @@ def ingest_house_ptr_batch(
     started_at = datetime.now(timezone.utc)
     index_url = HOUSE_INDEX_URL.format(year=year)
     reports_observed = 0
+    reports_available = 0
+    reports_cached = 0
+    reports_remaining = 0
+    pdf_bytes_observed = 0
     raw_inserted = 0
     normalized_inserted = 0
     normalized_observed = 0
@@ -259,11 +300,21 @@ def ingest_house_ptr_batch(
                 observed_at=observed_at,
             )
             raise
-        selected = sorted(
+        ordered = sorted(
             reports,
             key=lambda report: (report["filing_date"], report["doc_id"]),
             reverse=True,
-        )[:max_reports]
+        )
+        reports_available = len(ordered)
+        completed_doc_ids = _completed_house_doc_ids(session)
+        unseen = [
+            report
+            for report in ordered
+            if report["doc_id"] not in completed_doc_ids
+        ]
+        reports_cached = reports_available - len(unseen)
+        selected = unseen[:max_reports]
+        reports_remaining = len(unseen) - len(selected)
         for report in selected:
             reports_observed += 1
             failure_kind = "source"
@@ -272,6 +323,9 @@ def ingest_house_ptr_batch(
                 url=report["source_url"],
                 expected_kind="pdf",
             )
+            pdf_bytes_observed += len(pdf_content)
+            if pdf_bytes_observed > MAX_HOUSE_BATCH_PDF_BYTES:
+                raise HouseSourceError("House batch PDF byte limit exceeded")
             failure_kind = "parser"
             result: CongressIngestionResult = ingest_house_ptr_pdf(
                 session,
@@ -287,10 +341,14 @@ def ingest_house_ptr_batch(
         run = _record_batch(
             session,
             started_at=started_at,
-            status="success",
+            status="success" if reports_observed else "empty",
             failure_kind=None,
             observed_at=observed_at,
             reports_observed=reports_observed,
+            reports_available=reports_available,
+            reports_cached=reports_cached,
+            reports_remaining=reports_remaining,
+            pdf_bytes_observed=pdf_bytes_observed,
             normalized_observed=normalized_observed,
             normalized_inserted=normalized_inserted,
             warning_events=warning_events,
@@ -305,6 +363,10 @@ def ingest_house_ptr_batch(
             failure_kind=failure_kind,
             observed_at=observed_at,
             reports_observed=reports_observed,
+            reports_available=reports_available,
+            reports_cached=reports_cached,
+            reports_remaining=reports_remaining,
+            pdf_bytes_observed=pdf_bytes_observed,
             normalized_observed=normalized_observed,
             normalized_inserted=normalized_inserted,
             warning_events=warning_events,
@@ -313,7 +375,11 @@ def ingest_house_ptr_batch(
         raise
 
     return HouseBatchResult(
+        reports_available=reports_available,
+        reports_cached=reports_cached,
         reports_observed=reports_observed,
+        reports_remaining=reports_remaining,
+        pdf_bytes_observed=pdf_bytes_observed,
         raw_inserted=raw_inserted,
         normalized_inserted=normalized_inserted,
         normalized_observed=normalized_observed,

@@ -8,7 +8,7 @@ from typing import Any
 from smartflow.events import make_source_event_id
 
 
-HOUSE_PTR_PARSER_VERSION = "congress-house-ptr-v1"
+HOUSE_PTR_PARSER_VERSION = "congress-house-ptr-v2"
 HOUSE_ACTIONS = {
     "P": ("purchase", "BUY"),
     "S": ("sale", "SELL"),
@@ -43,6 +43,54 @@ def normalize_house_ptr(
         member_name.casefold(),
         parsed.get("state_district") or "unknown",
     )
+    if parsed.get("document_status") == "requires_amendment_reconciliation":
+        return [
+            {
+                "source": "congress",
+                "source_event_id": make_source_event_id(
+                    "congress",
+                    "house",
+                    doc_id,
+                    "amendment_requires_reconciliation",
+                ),
+                "event_type": "congress_document_notice",
+                "action": "amendment_requires_reconciliation",
+                "side": None,
+                "execution_status": "reported",
+                "market": "US",
+                "security_id": None,
+                "ticker": None,
+                "entity_id": member_id,
+                "entity_name": member_name,
+                "entities": [
+                    {
+                        "member_name": member_name,
+                        "chamber": "house",
+                        "state_district": parsed.get("state_district"),
+                    }
+                ],
+                "attributes": {
+                    "chamber": "house",
+                    "doc_id": doc_id,
+                    "document_status": "requires_amendment_reconciliation",
+                    "amendment_indicator": parsed["amendment_indicator"],
+                },
+                "quantity": None,
+                "price": None,
+                "value": None,
+                "currency": None,
+                "event_at": _utc_date(parsed["filing_date"]),
+                "filed_at": _utc_date(parsed["filing_date"]),
+                "observed_at": _utc(observed_at),
+                "source_url": parsed["source_url"],
+                "parser_version": HOUSE_PTR_PARSER_VERSION,
+                "quality_status": "warning",
+                "quality_reasons": [
+                    "amendment_requires_original_report_reconciliation",
+                    "no_directional_transaction_extracted",
+                ],
+            }
+        ]
     if parsed.get("document_status") == "requires_ocr":
         return [
             {

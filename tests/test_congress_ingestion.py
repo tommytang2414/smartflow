@@ -168,6 +168,34 @@ class CongressIngestionTests(unittest.TestCase):
             self.assertEqual((run.status, run.failure_kind), ("error", "persistence"))
             self.assertEqual(session.get(SourceHealth, "congress").state, "degraded")
 
+    def test_batch_pdf_byte_cap_fails_before_persistence(self):
+        http = FakeHTTPSession(
+            [
+                FakeResponse(index_zip()),
+                FakeResponse(PDF_BYTES),
+            ]
+        )
+        with Session(self.engine) as session:
+            with patch(
+                "smartflow.ingestion.congress_live.MAX_HOUSE_BATCH_PDF_BYTES",
+                len(PDF_BYTES) - 1,
+            ):
+                with self.assertRaisesRegex(HouseSourceError, "byte limit"):
+                    ingest_house_ptr_batch(
+                        session,
+                        http_session=http,
+                        observed_at=OBSERVED_AT,
+                        year=2026,
+                        max_reports=1,
+                    )
+
+            self.assertEqual(
+                session.scalar(select(func.count(RawEvent.id))),
+                0,
+            )
+            run = session.scalar(select(CollectorRunV2))
+            self.assertEqual((run.status, run.failure_kind), ("error", "source"))
+
     def test_parser_failure_preserves_pdf_and_degrades_health(self):
         def reject(content, report):
             raise HouseDisclosureError("fixture parser failure")
@@ -214,6 +242,10 @@ class CongressIngestionTests(unittest.TestCase):
                 )
 
             self.assertEqual(result.reports_observed, 1)
+            self.assertEqual(result.reports_available, 1)
+            self.assertEqual(result.reports_cached, 0)
+            self.assertEqual(result.reports_remaining, 0)
+            self.assertEqual(result.pdf_bytes_observed, len(PDF_BYTES))
             self.assertEqual(result.normalized_observed, 2)
             self.assertEqual(result.warning_events, 0)
             self.assertEqual(
@@ -222,6 +254,79 @@ class CongressIngestionTests(unittest.TestCase):
             )
             run = session.scalar(select(CollectorRunV2))
             self.assertEqual((run.status, run.records_observed), ("success", 1))
+            self.assertEqual(session.get(SourceHealth, "congress").state, "healthy")
+
+    def test_batch_skips_complete_evidence_and_advances_through_backlog(self):
+        completed_report = self.report
+        unseen_report = {
+            **self.report,
+            "doc_id": "20039990",
+            "source_url": self.report["source_url"].replace(
+                "20039991.pdf",
+                "20039990.pdf",
+            ),
+        }
+        http = FakeHTTPSession([FakeResponse(index_zip()), FakeResponse(PDF_BYTES)])
+        with Session(self.engine) as session:
+            ingest_house_ptr_pdf(
+                session,
+                pdf_content=PDF_BYTES,
+                report=completed_report,
+                observed_at=OBSERVED_AT,
+                record_outcome=False,
+                extractor=lambda content, report: self.parsed,
+            )
+            with (
+                patch(
+                    "smartflow.ingestion.congress_live.parse_house_index_zip",
+                    return_value=[completed_report, unseen_report],
+                ),
+                patch(
+                    "smartflow.ingestion.congress_live.ingest_house_ptr_pdf",
+                    return_value=CongressIngestionResult(1, 2, 2, 0, None),
+                ),
+            ):
+                result = ingest_house_ptr_batch(
+                    session,
+                    http_session=http,
+                    observed_at=OBSERVED_AT,
+                    year=2026,
+                    max_reports=1,
+                )
+
+            self.assertEqual(result.reports_available, 2)
+            self.assertEqual(result.reports_cached, 1)
+            self.assertEqual(result.reports_observed, 1)
+            self.assertEqual(result.reports_remaining, 0)
+            self.assertEqual(result.pdf_bytes_observed, len(PDF_BYTES))
+            self.assertEqual(http.calls[1][0], unseen_report["source_url"])
+
+    def test_fully_cached_batch_is_healthy_empty_without_pdf_download(self):
+        http = FakeHTTPSession([FakeResponse(index_zip())])
+        with Session(self.engine) as session:
+            ingest_house_ptr_pdf(
+                session,
+                pdf_content=PDF_BYTES,
+                report=self.report,
+                observed_at=OBSERVED_AT,
+                record_outcome=False,
+                extractor=lambda content, report: self.parsed,
+            )
+            result = ingest_house_ptr_batch(
+                session,
+                http_session=http,
+                observed_at=OBSERVED_AT,
+                year=2026,
+                max_reports=25,
+            )
+
+            self.assertEqual(result.reports_available, 1)
+            self.assertEqual(result.reports_cached, 1)
+            self.assertEqual(result.reports_observed, 0)
+            self.assertEqual(result.pdf_bytes_observed, 0)
+            self.assertEqual(len(http.calls), 1)
+            run = session.scalar(select(CollectorRunV2))
+            self.assertEqual((run.status, run.records_observed), ("empty", 0))
             self.assertEqual(session.get(SourceHealth, "congress").state, "healthy")
 
 

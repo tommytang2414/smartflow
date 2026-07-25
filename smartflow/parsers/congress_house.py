@@ -21,6 +21,32 @@ TICKER_PATTERN = re.compile(r"\(([A-Z][A-Z0-9./-]{0,9})\)(?:\s*\[[A-Z]+\])?")
 EXCHANGE_TICKER_PATTERN = re.compile(
     r"\b(?:NASDAQ|NYSE|NYSEARCA|OTC(?:MKTS|QX|QB)?):\s*([A-Z][A-Z0-9./-]{0,9})\b"
 )
+AMENDMENT_PATTERNS = (
+    (
+        "checked_amendment_box",
+        re.compile(r"\bamendment\s*\[\s*[x✓]\s*\]", re.IGNORECASE),
+    ),
+    (
+        "explicit_amendment_statement",
+        re.compile(
+            r"\b(?:this filing|this submission)\s+(?:is|serves as)\s+"
+            r"an amendment\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "amendment_letter",
+        re.compile(
+            r"\bi am (?:writing|filing) to amend (?:my |the )?"
+            r"(?:periodic transaction report|ptr)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "amended_report_title",
+        re.compile(r"\bamended periodic transaction report\b", re.IGNORECASE),
+    ),
+)
 
 
 class HouseDisclosureError(ValueError):
@@ -111,9 +137,9 @@ def _column_text(line: list[dict[str, Any]], start: float, end: float) -> str:
 
 
 def _core_row(line: list[dict[str, Any]]) -> bool:
-    transaction_date = _column_text(line, 320, 380)
-    notification_date = _column_text(line, 380, 445)
-    transaction_type = _column_text(line, 255, 320)
+    transaction_date = _column_text(line, 315, 375)
+    notification_date = _column_text(line, 375, 440)
+    transaction_type = _column_text(line, 255, 315)
     return (
         bool(DATE_PATTERN.fullmatch(transaction_date))
         and bool(DATE_PATTERN.fullmatch(notification_date))
@@ -121,8 +147,31 @@ def _core_row(line: list[dict[str, Any]]) -> bool:
     )
 
 
+def _amendment_indicator(pages: list[list[dict[str, Any]]]) -> str | None:
+    text = " ".join(
+        str(word.get("text", ""))
+        for words in pages
+        for word in words
+    )
+    return next(
+        (
+            indicator
+            for indicator, pattern in AMENDMENT_PATTERNS
+            if pattern.search(text)
+        ),
+        None,
+    )
+
+
 def _amount_range(value: str) -> tuple[Decimal, Decimal | None, bool]:
     cleaned = " ".join(value.replace(",", "").split())
+    spouse_or_child = re.fullmatch(
+        r"Spouse/DC Over \$(\d+(?:\.\d+)?)",
+        cleaned,
+        re.IGNORECASE,
+    )
+    if spouse_or_child:
+        return Decimal(spouse_or_child.group(1)), None, True
     over = re.fullmatch(r"Over \$(\d+(?:\.\d+)?)", cleaned, re.IGNORECASE)
     if over:
         return Decimal(over.group(1)), None, True
@@ -169,8 +218,16 @@ def parse_house_ptr_word_pages(
 
     transactions = []
     has_text_layer = any(words for words in pages)
-    for page_number, words in enumerate(pages, start=1):
-        lines = _group_lines(words)
+    amendment_indicator = _amendment_indicator(pages)
+    if amendment_indicator:
+        return {
+            **report,
+            "document_status": "requires_amendment_reconciliation",
+            "amendment_indicator": amendment_indicator,
+            "transactions": [],
+        }
+    page_lines = [_group_lines(words) for words in pages]
+    for page_number, lines in enumerate(page_lines, start=1):
         row_indexes = [index for index, line in enumerate(lines) if _core_row(line)]
         for position, line_index in enumerate(row_indexes):
             line = lines[line_index]
@@ -188,13 +245,30 @@ def parse_house_ptr_word_pages(
                 if part:
                     asset_parts.append(part)
                 amount_part = _column_text(continuation, 440, 520)
-                if amount_part:
+                if amount_part and (
+                    "$" in amount_part or "Spouse/DC" in amount_part
+                ):
                     amount_parts.append(amount_part)
+            if position + 1 == len(row_indexes) and page_number < len(page_lines):
+                next_lines = page_lines[page_number]
+                next_row_indexes = [
+                    index for index, candidate in enumerate(next_lines)
+                    if _core_row(candidate)
+                ]
+                next_prefix_end = (
+                    next_row_indexes[0] if next_row_indexes else len(next_lines)
+                )
+                for continuation in next_lines[:next_prefix_end]:
+                    amount_part = _column_text(continuation, 440, 520)
+                    if amount_part and (
+                        "$" in amount_part or "Spouse/DC" in amount_part
+                    ):
+                        amount_parts.append(amount_part)
             asset = " ".join(part for part in asset_parts if part).strip()
             if not asset:
                 raise HouseDisclosureError("House PTR transaction is missing asset")
 
-            transaction_type = _column_text(line, 255, 320)
+            transaction_type = _column_text(line, 255, 315)
             action_code = transaction_type[:1]
             amount_lower, amount_upper, amount_is_range = _amount_range(
                 " ".join(amount_parts)
@@ -214,11 +288,11 @@ def parse_house_ptr_word_pages(
                     "transaction_code": action_code,
                     "transaction_type": transaction_type,
                     "transaction_date": _date(
-                        _column_text(line, 320, 380),
+                        _column_text(line, 315, 375),
                         "transaction date",
                     ),
                     "notification_date": _date(
-                        _column_text(line, 380, 445),
+                        _column_text(line, 375, 440),
                         "notification date",
                     ),
                     "amount_lower": amount_lower,

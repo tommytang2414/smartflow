@@ -2,8 +2,8 @@
 
 Date: 2026-07-26 HKT
 
-Status: House bounded live adapter and v2 ingestion complete offline; production
-release and Senate adapter pending
+Status: House shadow release package prepared and verified offline; exact
+production manifest approval, deployment observation and Senate adapter pending
 
 ## Business meaning
 
@@ -74,7 +74,12 @@ use. Public availability is not a redistribution licence.
 - disclosed lower/upper amount remains in attributes; `value` stays null
 - missing ticker is a warning and cannot enter ticker-level cross-source ranking
 - image-only PDF is a warning event requiring OCR and has no direction/ticker
-- parser version: `congress-house-ptr-v1`
+- parser version: `congress-house-ptr-v2`
+
+Positively identified amendments are not treated as another directional report.
+The exact PDF is retained and the document becomes a non-directional
+`amendment_requires_reconciliation` warning until the original report can be
+linked and row-level replacement/addition semantics are defined.
 
 ## Acquisition and raw evidence controls
 
@@ -87,6 +92,11 @@ use. Public availability is not a redistribution licence.
 - Parser/schema failures preserve the PDF before recording degraded health.
 - One bounded batch creates one aggregate collector outcome; a per-document
   failure cannot be hidden by later successes.
+- A completed DocID is a cache hit only when it has raw evidence and at least one
+  normalized child. Routine polls do not redownload completed PDFs, while a
+  raw-only parser failure remains retryable.
+- The newest-unseen backlog advances in bounded batches of 25 with a 50 MiB
+  aggregate PDF cap and a 300-second child-process timeout.
 - Successful reruns are idempotent.
 
 ## Latest live disposable rehearsal
@@ -102,6 +112,24 @@ The newest 25 official 2026 House PTRs produced:
 
 The rehearsal used a disposable local v2 database. No production source,
 schedule, AWS permission, report or email changed.
+
+## Time-separated and amendment validation
+
+A 50-report sample spaced across the complete current House index from
+1 January through 22 July 2026 produced:
+
+- 47 parsed text-layer reports and three explicit OCR warnings;
+- 556 events: 289 purchases, 258 sales, six exchanges and three
+  non-directional document notices;
+- 110 missing-ticker warnings and one valid open-ended
+  `Spouse/DC Over $1,000,000` range;
+- zero parser errors after correcting narrow date columns and cross-page amount
+  continuations.
+
+An official 2020 text-layer amendment was independently recognized from its
+explicit amendment statement and normalized only as a non-directional
+reconciliation warning. Official image-only amendments remain covered by the
+existing OCR warning boundary.
 
 ## Raw-storage measurement
 
@@ -132,13 +160,28 @@ through 18 May 2026:
 These rows remain audit history only. Do not train, validate, backfill or report
 them as corrected Congress ground truth.
 
+## Prepared production design
+
+`CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md` defines:
+
+- a separate `congress-house-v2-shadow.db`, because adding a Congress health row
+  to the SEC database would deliberately fail the SEC-only publisher;
+- an hourly collector, daily read-only audit and daily recoverable snapshot;
+- a dedicated hash-locked PDF runtime that does not modify shared Python;
+- an exact write-only S3 current key and monthly audit archive;
+- 30-day non-current retention for the current key, no expiry for monthly audit
+  snapshots, a 512 MiB publisher cap and measured cost estimate;
+- zero Lambda, email, MiniMax, EventBridge, legacy DB or SEC DB change; and
+- a recoverable rollback that never deletes evidence.
+
 ## Remaining release gates
 
-1. Validate amendments, owner codes, open-ended amount ranges and a larger
-   time-separated official sample before setting the fixture-agreement gate.
-2. Decide whether image-only OCR is worth a separately bounded implementation;
-   until then the warning PDF remains available for manual deep dive.
-3. Define production retention using the measured footprint plus S3
-   version/archive behaviour.
-4. Implement Senate only after the acknowledgement/session design is approved.
-5. Obtain a separate production source-release approval before scheduling.
+1. Obtain approval of the exact release commit and manifest before changing the
+   scheduler, S3 lifecycle or uploader IAM.
+2. Pass the one-shot production audit and a new 14-day/99% House observation
+   window before proposing any email integration.
+3. Decide whether image-only OCR is worth a separately bounded implementation;
+   until then the exact warning PDF remains available for manual deep dive.
+4. Define original-to-amendment row reconciliation before amendments can enter
+   directional ranking.
+5. Implement Senate only after the acknowledgement/session design is approved.
