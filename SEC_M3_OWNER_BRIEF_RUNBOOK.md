@@ -139,3 +139,18 @@ Because the Lambda intentionally has no `s3:ListBucket`, S3 returns `403` rather
 5. Verify containment email, IAM read-back, cron equality, both databases, SEC source health, legacy scheduler, EventBridge, monitoring and firewall.
 
 If only M3 fails, do not roll back the owner brief. Remove/omit `MINIMAX_API_KEY` and retain the deterministic brief and CSV.
+
+## Deployment record — 2026-07-25 HKT
+
+- Deployed exact final commit `f0849f50591c1e0ae9e63c2974ac6f2d1aeb1943`; implementation base is `36da892`.
+- Preserved pre-change Lambda as immutable version `3` and VPS evidence under `/home/ubuntu/SmartFlow-shadow/backups/SEC-BETA-M3-OWNER-BRIEF-001-20260725T061449Z/`.
+- Local and VPS suites passed 116 tests. Both IAM policies returned zero Access Analyzer findings and passed exact allow/deny simulations.
+- Published `beta/sec-v2-shadow.db`: 5,705,728 bytes, metadata/object SHA-256 `3de7f4ca4a28267f567f4c256a99b87db91a3dc8d2a96d4829cde10987459522`, SSE-S3 and versioning.
+- Published `beta/sec-v2-decision-pack.json`: 95,446 bytes, SHA-256 `6d5378b0aa120dfbb463b3b4af4bd17c0f44b96cbe07490536961735be888d15`, SSE-S3 and versioning.
+- The validated pack contains 103 trusted events and 67 evidence groups, returns `MIXED` / `MANUAL_REVIEW`, produces a 37,529-byte CSV, and sends an M3 fact pack with no entity names, source URLs or raw XML.
+- The first canary failed safely before SES because missing markers return S3 `403` without `ListBucket`. Commit `f0849f5` added the scoped regression fix without expanding IAM; the alarm returned to `OK`.
+- Final canary returned `owner_brief`, sent a 1,174-character deterministic-fallback email with CSV, wrote an encrypted 182-byte sent marker and suppressed an immediate duplicate invocation.
+- Lambda code SHA-256 is `Kkl8/dSlMQLur5uUdRN1XEiMGnbeWrnoFrhXgaWHV3s=`. Environment has `MINIMAX_MODEL=MiniMax-M3` but no `MINIMAX_API_KEY`.
+- CloudWatch contains the expected fallback/SES/marker events and no email address, API key, authorization header, prompt, response body, SEC URL or raw filing payload.
+- Cron hash remains `200416ed19326dafbbb15056b64e5aae389b077c65c6ca5c5c717af54ad0158c`; EventBridge remains 08:00 HKT, both SEC sources are healthy, both databases pass integrity, legacy PID/counters remain unchanged, and public Lightsail ports remain only `22` and `5001`.
+- No monthly archive was expected on HKT day 25; the first dated archive will be created on the next HKT day 1 publisher run.

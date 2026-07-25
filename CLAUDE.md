@@ -326,6 +326,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - MiniMax-M3 is constrained to prose over a redacted aggregate fact pack. Exact-model/content validation rejects changed facts, unsupported identifiers/numbers/actions, links, thinking traces, trading language and Form 144 execution claims; deterministic fallback remains fully usable.
 - Updated IAM desired states so the uploader is write-only to exact current/archive paths and Lambda can read only the decision pack/markers and write only sent markers. Access Analyzer and simulations pass; full suite passes 116 tests, including body-plus-metadata tamper rejection and the no-`ListBucket` missing-marker path.
 - No valid API key is installed: historical and current local credentials returned HTTP 401, and accepting provider legal terms is reserved for the account owner.
+- Deployed exact commit `f0849f5`. Final canary sent a 1,174-character deterministic-fallback brief plus 37,529-byte CSV, wrote the encrypted marker and suppressed a duplicate. Pack/hash/restore, IAM, logs/privacy, databases, cron, EventBridge, monitoring, legacy runtime and firewall checks passed. Production deployment commit: `f0849f5`.
 
 ### 2026-07-25 — SEC Informational Beta Email Package
 

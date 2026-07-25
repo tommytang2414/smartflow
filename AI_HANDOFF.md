@@ -2,8 +2,8 @@
 
 ## Current state
 
-- Branch / local commit: `master` / `f6f56ce` plus uncommitted `SEC-BETA-M3-OWNER-BRIEF-001`.
-- Production: SEC informational beta at `0ece0ff`; M3 owner brief not yet deployed.
+- Branch / production commit: `master` / `f0849f50591c1e0ae9e63c2974ac6f2d1aeb1943`.
+- Production: `SEC-BETA-M3-OWNER-BRIEF-001` active with deterministic fallback; no valid M3 key installed.
 - Last agent: Codex.
 - Updated: 2026-07-25 HKT.
 
@@ -14,6 +14,7 @@
 - Updated the publisher for the exact current pack plus append-only monthly DB archive.
 - Updated scoped uploader/Lambda IAM desired states and operational documentation.
 - Tested all locally available historical/current MiniMax credentials without exposing them; every candidate returned HTTP 401. No key is installed.
+- Deployed the final code/IAM/publisher state, sent one manual owner brief with CSV, wrote the sent marker and verified duplicate suppression.
 
 ## Verification
 
@@ -23,6 +24,9 @@
 - Production-snapshot rehearsal: 95,446-byte pack, 37,529-byte CSV, 103 trusted events, 67 evidence groups, deterministic `MIXED` / `MANUAL_REVIEW`, no raw XML or entity names in the M3 fact pack.
 - Both IAM policies passed AWS Access Analyzer with zero findings.
 - IAM simulations allowed only the exact documented objects/actions and exact SES route; unrelated reads/writes/deletes/recipient were denied.
+- Production pack: 95,446 bytes, 103 trusted events, 67 evidence groups, `MIXED` / `MANUAL_REVIEW`; CSV: 37,529 bytes. M3 facts contain no names, URLs or raw XML.
+- Final Lambda canary returned `owner_brief`, `ai_used=false`, 1,174 characters; SES accepted it, the encrypted marker exists and a second invocation returned `duplicate_suppressed`.
+- Both databases pass integrity, SEC sources are healthy, cron/EventBridge/monitoring/firewall are unchanged and the legacy scheduler/counters are unchanged.
 
 ## Decisions / constraints
 
@@ -35,5 +39,5 @@
 
 ## Next handoff
 
-- Finish code/security review, commit and push the implementation, then execute the bounded production deployment and zero-drift checks in `SEC_M3_OWNER_BRIEF_RUNBOOK.md`.
 - Activate M3 only after the account owner accepts provider terms and an active API key passes an exact-endpoint preflight; deterministic brief + CSV can operate without it.
+- Verify the first scheduled next-day publisher/Lambda cycle and the first HKT day-1 monthly archive; no configuration change is required.
