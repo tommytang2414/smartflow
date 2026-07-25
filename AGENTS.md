@@ -108,6 +108,27 @@ before the documented release gates pass.
 - The bounded SFC rebuild starts at 2026-04-10, when the legacy collector first entered Git. Both local and immutable production-snapshot `sfc_short_data` tables contain zero rows, so there is no legacy numeric history to convert.
 - Use `ops/reprocess_sfc_history.py` only with a new explicit output database; it refuses to overwrite an existing file. Use `ops/audit_sfc_legacy.py` for read-only coverage comparison.
 
+## Congress disclosure semantics
+
+- Congress PTRs are delayed disclosures, not live order flow. Preserve transaction,
+  notification and filing dates separately; official guidance permits filing up
+  to 45 days after a transaction.
+- Preserve disclosed amount ranges exactly. Never convert a range to a midpoint
+  or present it as an exact trade value.
+- House `FilingType=P` identifies PTRs in the official yearly XML index. Individual
+  transaction rows remain in separate official PDFs.
+- Use `congress-house-ptr-v1` for House row extraction. Create one event per report
+  row using chamber + DocID + row identity; use stable member/state identity for
+  actor deduplication across reports.
+- Extract tickers only when disclosed in the official row. Missing tickers are a
+  warning and cannot enter ticker-level cross-source ranking.
+- House/Senate notices prohibit most commercial use and other statutory uses.
+  Current scope is the owner's personal research. Reassess before any client,
+  paid or redistributed use.
+- Do not automate acceptance of the Senate eFD acknowledgement. A Senate live
+  adapter requires a separately approved access/session design.
+- The legacy QuiverQuant beta collector remains disabled and is not a fallback.
+
 ## HKEX CCASS semantics and access
 
 - A CCASS participant balance is a custody/settlement account snapshot after settlement. HKSCC does not identify the participant's underlying clients or recognise their beneficial interests, so it is not evidence that the participant itself bought, sold, accumulated, or distributed shares.
@@ -136,6 +157,20 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — Official House Congress v2 Parser Foundation
+
+- Replaced the legacy provider assumptions with an official House year-index and
+  PDF-coordinate parser contract.
+- Preserved transaction, notification and filing dates, owner code, disclosed
+  amount bounds and report/row identity without midpoint estimation.
+- Added stable member identity across reports and warned rather than guessed when
+  a ticker is not disclosed.
+- Validated the parser read-only against the current official 2026 index and one
+  official PTR PDF: 313 PTR reports were discoverable and the sample produced
+  nine reported sale rows with one correctly missing ticker.
+- Added four focused tests and sanitized layout fixtures. No Congress source,
+  collector, AWS resource or production schedule was enabled.
 
 ### 2026-07-26 — Stock-First Product Reset and Equity Ranking Foundation
 
