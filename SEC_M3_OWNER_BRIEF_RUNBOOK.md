@@ -155,3 +155,15 @@ If only M3 fails, do not roll back the owner brief. Remove/omit `MINIMAX_API_KEY
 - CloudWatch contains the expected fallback/SES/marker events and no email address, API key, authorization header, prompt, response body, SEC URL or raw filing payload.
 - Cron hash remains `200416ed19326dafbbb15056b64e5aae389b077c65c6ca5c5c717af54ad0158c`; EventBridge remains 08:00 HKT, both SEC sources are healthy, both databases pass integrity, legacy PID/counters remain unchanged, and public Lightsail ports remain only `22` and `5001`.
 - No monthly archive was expected on HKT day 25; the first dated archive will be created on the next HKT day 1 publisher run.
+
+## Mainland M3 activation record — 2026-07-26 HKT
+
+- Corrected the provider region after owner clarification: the subscription is mainland MiniMax (`minimaxi.com`), not the separate global `minimax.io` service.
+- Preflighted the existing user-environment secret against `api.minimaxi.com`; it returned HTTP 200, exact model `MiniMax-M3` and successful authentication. The secret value was never printed or committed.
+- Deployed exact production code commit `52d0b239a54ae212df5af2d5b2b85b8955d97810`; preserved the deterministic pre-activation Lambda as immutable version `4`.
+- Increased the bounded completion from 1,200 to 4,096 tokens so adaptive reasoning can finish. Exact standalone JSON fences are accepted, while surrounding commentary remains rejected.
+- Kept numeric validation strict after M3 converted an exact USD amount into a rounded Chinese-unit figure. M3 prose now omits numeric facts; deterministic evidence continues to show exact values.
+- Published fresh pack `SFO-2026-07-26-c866693b1abe`: 86,315 bytes, 94 trusted events, 58 evidence groups, `MIXED` / `MANUAL_REVIEW`, SHA metadata verified and SSE-S3 enabled.
+- Final Lambda canary returned `owner_brief`, `ai_used=true`, 1,216 characters and a 34,348-byte CSV. SES accepted the message, the encrypted marker records `ai_used=true`, and a second invoke returned `duplicate_suppressed`.
+- CloudWatch recorded M3 validator acceptance and SES delivery without the API key, email address, authorization header, prompt, response body, SEC URL or raw filing payload. Alarm state is `OK`.
+- EventBridge, cron hash, IAM managed-policy state, both database integrity checks, SEC source health, legacy PID and legacy row counters remained unchanged.

@@ -325,6 +325,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Raised the bounded completion from 1,200 to 4,096 tokens so adaptive reasoning can finish, and added strict standalone JSON-fence handling without accepting surrounding commentary.
 - M3 prose now omits counts, amounts, percentages, dates and quantities; exact figures remain deterministic after the validator correctly rejected a provider-generated unit conversion/rounding.
 - A real production fact-pack passed the complete M3 validator with deterministic `MIXED` / `MANUAL_REVIEW` and three allowlisted evidence IDs. Full suite passes 118 tests.
+- Deployed exact commit `52d0b23` with the validated mainland secret stored only in Lambda. Final canary returned `ai_used=true`, sent a 1,216-character M3 brief plus 34,348-byte CSV, wrote the encrypted AI marker and suppressed a duplicate. Pack/privacy/IAM/log/DB/cron/EventBridge/monitoring zero-drift checks passed. Production deployment commit: `52d0b23`.
 
 ### 2026-07-25 — M3 Business Owner Brief Design and Implementation
 

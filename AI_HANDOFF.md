@@ -2,8 +2,8 @@
 
 ## Current state
 
-- Branch / current production code: `master` / `f0849f50591c1e0ae9e63c2974ac6f2d1aeb1943`, plus an uncommitted mainland M3 region fix.
-- Production: `SEC-BETA-M3-OWNER-BRIEF-001` active with deterministic fallback; mainland M3 activation pending deployment.
+- Branch / production code: `master` / `52d0b239a54ae212df5af2d5b2b85b8955d97810`.
+- Production: `SEC-BETA-M3-OWNER-BRIEF-001` active with mainland MiniMax-M3 and deterministic fallback.
 - Last agent: Codex.
 - Updated: 2026-07-25 HKT.
 
@@ -15,6 +15,7 @@
 - Updated scoped uploader/Lambda IAM desired states and operational documentation.
 - Identified the owner subscription as mainland MiniMax; the existing environment secret is valid against `api.minimaxi.com` and returned exact `MiniMax-M3`.
 - Deployed the final code/IAM/publisher state, sent one manual owner brief with CSV, wrote the sent marker and verified duplicate suppression.
+- Corrected the global/mainland region mismatch, installed the validated mainland secret in Lambda only and sent a production brief with `ai_used=true`.
 
 ## Verification
 
@@ -29,6 +30,7 @@
 - Both databases pass integrity, SEC sources are healthy, cron/EventBridge/monitoring/firewall are unchanged and the legacy scheduler/counters are unchanged.
 - Mainland production-fact-pack preflight passed the full M3 validator with `ai_used=true`, unchanged deterministic result/action and three allowlisted evidence IDs.
 - The validator correctly rejected a rounded Chinese-unit amount; the prompt now forbids numeric prose while deterministic evidence retains exact figures. A repeat real-pack preflight passed.
+- Final pack `SFO-2026-07-26-c866693b1abe` is 86,315 bytes with 94 trusted events and 58 evidence groups. Lambda sent a 1,216-character M3 brief plus 34,348-byte CSV; marker `ai_used=true`, duplicate suppression and sanitized logs passed.
 
 ## Decisions / constraints
 
@@ -42,5 +44,5 @@
 
 ## Next handoff
 
-- Commit/push the mainland region fix, install the already-validated secret in Lambda, publish a fresh decision pack, invoke once and verify `ai_used=true`, SES, marker and sanitized logs.
+- Verify the first automatic 23:55 UTC publisher and 00:00 UTC Lambda cycle retains `ai_used=true`; deterministic fallback remains the approved response to any future provider/validator failure.
 - Verify the first scheduled next-day publisher/Lambda cycle and the first HKT day-1 monthly archive; no configuration change is required.

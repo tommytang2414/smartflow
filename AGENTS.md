@@ -134,6 +134,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Raised the bounded completion to 4,096 tokens because adaptive reasoning exhausted the former 1,200-token limit, and safely accepts only an exact standalone JSON code fence when M3 ignores the raw-JSON instruction.
 - Kept numeric validation strict: M3 prose is instructed to omit counts, amounts, percentages, dates and quantities because unit conversion/rounding changes numeric tokens; deterministic evidence renders the exact figures.
 - Real production fact-pack preflight passed the full local output validator with unchanged `MIXED` / `MANUAL_REVIEW` labels and three allowlisted evidence IDs. Full suite passes 118 tests.
+- Deployed exact commit `52d0b23` with the validated mainland secret in Lambda only. Final canary returned `ai_used=true`, SES accepted the 1,216-character M3 brief plus 34,348-byte CSV, the encrypted marker recorded AI use, and duplicate/pack/privacy/DB/cron/EventBridge/IAM/monitoring gates passed. Production deployment commit: `52d0b23`.
 
 ### 2026-07-25 — M3 Business Owner Brief Design and Implementation
 
