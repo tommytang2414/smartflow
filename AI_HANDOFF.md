@@ -2,7 +2,7 @@
 
 ## Current state
 
-- Branch / latest repository commit: `master` / `17fb684`.
+- Branch / latest implementation commit: `master` / `258086d`.
 - Production code remains `52d0b239a54ae212df5af2d5b2b85b8955d97810`;
   no AWS, VPS, collector, schedule or report deployment changed in this batch.
 - Production: SEC Form 4/Form 144 informational owner brief is active with
@@ -23,14 +23,25 @@
   research priority and explicit limitations.
 - Classified Form 144, SFC and CCASS as context only; they cannot create an
   executed directional stance.
+- Added the official House Congress v2 parser/normalizer contract. It discovers
+  `FilingType=P` reports from the yearly XML index and extracts transaction rows
+  from official PDF word coordinates.
+- Preserved transaction/notification/filing dates, owner code, disclosed amount
+  bounds, report/row identity and a stable actor identity across reports.
+- Added `CONGRESS_ASSESSMENT.md`; Senate remains behind its required user
+  acknowledgement and the broken QuiverQuant beta path remains retired.
 
 ## Verification
 
 - Focused equity-intelligence suite: 7 tests passed.
-- Full suite: 125 tests passed.
+- Focused House Congress suite: 4 tests passed.
+- Full suite: 129 tests passed.
 - `compileall` and `git diff --check` passed before commit.
 - Tests cover cross-source accumulation, repeated-actor deduplication, context
   separation, contradiction, staleness/quality exclusion and fail-closed actions.
+- Read-only validation against the current official 2026 House index discovered
+  313 PTR reports. One official PDF normalized nine sale rows; eight disclosed
+  tickers were retained and one missing ticker correctly remained a warning.
 
 ## Decisions / constraints
 
@@ -49,8 +60,8 @@
 
 ## Next handoff
 
-- Implement the Congress v2 vertical slice: document official House/Senate access
-  and personal-use constraints, create official/sanitized fixtures, parse report
-  and transaction rows with exact amount ranges and dates, normalize collision-
-  resistant identities into v2, and add failure/health tests. Keep it offline
-  until its production access and release gate is explicitly approved.
+- Complete the House Congress v2 vertical slice: add bounded official-host HTTP
+  acquisition, preserve exact PDF bytes as immutable raw evidence, persist
+  idempotent v2 events, and add aggregate failure/source-health tests. Validate
+  more official layouts and amendments, then prepare a separate production
+  source-release gate. Do not automate the Senate acknowledgement.
