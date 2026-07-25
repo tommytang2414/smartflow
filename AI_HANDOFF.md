@@ -2,12 +2,14 @@
 
 ## Current state
 
-- Branch / latest implementation commits: `master` / `e9e63c3` (House
-  ingestion) and `140495e` (legacy audit/storage assessment).
+- Branch / latest implementation commit: `master` /
+  `91be001` (isolated House shadow release package).
 - Production code remains `52d0b239a54ae212df5af2d5b2b85b8955d97810`;
   no AWS, VPS, collector, schedule or report deployment changed in this batch.
 - Production: SEC Form 4/Form 144 informational owner brief is active with
   mainland MiniMax-M3 and deterministic fallback.
+- Production shadow checkout remains detached at `8921405`; the new Congress DB,
+  venv, lock, logs, crontab block and S3 objects are absent.
 - Last agent: Codex.
 - Updated: 2026-07-26 HKT.
 
@@ -39,13 +41,24 @@
 - Added wrapped-range, exact-amount and image-only PDF handling. Image-only forms
   become non-directional OCR warnings rather than empty data.
 - Added a read-only legacy audit and measured raw-storage growth.
+- Added cache-aware newest-unseen acquisition. Completed raw-plus-child DocIDs
+  are not redownloaded; raw-only failures remain retryable; successful no-new
+  polls are healthy empty outcomes.
+- Added `congress-house-ptr-v2`. Explicit amendments are preserved as
+  non-directional reconciliation warnings; narrow date columns, cross-page
+  amount ranges and open spouse/dependent-child ranges parse exactly.
+- Added the isolated House production package: separate DB, hard-timeout runner,
+  hash-locked PDF venv, hourly cron, daily audit and bounded S3 publisher.
+- Added exact uploader/lifecycle desired states plus before-state, cost,
+  zero-downstream acceptance and rollback in
+  `CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`.
 
 ## Verification
 
 - Focused equity-intelligence suite: 7 tests passed.
-- Focused House Congress parser/ingestion/audit suites: 13 tests passed.
-- Full suite: 138 tests passed.
-- `compileall` and `git diff --check` passed before commit.
+- Focused House Congress release suites: 20 tests passed.
+- Full suite: 146 tests passed.
+- `compileall`, JSON parsing, shell syntax and `git diff --check` passed.
 - Tests cover cross-source accumulation, repeated-actor deduplication, context
   separation, contradiction, staleness/quality exclusion and fail-closed actions.
 - Read-only validation against the current official 2026 House index discovered
@@ -56,6 +69,17 @@
   image-only OCR warnings. Aggregate health was healthy and `quick_check=ok`.
 - The 25 PDFs used 1.68 MB; the complete v2 DB used 2.52 MB. Current-index linear
   storage estimate is about 31.5 MB before S3 versions/archives.
+- A 50-report sample spaced from 1 January through 22 July 2026 produced 556
+  events, three explicit OCR warnings, one open-ended spouse/dependent-child
+  range and zero parser errors.
+- Official text-layer amendment `20017166` was detected and normalized only as a
+  non-directional reconciliation warning.
+- AWS Access Analyzer returned zero findings. Custom simulation allows the exact
+  Congress current/archive writes and denies unrelated writes, read, list and
+  delete. Lifecycle diff is exactly one new Congress non-current-version rule.
+- Read-only production inventory verified both SEC sources healthy, both DBs
+  `quick_check=ok`, cron hash `200416ed...`, 27 GB free, Lambda/EventBridge/IAM
+  unchanged and public ports still only 22/5001.
 - Local legacy audit found 1,499 rows with zero official report-row traceability;
   1,236 disclosed ranges were reduced to lower-bound values.
 
@@ -69,6 +93,10 @@
 - Congress must use official House and Senate disclosure contracts. Do not
   restore the broken QuiverQuant beta path or its collision-prone identities.
 - Congress transaction/reporting latency and 13F quarterly latency must be shown.
+- Use a separate `congress-house-v2-shadow.db`. Adding Congress health to the SEC
+  DB would intentionally fail the exact-source SEC publisher gate.
+- Amendments cannot enter directional ranking before original-to-amendment
+  reconciliation exists. Image-only reports remain manual deep-dive warnings.
 - CCASS collection remains blocked until written HKEX permission or an authorised
   data feed exists; public ViewState scraping must stay disabled.
 - Deterministic code owns candidate selection and evidence. M3 may narrate only
@@ -78,8 +106,10 @@
 
 ## Next handoff
 
-- Prepare the House Congress shadow release runbook: larger time-separated
-  official-layout/amendment validation, exact retention/S3 impact, before-state,
-  rollback and zero-downstream boundary. Because scheduling/storage/IAM are
-  security/production changes, present the exact manifest for separate approval
-  before deployment. Do not automate the Senate acknowledgement.
+- Push the handoff commit, then present
+  `CONGRESS-HOUSE-SHADOW-001 @ <final-commit>` for explicit production approval.
+- If approved, execute only `CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`, using
+  recommended scoped-S3 Option B. Stop on any failed gate; do not change Lambda,
+  email, SEC/legacy DBs or Senate access.
+- If not approved, leave all prepared code/policies local/Git-only; production is
+  already unchanged.
