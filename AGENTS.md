@@ -181,6 +181,30 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-07-26 — House Congress Shadow Production Deployment
+
+- Deployed owner-approved `CONGRESS-HOUSE-SHADOW-001` to the isolated production
+  checkout at exact commit `8235286aaa50d80d93814e0f4e093cb3b85741d3`.
+- The initial run plus exact cron-wrapper canary stored 50 recoverable official
+  PDFs and 274 normalized events. Audit passed with two successful runs, healthy
+  state, 100% reliability, exact schema, `quick_check=ok`, and zero unresolved
+  raw evidence, invalid semantics or unexpected sources.
+- Installed only the marker-delimited hourly collector/daily audit/daily
+  publisher block. The original crontab prefix is byte-identical to backup; the
+  live checkout, scheduler, legacy DB, SEC DB/report, Lambda, EventBridge and
+  firewall were not changed.
+- Expanded the write-only uploader to the exact Congress current/monthly paths
+  and added only its 30-day non-current current-object rule. Access Analyzer,
+  allow/deny simulations, exact readback, versioning and zero-drift gates passed.
+- Published SSE-S3 version `aoiU_fiTX0Ahmfpa20SsJeICoRNybfTa` with 327 verified
+  rows and metadata/download SHA-256
+  `77a3d4b1e885e154fb3e3e97f582e7e94922b942def641ba11afeb6176116239`;
+  restore passed four-table integrity and byte-identical recovery.
+- The same command/lock used by cron passed a manual canary. The first
+  daemon-fired run is due at 2026-07-25 19:27 UTC and starts the 14-day
+  observation. Congress remains excluded from email pending a separate gate.
+  Production deployment commit: `8235286`.
+
 ### 2026-07-26 — House Congress Shadow Release Package
 
 - Added cache-aware newest-unseen acquisition, 50 MiB batch protection and

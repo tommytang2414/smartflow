@@ -325,6 +325,23 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-26 — House Congress Shadow Production Deployment
+
+- Deployed approved `CONGRESS-HOUSE-SHADOW-001` only to
+  `/home/ubuntu/SmartFlow-shadow` at exact commit
+  `8235286aaa50d80d93814e0f4e093cb3b85741d3`.
+- The first batch and exact cron-wrapper canary produced 50 immutable raw PDFs
+  and 274 normalized events across two successful runs. Health is healthy,
+  reliability is 100%, and schema/integrity/semantic/evidence audits pass.
+- Installed the isolated hourly/daily cron block, exact write-only IAM expansion
+  and one Congress lifecycle rule. Published the encrypted 327-row S3 snapshot;
+  metadata/download hash and disposable byte-identical restore passed.
+- SEC publisher/source health, the legacy DB/PID, live checkout, Lambda,
+  EventBridge, email path and ports 22/5001 passed zero-drift checks.
+- The first daemon-fired run is due at 2026-07-25 19:27 UTC and starts the
+  14-day observation; Congress is not included in email. Production deployment
+  commit: `8235286`.
+
 ### 2026-07-26 — House Congress Shadow Release Package
 
 - Added cache-aware newest-unseen House acquisition. Completed raw-plus-child

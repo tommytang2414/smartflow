@@ -1,7 +1,8 @@
 # House Congress v2 Shadow Release Runbook
 
-Status: prepared; production deployment requires approval of the exact release
-commit and this manifest
+Status: deployed from approved commit
+`8235286aaa50d80d93814e0f4e093cb3b85741d3`; cron-path canary verified and
+first daemon-fired run due at 2026-07-25 19:27 UTC
 
 Change ID: `CONGRESS-HOUSE-SHADOW-001`
 
@@ -175,6 +176,49 @@ integration remains blocked until all of these pass:
 
 Passing observation authorizes only a separate proposal to add House evidence
 to the owner brief. It does not automatically change the email.
+
+## Deployment record — 2026-07-26 HKT
+
+- Owner approval: `APPROVE CONGRESS-HOUSE-SHADOW-001 @ 8235286`.
+- Production shadow checkout was detached at the full approved hash. The live
+  checkout and its scheduler were not updated or restarted.
+- Before-state was saved under
+  `/home/ubuntu/SmartFlow-shadow/backups/CONGRESS-HOUSE-SHADOW-001-20260725T184540Z`.
+- VPS full suite passed 146 tests. The dedicated hash-locked PDF runtime passed
+  all 20 focused Congress tests and `compileall`.
+- The first bounded run observed 25 reports and wrote 25 immutable raw PDFs plus
+  137 normalized events. The exact cron wrapper canary then processed the next
+  25 reports, leaving 263 in the discovered backlog.
+- The final pre-observation audit recorded 50 raw reports, 274 normalized
+  events, two successful runs, healthy source state, 100% reliability, exact
+  four-table schema, `quick_check=ok`, zero foreign-key failures, zero raw-only
+  reports, zero invalid semantics and zero unexpected sources.
+- The uploader policy and lifecycle read back semantically identical to the
+  tracked desired states. Both IAM policies returned zero Access Analyzer
+  findings. Congress current/monthly writes are allowed; unrelated writes and
+  all Congress reads/deletes remain denied. S3 versioning remains enabled.
+- The final current snapshot is version
+  `aoiU_fiTX0Ahmfpa20SsJeICoRNybfTa`, 6,381,568 bytes, SSE-S3 encrypted, and
+  carries SHA-256
+  `77a3d4b1e885e154fb3e3e97f582e7e94922b942def641ba11afeb6176116239`.
+  A fresh download matched that hash; disposable restore verified four tables,
+  327 rows, `quick_check=ok` and a byte-identical restored copy.
+- Crontab SHA-256 is
+  `81c51ab534fb42cd87c55e849a6c48a984f86afc2e0328aed5959e01b8da6b18`;
+  the complete pre-existing crontab prefix is byte-identical to backup and the
+  Congress marker occurs once.
+- SEC publisher validation remained valid with only `sec_form4` and
+  `sec_form144`; both sources remained healthy at 100% over the prior 24 hours.
+  The SEC S3 object/version was unchanged. The legacy DB remained
+  `quick_check=ok` with 224,298 signals and collection-run high-water 231,829;
+  live PID `640336` remained alive.
+- Lambda code hash/config/IAM, the enabled 08:00 HKT EventBridge rule, public
+  ports 22/5001 and the existing email path were unchanged. Congress logs
+  contained zero configured sensitive-pattern hits.
+- The same command and lock used by cron passed a manual canary. Because the
+  install completed at 18:53 UTC after the hourly `:27` boundary, the first
+  daemon-fired run is due at 19:27 UTC. The 14-day observation clock begins only
+  when that run is recorded; no email/report integration is implied.
 
 ## Recoverable rollback
 
