@@ -41,19 +41,21 @@ TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 
 # Phase 0 containment: legacy collectors remain disabled until their source-specific
-# v2 semantics, fixtures, health checks, and release gate pass. Add/remove names here;
-# both scheduled and manual collection paths enforce this set.
+# v2 semantics, fixtures, health checks, and release gate pass. Crypto collectors are
+# retired from the stock-first product scope but remain listed here so neither manual
+# nor scheduled legacy paths can reactivate them.
 DISABLED_COLLECTORS = {
-    # Core sources awaiting corrected v2 interpretation.
+    # Stock sources awaiting corrected v2 interpretation or a release gate.
     "sec_form4",
     "sec_form144",
-    "coinglass_whale",
     "hkex_ccass",
     "sfc_short",
     # Deferred sources with known semantic, identity, or source-reliability defects.
     "sec_13f",
     "sec_13d",
     "congress",
+    # Crypto is outside the owner-approved stock-first product.
+    "coinglass_whale",
     "coinglass_oi",
     "dex_whale",
     "hkex_director",

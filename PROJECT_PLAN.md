@@ -12,11 +12,13 @@ Implementation: Codex
 
 ## 1. Objective
 
-Rebuild SmartFlow from a broad, unvalidated signal collector into a traceable market-intelligence system that:
+Rebuild SmartFlow from a broad, unvalidated signal collector into a stock-first,
+traceable smart-money intelligence system that:
 
 - represents each source event with correct financial semantics;
 - distinguishes source health from legitimate zero-event periods;
 - produces evidence-backed daily research rather than unsupported trade calls;
+- ranks US and Hong Kong equity follow-ups using independent actors and sources;
 - measures whether each signal has out-of-sample informational value;
 - operates with recoverable data, least-privilege access, and observable failures.
 
@@ -28,7 +30,9 @@ Primary user: Tommy, using SmartFlow as a personal pre-market research assistant
 
 Primary job-to-be-done:
 
-> At 08:00 HKT, show what materially changed since the previous report, why it may matter, the supporting evidence, conflicting evidence, and what requires further research today.
+> At 08:00 HKT, show which US or Hong Kong stocks have new smart-money
+> evidence, whether it indicates accumulation, distribution, mixed activity or
+> context only, why it may matter, what conflicts, and what requires research today.
 
 The initial product is an intelligence brief, not an automated trading system. It may identify a watchlist and research triggers, but it must not imply execution certainty or proven alpha.
 
@@ -52,7 +56,7 @@ Failure to meet the signal-value gate does not invalidate the data platform. It 
 
 ## 4. Programme principles
 
-1. Correctness before coverage. Do not add sources during rehabilitation.
+1. Correctness before coverage. Add only the owner-approved stock sources in this plan.
 2. Preserve evidence. The legacy production database remains immutable as an audit archive.
 3. Raw before normalized. Retain source payloads separately from interpreted events.
 4. Deterministic before generative. Code selects and scores facts; the LLM only narrates approved facts.
@@ -68,7 +72,8 @@ Failure to meet the signal-value gate does not invalidate the data platform. It 
 - Production containment and security remediation
 - Source inventory and collector enable/disable policy
 - Event taxonomy and v2 data model
-- Form 4, Form 144, CoinGlass, CCASS, and SFC correctness
+- Form 4, Form 144, Congress, Form 13F, SFC, CCASS, and HK director-dealing correctness
+- Cross-source equity identity, actor deduplication, stance, and follow-up ranking
 - Scheduler, collector health, snapshots, monitoring, and alerting
 - Evidence-backed daily brief and data-health dashboard
 - Historical outcome measurement and source-level validation
@@ -77,14 +82,13 @@ Failure to meet the signal-value gate does not invalidate the data platform. It 
 ### Deferred until core gates pass
 
 - SEC 13D/G structured rewrite
-- Official Congress disclosure ingestion
-- HK director transaction-detail ingestion
-- Form 13F quarter-over-quarter analysis
-- Composite scoring across independent sources
+- Options-flow or dark-pool sources without an approved data contract
+- Any predictive probability or portfolio-sizing layer
 
 ### Out of scope
 
 - New alternative-data collectors
+- Crypto, CoinGlass, whale-wallet, DEX, and crypto market-context reporting
 - Automated trade execution
 - Customer-facing or commercial distribution
 - PostgreSQL, Kafka, Celery, or other infrastructure migrations without measured need
@@ -96,15 +100,14 @@ Failure to meet the signal-value gate does not invalidate the data platform. It 
 |---|---|---|
 | SEC Form 4 | Core | Only `P` and `S` represent open-market direction; preserve other transaction codes without false SELL labels |
 | SEC Form 144 | Core | Represent as proposed-sale intent, not executed sale; repair issuer mapping and IDs |
-| CoinGlass Hyperliquid | Core | Separate `OPEN/CLOSE` action from `LONG/SHORT` side; rebuild affected normalized history |
+| CoinGlass and all crypto | Retired from active scope | Keep code/history contained for audit; exclude from stock-first packs and schedules |
 | HKEX CCASS | Core | Treat as participant concentration and change, not beneficial ownership or director trading |
 | SFC short positions | Core | Rebuild against the official weekly CSV schema and publication cadence |
-| SEC Form 13F | Context, deferred | Preserve reporting period and CUSIP; calculate comparable-quarter deltas |
-| CoinGlass OI | Context | Keep separate from smart-money events and validate interpretation |
+| Congress PTR | Core | Use official House/Senate disclosures; preserve latency, ranges, owner and report-row identity |
+| SEC Form 13F | Core context | Preserve reporting period and CUSIP; calculate comparable-quarter deltas |
+| HKEX director dealings | Core | Parse official transaction details before assigning purchase/sale |
 | Stock volume/momentum/regime | Context | Move to market-context domain; add exchange calendar before reuse |
 | SEC 13D/G | Disabled pending rewrite | Distinguish initial, amendment, increase, reduction, and exit |
-| Congress | Disabled pending rewrite | Replace unstable source and collision-prone transaction identity |
-| HKEX dealings/director | Disabled pending rewrite | Parse transaction details; do not infer trades from headlines |
 | DEX pair activity | Retire as whale signal | Optionally retain later as aggregate market context |
 | Northbound, NQ cross-project, unpaid sources | Disabled | Reconsider only with a reliable source and documented business value |
 
@@ -253,10 +256,12 @@ Target: 2026-08-03 to 2026-08-16
 Delivery order:
 
 1. SEC Form 4
-2. CoinGlass Hyperliquid
-3. SEC Form 144
+2. SEC Form 144
+3. Congress PTR
 4. SFC short positions
-5. HKEX CCASS
+5. SEC Form 13F comparable-quarter deltas
+6. HKEX director dealings
+7. HKEX CCASS, only after an authorised access route exists
 
 Per-source definition of done:
 
@@ -279,7 +284,11 @@ Target: 2026-08-17 to 2026-08-25
 
 Deliverables:
 
-- Deterministic daily brief containing data health, material events, corroboration, contradictions, and watch items.
+- Deterministic stock-first daily brief containing data health, equity candidates,
+  distinct actors, independent sources, material events, corroboration,
+  contradictions, context and watch items.
+- Source-aware `ACCUMULATION`, `DISTRIBUTION`, `MIXED`, or `CONTEXT_ONLY`
+  evidence stance and separate follow-up priority; neither is a trade instruction.
 - Evidence and freshness attached to every item.
 - LLM narration constrained to the deterministic evidence set.
 - Explicit insufficient-evidence and stale-data outcomes.
@@ -357,17 +366,22 @@ No migration may modify or delete the legacy production event history in place.
 | LLM overstates weak evidence | High | Deterministic evidence contract, permitted-language rules, no-conclusion state |
 | Research overfits historical data | High | Time split, untouched validation period, benchmark/cost adjustment |
 | Scope expands before correctness | Medium | Source freeze until Phase 4 decision gate |
+| Cross-source score creates false precision | High | Use deterministic stance and ordinal follow-up priority; publish evidence counts and limitations, not probability |
+| Delayed disclosures are mistaken for current flow | High | Rank on newly observed evidence while showing transaction/reporting dates and source latency |
+| Crypto silently re-enters the owner brief | Medium | Keep all crypto collectors disabled and exclude them from the stock-first pack contract |
 | Production database exceeds Lambda limits | Medium | Growth monitoring, compact derived report artifact, storage/memory alarm |
 
 ## 13. Immediate execution queue
 
-The first implementation batch after this plan is committed:
+The current stock-first implementation queue is:
 
-1. Record current AWS/Lightsail/S3/Lambda state in a dated Phase 0 runbook.
-2. Create and validate an immutable database snapshot.
-3. Add an application-level switch that suppresses directional report language safely.
-4. Define and apply the corrupt/dead collector disable list.
-5. Prepare secret rotation and least-privilege changes with exact rollback commands.
+1. Freeze the source-role and deterministic equity ranking contract.
+2. Replace the broken legacy Congress collector with official House/Senate v2 ingestion.
+3. Release the tested SFC weekly context pipeline to production v2 under a separate gate.
+4. Rebuild Form 13F as comparable-quarter holdings deltas.
+5. Implement HK director transaction-detail ingestion.
+6. Extend the decision pack and owner brief only after each source passes its gate.
+7. Keep CCASS blocked pending written permission or an authorised feed.
 
 These are separate commits where practical so each change remains reviewable and reversible.
 

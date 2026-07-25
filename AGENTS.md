@@ -6,13 +6,23 @@ The Git working tree and Git history take precedence over documentation when the
 
 ## Active programme
 
-Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The current priority is correctness and containment; do not add new collectors or restore authoritative `LONG`/`SHORT` output before the documented release gates pass.
+Follow `PROJECT_PLAN.md` and `STOCK_FIRST_PRODUCT_SPEC.md` for the approved
+SmartFlow rehabilitation roadmap. The product is stock-first equity intelligence;
+do not add unapproved sources or restore authoritative `LONG`/`SHORT` output
+before the documented release gates pass.
 
 - Preserve the legacy production database as immutable evidence.
 - Implement and validate source semantics in v2 before historical reprocessing.
 - Treat production security, IAM, firewall, secret, scheduler, and reporting changes as individually reversible operations.
 - Record every production deployment and its verification in `CLAUDE.md` and `AI_HANDOFF.md`.
-- CoinGlass is owner-deferred because the available paid key belongs to a third party. Do not use, validate, rotate, or build around that key; proceed with the other approved sources.
+- Crypto and CoinGlass are outside active product scope. Keep their legacy code and
+  history contained for audit, exclude them from decision packs/reports/schedules,
+  and do not use the third-party CoinGlass credential.
+- Use `smartflow.equity_intelligence` for source-aware stock candidate grouping.
+  Its stance is an evidence classification and its priority is research urgency;
+  neither is a trade recommendation or probability.
+- Form 144, SFC and CCASS are context-only sources in cross-source ranking.
+  They must never create an executed directional stance by themselves.
 
 ## S3 recoverability
 
@@ -126,6 +136,19 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — Stock-First Product Reset and Equity Ranking Foundation
+
+- Reset SmartFlow to its intended stock-first purpose: follow traceable US/HK
+  smart-money evidence and prioritize equities for research.
+- Retired crypto and CoinGlass from active product scope without deleting their
+  contained code or history.
+- Added the stock-first product specification, revised source delivery order and
+  classified Form 144, SFC and CCASS as context-only evidence.
+- Added deterministic cross-source grouping, actor/event deduplication, evidence
+  stance, follow-up priority, staleness controls and source limitations.
+- Added seven focused tests; full regression passes 125 tests. No production
+  collector, report, AWS resource or schedule changed.
 
 ### 2026-07-26 — Mainland MiniMax M3 Region Fix
 

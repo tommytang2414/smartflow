@@ -4,19 +4,37 @@ Status: In progress
 
 Started: 2026-07-23 HKT
 
-Production state: unchanged; all legacy collectors and directional reporting remain contained.
+Production state: SEC Form 4/Form 144 informational owner brief is active. All
+legacy collectors and directional reporting remain contained.
 
 ## Source order
 
 1. SEC Form 4
-2. CoinGlass Hyperliquid
-3. SEC Form 144
+2. SEC Form 144
+3. Congress PTR
 4. SFC short positions
-5. HKEX CCASS
+5. SEC Form 13F comparable-quarter deltas
+6. HKEX director dealings
+7. HKEX CCASS after an authorised access route exists
 
-CoinGlass remains in the original programme order but is owner-deferred because the available paid credential belongs to a third party. It is not an active implementation dependency and must not block work on approved sources or reporting foundations.
+The owner changed the product direction on 2026-07-26 to stock-first. CoinGlass
+and all crypto sources are outside active scope. Their contained code and history
+are not deleted, but they must not enter the stock-first decision pack, email or
+production schedule.
 
-SEC Form 4/Form 144 already have tested offline contracts from Phase 1. This run starts the SFC source slice because its legacy business meaning and CSV schema were materially incorrect.
+SEC Form 4/Form 144 are active in the informational production brief. The next
+actor-evidence source is Congress, followed by the already-tested SFC context
+source. Form 13F requires a new comparable-quarter contract before use.
+
+## Stock-first ranking contract
+
+- Group by canonical market plus security ID; never merge US/HK tickers by display symbol alone.
+- Deduplicate source events and repeated actor transactions before measuring consensus.
+- Directional actor evidence may come from validated Form 4, Congress, comparable-quarter 13F, or HK director transactions.
+- Form 144, SFC and CCASS are context only and cannot create an executed directional stance.
+- Output evidence stance separately from research priority.
+- `FOLLOW_UP_HIGH` means research urgency from corroboration, actor breadth or contradiction; it is not confidence or a trade recommendation.
+- Deterministic code owns grouping, stance, priority, limitations and evidence. M3 may narrate the allowlisted facts only.
 
 ## SFC contract completed
 
@@ -59,7 +77,8 @@ legacy coverage: 0 weeks / 0 records / no_legacy_history
 
 - Obtain an explicit production v2 database deployment and source-release approval before scheduling.
 
-No work in this runbook authorizes production deployment, legacy-table mutation, collector enablement, or directional reporting.
+The stock-first scope decision does not itself authorize production deployment,
+legacy-table mutation, collector enablement, CCASS access or directional reporting.
 
 ## CCASS contract completed offline
 

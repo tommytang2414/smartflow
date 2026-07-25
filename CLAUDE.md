@@ -2,7 +2,14 @@
 
 ## What This Is
 
-A Python data pipeline that tracks privileged market participants across 4 markets. The philosophy: insiders, institutions, Congress members, and crypto whales leave public trails — we capture them systematically and eat what they leave behind.
+A Python data pipeline for stock-first US/HK smart-money intelligence. The
+owner-approved 2026-07-26 direction follows insiders, institutions, Congress
+members and Hong Kong disclosed/context sources. Crypto and CoinGlass are
+outside active product scope; older crypto inventory below is historical only.
+
+Use `STOCK_FIRST_PRODUCT_SPEC.md` for current product semantics and
+`PROJECT_PLAN.md` for release order. The active report remains SEC-only until
+each additional stock source passes its v2 gate.
 
 ---
 
