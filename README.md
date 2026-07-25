@@ -13,6 +13,8 @@ SmartFlow is in correctness-first rehabilitation. All legacy collectors and auth
 
 See `PROJECT_PLAN.md` for the approved roadmap, `PHASE0_RUNBOOK.md` for production state and rollback records, and `PHASE1_RUNBOOK.md` for correctness-foundation progress.
 
+The existing 08:00 HKT SEC informational email now has an owner-brief design: deterministic result/action, optional MiniMax-M3 prose, and a full trusted-row CSV for deep dive. It remains informational and separate from the source go-live gate. See `SEC_M3_OWNER_BRIEF_RUNBOOK.md`.
+
 ### Phase 1 development checks
 
 ```bash

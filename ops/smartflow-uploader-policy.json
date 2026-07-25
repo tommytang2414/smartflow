@@ -12,7 +12,9 @@
         "arn:aws:s3:::smartflow-tommy-db/smartflow.db",
         "arn:aws:s3:::smartflow-tommy-db/backups/*/smartflow.db",
         "arn:aws:s3:::smartflow-tommy-db/????????/smartflow.db",
-        "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-shadow.db"
+        "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-shadow.db",
+        "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-decision-pack.json",
+        "arn:aws:s3:::smartflow-tommy-db/snapshots/sec-v2/*"
       ]
     }
   ]

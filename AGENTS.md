@@ -29,12 +29,14 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 
 ## Informational beta email
 
-- `SEC-BETA-EMAIL-001` is production-active at exact commit `0ece0ff`. Follow `SEC_INFORMATIONAL_BETA_RUNBOOK.md`; further IAM, Lambda environment/code, S3 lifecycle/object, VPS checkout or cron changes require a new approved manifest.
-- The beta Lambda packages only `lambda_function.py` and `beta_report.py`. Never package or call legacy `queries.py`, restore the `legacy` mode, or provision `MINIMAX_API_KEY`.
-- The only input is a consistent SQLite backup at `beta/sec-v2-shadow.db`; never upload the live WAL database file directly.
-- Detailed output is limited to trusted `sec-form4-v4` P/S transactions and `sec-form144-v1` proposed-sale notices. Superseded parsers and warning/invalid events are counted but excluded.
-- Any schema, integrity, foreign-key, source-health, freshness, SEC URL or semantic failure must send only a sanitized `BETA PAUSED` notice.
-- `smartflow-uploader` now has only inline `SmartFlowUploaderScoped` from `ops/smartflow-uploader-policy.json`; `AmazonS3FullAccess` is detached. Do not expand its write-only resource patterns.
+- `SEC-BETA-EMAIL-001` is production-active at exact commit `0ece0ff`; `SEC-BETA-M3-OWNER-BRIEF-001` is its approved owner-brief successor. Follow `SEC_M3_OWNER_BRIEF_RUNBOOK.md`.
+- The Lambda package is exactly `lambda_function.py`, `beta_report.py` and `owner_brief.py`. Never package or call legacy `queries.py` or restore the `legacy` mode.
+- The publisher creates a consistent DB snapshot and a compact deterministic decision pack. Lambda reads only `beta/sec-v2-decision-pack.json`, never the SQLite DB.
+- Output is limited to trusted `sec-form4-v4` P/S transactions and `sec-form144-v1` proposed-sale notices. Superseded parsers and warning/invalid events are excluded from facts and CSV.
+- Deterministic code owns result, action, metrics and evidence. MiniMax-M3 may produce prose only after strict validation; any missing/failed/invalid M3 response uses deterministic fallback.
+- Never send names, raw XML, URLs, remarks, contact data or secrets to M3. Never log the prompt, response body or API key.
+- Any schema, integrity, foreign-key, source-health, freshness, hash or semantic failure must send only a sanitized `BETA PAUSED` notice and skip M3.
+- `smartflow-uploader` retains scoped write-only access for the current DB, decision pack and monthly dated archive; Lambda can read only the pack/markers and write only markers. Do not expand these patterns.
 
 ## Lambda monitoring
 
@@ -122,6 +124,14 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-25 — M3 Business Owner Brief Design and Implementation
+
+- Added the approved business/technical design and risk assessment in Markdown and a visually verified 22-page DOCX proposal.
+- Replaced the growing-DB Lambda input with a compact deterministic decision pack while preserving the consistent current DB snapshot and adding an append-only monthly archive.
+- Added concise result/action/top-evidence email output, all-trusted-row CSV deep dive, formula-injection protection and best-effort sent-marker idempotency.
+- Added bounded MiniMax-M3 prose generation with data minimisation, strict output validation and deterministic fallback; no valid API key is installed pending account-owner acceptance of provider terms.
+- Scoped uploader and Lambda IAM desired states to the new exact objects/actions. Local full suite passes 115 tests, including body-plus-metadata tamper rejection; both policies pass Access Analyzer and allow/deny simulations.
 
 ### 2026-07-25 — SEC Informational Beta Email Package
 

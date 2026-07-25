@@ -1,4 +1,4 @@
-"""Publish a consistent, verified SEC v2 snapshot to the isolated beta S3 key."""
+"""Publish a verified SEC v2 snapshot, decision pack and monthly archive."""
 
 from __future__ import annotations
 
@@ -7,17 +7,23 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "lambda"))
 
+from owner_brief import build_decision_pack, pack_sha256
 from smartflow.db.snapshots import create_sqlite_snapshot, database_manifest, sha256_file
 
 
 SOURCE_DATABASE = Path("/home/ubuntu/SmartFlow-shadow/data/smartflow-v2-shadow.db")
 S3_BUCKET = "smartflow-tommy-db"
 S3_KEY = "beta/sec-v2-shadow.db"
+DECISION_PACK_KEY = "beta/sec-v2-decision-pack.json"
+ARCHIVE_PREFIX = "snapshots/sec-v2"
+HKT = timezone(timedelta(hours=8), name="HKT")
 REQUIRED_TABLES = frozenset(
     {"raw_events", "normalized_events_v2", "collector_runs_v2", "source_health"}
 )
@@ -57,17 +63,72 @@ def _validate_snapshot(snapshot_path: Path) -> dict:
     return manifest
 
 
+def _put_object(
+    *,
+    bucket: str,
+    key: str,
+    body: Path,
+    metadata: str,
+    content_type: str | None = None,
+    if_none_match: bool = False,
+) -> dict:
+    command = [
+        "aws",
+        "s3api",
+        "put-object",
+        "--bucket",
+        bucket,
+        "--key",
+        key,
+        "--body",
+        str(body),
+        "--server-side-encryption",
+        "AES256",
+        "--metadata",
+        metadata,
+    ]
+    if content_type:
+        command.extend(["--content-type", content_type])
+    if if_none_match:
+        command.extend(["--if-none-match", "*"])
+    command.extend(["--output", "json"])
+    result = subprocess.run(
+        command,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    if result.returncode != 0:
+        if if_none_match and "PreconditionFailed" in result.stderr:
+            return {"status": "already_exists"}
+        raise RuntimeError(f"S3 upload failed for approved object with exit {result.returncode}")
+    response = json.loads(result.stdout)
+    return {
+        "status": "uploaded",
+        "version_id": response.get("VersionId"),
+        "etag": response.get("ETag"),
+    }
+
+
 def publish_snapshot(
     source_database: Path = SOURCE_DATABASE,
     *,
     bucket: str = S3_BUCKET,
     key: str = S3_KEY,
+    decision_pack_key: str = DECISION_PACK_KEY,
+    now: datetime | None = None,
 ) -> dict:
     source_database = source_database.resolve()
     if source_database.name.casefold() == "smartflow.db":
         raise ValueError("refusing legacy smartflow.db")
-    if bucket != S3_BUCKET or key != S3_KEY:
+    if (
+        bucket != S3_BUCKET
+        or key != S3_KEY
+        or decision_pack_key != DECISION_PACK_KEY
+    ):
         raise ValueError("refusing unapproved S3 destination")
+    generated_at = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
 
     with tempfile.TemporaryDirectory(prefix="smartflow-sec-beta-") as directory:
         snapshot_path = Path(directory) / "sec-v2-shadow.db"
@@ -75,46 +136,73 @@ def publish_snapshot(
         manifest = _validate_snapshot(snapshot_path)
         digest = sha256_file(snapshot_path)
         snapshot_size = snapshot_path.stat().st_size
-        generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-        command = [
-            "aws",
-            "s3api",
-            "put-object",
-            "--bucket",
-            bucket,
-            "--key",
-            key,
-            "--body",
-            str(snapshot_path),
-            "--server-side-encryption",
-            "AES256",
-            "--metadata",
-            f"snapshot-sha256={digest},generated-at={generated_at}",
-            "--output",
-            "json",
-        ]
-        result = subprocess.run(
-            command,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=120,
+        generated_text = generated_at.strftime("%Y-%m-%dT%H:%M:%SZ")
+        decision_payload = build_decision_pack(
+            snapshot_path,
+            snapshot_at=generated_at,
+            generated_at=generated_at,
+            snapshot_sha256=digest,
         )
-        if result.returncode != 0:
-            raise RuntimeError(f"S3 snapshot upload failed with exit {result.returncode}")
-        response = json.loads(result.stdout)
+        decision_digest = pack_sha256(decision_payload)
+        decision_path = Path(directory) / "sec-v2-decision-pack.json"
+        decision_path.write_bytes(decision_payload)
+
+        snapshot_response = _put_object(
+            bucket=bucket,
+            key=key,
+            body=snapshot_path,
+            metadata=f"snapshot-sha256={digest},generated-at={generated_text}",
+        )
+        decision_response = _put_object(
+            bucket=bucket,
+            key=decision_pack_key,
+            body=decision_path,
+            content_type="application/json",
+            metadata=(
+                f"decision-pack-sha256={decision_digest},"
+                f"snapshot-sha256={digest},generated-at={generated_text}"
+            ),
+        )
+
+        archive = None
+        hkt_date = generated_at.astimezone(HKT)
+        if hkt_date.day == 1:
+            archive_key = (
+                f"{ARCHIVE_PREFIX}/{hkt_date:%Y/%m}/"
+                f"sec-v2-shadow-{hkt_date:%Y%m%d}.db"
+            )
+            archive = {
+                "key": archive_key,
+                **_put_object(
+                    bucket=bucket,
+                    key=archive_key,
+                    body=snapshot_path,
+                    metadata=(
+                        f"snapshot-sha256={digest},generated-at={generated_text},"
+                        "retention-class=monthly-append-only"
+                    ),
+                    if_none_match=True,
+                ),
+            }
 
     return {
         "status": "published",
         "bucket": bucket,
         "key": key,
-        "version_id": response.get("VersionId"),
-        "etag": response.get("ETag"),
+        "version_id": snapshot_response.get("version_id"),
+        "etag": snapshot_response.get("etag"),
         "sha256": digest,
         "size_bytes": snapshot_size,
         "rows_verified": manifest["total_rows"],
-        "generated_at": generated_at,
+        "generated_at": generated_text,
+        "decision_pack": {
+            "key": decision_pack_key,
+            "sha256": decision_digest,
+            "size_bytes": len(decision_payload),
+            "version_id": decision_response.get("version_id"),
+            "etag": decision_response.get("etag"),
+        },
+        "archive": archive,
     }
 
 

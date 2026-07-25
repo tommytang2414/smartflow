@@ -2,15 +2,27 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "ReadSecV2BetaSnapshot",
+      "Sid": "ReadSecV2DecisionPackAndSentMarkers",
       "Effect": "Allow",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-shadow.db"
+      "Resource": [
+        "arn:aws:s3:::smartflow-tommy-db/beta/sec-v2-decision-pack.json",
+        "arn:aws:s3:::smartflow-tommy-db/beta/sec-owner-sent/*"
+      ]
+    },
+    {
+      "Sid": "WriteSecOwnerSentMarkers",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::smartflow-tommy-db/beta/sec-owner-sent/*"
     },
     {
       "Sid": "SendSmartFlowEmail",
       "Effect": "Allow",
-      "Action": "ses:SendEmail",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
       "Resource": [
         "arn:aws:ses:ap-southeast-1:760981412816:identity/tommytang.cc@gmail.com",
         "arn:aws:ses:ap-southeast-1:760981412816:identity/TOMMYTANG2414@GMAIL.COM"

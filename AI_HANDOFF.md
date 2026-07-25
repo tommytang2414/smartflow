@@ -1,182 +1,39 @@
 # AI Handoff
 
 ## Current state
-- Branch / deployed SEC shadow commit: `master` / `0ece0ff`
-- Verified Form 4 v4 release candidate: `fcd5e9182a4fb2b5834a07761e3c9dcd0ffa2bbf`
-- SEC informational beta: production-active under `SEC-BETA-EMAIL-001 @ 0ece0ff`
-- Last agent: Codex
-- Updated: 2026-07-25 HKT
+
+- Branch / local commit: `master` / `f6f56ce` plus uncommitted `SEC-BETA-M3-OWNER-BRIEF-001`.
+- Production: SEC informational beta at `0ece0ff`; M3 owner brief not yet deployed.
+- Last agent: Codex.
+- Updated: 2026-07-25 HKT.
 
 ## Completed
-- Deployed `SEC-BETA-EMAIL-001` for the existing email route at exact commit `0ece0ff`: deterministic SEC v2 filing brief, no LLM/legacy DB/directional recommendation, trusted-parser allowlist, evidence links and fail-closed pause notices.
-- Added a consistent SQLite snapshot publisher, exact 23:55 UTC publisher cron, isolated beta S3 key, scoped Lambda/uploader IAM desired states and lifecycle retention.
-- Audited the current AWS/VPS route. `smartflow-uploader` is the over-privileged IAM user with `AmazonS3FullAccess`; production Lambda remains in containment with no `REPORT_MODE`.
-- Executed `SEC_INFORMATIONAL_BETA_RUNBOOK.md` after exact owner approval, preserving rollback Lambda version `2` and the pre-change crontab under `/home/ubuntu/SmartFlow-shadow/backups/SEC-BETA-EMAIL-001-20260725T042033Z/`.
-- Completed a code, production DB, and AWS runtime assessment.
-- Added `PROJECT_PLAN.md` with the approved 2026-07-22 to 2026-09-06 rehabilitation programme, release gates, source disposition, risks, and phased delivery sequence.
-- Updated project guidance and changelog to freeze source expansion and preserve the legacy database.
-- Recorded the production S3, Lambda, EventBridge, IAM, CloudWatch, and Lightsail before-state in `PHASE0_RUNBOOK.md`.
-- Created the dated S3 baseline snapshot `snapshots/2026/07/22/pre-rehabilitation-20260722-013106.db` without changing the live DB key.
-- Deployed Lambda containment mode from rewritten commit `a26a22f`; pre-change production code/configuration is preserved as Lambda version `1`.
-- Deployed P0-003 to the VPS from rewritten commit `b8d9841`; all 19 legacy collectors are contained.
-- Redacted the CoinGlass credential from current tracked files and cleared local/VPS runtime values.
-- Rewrote and force-pushed all 24 commits; fresh-clone and VPS all-ref scans found zero credential hits.
-- Sanitized and preserved the VPS-only stash at `refs/archive/sanitized-vps-stash` (`e916e7f`).
-- Deferred provider-side CoinGlass revocation at the owner's direction because the paid key belongs to a third party; SmartFlow files and runtimes remain cleared.
-- Completed P0-005: enabled S3 versioning, deployed scoped lifecycle rules from `ops/s3-lifecycle.json`, and changed restart backups to `backups/YYYYMMDD/smartflow.db`.
-- Audited P0-006 without mutating IAM and drafted `ops/lambda-runtime-policy.json` for the dedicated `smartflow-lambda-role`.
-- Completed P0-006: replaced all three broad managed policies with inline policy `SmartFlowLambdaRuntime` and committed the corrected SES route scope in `846c6dd`.
-- Applied P0-007 alarm and log-retention changes: the existing error alarm now treats missing data as `notBreaching`, and the Lambda log group retains 30 days.
-- Confirmed the SNS email subscription for `TOMMYTANG2414@GMAIL.COM`, published the labelled test alert, and received recipient confirmation.
-- Completed the P0-008 read-only Lightsail control-plane, external exposure, service, SSH, host-firewall, metadata, and admin-path audit.
-- Corrected the local Lightsail key ACL after explicit approval; the key content and VPS authorized keys were unchanged.
-- Completed P0-008: removed public Lightsail rules for `8080` and `8501`, preserving `22` and `5001`.
-- Completed all approved Phase 0 remediation items; production collectors and directional reporting remain contained.
-- Started Phase 1 with offline SEC parser contracts and official-source fixtures.
-- Fixed Form 4 false-SELL aggregation, non-market notional inflation, relationship booleans, mixed-direction handling, and accession-based source IDs.
-- Fixed Form 144 issuer ticker and relationship parsing; represented it as proposed-sale intent rather than an executed sale.
-- Added isolated Phase 1 v2 raw-event, normalized-event, and structured collector-run schema foundations.
-- Added stable source identities and payload hashes plus a disposable-copy migration verifier; legacy `init_db()` remains untouched.
-- Replaced the ineffective thread timeout with a spawned-process runner that terminates and joins hung collectors.
-- Added atomic/idempotent v2 batch persistence with immutable raw-evidence conflict checks.
-- Added transaction-level SEC Form 4 normalization and proposed-intent Form 144 normalization with UTC timestamps and fixed-precision numerics.
-- Added source-specific health/freshness evaluation and current-state persistence; successful empty runs are distinct from failures.
-- Wired offline SEC ingestion end to end from raw XML through parser/normalizer/persistence into structured run outcomes and health.
-- Parser and schema failures preserve raw evidence and remain operational failures; idempotent reruns insert no duplicates.
-- Added a machine-readable official SEC fixture agreement gate covering purchase, sale, non-market, and proposed-sale semantics.
-- Added shared v2 outcome recording plus a parent-process adapter that records terminated timeouts and degraded health.
-- Added SQLite snapshot/restore tooling with overwrite protection, logical manifest comparison, integrity checks, and exact hash verification.
-- Preserved all owners in multi-owner Form 4 filings without duplicating transactions; normalized events now include `entities` and a deterministic group identity.
-- Fixed Form 4 UTC event-date parsing and bumped its normalized parser contract to `sec-form4-v2`.
-- Added the non-production SEC live HTTP adapter with auth/source/parser classification and raw-response preservation.
-- Started Phase 2 with the official SFC weekly CSV contract, exact-decimal parser, anonymous position-snapshot normalizer, and v2 ingestion path.
-- Preserved malformed SFC CSV responses as raw evidence and classified schema drift as parser failure rather than successful emptiness.
-- Added read-only official-index discovery, dated-link/CSV agreement, SFC URL validation, and full live report ingestion into a disposable v2 database.
-- Added two-week SFC reconciliation with non-zero-coercing missing-row semantics.
-- Audited local and immutable production-snapshot SFC legacy tables; both contain zero rows, so numeric legacy conversion is impossible and must not be fabricated.
-- Added bounded official SFC history rebuilding from 2026-04-10 plus a read-only legacy/v2 coverage audit.
-- Added a separate event-publication freshness gate after live rehearsal exposed that successful fetching could hide an overdue weekly report.
-- Audited CCASS official semantics and access terms; scripted search/database creation is a release blocker without written permission or an authorised data route.
-- Added the offline `ccass-v1` structured snapshot contract, non-directional holding/concentration events, synthetic fixtures, balance reconciliation, and raw-evidence ingestion.
-- Added normalized `attributes` for source-specific facts without overloading trade fields.
-- Added a read-only CCASS legacy audit; all existing directional CCASS signals are classified unsupported.
-- Deployed `V2-SHADOW-001` at exact commit `656b893`: `/home/ubuntu/SmartFlow-shadow` now contains an empty v2 DB and has no connection to the live scheduler, legacy DB, S3, Lambda, reports, IAM, or firewall.
-- Added `ops/manage_v2_shadow.py`; it refuses `smartflow.db`, existing targets, and sidecars, atomically publishes a verified empty WAL database, and supports immutable read-only verification.
-- Recorded the exact production before-state, bounded mutation manifest, acceptance checks, and recoverable quarantine rollback in `PRODUCTION_V2_SHADOW_RUNBOOK.md`.
-- Deployed owner-approved `SEC-OBS-001` at exact commit `6d9f809` with a protected contact-only environment, shared-lock Form 4/Form 144 schedules, and daily read-only audit.
-- Preserved the prior crontab and verified SQLite snapshot under `/home/ubuntu/SmartFlow-shadow/backups/SEC-OBS-001-20260722T235245Z/`; snapshot SHA-256 is `6295086ad052662c540cef37bf759ca57d79437be67b1f8e799c00f35897c3db`.
-- The first shell assertion attempt rolled back correctly and left its mode-600 contact file disabled as `sec-shadow.env.disabled-20260722T235139Z`; no cron or process survived that attempt.
+
+- Produced the approved business/technical design and risk assessment as Markdown and a visually verified 22-page DOCX.
+- Implemented deterministic decision-pack generation, compact owner email, full trusted-row CSV, strict MiniMax-M3 output validation, deterministic fallback and best-effort sent markers.
+- Updated the publisher for the exact current pack plus append-only monthly DB archive.
+- Updated scoped uploader/Lambda IAM desired states and operational documentation.
+- Tested all locally available historical/current MiniMax credentials without exposing them; every candidate returned HTTP 401. No key is installed.
 
 ## Verification
-- Informational beta targeted tests pass 12/12; full suite passes 102/102.
-- Real production shadow snapshot dry run passed all gates and produced a 9,771-character report with 1 Form 4 v4 purchase, 4 Form 4 v4 sales and 33 Form 144 v1 proposed-sale notices. It excluded 407 superseded parser events and 10 warning/invalid events.
-- Both desired IAM policies pass AWS Access Analyzer with zero findings. Simulations allow documented beta/live/backup paths and deny unrelated or legacy reads.
-- Shared-VPS code/config dependency scan found AWS SDK/CLI and `smartflow-tommy-db` references only in the SmartFlow checkouts; no unrelated workload dependency on `smartflow-uploader` was found. S3 data events are not available in CloudTrail, so post-scope manual legacy/beta uploads remain mandatory.
-- Pre-deployment read-only audit confirmed Lambda containment, exact existing SES route/schedule, versioned S3, v4 shadow commit and healthy SEC source rows before the authorised mutation began.
-- Production manual invocation returned `informational_beta` with 18,684 characters; SES accepted the email and CloudWatch showed zero Lambda errors or sensitive log hits.
-- The beta S3 object is 5,701,632 bytes, SSE-S3 encrypted and versioned; raw SHA-256 matches metadata, and restore verification passed four tables/2,256 rows.
-- Uploader and Lambda IAM read back exactly from the tracked policies; unrelated writes, reads and deletes are implicitly denied. Both roles/users have zero broad managed policies.
-- Installed crontab equals the exact 1,111-byte pre-state plus `ops/sec-beta-crontab.txt`; both SEC sources remain healthy, both DBs pass integrity, and legacy commit/PID/counters remain unchanged.
-- EventBridge remains enabled at 08:00 HKT, Lambda alarm/log retention remain correct, live legacy S3 metadata is unchanged, and public ports remain only `22`/`5001`.
-- Documentation structure and internal phase dependencies reviewed.
-- Baseline snapshot downloaded and opened read-only: `PRAGMA quick_check=ok`, `224,278` signals, `231,807` collection runs.
-- P0-005 changed only S3 versioning/lifecycle and the future VPS backup path; it did not restart the scheduler or change IAM, firewall, or the live DB.
-- Python compilation passed; containment, invalid-mode fail-closed, and legacy rollback paths passed isolated handler tests.
-- Production manual invocation returned HTTP 200 and `status=containment`; SES send and skip log were present, while DB download and MiniMax logs were absent.
-- Collector containment tests passed: 19/19 registered collectors disabled, direct-run guard blocked execution, fake scheduler had zero jobs, and CLI added no collection run.
-- Production scheduler restarted as PID `639960`; DB quick check passed and run ID/count `231829` plus signal count `224298` remained unchanged beyond the prior one-minute interval.
-- VPS scheduler restarted as PID `640336` with zero-length CoinGlass configuration; all 19 collectors remained disabled and DB counters remained unchanged.
-- S3 versioning read-back returned `Enabled`; five lifecycle rules matched the tracked desired state semantically.
-- The audit snapshot (`201,900,032` bytes) and live DB (`201,912,320` bytes) remained visible; snapshot encryption remained `AES256`.
-- VPS fast-forwarded to `d9ba3fb` without restarting PID `640336`; 19 collectors remained disabled and untracked runtime files were preserved.
-- IAM Access Analyzer returned zero findings for the draft; all 12 allow/deny policy simulations passed.
-- Before P0-006, confirmed `smartflow-report` was the only Lambda using the role, its trust principal was Lambda only, and the role had three broad managed policies with no inline policies.
-- Proved rollback during the first SES test failure, then completed the corrected deployment: HTTP 200, `status=containment`, SES success log, DB/MiniMax skip log, and seven new log events.
-- Final IAM state: zero attached managed policies, one inline policy, and zero Access Analyzer findings.
-- P0-007 read-back confirmed the original alarm threshold/actions were preserved, `TreatMissingData=notBreaching`, and `retentionInDays=30`.
-- SNS read-back confirmed a concrete subscription ARN with `PendingConfirmation=false`; test publish returned message ID `1eba8770-9eb6-5471-b866-e5a95bb1a13b`.
-- The recipient confirmed delivery of the labelled P0-007 test body on 2026-07-22 HKT, completing the end-to-end notification check.
-- Lightsail rules expose `22`, `5001`, `8080`, and `8501` broadly; service mapping identified CCSP Quiz, Watchtower, and an unused port respectively.
-- Host audit confirmed UFW inactive, INPUT accept, direct root key login enabled, IMDSv1 available, no Tailscale, no registered SSM managed instance, and no listener on `8501`.
-- Windows OpenSSH connected successfully after the private-key ACL was limited to the owner, `SYSTEM`, and `Administrators`.
-- Final Lightsail state contains only public `22` and `5001`; Watchtower is blocked externally but returns HTTP 200 on localhost, while CCSP still returns HTTP 401 without credentials.
-- Post-change SmartFlow verification passed: scheduler PID `640336`, `PRAGMA quick_check=ok`, collection run ID/count `231829`, and signal count `224298`.
-- Phase 1 SEC parser suite passed 7/7 tests; Python compilation and `git diff --check` passed.
-- Full offline suite passed 14/14 tests.
-- Repeatable migration rehearsal passed on the 78.7 MB local legacy DB: 8 legacy tables and 319,825 rows unchanged; all v2 tables present; `PRAGMA quick_check=ok`.
-- Process-runner return, remote-error, and hard-timeout tests passed; full offline suite passed 17/17 tests.
-- Full offline suite now passes 33/33 tests, including end-to-end SEC success, rerun, parser-failure, and schema-failure paths.
-- Post-work production read-only check passed: Lambda remains active with its containment-safe default and unchanged Phase 0 deployment timestamp; Lightsail still exposes only `22` and `5001`; VPS scheduler PID remains `640336`; DB `quick_check=ok`; run ID/count remain `231829`; signal count remains `224298`.
-- Official SEC fixture agreement passed 4/4 fixtures (100%) against the 95% gate.
-- Full suite passes 35 tests; a 10-second child terminated at the 0.2-second boundary and produced a v2 timeout run plus degraded source health.
-- Local legacy restore rehearsal passed for 78,663,680 bytes, 8 tables, and 319,825 rows.
-- Dated production S3 snapshot restore rehearsal passed for 201,900,032 bytes, 8 tables, and 774,475 rows; `quick_check=ok` and restored SHA-256 matched exactly.
-- Multi-owner parser/normalizer/ingestion tests pass; official SEC fixture agreement remains 4/4 (100%) and v2 migration remains repeatable.
-- SEC live-adapter success, auth, source, and malformed-parser paths pass; full suite contains 42 tests.
-- SFC parser/normalizer/ingestion tests pass against an official 2026-07-10 fixture; full suite contains 48 tests.
-- Legacy-copy migration remains repeatable and local snapshot restore remains byte-identical after the SFC slice.
-- Live SFC rehearsal discovered 2026-07-10, preserved one raw report, and normalized 1,233 events.
-- Live 2026-07-03 versus 2026-07-10 reconciliation covered 1,231/1,233 rows: 761 changed, 470 unchanged, and 2 newly reported.
-- Bounded 2026-04-10 to 2026-07-10 rebuild processed 14 reports and 17,019 events; identical rerun inserted zero duplicates.
-- Legacy coverage audit returned `no_legacy_history`: 0 legacy weeks/records versus 14 official v2 weeks and 17,019 events.
-- Publication freshness recheck returned `stale:last_event_exceeded_sla` for the latest 2026-07-10 report on 2026-07-23.
-- CCASS focused contract passes 7 tests: exact balances, duplicate rejection, no trade direction, transparent HHI/concentration, idempotent ingestion, parser evidence, and unsupported legacy direction audit.
-- Local CCASS audit: 133,955 holdings / 659 metrics / 352 SELL signals; supported directional signals: 0.
-- Immutable production snapshot audit: 316,811 holdings / 1,555 metrics / 850 directional signals (849 SELL, 1 BUY); supported directional signals: 0.
-- Production shadow preflight: 27 GB free, Python 3.10.12, SQLAlchemy 2.0.49, target absent, scheduler PID `640336` alive. The live worktree has untracked `smartflow.pid` and `tmp_sf_audit.py`, so the release will not modify that checkout.
-- Full offline suite passes 69/69 tests; Python compilation and `git diff --check` pass.
-- Local shadow rehearsal created a 69,632-byte DB with exactly four v2 tables, zero rows, `journal_mode=wal`, `foreign_keys=on`, and `quick_check=ok`; immutable verification preserved its byte hash.
-- Disposable migration rehearsal still preserves 8 legacy tables and 319,825 rows with `quick_check=ok`.
-- VPS deployment passed 69/69 tests. The 69,632-byte shadow DB has SHA-256 `8532c46ca9b63de2c7774a003cc9f7df8f058d50c58f357291c61537a413adaa`, exactly four v2 tables, zero rows, WAL mode, foreign-key validation, `quick_check=ok`, no sidecars, and no running shadow process.
-- Post-deploy zero-drift audit passed: live commit `d9ba3fb`, PID `640336`, run high-water mark `231829`, signal count `224298`, legacy DB integrity, S3 metadata, Lambda/EventBridge/alarm state, and public ports `22`/`5001` are unchanged.
-- Prepared `SEC-SHADOW-001`: bounded exact-form SEC discovery, secure HTTP controls, aggregate source outcomes, guarded v2 runtime DB access, one-shot CLI, and read-only reliability audit.
-- Live disposable rehearsal initially failed closed on a valid derivative-only Form 4, exposing the old parser gap. Added official accession `0001628280-26-049165` as a fixture and bumped Form 4 to `sec-form4-v3` with no false side/notional.
-- Official SEC fixture agreement is 5/5 (100%); full suite passes 81 tests. Repeated live 2+2 ingestion inserted zero duplicates; live 5+5 ingestion completed with both sources healthy and `quick_check=ok`.
-- Deployed `SEC-SHADOW-001` at `560dc30` after snapshotting the empty DB. VPS 81/81 tests passed; production stored five raw/normalized filings per source with 100% initial run reliability and healthy source state.
-- Production semantics audit: four Form 4 derivative events `side=NONE`, one Form 4 sale `reported`, and five Form 144 notices `proposed`; DB `quick_check=ok` and no shadow process, cron, or persistent contact env exists.
-- Post-release zero-drift audit confirmed live commit/PID/legacy counters, S3 metadata, Lambda/EventBridge/alarm, and public ports remain unchanged.
-- Prepared `SEC-OBS-001`: cache-aware polling, per-source child-process timeout with parent-recorded timeout health, strict contact-only wrapper, shared flock, exact cron block, and daily audit.
-- Full suite passes 82 tests; a process-isolated live 1+1 rerun used cache hits, inserted zero duplicates, kept both sources healthy, and passed `quick_check`.
-- VPS deployment passed 82/82 tests; manual Form 4 run `3` and Form 144 run `4` both succeeded before cron installation.
-- First scheduled Form 4 run `5` and Form 144 run `7` both completed successfully with no failure kind. The 14-day observation clock started at 2026-07-23 00:02:05 UTC and ends at 2026-08-06 00:02:05 UTC.
-- Post-start audit returned 100% initial reliability and healthy state for both sources, `quick_check=ok`, 14/11 raw Form 4/Form 144 filings, and 44/11 normalized events; scheduler logs contain no contact PII.
-- Exact cron block and unrelated-crontab comparison passed. Live commit `d9ba3fb`, PID `640336`, legacy counters, both DB integrity checks, S3, Lambda, EventBridge, alarm, and public ports `22`/`5001` remained unchanged.
-- Day-1 checkpoint at 2026-07-24 00:02 UTC: Form 144 is 24/24 healthy; Form 4 is 287/288 healthy (99.65%). Run `212` was a correctly classified transient SEC source failure with zero partial writes and automatic next-run recovery.
-- Day-1 reconciliation passed: `quick_check=ok`, no foreign-key violations, every raw accession has normalized children, no orphan events, no false Form 4 direction, all Form 144 events remain proposed, and no failure is stored as empty success. Cron/env/log privacy and live/AWS zero-drift checks also pass.
-- The owner requested the final gate early on 2026-07-25 HKT. Verdict is `NO-GO`: only 1.718/14 days elapsed, Form 4 reliability was 481/495 (97.1717%), and current Form 4 health was degraded at the evaluation snapshot; Form 144 remained 41/41 (100%).
-- Two valid transactionless Form 4 accessions (`0001461219-26-000003`, `0001461237-26-000005`) have immutable raw evidence but no normalized child. They contain an administrative resignation notice, `notSubjectToSection16=1`, and no transaction/holding; `sec-form4-v3` rejects no-transaction filings, producing 12 parser failures while the accession remained in the feed window.
-- Final-gate checks that passed: explicit failure taxonomy, zero semantic violations, `quick_check`, foreign keys, no orphan/duplicate identities, schedule continuity, byte-identical pre/current snapshot restores, cron/env/log privacy, and live/AWS zero drift. Full evidence is in `SEC_SHADOW_GO_LIVE_GATE_2026-07-25.md`.
-- Implemented the local `sec-form4-v4` remediation: two official transactionless fixtures, restrictive administrative parsing, non-directional/null-value normalization, cache regression coverage, and a SHA-pinned exact-accession reprocessor.
-- Disposable rehearsal against a current production SQLite backup inserted one v4 child for each raw accession, inserted zero on an identical rerun, reduced raw-without-child to zero, preserved all 14 failure rows, and passed `quick_check`.
-- Deployed approved `SEC-FORM4-V4-001` at exact commit `fcd5e91` under the shared lock after preserving the crontab and a consistent DB backup at `/home/ubuntu/SmartFlow-shadow/backups/SEC-FORM4-V4-001-20260724T173626Z/`.
-- Production reprocessing inserted one administrative v4 child for each exact hash-pinned raw accession and zero on rerun; all 14 historical failure rows remain unchanged.
+
+- Full suite: 115 tests passed.
+- Focused owner-brief suite: 25 tests passed, including body-plus-metadata tamper rejection through deterministic recomputation.
+- Python compilation and `git diff --check` passed.
+- Production-snapshot rehearsal: 95,446-byte pack, 37,529-byte CSV, 103 trusted events, 67 evidence groups, deterministic `MIXED` / `MANUAL_REVIEW`, no raw XML or entity names in the M3 fact pack.
+- Both IAM policies passed AWS Access Analyzer with zero findings.
+- IAM simulations allowed only the exact documented objects/actions and exact SES route; unrelated reads/writes/deletes/recipient were denied.
 
 ## Decisions / constraints
-- `SEC-BETA-EMAIL-001` is active. Any change to its IAM, environment, code, S3 key/lifecycle, sender/recipient or publisher cron requires a new approved manifest.
-- Beta activation removes `MINIMAX_API_KEY` and legacy `DB_PATH` from Lambda; the legacy AI report is not a rollback path.
-- Existing EventBridge schedule and SES route stay unchanged. The beta publisher uses the same SEC shadow lock and an isolated S3 object.
-- The 14-day v4 observation continues independently; informational beta is not the full SmartFlow business go-live.
-- Current directional report output is untrusted until the documented gates pass.
-- Phase 0 security remediation is approved, but every production mutation requires a before-state, backup, bounded change, verification, and rollback.
-- Legacy production data must not be edited or deleted in place.
-- Core MVP sources: Form 4, Form 144, CoinGlass, CCASS, and SFC short positions.
-- SFC data represents anonymous aggregated reportable net short positions. It must never be described as turnover, an identified seller, or a `SELL` trade.
-- CCASS participant holdings are custody/settlement balances, not beneficial ownership or trades. HKEX access terms block scripted collection and database rebuilding without permission.
-- Do not add new collectors during rehabilitation.
-- Git history rewrite is complete; external clones/caches may still retain the old credential value.
-- Provider-side CoinGlass revocation is an accepted residual risk for Phase 0 and must not be attempted without renewed approval from the third-party account owner.
-- CoinGlass implementation is owner-deferred; do not use the third-party paid key or make it the next remediation step.
-- S3 versioning cannot be returned to an unversioned state; rollback is `Suspended`, and existing versions remain.
-- `snapshots/` has no expiry rule; live DB non-current versions retain 30 days; operational backups and `short-alpha/` retain 30 days.
-- The Lambda role may read only the live DB object, send only from the configured sender to the configured recipient, and create/write only its own log group.
-- IAM rollback must reattach all three recorded managed policies and verify containment before removing or changing the inline policy.
-- The Lambda error alarm must continue to reuse `smartflow-lambda-alerts`; idle daily periods are healthy missing data, not operational failures.
-- Lambda logs retain 30 days. Removing the retention policy restores indefinite retention but cannot recover logs AWS has already expired.
-- The Lightsail instance is a shared host. Preserve public `5001` until the unrelated CCSP dependency is separately reviewed, and preserve `22` until a tested alternate admin path exists.
-- P0-008 desired and rollback states are tracked under `ops/`; do not reopen `8080` or `8501` for ordinary operation.
-- `V2-SHADOW-001` is deployed but remains schema-only, not business go-live. It must remain disconnected until a source-specific shadow runner passes its own release gate.
-- `SEC-OBS-001` is an isolated production-shadow observation only. Do not connect it to legacy signals, reports, messaging, S3, Lambda, or business output before the full 14-day/99% gate and a separate go-live approval.
+
+- Deterministic code owns facts, metrics, result, action and evidence. M3 may write prose only.
+- Missing/failed/invalid M3 output must use deterministic fallback; do not install an invalid key or paid-provider fallback.
+- Do not accept MiniMax Terms of Service/Privacy Policy on the owner's behalf.
+- No recipient, schedule, collector, CoinGlass, firewall, public port, legacy DB or trading behavior changes.
+- Lambda must not regain read access to the SQLite DB; raw XML remains only in stored DB evidence/archive.
+- Existing 14-day SEC v4 observation continues independently.
 
 ## Next handoff
-- Observe the first automatic publisher at 2026-07-25 23:55 UTC and the first scheduled beta Lambda at 2026-07-26 00:00 UTC; verify publisher/Lambda logs, current S3 version metadata and zero Lambda errors.
-- Leave the replacement v4 observation unchanged. On or after 2026-08-07 18:02:07 UTC, run the full 14-day reliability, current-health, failure-taxonomy, accession reconciliation, semantic, snapshot-restore, and live/AWS zero-drift gate. Business go-live still requires a separate approval.
+
+- Finish code/security review, commit and push the implementation, then execute the bounded production deployment and zero-drift checks in `SEC_M3_OWNER_BRIEF_RUNBOOK.md`.
+- Activate M3 only after the account owner accepts provider terms and an active API key passes an exact-endpoint preflight; deterministic brief + CSV can operate without it.
