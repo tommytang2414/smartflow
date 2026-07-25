@@ -324,7 +324,7 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Added a compact deterministic S3 decision pack so Lambda no longer downloads the growing SQLite database; the publisher retains the current consistent DB and creates an append-only monthly archive.
 - Added a short owner email with deterministic result/action/top evidence, an all-trusted-row UTF-8 CSV attachment, formula-injection controls and a best-effort sent marker.
 - MiniMax-M3 is constrained to prose over a redacted aggregate fact pack. Exact-model/content validation rejects changed facts, unsupported identifiers/numbers/actions, links, thinking traces, trading language and Form 144 execution claims; deterministic fallback remains fully usable.
-- Updated IAM desired states so the uploader is write-only to exact current/archive paths and Lambda can read only the decision pack/markers and write only sent markers. Access Analyzer and simulations pass; full suite passes 115 tests, including body-plus-metadata tamper rejection.
+- Updated IAM desired states so the uploader is write-only to exact current/archive paths and Lambda can read only the decision pack/markers and write only sent markers. Access Analyzer and simulations pass; full suite passes 116 tests, including body-plus-metadata tamper rejection and the no-`ListBucket` missing-marker path.
 - No valid API key is installed: historical and current local credentials returned HTTP 401, and accepting provider legal terms is reserved for the account owner.
 
 ### 2026-07-25 — SEC Informational Beta Email Package

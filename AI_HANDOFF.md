@@ -17,8 +17,8 @@
 
 ## Verification
 
-- Full suite: 115 tests passed.
-- Focused owner-brief suite: 25 tests passed, including body-plus-metadata tamper rejection through deterministic recomputation.
+- Full suite: 116 tests passed.
+- Focused owner-brief suite: 26 tests passed, including body-plus-metadata tamper rejection and the no-`ListBucket` missing-marker path.
 - Python compilation and `git diff --check` passed.
 - Production-snapshot rehearsal: 95,446-byte pack, 37,529-byte CSV, 103 trusted events, 67 evidence groups, deterministic `MIXED` / `MANUAL_REVIEW`, no raw XML or entity names in the M3 fact pack.
 - Both IAM policies passed AWS Access Analyzer with zero findings.

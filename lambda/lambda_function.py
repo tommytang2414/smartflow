@@ -207,7 +207,9 @@ def _marker_exists(report_id: str) -> bool:
     except Exception as exc:
         response = getattr(exc, "response", {})
         code = str(response.get("Error", {}).get("Code", ""))
-        if code in {"404", "NoSuchKey", "NotFound"}:
+        # S3 returns 403 for a missing key when this least-privilege role has
+        # exact GetObject access but intentionally has no ListBucket access.
+        if code in {"403", "AccessDenied", "404", "NoSuchKey", "NotFound"}:
             return False
         raise
 

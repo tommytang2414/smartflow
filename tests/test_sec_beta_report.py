@@ -693,6 +693,17 @@ class SecBetaLambdaTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Unsupported REPORT_MODE"):
             LAMBDA.handler({}, None)
 
+    def test_missing_marker_403_is_absent_without_list_bucket_permission(self):
+        class MissingMarker(Exception):
+            response = {"Error": {"Code": "403"}}
+
+        s3 = unittest.mock.Mock()
+        s3.head_object.side_effect = MissingMarker()
+        boto3 = unittest.mock.Mock()
+        boto3.client.return_value = s3
+        with patch.dict(sys.modules, {"boto3": boto3}):
+            self.assertFalse(LAMBDA._marker_exists("SFO-2026-07-25-abcdef123456"))
+
 
 class SecBetaPublisherTests(unittest.TestCase):
     def setUp(self):

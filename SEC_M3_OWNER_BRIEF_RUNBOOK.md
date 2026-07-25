@@ -87,6 +87,8 @@ Monthly archive creation occurs only on HKT day 1 and uses an if-absent write. T
 
 Both tracked policies must pass Access Analyzer and explicit allow/deny simulation before deployment.
 
+Because the Lambda intentionally has no `s3:ListBucket`, S3 returns `403` rather than `404` when an exact sent-marker key does not yet exist. The marker check treats `403` as absent only on the fixed marker prefix; an existing marker remains readable and suppresses the duplicate.
+
 ## Security and business risks
 
 | Risk | Control | Residual |

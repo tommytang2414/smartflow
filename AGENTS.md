@@ -37,6 +37,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Never send names, raw XML, URLs, remarks, contact data or secrets to M3. Never log the prompt, response body or API key.
 - Any schema, integrity, foreign-key, source-health, freshness, hash or semantic failure must send only a sanitized `BETA PAUSED` notice and skip M3.
 - `smartflow-uploader` retains scoped write-only access for the current DB, decision pack and monthly dated archive; Lambda can read only the pack/markers and write only markers. Do not expand these patterns.
+- A missing sent marker returns S3 `403` because Lambda intentionally lacks `ListBucket`; `_marker_exists()` treats it as absent only after constructing and validating the exact marker key. Do not add bucket listing just to obtain `404`.
 
 ## Lambda monitoring
 
@@ -131,7 +132,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Replaced the growing-DB Lambda input with a compact deterministic decision pack while preserving the consistent current DB snapshot and adding an append-only monthly archive.
 - Added concise result/action/top-evidence email output, all-trusted-row CSV deep dive, formula-injection protection and best-effort sent-marker idempotency.
 - Added bounded MiniMax-M3 prose generation with data minimisation, strict output validation and deterministic fallback; no valid API key is installed pending account-owner acceptance of provider terms.
-- Scoped uploader and Lambda IAM desired states to the new exact objects/actions. Local full suite passes 115 tests, including body-plus-metadata tamper rejection; both policies pass Access Analyzer and allow/deny simulations.
+- Scoped uploader and Lambda IAM desired states to the new exact objects/actions. Local full suite passes 116 tests, including body-plus-metadata tamper rejection and the no-`ListBucket` missing-marker path; both policies pass Access Analyzer and allow/deny simulations.
 
 ### 2026-07-25 — SEC Informational Beta Email Package
 
