@@ -103,14 +103,42 @@ The newest 25 official 2026 House PTRs produced:
 The rehearsal used a disposable local v2 database. No production source,
 schedule, AWS permission, report or email changed.
 
+## Raw-storage measurement
+
+For the same newest-25 sample:
+
+- exact PDF bytes: 1,683,635;
+- base64 payload bytes: 2,244,872 (33.33% encoding overhead);
+- complete SQLite v2 database: 2,519,040 bytes;
+- average official PDF: approximately 67 KB.
+
+A linear estimate for the current 313-report index is approximately 31.5 MB of
+SQLite storage. This is operationally modest, but it is an estimate rather than
+a retention guarantee. Production review must account for S3 object versioning,
+monthly archives and multi-year history before enabling backfill.
+
+## Legacy reconciliation
+
+The contained local legacy database has 1,499 Congress rows from 25 April 2025
+through 18 May 2026:
+
+- 752 BUY, 742 SELL and five EXCHANGE labels;
+- 263 explicitly tagged `quiverquant` and 1,236 from an unspecified legacy API;
+- 1,236 range disclosures stored as the lower bound rather than the disclosed
+  range;
+- all 1,499 use legacy identities without official report-plus-row traceability;
+- zero rows can be linked to an immutable official House/Senate report ID and row.
+
+These rows remain audit history only. Do not train, validate, backfill or report
+them as corrected Congress ground truth.
+
 ## Remaining release gates
 
 1. Validate amendments, owner codes, open-ended amount ranges and a larger
    time-separated official sample before setting the fixture-agreement gate.
 2. Decide whether image-only OCR is worth a separately bounded implementation;
    until then the warning PDF remains available for manual deep dive.
-3. Measure raw-PDF database/archive growth before choosing production retention.
+3. Define production retention using the measured footprint plus S3
+   version/archive behaviour.
 4. Implement Senate only after the acknowledgement/session design is approved.
-5. Run a non-production history reconciliation against the contained legacy
-   Congress rows; do not migrate midpoint values as ground truth.
-6. Obtain a separate production source-release approval before scheduling.
+5. Obtain a separate production source-release approval before scheduling.

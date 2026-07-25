@@ -52,10 +52,18 @@ source. Form 13F requires a new comparable-quarter contract before use.
 - Latest-25 disposable rehearsal: 25 PDFs, 137 events, 30 warning events,
   healthy aggregate outcome and `quick_check=ok`.
 
+Raw-storage sample: 25 PDFs used 1.68 MB and the complete disposable SQLite
+database used 2.52 MB; the current 313-report index is estimated at roughly
+31.5 MB before S3 version/archive multiplication.
+
+Legacy audit: 1,499 rows, all without official report-row traceability; 1,236
+range disclosures were stored only as their lower bound. Preserve them as audit
+history and do not migrate them as ground truth.
+
 Remaining House release work: larger time-separated layout/amendment validation,
-raw-storage growth measurement, legacy reconciliation and separate production
-source-release approval. Senate remains blocked behind its user acknowledgement
-and separate access/session design.
+production retention definition and separate source-release approval. Senate
+remains blocked behind its user acknowledgement and separate access/session
+design.
 
 ## SFC contract completed
 

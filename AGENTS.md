@@ -138,6 +138,10 @@ before the documented release gates pass.
 - Do not automate acceptance of the Senate eFD acknowledgement. A Senate live
   adapter requires a separately approved access/session design.
 - The legacy QuiverQuant beta collector remains disabled and is not a fallback.
+- Use `smartflow.congress_legacy_audit.audit_congress_legacy()` read-only. The
+  local legacy database has 1,499 Congress rows with zero official report-row
+  traceability; 1,236 disclosed ranges were reduced to lower-bound values.
+  Preserve these rows for audit only and rebuild official evidence independently.
 
 ## HKEX CCASS semantics and access
 
@@ -167,6 +171,17 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — Congress Legacy Audit and Raw-Storage Measurement
+
+- Added a read-only audit for legacy Congress identity, upstream-source and
+  disclosed-range semantics.
+- Confirmed 1,499 local legacy rows have no official report-row traceability;
+  1,236 range disclosures were stored as lower-bound values, not exact amounts.
+- Measured the newest-25 official raw-PDF sample: 1.68 MB PDF bytes, 2.24 MB
+  base64 payload and 2.52 MB complete v2 SQLite database; current-index linear
+  estimate is about 31.5 MB before S3 versions/archives.
+- Legacy Congress data remains audit-only. No production state changed.
 
 ### 2026-07-26 — House Congress Raw Evidence and Bounded Live Adapter
 
