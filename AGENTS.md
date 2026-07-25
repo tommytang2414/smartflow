@@ -122,6 +122,16 @@ before the documented release gates pass.
   actor deduplication across reports.
 - Extract tickers only when disclosed in the official row. Missing tickers are a
   warning and cannot enter ticker-level cross-source ranking.
+- Preserve official House PDFs exactly in raw evidence. The live adapter accepts
+  only the official HTTPS host, rejects redirects, validates content type/magic,
+  streams within hard size limits and reads only the exact yearly XML ZIP member.
+- Image-only official PTRs create `congress_document_notice` /
+  `unparsed_document` warning events with no direction or ticker. Never record
+  them as empty success or infer their visible transaction without an approved
+  OCR contract.
+- One House batch records one aggregate collector outcome. Any actual parser,
+  source or persistence failure must remain visible and degrade source health;
+  document-level missing tickers and explicit OCR warnings remain quality flags.
 - House/Senate notices prohibit most commercial use and other statutory uses.
   Current scope is the owner's personal research. Reassess before any client,
   paid or redistributed use.
@@ -157,6 +167,22 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — House Congress Raw Evidence and Bounded Live Adapter
+
+- Added official-host-only, no-redirect, streamed and size-bounded House index/PDF
+  acquisition with content-type, magic-byte and ZIP-member validation.
+- Preserved each PDF byte-for-byte in immutable raw evidence with PDF SHA-256;
+  parser failures retain the PDF and degrade health.
+- Added idempotent Congress v2 persistence and one aggregate outcome/health record
+  per bounded House batch, including correct persistence-failure classification.
+- Added wrapped-range and exact-amount layouts. Image-only official forms now
+  produce explicit non-directional OCR warning events rather than disappearing.
+- Latest-25 disposable rehearsal persisted 25 PDFs and 137 events: 134 ranges,
+  one exact amount, 28 missing-ticker warnings and two image-only OCR warnings;
+  aggregate health was healthy and `quick_check=ok`.
+- Added six ingestion/boundary tests and expanded parser coverage. No production
+  collector, AWS resource, schedule, report or email changed.
 
 ### 2026-07-26 — Official House Congress v2 Parser Foundation
 

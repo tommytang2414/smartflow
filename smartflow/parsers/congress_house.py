@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from io import BytesIO
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from typing import Any
@@ -113,20 +114,24 @@ def _core_row(line: list[dict[str, Any]]) -> bool:
     transaction_date = _column_text(line, 320, 380)
     notification_date = _column_text(line, 380, 445)
     transaction_type = _column_text(line, 255, 320)
-    amount = _column_text(line, 440, 520)
     return (
         bool(DATE_PATTERN.fullmatch(transaction_date))
         and bool(DATE_PATTERN.fullmatch(notification_date))
         and transaction_type[:1] in {"P", "S", "E"}
-        and "$" in amount
     )
 
 
-def _amount_range(value: str) -> tuple[Decimal, Decimal | None]:
+def _amount_range(value: str) -> tuple[Decimal, Decimal | None, bool]:
     cleaned = " ".join(value.replace(",", "").split())
     over = re.fullmatch(r"Over \$(\d+(?:\.\d+)?)", cleaned, re.IGNORECASE)
     if over:
-        return Decimal(over.group(1)), None
+        return Decimal(over.group(1)), None, True
+    exact = re.fullmatch(r"\$(\d+(?:\.\d+)?)", cleaned)
+    if exact:
+        amount = Decimal(exact.group(1))
+        if amount <= 0:
+            raise HouseDisclosureError(f"invalid House PTR amount: {value!r}")
+        return amount, amount, False
     match = re.fullmatch(
         r"\$(\d+(?:\.\d+)?)\s*-\s*\$(\d+(?:\.\d+)?)",
         cleaned,
@@ -140,7 +145,7 @@ def _amount_range(value: str) -> tuple[Decimal, Decimal | None]:
         raise HouseDisclosureError(f"invalid House PTR amount range: {value!r}") from error
     if lower <= 0 or upper < lower:
         raise HouseDisclosureError(f"invalid House PTR amount range: {value!r}")
-    return lower, upper
+    return lower, upper, True
 
 
 def _ticker(asset: str) -> str | None:
@@ -163,12 +168,14 @@ def parse_house_ptr_word_pages(
         raise HouseDisclosureError("invalid House PTR report metadata")
 
     transactions = []
+    has_text_layer = any(words for words in pages)
     for page_number, words in enumerate(pages, start=1):
         lines = _group_lines(words)
         row_indexes = [index for index, line in enumerate(lines) if _core_row(line)]
         for position, line_index in enumerate(row_indexes):
             line = lines[line_index]
             asset_parts = [_column_text(line, 100, 255)]
+            amount_parts = [_column_text(line, 440, 520)]
             next_row = (
                 row_indexes[position + 1]
                 if position + 1 < len(row_indexes)
@@ -180,14 +187,17 @@ def parse_house_ptr_word_pages(
                 part = _column_text(continuation, 100, 255)
                 if part:
                     asset_parts.append(part)
+                amount_part = _column_text(continuation, 440, 520)
+                if amount_part:
+                    amount_parts.append(amount_part)
             asset = " ".join(part for part in asset_parts if part).strip()
             if not asset:
                 raise HouseDisclosureError("House PTR transaction is missing asset")
 
             transaction_type = _column_text(line, 255, 320)
             action_code = transaction_type[:1]
-            amount_lower, amount_upper = _amount_range(
-                _column_text(line, 440, 520)
+            amount_lower, amount_upper, amount_is_range = _amount_range(
+                " ".join(amount_parts)
             )
             transactions.append(
                 {
@@ -213,11 +223,22 @@ def parse_house_ptr_word_pages(
                     ),
                     "amount_lower": amount_lower,
                     "amount_upper": amount_upper,
+                    "amount_is_range": amount_is_range,
                 }
             )
     if not transactions:
+        if not has_text_layer:
+            return {
+                **report,
+                "document_status": "requires_ocr",
+                "transactions": [],
+            }
         raise HouseDisclosureError("House PTR PDF contains no recognized transactions")
-    return {**report, "transactions": transactions}
+    return {
+        **report,
+        "document_status": "parsed",
+        "transactions": transactions,
+    }
 
 
 def extract_house_ptr_pdf(
@@ -233,6 +254,27 @@ def extract_house_ptr_pdf(
 
     try:
         with pdfplumber.open(pdf_path) as document:
+            pages = [page.extract_words() for page in document.pages]
+    except Exception as error:
+        raise HouseDisclosureError("could not read House PTR PDF") from error
+    return parse_house_ptr_word_pages(pages, report=report)
+
+
+def extract_house_ptr_pdf_bytes(
+    pdf_content: bytes,
+    *,
+    report: dict[str, Any],
+) -> dict[str, Any]:
+    """Extract an official PTR PDF held in memory."""
+    if not pdf_content.startswith(b"%PDF-"):
+        raise HouseDisclosureError("House PTR payload is not a PDF")
+    try:
+        import pdfplumber
+    except ImportError as error:
+        raise RuntimeError("pdfplumber is required for House PTR parsing") from error
+
+    try:
+        with pdfplumber.open(BytesIO(pdf_content)) as document:
             pages = [page.extract_words() for page in document.pages]
     except Exception as error:
         raise HouseDisclosureError("could not read House PTR PDF") from error

@@ -80,9 +80,11 @@ The final stock-first brief has two layers:
 - Use collision-resistant report-plus-row identity and retain amendments.
 - Confirm permitted personal research use before production scheduling.
 
-Current status: official House year-index and PDF-row parser/normalizer are
-implemented offline as `congress-house-ptr-v1`; live House ingestion and the
-Senate access-gate design remain pending. See `CONGRESS_ASSESSMENT.md`.
+Current status: official House year-index/PDF parsing, bounded official-host
+acquisition, exact raw-PDF preservation, idempotent v2 persistence and aggregate
+health are implemented and validated in a disposable local database. Production
+release and the Senate access-gate design remain pending. See
+`CONGRESS_ASSESSMENT.md`.
 
 ### Slice C — SFC production context
 

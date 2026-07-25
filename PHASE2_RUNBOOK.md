@@ -36,6 +36,27 @@ source. Form 13F requires a new comparable-quarter contract before use.
 - `FOLLOW_UP_HIGH` means research urgency from corroboration, actor breadth or contradiction; it is not confidence or a trade recommendation.
 - Deterministic code owns grouping, stance, priority, limitations and evidence. M3 may narrate the allowlisted facts only.
 
+## Congress House contract completed offline
+
+- Official yearly XML index discovery; only `FilingType=P` reports are eligible.
+- Official-host-only HTTPS with redirects disabled, streamed hard-size limits,
+  content-type/magic checks and exact ZIP-member validation.
+- Exact PDF bytes retained in immutable raw evidence with PDF SHA-256.
+- One collision-resistant normalized event per report row; stable member identity
+  prevents repeated reports from becoming fake actor consensus.
+- Transaction, notification and filing dates remain separate.
+- Disclosed ranges and exact amounts are preserved without midpoint estimation.
+- Missing tickers remain warnings and are excluded from ticker-level ranking.
+- Image-only scanned forms create non-directional `unparsed_document` OCR warnings.
+- One aggregate outcome and source-health refresh per bounded batch.
+- Latest-25 disposable rehearsal: 25 PDFs, 137 events, 30 warning events,
+  healthy aggregate outcome and `quick_check=ok`.
+
+Remaining House release work: larger time-separated layout/amendment validation,
+raw-storage growth measurement, legacy reconciliation and separate production
+source-release approval. Senate remains blocked behind its user acknowledgement
+and separate access/session design.
+
 ## SFC contract completed
 
 - Official source fixture: SFC report dated 10 July 2026.

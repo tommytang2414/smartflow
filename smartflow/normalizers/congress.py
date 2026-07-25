@@ -43,6 +43,53 @@ def normalize_house_ptr(
         member_name.casefold(),
         parsed.get("state_district") or "unknown",
     )
+    if parsed.get("document_status") == "requires_ocr":
+        return [
+            {
+                "source": "congress",
+                "source_event_id": make_source_event_id(
+                    "congress",
+                    "house",
+                    doc_id,
+                    "document_requires_ocr",
+                ),
+                "event_type": "congress_document_notice",
+                "action": "unparsed_document",
+                "side": None,
+                "execution_status": "reported",
+                "market": "US",
+                "security_id": None,
+                "ticker": None,
+                "entity_id": member_id,
+                "entity_name": member_name,
+                "entities": [
+                    {
+                        "member_name": member_name,
+                        "chamber": "house",
+                        "state_district": parsed.get("state_district"),
+                    }
+                ],
+                "attributes": {
+                    "chamber": "house",
+                    "doc_id": doc_id,
+                    "document_status": "requires_ocr",
+                },
+                "quantity": None,
+                "price": None,
+                "value": None,
+                "currency": None,
+                "event_at": _utc_date(parsed["filing_date"]),
+                "filed_at": _utc_date(parsed["filing_date"]),
+                "observed_at": _utc(observed_at),
+                "source_url": parsed["source_url"],
+                "parser_version": HOUSE_PTR_PARSER_VERSION,
+                "quality_status": "warning",
+                "quality_reasons": [
+                    "image_only_pdf_requires_ocr",
+                    "no_directional_transaction_extracted",
+                ],
+            }
+        ]
 
     events = []
     for transaction in parsed.get("transactions", []):
@@ -99,7 +146,7 @@ def normalize_house_ptr(
                         if transaction["amount_upper"] is not None
                         else None
                     ),
-                    "amount_is_range": True,
+                    "amount_is_range": transaction["amount_is_range"],
                 },
                 "quantity": None,
                 "price": None,

@@ -55,6 +55,25 @@ class HouseCongressContractTests(unittest.TestCase):
         with self.assertRaisesRegex(HouseDisclosureError, "invalid House PTR amount"):
             parse_house_ptr_word_pages(pages, report=self.report)
 
+    def test_exact_disclosed_amount_is_not_mislabeled_as_range(self):
+        pages = [[
+            {"top": 325.97, "x0": 103.95, "text": "Example"},
+            {"top": 325.97, "x0": 160.50, "text": "(EXM)"},
+            {"top": 325.97, "x0": 220.00, "text": "[ST]"},
+            {"top": 325.97, "x0": 262.20, "text": "S"},
+            {"top": 325.97, "x0": 326.70, "text": "07/01/2026"},
+            {"top": 325.97, "x0": 381.45, "text": "07/02/2026"},
+            {"top": 325.97, "x0": 445.95, "text": "$2,722.50"},
+        ]]
+        parsed = parse_house_ptr_word_pages(pages, report=self.report)
+        transaction = parsed["transactions"][0]
+        self.assertEqual(transaction["amount_lower"], Decimal("2722.50"))
+        self.assertEqual(transaction["amount_upper"], Decimal("2722.50"))
+        self.assertFalse(transaction["amount_is_range"])
+
+        event = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)[0]
+        self.assertFalse(event["attributes"]["amount_is_range"])
+
     def test_normalizer_preserves_disclosed_range_without_midpoint(self):
         parsed = parse_house_ptr_word_pages(self.pages, report=self.report)
         events = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)
@@ -76,6 +95,20 @@ class HouseCongressContractTests(unittest.TestCase):
         self.assertEqual(sale["quality_status"], "warning")
         self.assertIn("ticker_not_disclosed", sale["quality_reasons"])
         self.assertNotEqual(purchase["source_event_id"], sale["source_event_id"])
+
+    def test_image_only_pdf_becomes_non_directional_ocr_warning(self):
+        parsed = parse_house_ptr_word_pages([[]], report=self.report)
+        events = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)
+
+        self.assertEqual(parsed["document_status"], "requires_ocr")
+        self.assertEqual(len(events), 1)
+        event = events[0]
+        self.assertEqual(
+            (event["event_type"], event["action"], event["side"]),
+            ("congress_document_notice", "unparsed_document", None),
+        )
+        self.assertEqual(event["quality_status"], "warning")
+        self.assertIn("image_only_pdf_requires_ocr", event["quality_reasons"])
 
 
 if __name__ == "__main__":

@@ -2,7 +2,8 @@
 
 Date: 2026-07-26 HKT
 
-Status: House offline parser/normalizer complete; live ingestion and Senate adapter pending
+Status: House bounded live adapter and v2 ingestion complete offline; production
+release and Senate adapter pending
 
 ## Business meaning
 
@@ -32,9 +33,14 @@ SmartFlow therefore treats Congress data as delayed actor evidence:
 - Transaction details remain in individual PDFs.
 
 The current parser reads the official index XML and PDF word coordinates. It
-fails closed on missing rows, dates, amount ranges or identity fields. It
-extracts a ticker only when the report discloses one; it does not infer a ticker
-from an asset name.
+fails closed on malformed rows, dates, amounts or identity fields. It preserves
+both disclosed ranges and occasional exact amounts. It extracts a ticker only
+when the report discloses one; it does not infer a ticker from an asset name.
+
+Some official House reports are image-only scans with no text layer. SmartFlow
+preserves the exact PDF and creates a non-directional `unparsed_document`
+warning. It does not treat the document as empty, attempt unreliable implicit
+OCR, or infer a transaction from the image.
 
 ### Senate
 
@@ -67,16 +73,44 @@ use. Public availability is not a redistribution licence.
 - stable actor identity uses member name plus state/district, not DocID
 - disclosed lower/upper amount remains in attributes; `value` stays null
 - missing ticker is a warning and cannot enter ticker-level cross-source ranking
+- image-only PDF is a warning event requiring OCR and has no direction/ticker
 - parser version: `congress-house-ptr-v1`
+
+## Acquisition and raw evidence controls
+
+- HTTPS is restricted to `disclosures-clerk.house.gov`.
+- Redirects are disabled and rejected.
+- ZIP/PDF content type, magic bytes, `Content-Length`, streamed body size and
+  exact expected ZIP member are bounded and validated.
+- Each official PDF is stored byte-for-byte in base64 inside immutable raw
+  evidence with a separate PDF SHA-256.
+- Parser/schema failures preserve the PDF before recording degraded health.
+- One bounded batch creates one aggregate collector outcome; a per-document
+  failure cannot be hidden by later successes.
+- Successful reruns are idempotent.
+
+## Latest live disposable rehearsal
+
+The newest 25 official 2026 House PTRs produced:
+
+- 25 exact raw PDFs;
+- 137 normalized events;
+- 134 disclosed ranges and one disclosed exact amount;
+- 28 transaction warnings where no ticker was disclosed;
+- two image-only documents preserved as non-directional OCR warnings;
+- one aggregate successful run, healthy source state and `quick_check=ok`.
+
+The rehearsal used a disposable local v2 database. No production source,
+schedule, AWS permission, report or email changed.
 
 ## Remaining release gates
 
-1. Add bounded House HTTP acquisition with size, redirect, host and content checks.
-2. Preserve exact PDF bytes as immutable raw evidence outside the M3 fact pack.
-3. Add aggregate collector outcomes, source health and idempotent v2 persistence.
-4. Validate more official PDF layouts, amendments, owner codes and open-ended
-   amount ranges before setting the fixture-agreement gate.
-5. Implement Senate only after the acknowledgement/session design is approved.
-6. Run a non-production history reconciliation against the contained legacy
+1. Validate amendments, owner codes, open-ended amount ranges and a larger
+   time-separated official sample before setting the fixture-agreement gate.
+2. Decide whether image-only OCR is worth a separately bounded implementation;
+   until then the warning PDF remains available for manual deep dive.
+3. Measure raw-PDF database/archive growth before choosing production retention.
+4. Implement Senate only after the acknowledgement/session design is approved.
+5. Run a non-production history reconciliation against the contained legacy
    Congress rows; do not migrate midpoint values as ground truth.
-7. Obtain a separate production source-release approval before scheduling.
+6. Obtain a separate production source-release approval before scheduling.
