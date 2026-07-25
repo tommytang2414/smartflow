@@ -132,6 +132,7 @@ Follow `PROJECT_PLAN.md` for the approved SmartFlow rehabilitation roadmap. The 
 - Corrected the M3 provider from the global `minimax.io` platform to the owner's mainland `minimaxi.com` Token Plan and pinned the official mainland ChatCompletion v2 endpoint.
 - Verified the existing secret against mainland `MiniMax-M3`: HTTP 200, exact model and successful authentication; no key value was printed or committed.
 - Raised the bounded completion to 4,096 tokens because adaptive reasoning exhausted the former 1,200-token limit, and safely accepts only an exact standalone JSON code fence when M3 ignores the raw-JSON instruction.
+- Kept numeric validation strict: M3 prose is instructed to omit counts, amounts, percentages, dates and quantities because unit conversion/rounding changes numeric tokens; deterministic evidence renders the exact figures.
 - Real production fact-pack preflight passed the full local output validator with unchanged `MIXED` / `MANUAL_REVIEW` labels and three allowlisted evidence IDs. Full suite passes 118 tests.
 
 ### 2026-07-25 — M3 Business Owner Brief Design and Implementation

@@ -23,6 +23,7 @@ from owner_brief import (
     build_decision_pack,
     build_deep_dive_csv,
     build_m3_fact_pack,
+    build_m3_messages,
     deterministic_narrative,
     pack_sha256,
     render_owner_email,
@@ -533,6 +534,8 @@ class OwnerBriefContractTests(unittest.TestCase):
         self.assertNotIn("Officer B", fact_pack)
         self.assertNotIn("https://", fact_pack)
         self.assertNotIn("ownershipDocument", fact_pack)
+        system_prompt = build_m3_messages(self.pack)[0]["content"]
+        self.assertIn("do not write counts, amounts, percentages", system_prompt)
 
     def _m3_response(self, output: dict, *, content_prefix: str = "") -> dict:
         return {

@@ -180,11 +180,13 @@ def _generate_narrative(pack: dict) -> tuple[dict, bool]:
             )
             _log("M3 narrative accepted by local validator")
             return narrative, True
-        except M3OutputError:
+        except M3OutputError as exc:
+            _log(f"M3 narrative rejected: {exc.code} attempt={attempt + 1}")
             if attempt == 0:
                 continue
             break
-        except Exception:
+        except Exception as exc:
+            _log(f"M3 provider unavailable: {type(exc).__name__}")
             break
     _log("M3 narrative unavailable; deterministic fallback selected")
     return deterministic_narrative(pack), False

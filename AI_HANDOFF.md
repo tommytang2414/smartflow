@@ -28,6 +28,7 @@
 - Final Lambda canary returned `owner_brief`, `ai_used=false`, 1,174 characters; SES accepted it, the encrypted marker exists and a second invocation returned `duplicate_suppressed`.
 - Both databases pass integrity, SEC sources are healthy, cron/EventBridge/monitoring/firewall are unchanged and the legacy scheduler/counters are unchanged.
 - Mainland production-fact-pack preflight passed the full M3 validator with `ai_used=true`, unchanged deterministic result/action and three allowlisted evidence IDs.
+- The validator correctly rejected a rounded Chinese-unit amount; the prompt now forbids numeric prose while deterministic evidence retains exact figures. A repeat real-pack preflight passed.
 
 ## Decisions / constraints
 
