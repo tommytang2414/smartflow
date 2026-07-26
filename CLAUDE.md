@@ -325,6 +325,17 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-26 — SFC Short Shadow Release Package
+
+- Added strict official-host HTTP acquisition, payload bounds and completed
+  weekly-report caching.
+- Added verified atomic history publication plus a separate SFC shadow
+  runner/audit/snapshot boundary.
+- Prepared `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md` and proposal-only exact S3
+  uploader/lifecycle additions; no IAM, lifecycle, cron, Lambda or email change
+  was applied.
+- Verified 156 tests plus two subtests; the SFC focused suite passed 22 tests.
+
 ### 2026-07-26 — House PTR Share-Price Note Remediation
 
 - Production House observation found DocID `20034201` with a disclosed range

@@ -1,0 +1,5 @@
+# SMARTFLOW_SFC_SHORT_SHADOW_BEGIN
+42 10 * * * /usr/bin/flock -w 60 /home/ubuntu/SmartFlow-shadow/data/sfc-short-shadow.lock /bin/bash /home/ubuntu/SmartFlow-shadow/ops/run_sfc_short_shadow_scheduled.sh >> /home/ubuntu/SmartFlow-shadow/logs/sfc-short-shadow.log 2>&1
+52 10 * * * /usr/bin/flock -w 60 /home/ubuntu/SmartFlow-shadow/data/sfc-short-shadow.lock /usr/bin/python3 /home/ubuntu/SmartFlow-shadow/ops/audit_sfc_short_shadow.py /home/ubuntu/SmartFlow-shadow/data/sfc-short-v2-shadow.db --since-days 14 >> /home/ubuntu/SmartFlow-shadow/logs/sfc-short-audit.log 2>&1
+7 11 * * * /usr/bin/flock -w 60 /home/ubuntu/SmartFlow-shadow/data/sfc-short-shadow.lock /usr/bin/python3 /home/ubuntu/SmartFlow-shadow/ops/publish_sfc_short_shadow.py >> /home/ubuntu/SmartFlow-shadow/logs/sfc-short-publish.log 2>&1
+# SMARTFLOW_SFC_SHORT_SHADOW_END

@@ -92,6 +92,12 @@ release and the Senate access-gate design remain pending. See
 - Add week-on-week change observations and freshness monitoring.
 - Feed SFC only into Hong Kong context and contradiction fields.
 
+Current status: the strict official-source adapter, atomic bounded history build,
+isolated collector/audit/snapshot package and exact rollback plan are prepared
+and locally verified. Production remains unchanged pending an exact
+`SFC-SHADOW-001` option/commit approval. See
+`SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
+
 ### Slice D — 13F comparative holdings
 
 - Replace single-quarter `HOLD` rows with CUSIP-based comparable-quarter deltas.

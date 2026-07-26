@@ -25,9 +25,18 @@ OLDER_URL = "https://www.sfc.hk/-/media/EN/pdf/spr/2026/07/03/report.csv?rev=old
 
 
 class FakeResponse:
-    def __init__(self, status_code, text=""):
+    def __init__(self, status_code, text="", content_type="text/html"):
         self.status_code = status_code
         self.text = text
+        self.content = text.encode("utf-8")
+        self.headers = {
+            "Content-Type": content_type,
+            "Content-Length": str(len(self.content)),
+        }
+
+    def iter_content(self, chunk_size):
+        for start in range(0, len(self.content), chunk_size):
+            yield self.content[start : start + chunk_size]
 
 
 class FakeHTTPSession:
@@ -35,8 +44,16 @@ class FakeHTTPSession:
         self.responses = list(responses)
         self.requests = []
 
-    def get(self, url, *, headers, timeout):
-        self.requests.append({"url": url, "headers": headers, "timeout": timeout})
+    def get(self, url, *, headers, timeout, allow_redirects, stream):
+        self.requests.append(
+            {
+                "url": url,
+                "headers": headers,
+                "timeout": timeout,
+                "allow_redirects": allow_redirects,
+                "stream": stream,
+            }
+        )
         response = self.responses.pop(0)
         if isinstance(response, Exception):
             raise response
@@ -68,7 +85,10 @@ class SFCLiveAdapterTests(unittest.TestCase):
             encoding="utf-8"
         )
         http_session = FakeHTTPSession(
-            [FakeResponse(200, index_html()), FakeResponse(200, csv_content)]
+            [
+                FakeResponse(200, index_html()),
+                FakeResponse(200, csv_content, "text/plain"),
+            ]
         )
         with Session(self.engine) as session:
             with patch("smartflow.ingestion.sfc._utc_now", return_value=OBSERVED_AT):
@@ -83,6 +103,51 @@ class SFCLiveAdapterTests(unittest.TestCase):
             self.assertEqual(session.scalar(select(func.count(NormalizedEventV2.id))), 3)
             self.assertEqual(session.get(SourceHealth, "sfc_short").state, "healthy")
             self.assertIn("SmartFlow", http_session.requests[0]["headers"]["User-Agent"])
+            self.assertFalse(http_session.requests[0]["allow_redirects"])
+
+    def test_completed_latest_report_is_cache_hit_without_csv_download(self):
+        csv_content = (
+            FIXTURES / "short_positions_20260710_official_excerpt.csv"
+        ).read_text(encoding="utf-8")
+        first_http = FakeHTTPSession(
+            [
+                FakeResponse(200, index_html()),
+                FakeResponse(200, csv_content, "text/plain"),
+            ]
+        )
+        second_http = FakeHTTPSession([FakeResponse(200, index_html())])
+        with Session(self.engine) as session:
+            with (
+                patch(
+                    "smartflow.ingestion.sfc._utc_now",
+                    return_value=OBSERVED_AT,
+                ),
+                patch(
+                    "smartflow.ingestion.sfc_live._utc_now",
+                    return_value=OBSERVED_AT,
+                ),
+            ):
+                ingest_latest_sfc_short_report(
+                    session,
+                    http_session=first_http,
+                    observed_at=OBSERVED_AT,
+                    index_url=INDEX_URL,
+                )
+                link, result = ingest_latest_sfc_short_report(
+                    session,
+                    http_session=second_http,
+                    observed_at=OBSERVED_AT,
+                    index_url=INDEX_URL,
+                )
+
+            self.assertEqual(link.reporting_date.isoformat(), "2026-07-10")
+            self.assertEqual(result.normalized_observed, 0)
+            self.assertEqual(len(second_http.requests), 1)
+            latest_run = session.scalar(
+                select(CollectorRunV2).order_by(CollectorRunV2.id.desc())
+            )
+            self.assertEqual(latest_run.status, "empty")
+            self.assertEqual(latest_run.details["cache_hit"], True)
 
     def test_index_source_failure_is_not_empty_success(self):
         with Session(self.engine) as session:
@@ -105,7 +170,10 @@ class SFCLiveAdapterTests(unittest.TestCase):
                 ingest_latest_sfc_short_report(
                     session,
                     http_session=FakeHTTPSession(
-                        [FakeResponse(200, index_html()), FakeResponse(200, older_csv)]
+                        [
+                            FakeResponse(200, index_html()),
+                            FakeResponse(200, older_csv, "text/plain"),
+                        ]
                     ),
                     observed_at=OBSERVED_AT,
                     index_url=INDEX_URL,
@@ -113,6 +181,36 @@ class SFCLiveAdapterTests(unittest.TestCase):
             self.assertEqual(session.scalar(select(func.count(RawEvent.id))), 1)
             run = session.scalar(select(CollectorRunV2))
             self.assertEqual((run.status, run.failure_kind), ("error", "parser"))
+
+    def test_http_boundary_rejects_redirect_non_official_and_oversized(self):
+        with Session(self.engine) as session:
+            with self.assertRaisesRegex(SFCSourceError, "redirect rejected"):
+                ingest_latest_sfc_short_report(
+                    session,
+                    http_session=FakeHTTPSession([FakeResponse(302)]),
+                    observed_at=OBSERVED_AT,
+                    index_url=INDEX_URL,
+                )
+
+        with Session(self.engine) as session:
+            with self.assertRaisesRegex(SFCSourceError, "non-official"):
+                ingest_latest_sfc_short_report(
+                    session,
+                    http_session=FakeHTTPSession([]),
+                    observed_at=OBSERVED_AT,
+                    index_url="https://example.com/index",
+                )
+
+        oversized = FakeResponse(200, index_html())
+        oversized.headers["Content-Length"] = str(1024 * 1024 + 1)
+        with Session(self.engine) as session:
+            with self.assertRaisesRegex(SFCSourceError, "size is invalid"):
+                ingest_latest_sfc_short_report(
+                    session,
+                    http_session=FakeHTTPSession([oversized]),
+                    observed_at=OBSERVED_AT,
+                    index_url=INDEX_URL,
+                )
 
     def test_index_schema_drift_preserves_html_evidence(self):
         with Session(self.engine) as session:

@@ -95,26 +95,37 @@ acknowledgement and separate access/session design.
 - Local and immutable production-snapshot legacy tables contain zero SFC rows; there is no legacy numeric history to convert.
 - Historical rebuilding is bounded to 2026-04-10, when the collector first entered Git, and always targets a new standalone v2 database.
 - SFC health requires both a recent successful fetch and a publication no older than ten days.
+- Live acquisition now rejects non-official hosts, redirects, invalid content
+  types, oversized bodies and invalid UTF-8. Completed weekly reports are
+  index-only cache hits.
+- The bounded history builder now publishes its target only after complete
+  integrity, foreign-key, source-isolation and outcome verification.
+- The isolated runner, audit, snapshot publisher, cron proposal, scoped
+  IAM/lifecycle proposal and rollback are prepared in
+  `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`. No production surface has changed.
 
 ## Verification baseline
 
 ```text
-SFC focused/history tests: 16 passed
-full unittest suite: 59 passed
+SFC focused/history/shadow tests: 22 passed
+full pytest suite: 156 passed + 2 subtests
 official SEC fixture agreement: 4/4, 100%
 compileall: passed
 legacy migration rehearsal: repeatable; 8 tables / 319825 rows unchanged
 local snapshot restore: byte-identical; quick_check=ok
-live SFC report: 2026-07-10 / 1233 normalized rows / stale:last_event_exceeded_sla
-live two-week reconciliation: 1231 -> 1233 rows / 761 changed / 470 unchanged / 2 newly reported
-bounded history: 2026-04-10 -> 2026-07-10 / 14 reports / 17019 events
+live SFC report preflight: 2026-07-17 / 1232 rows / 50860 bytes
+bounded history rehearsal: 2026-04-10 -> 2026-07-17 / 15 reports / 18251 events
+bounded history database: 14090240 bytes / healthy / quick_check=ok / FK=0
+latest-report cache rehearsal: 1 index request / 0 CSV requests / 0 new rows
 idempotent history rerun: 0 raw inserts / 0 normalized inserts
 legacy coverage: 0 weeks / 0 records / no_legacy_history
 ```
 
 ## Remaining SFC definition of done
 
-- Obtain an explicit production v2 database deployment and source-release approval before scheduling.
+- Select Option A (local-only) or recommended Option B (scoped S3 recovery).
+- Approve the exact `SFC-SHADOW-001` commit before production scheduling.
+- Complete the 14-day/99% observation before any decision-pack or email change.
 
 The stock-first scope decision does not itself authorize production deployment,
 legacy-table mutation, collector enablement, CCASS access or directional reporting.

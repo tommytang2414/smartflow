@@ -7,14 +7,16 @@ from pathlib import Path
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
 
+from ops.reprocess_sfc_history import build_sfc_history_database
 from smartflow.db.models_v2 import NormalizedEventV2, RawEvent
 from smartflow.db.v2_schema import create_v2_schema
+from smartflow.ingestion.sfc_live import SFC_SHORT_INDEX_URL
 from smartflow.sfc_history import reprocess_sfc_short_history
 from smartflow.sfc_legacy_audit import audit_sfc_legacy_against_v2
 
 
 FIXTURES = Path(__file__).parent / "fixtures" / "sfc"
-INDEX_URL = "https://www.sfc.hk/index"
+INDEX_URL = SFC_SHORT_INDEX_URL
 OLDER_URL = "https://www.sfc.hk/-/media/EN/pdf/spr/2026/07/03/report.csv"
 LATEST_URL = "https://www.sfc.hk/-/media/EN/pdf/spr/2026/07/10/report.csv"
 OBSERVED_AT = datetime(2026, 7, 23, 0, 0, tzinfo=timezone.utc)
@@ -23,8 +25,17 @@ OBSERVED_AT = datetime(2026, 7, 23, 0, 0, tzinfo=timezone.utc)
 class FakeResponse:
     status_code = 200
 
-    def __init__(self, text):
+    def __init__(self, text, content_type):
         self.text = text
+        self.content = text.encode("utf-8")
+        self.headers = {
+            "Content-Type": content_type,
+            "Content-Length": str(len(self.content)),
+        }
+
+    def iter_content(self, chunk_size):
+        for start in range(0, len(self.content), chunk_size):
+            yield self.content[start : start + chunk_size]
 
 
 class FakeHTTPSession:
@@ -40,9 +51,15 @@ class FakeHTTPSession:
         }
         self.requested_urls = []
 
-    def get(self, url, *, headers, timeout):
+    def get(self, url, *, headers, timeout, allow_redirects, stream):
         self.requested_urls.append(url)
-        return FakeResponse(self.responses[url])
+        content_type = "text/html" if url == INDEX_URL else "text/plain"
+        return FakeResponse(self.responses[url], content_type)
+
+
+class BrokenHTTPSession:
+    def get(self, url, **kwargs):
+        raise TimeoutError("fixture timeout")
 
 
 class SFCHistoryTests(unittest.TestCase):
@@ -93,6 +110,35 @@ class SFCHistoryTests(unittest.TestCase):
                     observed_at=OBSERVED_AT,
                     index_url=INDEX_URL,
                 )
+
+    def test_atomic_builder_publishes_only_complete_verified_database(self):
+        target = Path(self.temporary_directory.name) / "published.db"
+
+        summary, verification = build_sfc_history_database(
+            target,
+            from_date=date(2026, 7, 1),
+            to_date=date(2026, 7, 10),
+            http_session=FakeHTTPSession(),
+            observed_at=datetime(2026, 7, 15, tzinfo=timezone.utc),
+        )
+
+        self.assertTrue(target.is_file())
+        self.assertEqual(summary.reports_inserted, 2)
+        self.assertEqual(verification["raw_count"], 2)
+        self.assertEqual(verification["event_count"], 6)
+        self.assertEqual(verification["quick_check"], "ok")
+
+    def test_atomic_builder_leaves_target_absent_on_source_failure(self):
+        target = Path(self.temporary_directory.name) / "failed.db"
+
+        with self.assertRaisesRegex(Exception, "fixture timeout"):
+            build_sfc_history_database(
+                target,
+                from_date=date(2026, 7, 1),
+                http_session=BrokenHTTPSession(),
+            )
+
+        self.assertFalse(target.exists())
 
 
 class SFCLegacyAuditTests(unittest.TestCase):

@@ -7,8 +7,10 @@ from typing import Any
 from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from smartflow.db.models_v2 import NormalizedEventV2, RawEvent
 from smartflow.db.v2_repository import persist_event_batch
 from smartflow.events import make_source_event_id, payload_sha256
 from smartflow.ingestion.sfc import (
@@ -26,6 +28,13 @@ SFC_SHORT_INDEX_URL = (
 )
 SFC_USER_AGENT = "SmartFlow research collector (tommytang.cc@gmail.com)"
 _REPORT_PATH = re.compile(r"/spr/(\d{4})/(\d{2})/(\d{2})/[^?]+\.csv$", re.IGNORECASE)
+MAX_SFC_INDEX_BYTES = 1024 * 1024
+MAX_SFC_CSV_BYTES = 5 * 1024 * 1024
+READ_CHUNK_BYTES = 64 * 1024
+SFC_CONTENT_TYPES = {
+    "index": {"text/html"},
+    "csv": {"text/csv", "text/plain", "application/octet-stream"},
+}
 
 
 class SFCSourceError(RuntimeError):
@@ -39,8 +48,12 @@ class SFCShortReportLink:
 
 
 def _is_official_sfc_url(url: str) -> bool:
-    hostname = (urlparse(url).hostname or "").lower()
-    return hostname == "sfc.hk" or hostname.endswith(".sfc.hk")
+    parsed = urlparse(url)
+    hostname = (parsed.hostname or "").lower()
+    return (
+        parsed.scheme == "https"
+        and (hostname == "sfc.hk" or hostname.endswith(".sfc.hk"))
+    )
 
 
 def discover_sfc_short_csv_links(
@@ -70,19 +83,84 @@ def discover_sfc_short_csv_links(
     return sorted(links.values(), key=lambda link: (link.reporting_date, link.url), reverse=True)
 
 
-def fetch_sfc_text(http_session: Any, *, url: str, timeout_seconds: float = 30) -> str:
+def fetch_sfc_text(
+    http_session: Any,
+    *,
+    url: str,
+    expected_kind: str,
+    timeout_seconds: float = 30,
+) -> str:
+    if not _is_official_sfc_url(url):
+        raise SFCSourceError(f"non-official SFC URL rejected: {url}")
+    if expected_kind not in SFC_CONTENT_TYPES:
+        raise ValueError(f"unsupported SFC payload kind: {expected_kind}")
     try:
         response = http_session.get(
             url,
             headers={"User-Agent": SFC_USER_AGENT},
             timeout=timeout_seconds,
+            allow_redirects=False,
+            stream=True,
         )
     except Exception as error:
         raise SFCSourceError(f"SFC request failed: {error}") from error
     status_code = int(response.status_code)
+    if 300 <= status_code < 400:
+        raise SFCSourceError(f"SFC redirect rejected: HTTP {status_code}")
     if status_code < 200 or status_code >= 300:
         raise SFCSourceError(f"SFC returned HTTP {status_code}")
-    return response.text
+    maximum = (
+        MAX_SFC_INDEX_BYTES if expected_kind == "index" else MAX_SFC_CSV_BYTES
+    )
+    content_type = str(response.headers.get("Content-Type", "")).split(";", 1)[
+        0
+    ].lower()
+    if content_type not in SFC_CONTENT_TYPES[expected_kind]:
+        raise SFCSourceError(
+            f"SFC {expected_kind} content type is invalid: "
+            f"{content_type or 'missing'}"
+        )
+    content_length = str(response.headers.get("Content-Length", "")).strip()
+    if content_length:
+        try:
+            if int(content_length) <= 0 or int(content_length) > maximum:
+                raise SFCSourceError(
+                    f"SFC {expected_kind} payload size is invalid"
+                )
+        except ValueError as error:
+            raise SFCSourceError(
+                f"SFC {expected_kind} Content-Length is invalid"
+            ) from error
+
+    chunks = []
+    total = 0
+    try:
+        for chunk in response.iter_content(chunk_size=READ_CHUNK_BYTES):
+            if not chunk:
+                continue
+            total += len(chunk)
+            if total > maximum:
+                raise SFCSourceError(
+                    f"SFC {expected_kind} payload size is invalid"
+                )
+            chunks.append(bytes(chunk))
+    except SFCSourceError:
+        raise
+    except Exception as error:
+        raise SFCSourceError(f"SFC response read failed: {error}") from error
+    payload = b"".join(chunks)
+    if not payload or len(payload) > maximum:
+        raise SFCSourceError(f"SFC {expected_kind} payload size is invalid")
+    try:
+        return payload.decode("utf-8-sig")
+    except UnicodeDecodeError as error:
+        raise SFCSourceError(
+            f"SFC {expected_kind} payload is not valid UTF-8"
+        ) from error
+
+
+def _utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 def _record_failure(
@@ -92,7 +170,7 @@ def _record_failure(
     failure_kind: str,
     error: Exception,
 ) -> None:
-    finished_at = datetime.now(timezone.utc)
+    finished_at = _utc_now()
     run = record_collector_outcome(
         session,
         collector="sfc_short",
@@ -110,6 +188,61 @@ def _record_failure(
     )
 
 
+def _completed_report(session: Session, reporting_date: date) -> bool:
+    source_event_id = make_source_event_id(
+        "sfc_short_report",
+        reporting_date.isoformat(),
+    )
+    return (
+        session.scalar(
+            select(RawEvent.id)
+            .join(
+                NormalizedEventV2,
+                NormalizedEventV2.raw_event_id == RawEvent.id,
+            )
+            .where(
+                RawEvent.source == "sfc_short",
+                RawEvent.source_event_id == source_event_id,
+            )
+            .limit(1)
+        )
+        is not None
+    )
+
+
+def _record_cache_hit(
+    session: Session,
+    *,
+    started_at: datetime,
+    reporting_date: date,
+) -> SFCShortIngestionResult:
+    finished_at = _utc_now()
+    run = record_collector_outcome(
+        session,
+        collector="sfc_short",
+        started_at=started_at,
+        finished_at=finished_at,
+        status="empty",
+        failure_kind=None,
+        details={
+            "reporting_date": reporting_date.isoformat(),
+            "cache_hit": True,
+        },
+    )
+    refresh_source_health(
+        session,
+        policy=SFC_SHORT_POLICY,
+        run=run,
+        checked_at=finished_at,
+    )
+    return SFCShortIngestionResult(
+        raw_inserted=0,
+        normalized_inserted=0,
+        normalized_observed=0,
+        run_id=run.id,
+    )
+
+
 def ingest_latest_sfc_short_report(
     session: Session,
     *,
@@ -118,9 +251,13 @@ def ingest_latest_sfc_short_report(
     index_url: str = SFC_SHORT_INDEX_URL,
 ) -> tuple[SFCShortReportLink, SFCShortIngestionResult]:
     """Discover and ingest the newest dated report without guessing its URL."""
-    started_at = datetime.now(timezone.utc)
+    started_at = _utc_now()
     try:
-        index_html = fetch_sfc_text(http_session, url=index_url)
+        index_html = fetch_sfc_text(
+            http_session,
+            url=index_url,
+            expected_kind="index",
+        )
     except SFCSourceError as error:
         _record_failure(
             session,
@@ -157,8 +294,19 @@ def ingest_latest_sfc_short_report(
         )
         raise
 
+    if _completed_report(session, latest.reporting_date):
+        return latest, _record_cache_hit(
+            session,
+            started_at=started_at,
+            reporting_date=latest.reporting_date,
+        )
+
     try:
-        csv_content = fetch_sfc_text(http_session, url=latest.url)
+        csv_content = fetch_sfc_text(
+            http_session,
+            url=latest.url,
+            expected_kind="csv",
+        )
     except SFCSourceError as error:
         _record_failure(
             session,

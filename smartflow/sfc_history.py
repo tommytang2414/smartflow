@@ -37,7 +37,11 @@ def reprocess_sfc_short_history(
     if to_date is not None and to_date < from_date:
         raise ValueError("SFC history to_date cannot be earlier than from_date")
 
-    index_html = fetch_sfc_text(http_session, url=index_url)
+    index_html = fetch_sfc_text(
+        http_session,
+        url=index_url,
+        expected_kind="index",
+    )
     discovered = discover_sfc_short_csv_links(index_html, index_url=index_url)
     effective_to_date = to_date or discovered[0].reporting_date
     selected = sorted(
@@ -57,7 +61,11 @@ def reprocess_sfc_short_history(
     events_observed = 0
     events_inserted = 0
     for link in selected:
-        csv_content = fetch_sfc_text(http_session, url=link.url)
+        csv_content = fetch_sfc_text(
+            http_session,
+            url=link.url,
+            expected_kind="csv",
+        )
         result = ingest_sfc_short_csv(
             session,
             csv_content=csv_content,

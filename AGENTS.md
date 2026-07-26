@@ -104,9 +104,21 @@ before the documented release gates pass.
 - Preserve rejected CSV bodies as raw evidence. The `sfc_short` health policy expects a weekly run and uses a ten-day freshness SLA to tolerate publication holidays.
 - Current parser contract is `sfc-short-v1`; fixtures live under `tests/fixtures/sfc/`. The legacy `hkex_short.py` turnover/percentage logic remains contained and must not feed v2.
 - Discover reports from dated official CSV links in the SFC index; never guess URL patterns. The archive-link date and CSV row date must agree.
+- The live boundary permits only official SFC HTTPS URLs, disables redirects,
+  validates content type, streams within 1 MiB/5 MiB index/CSV limits, and
+  requires UTF-8. A completed latest report is a cache hit: poll the index but
+  do not redownload its immutable CSV.
 - In week-over-week reconciliation, an absent stock is `not_in_current_report`, not a zero position. A new row is `newly_reported`, not proof that the short position was newly opened.
 - The bounded SFC rebuild starts at 2026-04-10, when the legacy collector first entered Git. Both local and immutable production-snapshot `sfc_short_data` tables contain zero rows, so there is no legacy numeric history to convert.
-- Use `ops/reprocess_sfc_history.py` only with a new explicit output database; it refuses to overwrite an existing file. Use `ops/audit_sfc_legacy.py` for read-only coverage comparison.
+- Use `ops/reprocess_sfc_history.py` only with a new explicit output database.
+  It builds beside the target and publishes only after SQLite, foreign-key,
+  source-isolation and outcome verification; it refuses to overwrite an
+  existing target or sidecar. Use `ops/audit_sfc_legacy.py` for read-only
+  coverage comparison.
+- The prepared production package is `SFC-SHADOW-001`. It uses the separate
+  `sfc-short-v2-shadow.db`; never add SFC health to the exact-source SEC or
+  Congress database. Follow `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`. Its IAM,
+  lifecycle and cron changes require exact-commit and option approval.
 
 ## Congress disclosure semantics
 
@@ -189,6 +201,18 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — SFC Short Shadow Release Package
+
+- Hardened the official SFC HTTP boundary with exact HTTPS-host, redirect,
+  content-type, streamed-size and UTF-8 checks.
+- Added completed-report caching so daily availability polls do not redownload
+  an unchanged weekly CSV.
+- Made bounded history builds atomic and fail closed before target publication.
+- Added an isolated SFC job, child-process runner, exact-source audit, snapshot
+  publisher, proposed cron, scoped IAM/lifecycle manifests and release rollback.
+- Kept every production surface unchanged pending exact `SFC-SHADOW-001`
+  option/commit approval.
 
 ### 2026-07-26 — House PTR Share-Price Note Remediation
 

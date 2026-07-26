@@ -2,72 +2,59 @@
 
 ## Current state
 
-- Branch / remediation commit: `master` /
+- Branch: `master`; the exact SFC release-package commit is the current Git HEAD
+  produced from this handoff and must be used for any approval/deployment.
+- Production House shadow remains detached at
   `fd4f16aa195beaa8ff1fe208dbc832acf55933e0`.
-- Production House shadow checkout is detached at the same exact commit.
-- House DB is healthy after stored-PDF remediation, recovery canary and
-  daemon-fired run 12. The v3 observation runs through
-  2026-08-09 03:27:03 UTC.
-- Legacy live checkout remains `d9ba3fb`; scheduler PID `640336` is alive.
+- House v3 observation runs through 2026-08-09 03:27:03 UTC.
 - Existing SEC/M3 owner email remains active and SEC-only.
+- SFC production, IAM, lifecycle, crontab, S3 and downstream reporting remain
+  unchanged.
 - Last agent: Codex.
 - Updated: 2026-07-26 HKT.
 
 ## Completed
 
-- Diagnosed three visible parser errors at DocID `20034201`: an official
-  `$1,001 - $15,000` range was followed by a share-price note in the amount
-  column.
-- Added `congress-house-ptr-v3`. Only the exact observed share-price-note grammar
-  is accepted; disclosed bounds remain unchanged, value stays null and arbitrary
-  suffixes still fail closed.
-- Added exact DocID/hash reprocessing from the stored PDF. It verifies report
-  metadata from the official index and does not redownload the PDF or rewrite
-  outcomes/health.
-- Created production before-state backup at
-  `/home/ubuntu/SmartFlow-shadow/backups/CONGRESS-HOUSE-PARSER-001-20260726T030453Z`.
-- Reprocessed the preserved production PDF: nine events inserted, identical
-  rerun inserted zero, and all three historical parser errors remain.
-- Ran the exact cron wrapper recovery canary: 25 reports and 141 events inserted,
-  leaving 106 reports in the discovered backlog and restoring healthy state.
-- Daemon-fired run 12 succeeded at 2026-07-26 03:27:03 UTC: 25 reports and 213
-  events inserted, leaving 81 reports in the backlog.
-- Published and restore-verified the current Congress snapshot.
+- Hardened SFC HTTP acquisition to official HTTPS hosts, no redirects,
+  allowlisted types, streamed size limits and UTF-8.
+- Added latest-complete-report caching; daily polls download no repeated CSV.
+- Made the bounded history target atomic and verification-gated.
+- Added the isolated SFC job, hard-timeout CLI, exact-source audit, snapshot
+  publisher, cron proposal, scoped IAM/lifecycle proposals and full rollback.
+- Documented business purpose, cost, risks, options and exact deployment in
+  `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 
 ## Verification
 
-- Local: 150 tests plus two subtests; focused suite 24; `compileall`,
-  fixture JSON and `git diff --check` passed.
-- VPS: built-in discovery passed 150 tests; dedicated PDF venv passed 24 focused
-  tests and `compileall`.
-- House audit after the first daemon run: `release_ready=true`, 232 raw, 1,705
-  events, nine historical successes/three preserved errors, exact schema,
-  `quick_check=ok`, zero FK errors, zero raw-only reports, zero invalid semantics
-  and healthy state.
-- DocID `20034201` has nine v3 sale events. Every row retains bounds
-  `1001`/`15000` and null value; exactly two preserve `amount_note`.
-- S3 current object: version `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl`,
-  26,673,152 bytes, 1,711 rows and SHA-256
-  `baa4fe558a1832a8c08e86fad8f7e55f05feb5b8e55678a3f142705ea5311de0`.
-  Download hash matched metadata; restore passed four tables and byte identity.
-- Crontab hash/prefix, SEC publisher/source health, legacy DB/PID, Lambda
-  code/config/IAM, uploader policy, lifecycle, versioning, EventBridge, public
-  ports and email path passed zero drift. Congress sensitive-log hits: zero.
+- Focused SFC suite: 22 passed.
+- Full suite: 156 passed plus two subtests.
+- `compileall`, JSON parsing, Git Bash syntax and `git diff --check` passed.
+- Live source: 2026-07-17, 1,232 rows, 50,860 bytes, exact header and expected
+  SHA-256.
+- Live disposable atomic rehearsal: 15 reports, 18,251 events, 14,090,240 bytes,
+  `release_ready=true`, healthy, 100% outcomes, `quick_check=ok`, zero FK,
+  rejected/raw-only/semantic/source-isolation errors.
+- Live cache rehearsal: one index request, zero CSV requests and zero inserts.
+- Proposed IAM: zero Access Analyzer findings; exact current/archive writes
+  allowed, unapproved write/read/delete denied. Semantic diff is exactly two IAM
+  resources and one lifecycle rule.
 
 ## Decisions / constraints
 
-- The v3 14-day/99% observation started at the first successful daemon-fired run,
-  2026-07-26 03:27:03 UTC, and ends at 2026-08-09 03:27:03 UTC. The three
-  pre-remediation v2 errors remain history but are outside this replacement
-  observation denominator.
-- Congress remains outside email/report pending the full observation gate and a
-  separate exact release.
-- Historical v2 evidence and the three error outcomes remain immutable.
-- Senate and CCASS remain behind their existing access gates; do not use
-  CoinGlass or its third-party credential.
+- Recommended release is Option B: scoped S3 recovery. Option A remains available
+  if the owner wants no IAM/lifecycle change.
+- Security-sensitive proposal files are not production desired state and were not
+  applied.
+- SFC is anonymous weekly aggregate short-position context only. It cannot create
+  a sell trade, named actor or standalone directional stance.
+- SFC uses `sfc-short-v2-shadow.db`; do not mix it with SEC, Congress or legacy
+  databases.
+- No decision-pack/email integration before a new 14-day/99% observation gate.
+- Senate and CCASS retain their access gates; CoinGlass remains out of scope.
 
 ## Next handoff
 
-- Monitor backlog to zero, then verify cache-only polls download zero PDF bytes.
-- Monitor v3 reliability, evidence integrity, S3 restore and SEC zero-downstream
-  isolation for the full observation before proposing email integration.
+- Obtain exact approval in the form
+  `APPROVE SFC-SHADOW-001 OPTION B @ <current-HEAD>` (recommended), or Option A.
+- Then follow the runbook from before-state capture through first daemon-fired
+  run and full zero-drift verification. Do not disturb the House observation.
