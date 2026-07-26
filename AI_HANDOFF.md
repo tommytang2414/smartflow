@@ -4,20 +4,25 @@
 
 - Branch: `master`; pushed House v4 release candidate:
   `e0d9d47bcdaf062054910012e2a333f7d9c54564`.
-- Production SFC/House shadow checkout remains:
-  `2e9ce99a74ce240913d5d7644727c9f2223319b6`.
-- Production shadow checkout is detached at that exact commit.
+- Production SFC/House shadow checkout is detached at:
+  `e0d9d47bcdaf062054910012e2a333f7d9c54564`.
 - `SFC-SHADOW-001` Option B is active; observation runs from
   2026-07-26 10:42:04 through 2026-08-09 10:42:04 UTC.
+- `CONGRESS-HOUSE-PARSER-V4-001` is active; House observation runs from
+  2026-07-26 20:27:03 through 2026-08-09 20:27:03 UTC.
 - Existing SEC/M3 owner email remains active and SEC-only.
-- Production House remains degraded on the pre-SFC raw-only DocID `20033725`;
-  v4 is locally prepared but no production parser/schedule/data changed yet.
+- Production House is healthy; raw-only DocID `20033725` is resolved with 18
+  v4 children.
 - Legacy live checkout remains `d9ba3fb`; scheduler PID `640336` is alive.
 - Last agent: Codex.
 - Updated: 2026-07-27 HKT.
 
 ## Completed
 
+- Deployed approved `CONGRESS-HOUSE-PARSER-V4-001` at exact commit `e0d9d47`.
+- Saved the consistent pre-v4 backup, waited for daemon run 29 without manual
+  collection/reprocessing, verified v4 semantics and published a recoverable
+  current S3 snapshot.
 - Prepared `CONGRESS-HOUSE-PARSER-V4-001`.
 - Reproduced the production failure against the official PDF and added a
   sanitized cross-page fixture plus footer-boundary regression.
@@ -42,10 +47,13 @@
   `compileall` and diff checks passed.
 - Official DocID `20033725` now parses into 18 v4 events; `TEM` has bounds
   `50001`/`100000`, null value and the `$20` strike price only in its note.
-- No production or AWS state changed for the v4 package.
-- Production target raw/PDF hashes match the independently downloaded official
-  PDF. House has one raw-only report and 18 parser errors over the prior 24
-  hours; SEC and SFC remain healthy at 100%.
+- Production target raw/PDF hashes remain unchanged. House is release-ready
+  with 296 raw reports, 2,585 events, no raw-only or invalid-semantic findings
+  and one-hour reliability 100%.
+- S3 version `1OROqnUPMNl0PlRDGgRUMRwtY3LXR1jj` passed metadata/download hash,
+  four-table/2,911-row restore, `quick_check` and byte-identity verification.
+- SEC/SFC, cron, Lambda/EventBridge, legacy scheduler and public ports passed
+  zero drift; Congress logs had zero sensitive hits.
 - VPS: 156 tests; `compileall` and diff checks passed.
 - SFC: `release_ready=true`, healthy, 100% reliability, 15 raw / 18,251 events,
   zero rejected/raw-only/invalid/unexpected/integrity/FK findings.
@@ -68,15 +76,15 @@
 - SFC stays context-only and absent from the owner email/decision pack until the
   observation gate and a separate exact approval pass.
 - Do not mix SFC with SEC, Congress or legacy databases.
-- Current House raw-only DocID `20033725` fails on amount suffix
-  `$50,001 - $100,000 of $20 with an expiration`; preserve the disclosed range
-  and keep the `$20` option detail separate from the amount.
+- House v4 preserves `$50,001 - $100,000` as the disclosed range and keeps the
+  `$20` option detail separate in `transaction_note`.
 - Senate and CCASS retain their access gates; CoinGlass remains out of scope.
 
 ## Next handoff
 
 - Monitor SFC daily outcomes, weekly publication freshness and S3 restores
   through 2026-08-09 10:42:04 UTC.
-- Request `APPROVE CONGRESS-HOUSE-PARSER-V4-001 @ e0d9d47`.
-- Do not manually run or reprocess House; after deployment let the next hourly
-  daemon run resolve DocID `20033725` and restart only the House observation.
+- Monitor House hourly outcomes, backlog completion and recoverable snapshots
+  through 2026-08-09 20:27:03 UTC.
+- Do not add House or SFC to the owner email until each independent observation
+  gate passes and a separate integration approval is granted.

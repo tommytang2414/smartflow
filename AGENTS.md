@@ -62,7 +62,11 @@ before the documented release gates pass.
 - `n8n-trading-bot` hosts SmartFlow plus unrelated CCSP Quiz, Watchtower, n8n, PostgreSQL, and Caddy workloads. Never infer that a listening port belongs to SmartFlow.
 - Lightsail is currently the effective ingress boundary because UFW is inactive and host INPUT policies accept traffic.
 - Port `5001` is an active CCSP API dependency; do not close or reconfigure it as part of SmartFlow without a separate dependency review.
-- Public ingress now contains only `22` and `5001`; the reviewed desired state is `ops/lightsail-public-ports-p0-008.json` and the exact pre-change rollback is `ops/lightsail-public-ports-before.json`.
+- Public ingress observed on 2026-07-27 contains `22`, `443` and `5001`.
+  The earlier reviewed SmartFlow desired state under
+  `ops/lightsail-public-ports-p0-008.json` contains only `22` and `5001`;
+  `443` is a pre-existing external drift outside the House parser release and
+  must be dependency-reviewed separately before any firewall change.
 - Port `8080` is the unauthenticated Watchtower dashboard and is intentionally edge-blocked; use an SSH local-forward to `127.0.0.1:8080` for administrative access. Port `8501` is also closed and has no listener.
 - Do not restrict public SSH until a tested Tailscale, SSM, or equivalent admin path exists. The stored Lightsail private key has intentionally protected ACLs; do not restore inherited access.
 
@@ -206,6 +210,35 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-27 — House PTR Parser v4 Production Deployment
+
+- Deployed owner-approved `CONGRESS-HOUSE-PARSER-V4-001` only to the isolated
+  shadow checkout at exact commit
+  `e0d9d47bcdaf062054910012e2a333f7d9c54564`.
+- Preserved a consistent 37,470,208-byte pre-v4 House DB backup under
+  `/home/ubuntu/SmartFlow-shadow/backups/CONGRESS-HOUSE-PARSER-V4-001-20260726T200405Z`;
+  SHA-256 is
+  `1bd34fc96eec38db183e504fd87c5121df725e1d5a73860f71ebdf35eb9f57fc`.
+- VPS full suite passed 158 tests, focused Congress passed 26 and `compileall`
+  passed. No collector or raw reprocessor was invoked manually.
+- Daemon-fired run 29 succeeded at 2026-07-26 20:27:03 UTC. It normalized
+  DocID `20033725` into 18 v4 children; `TEM` has disclosed bounds
+  `50001`/`100000`, null value and the `$20` strike price only in
+  `transaction_note`. The same scheduled batch processed 24 other backlog
+  reports, leaving 17.
+- House audit is release-ready and healthy with one-hour reliability 100%,
+  296 raw reports, 2,585 events, zero raw-only/invalid/FK findings and
+  `quick_check=ok`. Historical v2/v3 events and 18 parser-error outcomes remain.
+- Published SSE-S3 version `1OROqnUPMNl0PlRDGgRUMRwtY3LXR1jj`,
+  41,009,152 bytes, SHA-256
+  `a2fa4ae47f43446c94e90db8e6596ea4ec9043910fea363209b41ff93f5f2795`;
+  metadata/download hash, four-table/2,911-row restore and byte identity passed.
+- The new House observation runs from 2026-07-26 20:27:03 through
+  2026-08-09 20:27:03 UTC. SEC/SFC health and objects, cron, Lambda,
+  EventBridge, IAM boundary, legacy scheduler and public ports passed
+  zero-drift checks. Congress remains absent from the owner email.
+  Production deployment commit: `e0d9d47`.
 
 ### 2026-07-27 — House PTR Cross-Page Parser v4 Package
 

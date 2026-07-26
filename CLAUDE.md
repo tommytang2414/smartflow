@@ -325,6 +325,26 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-27 — House PTR Parser v4 Production Deployment
+
+- Deployed approved `CONGRESS-HOUSE-PARSER-V4-001` to
+  `/home/ubuntu/SmartFlow-shadow` at exact commit `e0d9d47`.
+- Created and verified a consistent pre-v4 DB backup with SHA-256
+  `1bd34fc96eec38db183e504fd87c5121df725e1d5a73860f71ebdf35eb9f57fc`;
+  VPS full/focused suites passed 158/26 tests plus `compileall`.
+- No manual collector or reprocessor was run. Scheduled run 29 at
+  2026-07-26 20:27:03 UTC created 18 v4 children for DocID `20033725`,
+  restored healthy state and left all 18 historical parser errors immutable.
+- House audit is release-ready with 296 raw reports, 2,585 events, zero
+  raw-only/invalid/FK findings and `quick_check=ok`.
+- Published verified S3 version `1OROqnUPMNl0PlRDGgRUMRwtY3LXR1jj`;
+  41,009,152 bytes and SHA-256
+  `a2fa4ae47f43446c94e90db8e6596ea4ec9043910fea363209b41ff93f5f2795`.
+  Four-table/2,911-row restore and byte identity passed.
+- The new 14-day House observation ends 2026-08-09 20:27:03 UTC. SEC/SFC,
+  Lambda/email, EventBridge, cron, legacy scheduler and firewall state passed
+  zero-drift checks. Production deployment commit: `e0d9d47`.
+
 ### 2026-07-27 — House PTR Cross-Page Parser v4 Package
 
 - Reproduced DocID `20033725` against the official PDF and confirmed the

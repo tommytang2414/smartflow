@@ -2,9 +2,8 @@
 
 Change ID: `CONGRESS-HOUSE-PARSER-V4-001`
 
-Status: locally verified at exact release commit
-`e0d9d47bcdaf062054910012e2a333f7d9c54564`; production deployment requires
-approval of that commit.
+Status: deployed at exact approved commit
+`e0d9d47bcdaf062054910012e2a333f7d9c54564`; daemon and recovery gates passed.
 
 Target: `/home/ubuntu/SmartFlow-shadow`
 
@@ -126,6 +125,38 @@ Any mismatch stops before mutation.
 - Logs contain no credential, API key, email address or raw PDF body.
 
 Congress remains absent from the owner email after this deployment.
+
+## Deployment record — 2026-07-27 HKT
+
+- Approval:
+  `APPROVE CONGRESS-HOUSE-PARSER-V4-001 @ e0d9d47`.
+- Consistent pre-change backup:
+  `/home/ubuntu/SmartFlow-shadow/backups/CONGRESS-HOUSE-PARSER-V4-001-20260726T200405Z`;
+  37,470,208 bytes, `quick_check=ok`, zero FK failures and SHA-256
+  `1bd34fc96eec38db183e504fd87c5121df725e1d5a73860f71ebdf35eb9f57fc`.
+- Shadow checkout was detached at the full approved hash. VPS full suite passed
+  158 tests, focused Congress passed 26 and `compileall`/diff checks passed.
+  Crontab SHA-256 remained
+  `5fe3a2f2564d7070b3338c51fbb5c3e6276f207a9d5ed5b4003248fe4c800dff`.
+- No collector or raw reprocessor was manually invoked. Daemon-fired run 29
+  succeeded at 2026-07-26 20:27:03 UTC: 25 reports observed, 24 new raw reports
+  and 538 v4 events inserted, leaving 17 reports in the backlog.
+- DocID `20033725` retained its exact raw/PDF hashes and gained exactly 18 v4
+  children. `TEM` occurs once with lower `50001`, upper `100000`, null value,
+  null `amount_note` and the `$20` option detail only in `transaction_note`.
+- Post-run audit is release-ready: healthy state, one-hour reliability 100%,
+  296 raw reports, 2,585 events, zero raw-only/invalid/unexpected/FK findings,
+  exact schema and `quick_check=ok`. All 18 historical parser errors remain.
+- Manual recovery publication, not collection, created SSE-S3 version
+  `1OROqnUPMNl0PlRDGgRUMRwtY3LXR1jj`; 41,009,152 bytes, SHA-256
+  `a2fa4ae47f43446c94e90db8e6596ea4ec9043910fea363209b41ff93f5f2795`.
+  Metadata/download hash matched; four tables, 2,911 rows, `quick_check` and
+  byte-identical restore passed.
+- SEC and SFC stayed healthy at 100%; their S3 versions were unchanged. Lambda
+  code/config, EventBridge, cron, legacy scheduler and observed ports
+  `22`/`443`/`5001` matched before-state. Congress logs had zero sensitive hits.
+- The replacement House observation window is 2026-07-26 20:27:03 through
+  2026-08-09 20:27:03 UTC. Congress remains excluded from the owner email.
 
 ## Rollback
 

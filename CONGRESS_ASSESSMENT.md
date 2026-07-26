@@ -2,9 +2,9 @@
 
 Date: 2026-07-26 HKT
 
-Status: House shadow v3 is deployed but degraded on raw-only DocID `20033725`.
-The v4 cross-page remediation is locally verified and pending its exact
-production gate. Senate remains pending.
+Status: House shadow v4 is deployed and healthy. Daemon-fired run 29 resolved
+raw-only DocID `20033725`; the replacement 14-day observation runs through
+2026-08-09 20:27:03 UTC. Senate remains pending.
 
 ## Business meaning
 
@@ -183,14 +183,10 @@ them as corrected Congress ground truth.
 
 ## Remaining release gates
 
-1. Obtain approval of the exact v4 release commit and bounded parser-deployment
-   manifest. Do not manually reprocess DocID `20033725`.
-2. Let the next daemon-fired run process the raw-only report, then start a new
-   14-day/99% House observation window from that scheduled success.
-3. Pass the production audit and new House observation
+1. Pass the new 14-day/99% House observation
    window before proposing any email integration.
-4. Decide whether image-only OCR is worth a separately bounded implementation;
+2. Decide whether image-only OCR is worth a separately bounded implementation;
    until then the exact warning PDF remains available for manual deep dive.
-5. Define original-to-amendment row reconciliation before amendments can enter
+3. Define original-to-amendment row reconciliation before amendments can enter
    directional ranking.
-6. Implement Senate only after the acknowledgement/session design is approved.
+4. Implement Senate only after the acknowledgement/session design is approved.
