@@ -2,7 +2,9 @@
 
 ## Current state
 
-- Branch: `master`; production SFC release commit:
+- Branch: `master`; pushed House v4 release candidate:
+  `e0d9d47bcdaf062054910012e2a333f7d9c54564`.
+- Production SFC/House shadow checkout remains:
   `2e9ce99a74ce240913d5d7644727c9f2223319b6`.
 - Production shadow checkout is detached at that exact commit.
 - `SFC-SHADOW-001` Option B is active; observation runs from
@@ -21,6 +23,8 @@
   sanitized cross-page fixture plus footer-boundary regression.
 - Added v4 strict-range completion, cross-page asset/ticker preservation and
   separate `transaction_note` handling.
+- Committed and pushed the verified v4 package at `e0d9d47`; captured the exact
+  read-only production before-state in its runbook.
 - Saved exact host/cloud before-state at
   `/home/ubuntu/SmartFlow-shadow/backups/SFC-SHADOW-001-20260726T100537Z`.
 - Built the separate mode-600 SFC DB: 15 reports, 18,251 events,
@@ -39,6 +43,9 @@
 - Official DocID `20033725` now parses into 18 v4 events; `TEM` has bounds
   `50001`/`100000`, null value and the `$20` strike price only in its note.
 - No production or AWS state changed for the v4 package.
+- Production target raw/PDF hashes match the independently downloaded official
+  PDF. House has one raw-only report and 18 parser errors over the prior 24
+  hours; SEC and SFC remain healthy at 100%.
 - VPS: 156 tests; `compileall` and diff checks passed.
 - SFC: `release_ready=true`, healthy, 100% reliability, 15 raw / 18,251 events,
   zero rejected/raw-only/invalid/unexpected/integrity/FK findings.
@@ -70,7 +77,6 @@
 
 - Monitor SFC daily outcomes, weekly publication freshness and S3 restores
   through 2026-08-09 10:42:04 UTC.
-- Commit/push the v4 package, capture exact read-only production before-state
-  and request approval for its exact release commit.
+- Request `APPROVE CONGRESS-HOUSE-PARSER-V4-001 @ e0d9d47`.
 - Do not manually run or reprocess House; after deployment let the next hourly
   daemon run resolve DocID `20033725` and restart only the House observation.

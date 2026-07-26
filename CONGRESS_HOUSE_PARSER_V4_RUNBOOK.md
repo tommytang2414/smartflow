@@ -2,8 +2,9 @@
 
 Change ID: `CONGRESS-HOUSE-PARSER-V4-001`
 
-Status: locally verified; production deployment requires approval of the exact
-release commit.
+Status: locally verified at exact release commit
+`e0d9d47bcdaf062054910012e2a333f7d9c54564`; production deployment requires
+approval of that commit.
 
 Target: `/home/ubuntu/SmartFlow-shadow`
 
@@ -67,6 +68,42 @@ firewall rules.
   S3 versioning/current objects and Lightsail public ports are recorded.
 
 Any mismatch stops before mutation.
+
+## Read-only before-state — 2026-07-27 HKT
+
+- Production shadow checkout:
+  `2e9ce99a74ce240913d5d7644727c9f2223319b6`; expected untracked paths are the
+  dedicated Congress venv plus SEC/Congress/SFC lock files.
+- Crontab SHA-256:
+  `5fe3a2f2564d7070b3338c51fbb5c3e6276f207a9d5ed5b4003248fe4c800dff`.
+- House DB: 37,470,208 bytes; 272 raw reports, 2,047 events, one raw-only
+  report; exact schema, `quick_check=ok`, zero FK and invalid-semantic findings.
+- Target raw event `house:20033725`: row `272`, payload SHA-256
+  `9eb1d65acad1bf69f3022483ba55809d882b69c1e3102526142e3eddb2797b7c`,
+  PDF SHA-256
+  `8ddf562e617976594595f2e921d63f9aab8dfd898524673d4560dfe495cfd28f`,
+  zero normalized children. The independently downloaded official PDF has the
+  same PDF SHA-256.
+- House health is degraded on `last_run_error:parser`. The prior 24 hours have
+  seven successes and 18 parser errors (28% reliability); the latest error is
+  run 28 at 2026-07-26 19:27:03 UTC. The prior observation gate has therefore
+  already failed and must restart after remediation.
+- SFC remains release-ready: 15 raw reports, 18,251 events, zero raw-only or
+  semantic/integrity findings and 100% seven-day reliability.
+- SEC remains healthy: Form 4 has 288/288 and Form 144 has 24/24 successful
+  outcomes over 24 hours; their DB and email contract remain unchanged.
+- Legacy scheduler PID `640336` is alive as
+  `python3 -m smartflow schedule --all`.
+- Current S3 versions: Congress
+  `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl`, SEC
+  `g2T4NabySB53R0kpjXYjhan.K0DC5RYK`, SFC
+  `R.Z_1tyI4kco4dcjxeAZAqubZMF_VpKl`; all are SSE-S3 encrypted.
+- Lambda is active with code SHA-256
+  `zKtGpnNXOEcpIqAbnHzKt2axAtFERtnLpPiKG0KMWL8=`; EventBridge remains enabled
+  at `cron(0 0 * * ? *)`.
+- Lightsail public TCP ports are currently `22`, `443` and `5001`. Port `443`
+  is an observed pre-existing change from the earlier documented state and is
+  outside this parser deployment.
 
 ## Acceptance gates
 
