@@ -57,7 +57,8 @@ source. Form 13F requires a new comparable-quarter contract before use.
 - Time-separated 50-report rehearsal from 1 January to 22 July 2026: 47 parsed,
   three OCR warnings, 556 events, one open-ended spouse/dependent-child amount
   and zero parser failures after the v2 layout fixes.
-- Positively identified amendments use `congress-house-ptr-v2` and remain
+- Positively identified amendments use `congress-house-ptr-v3` for new evidence
+  and remain
   non-directional reconciliation warnings until original-row linkage exists.
 
 Raw-storage sample: 25 PDFs used 1.68 MB and the complete disposable SQLite

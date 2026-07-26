@@ -2,8 +2,9 @@
 
 Date: 2026-07-26 HKT
 
-Status: House shadow release package prepared and verified offline; exact
-production manifest approval, deployment observation and Senate adapter pending
+Status: House shadow is in production observation. A fail-closed share-price
+note layout found in DocID `20034201` is covered by the prepared v3 remediation;
+deployment recovery, observation restart and Senate adapter remain pending.
 
 ## Business meaning
 
@@ -74,7 +75,10 @@ use. Public availability is not a redistribution licence.
 - disclosed lower/upper amount remains in attributes; `value` stays null
 - missing ticker is a warning and cannot enter ticker-level cross-source ranking
 - image-only PDF is a warning event requiring OCR and has no direction/ticker
-- parser version: `congress-house-ptr-v2`
+- parser version: `congress-house-ptr-v3` for new evidence; v2 remains accepted
+  historical production evidence
+- an observed share-price suffix is preserved as `amount_note` and never changes
+  the disclosed bounds or null `value`
 
 Positively identified amendments are not treated as another directional report.
 The exact PDF is retained and the document becomes a non-directional

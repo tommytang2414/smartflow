@@ -63,7 +63,8 @@ def audit(database_path: Path, *, since_hours: int = 24) -> dict:
         invalid_semantics = connection.execute(
             "SELECT COUNT(*) FROM normalized_events_v2 "
             "WHERE source <> 'congress' "
-            "OR parser_version <> 'congress-house-ptr-v2' "
+            "OR parser_version NOT IN ("
+            "'congress-house-ptr-v2','congress-house-ptr-v3') "
             "OR execution_status <> 'reported' "
             "OR value IS NOT NULL "
             "OR (event_type='congress_periodic_transaction' AND NOT ("

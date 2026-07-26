@@ -117,9 +117,14 @@ before the documented release gates pass.
   or present it as an exact trade value.
 - House `FilingType=P` identifies PTRs in the official yearly XML index. Individual
   transaction rows remain in separate official PDFs.
-- Use `congress-house-ptr-v2` for House row extraction. Create one event per report
-  row using chamber + DocID + row identity; use stable member/state identity for
+- Use `congress-house-ptr-v3` for new House row extraction and retain v2 as
+  accepted historical production evidence. Create one event per report row
+  using chamber + DocID + row identity; use stable member/state identity for
   actor deduplication across reports.
+- A disclosed range may be followed only by the observed
+  `@ $price/share [shares sold @ $price/share]` note grammar. Preserve that
+  suffix as `amount_note`; it never changes `amount_lower`, `amount_upper` or
+  null `value`. Any other suffix remains a parser failure.
 - Extract tickers only when disclosed in the official row. Missing tickers are a
   warning and cannot enter ticker-level cross-source ranking.
 - Preserve official House PDFs exactly in raw evidence. The live adapter accepts
@@ -135,6 +140,10 @@ before the documented release gates pass.
 - A House DocID is a cache hit only when raw evidence has at least one normalized
   child. Use the separate `congress-house-v2-shadow.db`; adding Congress health
   to the SEC DB would fail its exact-source publisher gate.
+- Use `ops/reprocess_congress_house_raw.py` only with exact DocID and raw-payload
+  SHA-256. It reads the stored PDF, verifies metadata against the official yearly
+  index, inserts missing children idempotently, and does not rewrite collector
+  outcomes or health.
 - The proposed production package is `CONGRESS-HOUSE-SHADOW-001`. Follow
   `CONGRESS_HOUSE_SHADOW_RELEASE_RUNBOOK.md`; its IAM, lifecycle and crontab
   changes require exact-commit approval before deployment.
@@ -180,6 +189,23 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-26 — House PTR Share-Price Note Remediation
+
+- Production observation found official DocID `20034201`, where the disclosed
+  `$1,001 - $15,000` range is followed by a share-price note in the same PDF
+  column. The v2 full-field amount parser correctly failed closed and preserved
+  the raw PDF, but repeated retries degraded House health.
+- Added fail-closed v3 parsing for only the observed share-price note grammar.
+  The legal disclosed range remains unchanged and the suffix is retained only
+  as `amount_note`; arbitrary suffixes still fail.
+- Added hash-pinned, stored-PDF reprocessing that verifies current official index
+  metadata and leaves historical errors/health untouched. A production-copy
+  rehearsal inserted nine missing events and zero on rerun, with no raw-only
+  evidence, invalid semantics or integrity errors.
+- Focused suite passes 24 tests; full suite passes 150 tests plus two subtests.
+  Production deployment follows
+  `CONGRESS_HOUSE_PARSER_REMEDIATION_RUNBOOK.md`.
 
 ### 2026-07-26 — House Congress Shadow Production Deployment
 

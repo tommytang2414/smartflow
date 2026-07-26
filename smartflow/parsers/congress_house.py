@@ -163,24 +163,42 @@ def _amendment_indicator(pages: list[list[dict[str, Any]]]) -> str | None:
     )
 
 
-def _amount_range(value: str) -> tuple[Decimal, Decimal | None, bool]:
-    cleaned = " ".join(value.replace(",", "").split())
+def _amount_range(
+    value: str,
+) -> tuple[Decimal, Decimal | None, bool, str | None]:
+    normalized = " ".join(value.split())
+    amount_text = normalized
+    amount_note = None
+    if " @ " in normalized:
+        amount_text, suffix = normalized.split(" @ ", 1)
+        amount_note = f"@ {suffix}"
+        share_price = r"\$(?:\d{1,3}(?:,\d{3})*|\d+)(?:\.\d+)?/share"
+        if not re.fullmatch(
+            rf"@ {share_price}(?: shares sold @ {share_price})?",
+            amount_note,
+            re.IGNORECASE,
+        ):
+            raise HouseDisclosureError(
+                f"invalid House PTR amount range: {value!r}"
+            )
+
+    cleaned = amount_text.replace(",", "")
     spouse_or_child = re.fullmatch(
         r"Spouse/DC Over \$(\d+(?:\.\d+)?)",
         cleaned,
         re.IGNORECASE,
     )
     if spouse_or_child:
-        return Decimal(spouse_or_child.group(1)), None, True
+        return Decimal(spouse_or_child.group(1)), None, True, amount_note
     over = re.fullmatch(r"Over \$(\d+(?:\.\d+)?)", cleaned, re.IGNORECASE)
     if over:
-        return Decimal(over.group(1)), None, True
+        return Decimal(over.group(1)), None, True, amount_note
     exact = re.fullmatch(r"\$(\d+(?:\.\d+)?)", cleaned)
     if exact:
         amount = Decimal(exact.group(1))
         if amount <= 0:
             raise HouseDisclosureError(f"invalid House PTR amount: {value!r}")
-        return amount, amount, False
+        return amount, amount, False, amount_note
     match = re.fullmatch(
         r"\$(\d+(?:\.\d+)?)\s*-\s*\$(\d+(?:\.\d+)?)",
         cleaned,
@@ -194,7 +212,7 @@ def _amount_range(value: str) -> tuple[Decimal, Decimal | None, bool]:
         raise HouseDisclosureError(f"invalid House PTR amount range: {value!r}") from error
     if lower <= 0 or upper < lower:
         raise HouseDisclosureError(f"invalid House PTR amount range: {value!r}")
-    return lower, upper, True
+    return lower, upper, True, amount_note
 
 
 def _ticker(asset: str) -> str | None:
@@ -270,9 +288,12 @@ def parse_house_ptr_word_pages(
 
             transaction_type = _column_text(line, 255, 315)
             action_code = transaction_type[:1]
-            amount_lower, amount_upper, amount_is_range = _amount_range(
-                " ".join(amount_parts)
-            )
+            (
+                amount_lower,
+                amount_upper,
+                amount_is_range,
+                amount_note,
+            ) = _amount_range(" ".join(amount_parts))
             transactions.append(
                 {
                     "row_number": len(transactions) + 1,
@@ -298,6 +319,7 @@ def parse_house_ptr_word_pages(
                     "amount_lower": amount_lower,
                     "amount_upper": amount_upper,
                     "amount_is_range": amount_is_range,
+                    "amount_note": amount_note,
                 }
             )
     if not transactions:

@@ -74,6 +74,43 @@ class HouseCongressContractTests(unittest.TestCase):
         event = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)[0]
         self.assertFalse(event["attributes"]["amount_is_range"])
 
+    def test_share_price_note_is_preserved_outside_disclosed_range(self):
+        pages = json.loads(
+            (
+                FIXTURES / "house_ptr_share_price_note_words_sanitized.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        parsed = parse_house_ptr_word_pages(pages, report=self.report)
+        transaction = parsed["transactions"][0]
+
+        self.assertEqual(transaction["amount_lower"], Decimal("1001"))
+        self.assertEqual(transaction["amount_upper"], Decimal("15000"))
+        self.assertEqual(
+            transaction["amount_note"],
+            "@ $470.985/share shares sold @ $253.45/share",
+        )
+        event = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)[0]
+        self.assertEqual(
+            event["attributes"]["amount_note"],
+            "@ $470.985/share shares sold @ $253.45/share",
+        )
+        self.assertIsNone(event["value"])
+
+    def test_unrecognized_amount_suffix_still_fails_closed(self):
+        pages = json.loads(
+            (
+                FIXTURES / "house_ptr_share_price_note_words_sanitized.json"
+            ).read_text(encoding="utf-8")
+        )
+        pages[0][-1]["text"] = "unverified"
+
+        with self.assertRaisesRegex(
+            HouseDisclosureError,
+            "invalid House PTR amount range",
+        ):
+            parse_house_ptr_word_pages(pages, report=self.report)
+
     def test_narrower_date_boundary_and_cross_page_amount_are_supported(self):
         pages = [
             [

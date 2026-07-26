@@ -325,6 +325,20 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-26 — House PTR Share-Price Note Remediation
+
+- Production House observation found DocID `20034201` with a disclosed range
+  followed by an `@ $price/share ...` note in the same amount column. Three
+  fail-closed retries preserved the PDF but left source health degraded.
+- Added `congress-house-ptr-v3`, accepting only the observed note grammar,
+  preserving the note separately and never changing the disclosed bounds or
+  null value. Unknown suffixes remain parser failures.
+- Added exact-DocID/hash reprocessing from stored raw PDF evidence without
+  rewriting outcomes or health. A production-copy rehearsal inserted nine
+  events and zero on rerun; full suite passes 150 tests plus two subtests.
+- Production deployment is governed by
+  `CONGRESS_HOUSE_PARSER_REMEDIATION_RUNBOOK.md`.
+
 ### 2026-07-26 — House Congress Shadow Production Deployment
 
 - Deployed approved `CONGRESS-HOUSE-SHADOW-001` only to
