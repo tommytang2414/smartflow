@@ -92,11 +92,11 @@ release and the Senate access-gate design remain pending. See
 - Add week-on-week change observations and freshness monitoring.
 - Feed SFC only into Hong Kong context and contradiction fields.
 
-Current status: the strict official-source adapter, atomic bounded history build,
-isolated collector/audit/snapshot package and exact rollback plan are prepared
-and locally verified. Production remains unchanged pending an exact
-`SFC-SHADOW-001` option/commit approval. See
-`SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
+Current status: `SFC-SHADOW-001` Option B is production-active at exact commit
+`2e9ce99`. The isolated collector, audit and recoverable snapshot passed their
+first daemon sequence. Observation runs through 2026-08-09 10:42:04 UTC; SFC
+remains absent from the owner brief pending a separate integration approval.
+See `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 
 ### Slice D — 13F comparative holdings
 

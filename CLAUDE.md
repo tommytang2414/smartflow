@@ -325,6 +325,21 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-27 — SFC Short Shadow Production Deployment
+
+- Deployed owner-approved `SFC-SHADOW-001 OPTION B @ 2e9ce99` to the isolated
+  shadow checkout.
+- Built 15 official reports / 18,251 events in a 14,090,240-byte exact-source
+  database; manual and daemon cache polls were healthy empty runs.
+- Installed the exact daily collector/audit/publisher cron block while retaining
+  the complete prior crontab prefix byte-for-byte.
+- Added only the approved SFC uploader paths and lifecycle rule. IAM,
+  versioning, S3 encryption/hash/restore and all zero-drift gates passed.
+- First daemon run started at 2026-07-26 10:42:04 UTC; the 14-day observation
+  ends at 2026-08-09 10:42:04 UTC. The existing SEC-only email is unchanged.
+- Recorded the pre-existing House raw-only parser failure at DocID `20033725`;
+  no House data, parser, schedule or observation history was modified.
+
 ### 2026-07-26 — SFC Short Shadow Release Package
 
 - Added strict official-host HTTP acquisition, payload bounds and completed

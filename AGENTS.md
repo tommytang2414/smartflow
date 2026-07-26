@@ -115,10 +115,11 @@ before the documented release gates pass.
   source-isolation and outcome verification; it refuses to overwrite an
   existing target or sidecar. Use `ops/audit_sfc_legacy.py` for read-only
   coverage comparison.
-- The prepared production package is `SFC-SHADOW-001`. It uses the separate
-  `sfc-short-v2-shadow.db`; never add SFC health to the exact-source SEC or
-  Congress database. Follow `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`. Its IAM,
-  lifecycle and cron changes require exact-commit and option approval.
+- `SFC-SHADOW-001` Option B is production-active at exact commit `2e9ce99`.
+  It uses the separate `sfc-short-v2-shadow.db`; never add SFC health to the
+  exact-source SEC or Congress database. Follow
+  `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`. Its observation runs through
+  2026-08-09 10:42:04 UTC; no decision-pack or email integration is authorised.
 
 ## Congress disclosure semantics
 
@@ -201,6 +202,24 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-27 — SFC Short Shadow Production Deployment
+
+- Deployed approved `SFC-SHADOW-001` Option B at exact commit `2e9ce99` without
+  changing the legacy checkout, SEC/Congress databases, Lambda, email,
+  EventBridge or public ports.
+- Built the isolated 15-report SFC database with 18,251 events. The manual and
+  first daemon cache polls downloaded no CSV and inserted no duplicate evidence.
+- Applied only two exact uploader write paths and one 30-day non-current SFC
+  rule; actual-principal allow/deny simulation, Access Analyzer, readback and
+  versioning gates passed.
+- The first daemon collector/audit/publisher sequence passed. Current S3 version
+  `R.Z_1tyI4kco4dcjxeAZAqubZMF_VpKl` restored four tables and 18,284 total rows
+  with matching metadata/download SHA-256.
+- SFC observation runs from 2026-07-26 10:42:04 through
+  2026-08-09 10:42:04 UTC. Congress was already degraded before this change on
+  raw-only DocID `20033725`; that independent parser issue was preserved and
+  not altered during the SFC release.
 
 ### 2026-07-26 — SFC Short Shadow Release Package
 

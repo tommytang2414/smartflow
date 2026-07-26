@@ -2,59 +2,63 @@
 
 ## Current state
 
-- Branch: `master`; the exact SFC release-package commit is the current Git HEAD
-  produced from this handoff and must be used for any approval/deployment.
-- Production House shadow remains detached at
-  `fd4f16aa195beaa8ff1fe208dbc832acf55933e0`.
-- House v3 observation runs through 2026-08-09 03:27:03 UTC.
+- Branch: `master`; production SFC release commit:
+  `2e9ce99a74ce240913d5d7644727c9f2223319b6`.
+- Production shadow checkout is detached at that exact commit.
+- `SFC-SHADOW-001` Option B is active; observation runs from
+  2026-07-26 10:42:04 through 2026-08-09 10:42:04 UTC.
 - Existing SEC/M3 owner email remains active and SEC-only.
-- SFC production, IAM, lifecycle, crontab, S3 and downstream reporting remain
-  unchanged.
+- Production House remains degraded on the pre-SFC raw-only DocID `20033725`;
+  its parser/schedule/data were not changed during this release.
+- Legacy live checkout remains `d9ba3fb`; scheduler PID `640336` is alive.
 - Last agent: Codex.
-- Updated: 2026-07-26 HKT.
+- Updated: 2026-07-27 HKT.
 
 ## Completed
 
-- Hardened SFC HTTP acquisition to official HTTPS hosts, no redirects,
-  allowlisted types, streamed size limits and UTF-8.
-- Added latest-complete-report caching; daily polls download no repeated CSV.
-- Made the bounded history target atomic and verification-gated.
-- Added the isolated SFC job, hard-timeout CLI, exact-source audit, snapshot
-  publisher, cron proposal, scoped IAM/lifecycle proposals and full rollback.
-- Documented business purpose, cost, risks, options and exact deployment in
-  `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
+- Saved exact host/cloud before-state at
+  `/home/ubuntu/SmartFlow-shadow/backups/SFC-SHADOW-001-20260726T100537Z`.
+- Built the separate mode-600 SFC DB: 15 reports, 18,251 events,
+  14,090,240 bytes.
+- Applied only the approved two uploader write paths and one 30-day
+  non-current-version rule.
+- Installed the exact daily collector/audit/publisher cron block.
+- First daemon collector, audit and publisher all passed.
+- Promoted the approved IAM/lifecycle manifests to the tracked current desired
+  state and documented production deployment/rollback.
 
 ## Verification
 
-- Focused SFC suite: 22 passed.
-- Full suite: 156 passed plus two subtests.
-- `compileall`, JSON parsing, Git Bash syntax and `git diff --check` passed.
-- Live source: 2026-07-17, 1,232 rows, 50,860 bytes, exact header and expected
-  SHA-256.
-- Live disposable atomic rehearsal: 15 reports, 18,251 events, 14,090,240 bytes,
-  `release_ready=true`, healthy, 100% outcomes, `quick_check=ok`, zero FK,
-  rejected/raw-only/semantic/source-isolation errors.
-- Live cache rehearsal: one index request, zero CSV requests and zero inserts.
-- Proposed IAM: zero Access Analyzer findings; exact current/archive writes
-  allowed, unapproved write/read/delete denied. Semantic diff is exactly two IAM
-  resources and one lifecycle rule.
+- VPS: 156 tests; `compileall` and diff checks passed.
+- SFC: `release_ready=true`, healthy, 100% reliability, 15 raw / 18,251 events,
+  zero rejected/raw-only/invalid/unexpected/integrity/FK findings.
+- Both manual and daemon latest-report polls were cache hits with zero CSV
+  download and zero inserts.
+- Scheduled S3 version:
+  `R.Z_1tyI4kco4dcjxeAZAqubZMF_VpKl`; 14,090,240 bytes; SSE-S3; metadata and
+  download SHA-256
+  `e3681c52da7be12db1b639a86517c2857e064773bee0336e065696dc5219968e`.
+  Restore verified four tables / 18,284 rows / `quick_check=ok` / byte identity.
+- IAM Access Analyzer, exact allow/deny simulation, semantic readback,
+  versioning and on-host read denial passed.
+- Prior crontab prefix is byte-identical; SFC markers occur once.
+- Lambda code/config/env hash/IAM, EventBridge, ports, SEC/House S3 versions,
+  SEC sources/health, legacy DB/PID and email path passed zero drift.
+- SFC logs have zero sensitive-pattern hits.
 
 ## Decisions / constraints
 
-- Recommended release is Option B: scoped S3 recovery. Option A remains available
-  if the owner wants no IAM/lifecycle change.
-- Security-sensitive proposal files are not production desired state and were not
-  applied.
-- SFC is anonymous weekly aggregate short-position context only. It cannot create
-  a sell trade, named actor or standalone directional stance.
-- SFC uses `sfc-short-v2-shadow.db`; do not mix it with SEC, Congress or legacy
-  databases.
-- No decision-pack/email integration before a new 14-day/99% observation gate.
+- SFC stays context-only and absent from the owner email/decision pack until the
+  observation gate and a separate exact approval pass.
+- Do not mix SFC with SEC, Congress or legacy databases.
+- Current House raw-only DocID `20033725` fails on amount suffix
+  `$50,001 - $100,000 of $20 with an expiration`; preserve the disclosed range
+  and fail closed unless a separately reviewed parser contract is approved.
 - Senate and CCASS retain their access gates; CoinGlass remains out of scope.
 
 ## Next handoff
 
-- Obtain exact approval in the form
-  `APPROVE SFC-SHADOW-001 OPTION B @ <current-HEAD>` (recommended), or Option A.
-- Then follow the runbook from before-state capture through first daemon-fired
-  run and full zero-drift verification. Do not disturb the House observation.
+- Monitor SFC daily outcomes, weekly publication freshness and S3 restores
+  through 2026-08-09 10:42:04 UTC.
+- Treat the House DocID `20033725` parser remediation as a separate change; do
+  not contaminate either observation window with an unapproved manual run.

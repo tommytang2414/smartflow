@@ -100,9 +100,10 @@ acknowledgement and separate access/session design.
   index-only cache hits.
 - The bounded history builder now publishes its target only after complete
   integrity, foreign-key, source-isolation and outcome verification.
-- The isolated runner, audit, snapshot publisher, cron proposal, scoped
-  IAM/lifecycle proposal and rollback are prepared in
-  `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`. No production surface has changed.
+- The isolated runner, audit and snapshot publisher are production-active under
+  `SFC-SHADOW-001` Option B at exact commit `2e9ce99`. The exact cron,
+  IAM/lifecycle state, deployment evidence and rollback are in
+  `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 
 ## Verification baseline
 
@@ -123,9 +124,10 @@ legacy coverage: 0 weeks / 0 records / no_legacy_history
 
 ## Remaining SFC definition of done
 
-- Select Option A (local-only) or recommended Option B (scoped S3 recovery).
-- Approve the exact `SFC-SHADOW-001` commit before production scheduling.
-- Complete the 14-day/99% observation before any decision-pack or email change.
+- Complete the production 14-day/99% observation ending
+  2026-08-09 10:42:04 UTC.
+- Keep SFC absent from the decision pack and email until a separate downstream
+  integration proposal is approved.
 
 The stock-first scope decision does not itself authorize production deployment,
 legacy-table mutation, collector enablement, CCASS access or directional reporting.

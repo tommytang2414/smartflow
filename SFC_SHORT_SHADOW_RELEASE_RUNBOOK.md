@@ -2,8 +2,8 @@
 
 Change ID: `SFC-SHADOW-001`
 
-Status: prepared and tested; no production, IAM, S3 lifecycle, cron, Lambda, or
-email change has been applied.
+Status: Option B production-active at exact approved commit `2e9ce99`; 14-day
+observation in progress. Lambda and email remain unchanged.
 
 ## Business purpose
 
@@ -180,6 +180,46 @@ Any failed gate stops the release and starts rollback.
    legacy scheduler.
 
 Rollback does not mutate `smartflow.db` and does not delete immutable evidence.
+
+## Deployment record — 2026-07-27 HKT
+
+- Owner approval:
+  `APPROVE SFC-SHADOW-001 OPTION B @ 2e9ce99`.
+- Before-state:
+  `/home/ubuntu/SmartFlow-shadow/backups/SFC-SHADOW-001-20260726T100537Z`.
+- The shadow checkout was detached at full commit
+  `2e9ce99a74ce240913d5d7644727c9f2223319b6`; the live checkout remained
+  `d9ba3fb620200b1b6ab96cce23d8ccea2862bdac`.
+- VPS validation passed 156 `unittest` tests, `compileall` and diff checks.
+- Atomic history build stored 15 reports and 18,251 normalized events in a
+  14,090,240-byte mode-600 database. Integrity, foreign keys, schema, source
+  isolation and semantics passed.
+- The manual cache canary and first daemon run were both healthy `empty` runs:
+  each downloaded only the index and inserted zero raw/normalized rows.
+- Crontab SHA-256 is
+  `5fe3a2f2564d7070b3338c51fbb5c3e6276f207a9d5ed5b4003248fe4c800dff`.
+  The prior 2,305-byte prefix is byte-identical and both SFC markers occur once.
+- IAM Access Analyzer returned zero findings. The actual uploader can write the
+  exact SFC current/monthly paths and cannot write an unrelated beta key or
+  read/delete the SFC object. Lifecycle readback contains exactly the approved
+  eight rules; versioning remains enabled.
+- The first daemon sequence completed at 10:42/10:52/11:07 UTC. SFC audit is
+  `release_ready=true`, healthy and 100% reliable with zero rejected/raw-only,
+  semantic, source-isolation, integrity or foreign-key failures.
+- Scheduled S3 version `R.Z_1tyI4kco4dcjxeAZAqubZMF_VpKl` is 14,090,240 bytes,
+  SSE-S3 encrypted and has metadata/download SHA-256
+  `e3681c52da7be12db1b639a86517c2857e064773bee0336e065696dc5219968e`.
+  Exact-version restore verified four tables, 18,284 total rows,
+  `quick_check=ok` and byte identity.
+- Lambda code/config/environment hash/IAM, EventBridge, ports, SEC/House S3
+  versions, SEC health, the legacy DB/PID and email path passed zero drift.
+  SFC logs contained zero sensitive-pattern hits.
+- House was already degraded before the SFC mutation due to raw-only DocID
+  `20033725` and the new amount suffix
+  `$50,001 - $100,000 of $20 with an expiration`. This independent parser issue
+  was recorded but not changed or manually rerun as part of SFC.
+- The SFC observation started at 2026-07-26 10:42:04 UTC and ends at
+  2026-08-09 10:42:04 UTC.
 
 ## Observation and downstream gate
 

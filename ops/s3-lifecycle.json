@@ -41,6 +41,16 @@
       }
     },
     {
+      "ID": "sfc-short-shadow-version-retention",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "beta/sfc-short-v2-shadow.db"
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 30
+      }
+    },
+    {
       "ID": "operational-backups-retention",
       "Status": "Enabled",
       "Filter": {
