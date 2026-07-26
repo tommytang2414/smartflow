@@ -225,6 +225,26 @@ def _ticker(asset: str) -> str | None:
     return None
 
 
+def _transaction_note(lines: list[list[dict[str, Any]]]) -> str | None:
+    parts = []
+    collecting = False
+    for line in lines:
+        text = " ".join(_column_text(line, 100, 560).replace("\x00", "").split())
+        marker = re.fullmatch(r"D\s*:\s*(.*)", text)
+        if marker:
+            collecting = True
+            if marker.group(1):
+                parts.append(marker.group(1))
+                if marker.group(1).endswith("."):
+                    break
+            continue
+        if collecting and text:
+            parts.append(text)
+            if text.endswith("."):
+                break
+    return " ".join(parts) or None
+
+
 def parse_house_ptr_word_pages(
     pages: list[list[dict[str, Any]]],
     *,
@@ -256,17 +276,7 @@ def parse_house_ptr_word_pages(
                 if position + 1 < len(row_indexes)
                 else len(lines)
             )
-            for continuation in lines[line_index + 1 : next_row]:
-                if any("\x00" in word["text"] for word in continuation):
-                    break
-                part = _column_text(continuation, 100, 255)
-                if part:
-                    asset_parts.append(part)
-                amount_part = _column_text(continuation, 440, 520)
-                if amount_part and (
-                    "$" in amount_part or "Spouse/DC" in amount_part
-                ):
-                    amount_parts.append(amount_part)
+            continuation_lines = list(lines[line_index + 1 : next_row])
             if position + 1 == len(row_indexes) and page_number < len(page_lines):
                 next_lines = page_lines[page_number]
                 next_row_indexes = [
@@ -276,12 +286,58 @@ def parse_house_ptr_word_pages(
                 next_prefix_end = (
                     next_row_indexes[0] if next_row_indexes else len(next_lines)
                 )
-                for continuation in next_lines[:next_prefix_end]:
-                    amount_part = _column_text(continuation, 440, 520)
-                    if amount_part and (
-                        "$" in amount_part or "Spouse/DC" in amount_part
-                    ):
-                        amount_parts.append(amount_part)
+                next_prefix = next_lines[:next_prefix_end]
+                header_indexes = [
+                    index
+                    for index, continuation in enumerate(next_prefix)
+                    if "$200?" in _column_text(continuation, 0, 600)
+                ]
+                continuation_start = (
+                    header_indexes[-1] + 1
+                    if header_indexes
+                    else next(
+                        (
+                            index
+                            for index, continuation in enumerate(next_prefix)
+                            if "$" in _column_text(continuation, 440, 520)
+                            or "Spouse/DC" in _column_text(continuation, 440, 520)
+                            or any(
+                                "\x00" in word["text"]
+                                for word in continuation
+                            )
+                        ),
+                        None,
+                    )
+                )
+                if continuation_start is not None:
+                    continuation_lines.extend(next_prefix[continuation_start:])
+
+            try:
+                _amount_range(" ".join(amount_parts))
+                amount_complete = True
+            except HouseDisclosureError:
+                amount_complete = False
+            asset_complete = False
+            for continuation in continuation_lines:
+                if any("\x00" in word["text"] for word in continuation):
+                    asset_complete = True
+                if not asset_complete:
+                    part = _column_text(continuation, 100, 255)
+                    if part:
+                        asset_parts.append(part)
+                if amount_complete:
+                    continue
+                amount_part = _column_text(continuation, 440, 520)
+                if amount_part and (
+                    "$" in amount_part or "Spouse/DC" in amount_part
+                ):
+                    amount_parts.append(amount_part)
+                    try:
+                        _amount_range(" ".join(amount_parts))
+                        amount_complete = True
+                    except HouseDisclosureError:
+                        pass
+
             asset = " ".join(part for part in asset_parts if part).strip()
             if not asset:
                 raise HouseDisclosureError("House PTR transaction is missing asset")
@@ -320,6 +376,7 @@ def parse_house_ptr_word_pages(
                     "amount_upper": amount_upper,
                     "amount_is_range": amount_is_range,
                     "amount_note": amount_note,
+                    "transaction_note": _transaction_note(continuation_lines),
                 }
             )
     if not transactions:

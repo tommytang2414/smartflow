@@ -9,13 +9,18 @@
   2026-07-26 10:42:04 through 2026-08-09 10:42:04 UTC.
 - Existing SEC/M3 owner email remains active and SEC-only.
 - Production House remains degraded on the pre-SFC raw-only DocID `20033725`;
-  its parser/schedule/data were not changed during this release.
+  v4 is locally prepared but no production parser/schedule/data changed yet.
 - Legacy live checkout remains `d9ba3fb`; scheduler PID `640336` is alive.
 - Last agent: Codex.
 - Updated: 2026-07-27 HKT.
 
 ## Completed
 
+- Prepared `CONGRESS-HOUSE-PARSER-V4-001`.
+- Reproduced the production failure against the official PDF and added a
+  sanitized cross-page fixture plus footer-boundary regression.
+- Added v4 strict-range completion, cross-page asset/ticker preservation and
+  separate `transaction_note` handling.
 - Saved exact host/cloud before-state at
   `/home/ubuntu/SmartFlow-shadow/backups/SFC-SHADOW-001-20260726T100537Z`.
 - Built the separate mode-600 SFC DB: 15 reports, 18,251 events,
@@ -29,6 +34,11 @@
 
 ## Verification
 
+- Focused Congress suite: 26 tests passed. Full suite: 158 tests passed.
+  `compileall` and diff checks passed.
+- Official DocID `20033725` now parses into 18 v4 events; `TEM` has bounds
+  `50001`/`100000`, null value and the `$20` strike price only in its note.
+- No production or AWS state changed for the v4 package.
 - VPS: 156 tests; `compileall` and diff checks passed.
 - SFC: `release_ready=true`, healthy, 100% reliability, 15 raw / 18,251 events,
   zero rejected/raw-only/invalid/unexpected/integrity/FK findings.
@@ -53,12 +63,14 @@
 - Do not mix SFC with SEC, Congress or legacy databases.
 - Current House raw-only DocID `20033725` fails on amount suffix
   `$50,001 - $100,000 of $20 with an expiration`; preserve the disclosed range
-  and fail closed unless a separately reviewed parser contract is approved.
+  and keep the `$20` option detail separate from the amount.
 - Senate and CCASS retain their access gates; CoinGlass remains out of scope.
 
 ## Next handoff
 
 - Monitor SFC daily outcomes, weekly publication freshness and S3 restores
   through 2026-08-09 10:42:04 UTC.
-- Treat the House DocID `20033725` parser remediation as a separate change; do
-  not contaminate either observation window with an unapproved manual run.
+- Commit/push the v4 package, capture exact read-only production before-state
+  and request approval for its exact release commit.
+- Do not manually run or reprocess House; after deployment let the next hourly
+  daemon run resolve DocID `20033725` and restart only the House observation.

@@ -121,7 +121,7 @@ class CongressReprocessingTests(unittest.TestCase):
                 hashlib.sha256(PDF_BYTES).hexdigest(),
             )
             event = session.scalar(select(NormalizedEventV2))
-            self.assertEqual(event.parser_version, "congress-house-ptr-v3")
+            self.assertEqual(event.parser_version, "congress-house-ptr-v4")
             self.assertEqual(
                 event.attributes["amount_note"],
                 "@ $470.985/share",

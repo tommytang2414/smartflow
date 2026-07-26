@@ -137,6 +137,64 @@ class HouseCongressContractTests(unittest.TestCase):
         self.assertEqual(transaction["amount_lower"], Decimal("250001"))
         self.assertEqual(transaction["amount_upper"], Decimal("500000"))
 
+    def test_cross_page_row_stops_amount_at_range_and_preserves_option_note(self):
+        pages = json.loads(
+            (
+                FIXTURES
+                / "house_ptr_cross_page_option_note_words_sanitized.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        parsed = parse_house_ptr_word_pages(pages, report=self.report)
+        transaction = parsed["transactions"][0]
+
+        self.assertEqual(transaction["ticker"], "EXM")
+        self.assertEqual(transaction["amount_lower"], Decimal("50001"))
+        self.assertEqual(transaction["amount_upper"], Decimal("100000"))
+        self.assertIsNone(transaction["amount_note"])
+        self.assertEqual(
+            transaction["transaction_note"],
+            (
+                "Exercised 50 call options purchased 1/14/25 (5,000 shares) "
+                "at a strike price of $20 with an expiration date of 1/16/26."
+            ),
+        )
+
+        event = normalize_house_ptr(parsed, observed_at=OBSERVED_AT)[0]
+        self.assertEqual(event["ticker"], "EXM")
+        self.assertEqual(event["attributes"]["amount_lower"], "50001")
+        self.assertEqual(event["attributes"]["amount_upper"], "100000")
+        self.assertEqual(
+            event["attributes"]["transaction_note"],
+            transaction["transaction_note"],
+        )
+
+    def test_transaction_note_stops_before_non_transaction_footer(self):
+        pages = [[
+            {"top": 325.97, "x0": 103.95, "text": "Example"},
+            {"top": 325.97, "x0": 160.50, "text": "(EXM)"},
+            {"top": 325.97, "x0": 220.00, "text": "[ST]"},
+            {"top": 325.97, "x0": 262.20, "text": "S"},
+            {"top": 325.97, "x0": 326.70, "text": "07/01/2026"},
+            {"top": 325.97, "x0": 381.45, "text": "07/02/2026"},
+            {"top": 325.97, "x0": 445.95, "text": "$2,722.50"},
+            {"top": 340.00, "x0": 103.95, "text": "D\u0000:"},
+            {"top": 340.00, "x0": 140.00, "text": "Sold"},
+            {"top": 340.00, "x0": 170.00, "text": "10,000"},
+            {"top": 340.00, "x0": 210.00, "text": "shares."},
+            {"top": 355.00, "x0": 103.95, "text": "*"},
+            {"top": 355.00, "x0": 115.00, "text": "For"},
+            {"top": 355.00, "x0": 135.00, "text": "reference"},
+            {"top": 355.00, "x0": 180.00, "text": "only."},
+        ]]
+
+        transaction = parse_house_ptr_word_pages(
+            pages,
+            report=self.report,
+        )["transactions"][0]
+
+        self.assertEqual(transaction["transaction_note"], "Sold 10,000 shares.")
+
     def test_spouse_or_child_open_amount_range_is_preserved(self):
         pages = [[
             {"top": 325.97, "x0": 64.90, "text": "SP"},

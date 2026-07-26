@@ -325,6 +325,20 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-07-27 — House PTR Cross-Page Parser v4 Package
+
+- Reproduced DocID `20033725` against the official PDF and confirmed the
+  parser was appending an option description's `$20` strike price after the
+  already complete `$50,001 - $100,000` disclosed range.
+- Added `congress-house-ptr-v4`: amount collection stops at a valid strict
+  range, cross-page asset/ticker continuations are retained, and `D:` text is
+  stored separately as `transaction_note`.
+- Added sanitized cross-page and footer-boundary regression coverage. The
+  official PDF now produces 18 events; `TEM` retains bounds `50001`/`100000`,
+  null value and the option detail only as a note.
+- Local verification passes 158 tests and `compileall`. Production remains on
+  v3 and degraded until the separately gated deployment is approved.
+
 ### 2026-07-27 — SFC Short Shadow Production Deployment
 
 - Deployed owner-approved `SFC-SHADOW-001 OPTION B @ 2e9ce99` to the isolated

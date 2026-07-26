@@ -130,14 +130,18 @@ before the documented release gates pass.
   or present it as an exact trade value.
 - House `FilingType=P` identifies PTRs in the official yearly XML index. Individual
   transaction rows remain in separate official PDFs.
-- Use `congress-house-ptr-v3` for new House row extraction and retain v2 as
-  accepted historical production evidence. Create one event per report row
+- Use `congress-house-ptr-v4` for new House row extraction after its production
+  gate; retain v2/v3 as accepted historical production evidence. Create one event per report row
   using chamber + DocID + row identity; use stable member/state identity for
   actor deduplication across reports.
 - A disclosed range may be followed only by the observed
   `@ $price/share [shares sold @ $price/share]` note grammar. Preserve that
   suffix as `amount_note`; it never changes `amount_lower`, `amount_upper` or
   null `value`. Any other suffix remains a parser failure.
+- For a row split across PDF pages, stop amount collection as soon as the strict
+  disclosed range is complete. Preserve continued asset text/ticker and keep
+  `D:` disclosure text separately as `transaction_note`; never append a strike
+  price or other description amount to the disclosed range.
 - Extract tickers only when disclosed in the official row. Missing tickers are a
   warning and cannot enter ticker-level cross-source ranking.
 - Preserve official House PDFs exactly in raw evidence. The live adapter accepts
@@ -202,6 +206,20 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-27 — House PTR Cross-Page Parser v4 Package
+
+- Reproduced the raw-only DocID `20033725` failure against the official PDF:
+  the complete `$50,001 - $100,000` range was incorrectly followed by the
+  option description's `$20` strike price.
+- Added `congress-house-ptr-v4`, which stops amount collection at a complete
+  strict range, preserves cross-page asset/ticker text and stores official
+  `D:` disclosure text separately as `transaction_note`.
+- Added a sanitized cross-page regression fixture and footer-boundary test.
+  The real official PDF now yields 18 normalized events, including `TEM` with
+  bounds `50001`/`100000`, null value and the `$20` text only in its note.
+- Full local suite passes 158 tests and `compileall`. No production code,
+  database, schedule, S3 object, report or email changed.
 
 ### 2026-07-27 — SFC Short Shadow Production Deployment
 

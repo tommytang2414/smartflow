@@ -8,7 +8,7 @@ from typing import Any
 from smartflow.events import make_source_event_id
 
 
-HOUSE_PTR_PARSER_VERSION = "congress-house-ptr-v3"
+HOUSE_PTR_PARSER_VERSION = "congress-house-ptr-v4"
 HOUSE_ACTIONS = {
     "P": ("purchase", "BUY"),
     "S": ("sale", "SELL"),
@@ -196,6 +196,7 @@ def normalize_house_ptr(
                     ),
                     "amount_is_range": transaction["amount_is_range"],
                     "amount_note": transaction.get("amount_note"),
+                    "transaction_note": transaction.get("transaction_note"),
                 },
                 "quantity": None,
                 "price": None,

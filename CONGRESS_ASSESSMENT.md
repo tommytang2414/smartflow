@@ -2,9 +2,9 @@
 
 Date: 2026-07-26 HKT
 
-Status: House shadow v3 remediation is deployed. Stored-PDF recovery, manual
-cron-wrapper canary and first v3 daemon-fired run passed. The replacement
-14-day observation runs through 2026-08-09 03:27:03 UTC; Senate remains pending.
+Status: House shadow v3 is deployed but degraded on raw-only DocID `20033725`.
+The v4 cross-page remediation is locally verified and pending its exact
+production gate. Senate remains pending.
 
 ## Business meaning
 
@@ -75,10 +75,13 @@ use. Public availability is not a redistribution licence.
 - disclosed lower/upper amount remains in attributes; `value` stays null
 - missing ticker is a warning and cannot enter ticker-level cross-source ranking
 - image-only PDF is a warning event requiring OCR and has no direction/ticker
-- parser version: `congress-house-ptr-v3` for new evidence; v2 remains accepted
-  historical production evidence
+- parser version: `congress-house-ptr-v4` for new evidence after deployment;
+  v2/v3 remain accepted historical production evidence
 - an observed share-price suffix is preserved as `amount_note` and never changes
   the disclosed bounds or null `value`
+- a cross-page row stops amount collection once its strict disclosed range is
+  complete; continued asset text and ticker are preserved, while official
+  `D:` disclosure text is stored separately as `transaction_note`
 
 Positively identified amendments are not treated as another directional report.
 The exact PDF is retained and the document becomes a non-directional
@@ -180,12 +183,14 @@ them as corrected Congress ground truth.
 
 ## Remaining release gates
 
-1. Obtain approval of the exact release commit and manifest before changing the
-   scheduler, S3 lifecycle or uploader IAM.
-2. Pass the one-shot production audit and a new 14-day/99% House observation
+1. Obtain approval of the exact v4 release commit and bounded parser-deployment
+   manifest. Do not manually reprocess DocID `20033725`.
+2. Let the next daemon-fired run process the raw-only report, then start a new
+   14-day/99% House observation window from that scheduled success.
+3. Pass the production audit and new House observation
    window before proposing any email integration.
-3. Decide whether image-only OCR is worth a separately bounded implementation;
+4. Decide whether image-only OCR is worth a separately bounded implementation;
    until then the exact warning PDF remains available for manual deep dive.
-4. Define original-to-amendment row reconciliation before amendments can enter
+5. Define original-to-amendment row reconciliation before amendments can enter
    directional ranking.
-5. Implement Senate only after the acknowledgement/session design is approved.
+6. Implement Senate only after the acknowledgement/session design is approved.
