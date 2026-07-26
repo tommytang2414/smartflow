@@ -2,9 +2,9 @@
 
 Date: 2026-07-26 HKT
 
-Status: House shadow v3 remediation is deployed. Stored-PDF recovery and the
-manual cron-wrapper canary passed; the first v3 daemon-fired run, restarted
-14-day observation and Senate adapter remain pending.
+Status: House shadow v3 remediation is deployed. Stored-PDF recovery, manual
+cron-wrapper canary and first v3 daemon-fired run passed. The replacement
+14-day observation runs through 2026-08-09 03:27:03 UTC; Senate remains pending.
 
 ## Business meaning
 

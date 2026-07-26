@@ -344,6 +344,9 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
   `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl` passed metadata hash and byte-identical
   restore; all SEC/live/AWS controls passed zero drift. Production deployment
   commit: `fd4f16a`.
+- Daemon-fired run 12 succeeded at 2026-07-26 03:27:03 UTC with 25 reports/213
+  events and 81 reports remaining. The v3 14-day/99% observation runs through
+  2026-08-09 03:27:03 UTC.
 
 ### 2026-07-26 — House Congress Shadow Production Deployment
 

@@ -3,8 +3,8 @@
 Change ID: `CONGRESS-HOUSE-PARSER-001`
 
 Status: deployed from approved commit
-`fd4f16aa195beaa8ff1fe208dbc832acf55933e0`; manual recovery canary passed
-and first v3 daemon-fired run is due at 2026-07-26 03:27 UTC
+`fd4f16aa195beaa8ff1fe208dbc832acf55933e0`; first v3 daemon-fired run passed
+and observation runs through 2026-08-09 03:27:03 UTC
 
 Target: `/home/ubuntu/SmartFlow-shadow`
 
@@ -111,8 +111,14 @@ daemon-fired run on v3. Congress remains excluded from email.
 - Crontab hash/prefix, uploader/Lambda policies, lifecycle, versioning, Lambda
   code/config, EventBridge, public ports, legacy DB/PID and SEC publisher/source
   health passed zero drift. Congress sensitive-log pattern hits were zero.
-- The recovery canary is not the observation start. The first v3 daemon-fired
-  run is due at 03:27 UTC and must succeed before the 14-day window is dated.
+- The recovery canary is not the observation start. Daemon-fired run 12
+  succeeded at 2026-07-26 03:27:03 UTC with 25 reports and 213 events, leaving
+  81 reports in the backlog. Audit remained release-ready with 232 raw reports,
+  1,705 events, healthy state and zero raw-only/invalid/FK conditions.
+- The replacement v3 observation window is
+  2026-07-26 03:27:03 through 2026-08-09 03:27:03 UTC. Initial v3 scheduled
+  reliability is 100%; the three earlier v2 parser failures remain immutable
+  history and are outside the replacement-window denominator.
 
 ## Recoverable rollback
 

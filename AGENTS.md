@@ -210,7 +210,9 @@ before the documented release gates pass.
   restored healthy state with zero raw-only/invalid/integrity errors. Published
   and restore-verified S3 version `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl`.
   Lambda, email, SEC, legacy, cron, IAM and firewall passed zero drift. The
-  14-day observation starts only after the first successful v3 daemon run.
+  first v3 daemon run then inserted 25 reports/213 events and left 81 reports;
+  the replacement 14-day observation runs from 2026-07-26 03:27:03 through
+  2026-08-09 03:27:03 UTC.
   Production deployment commit: `fd4f16a`.
 
 ### 2026-07-26 — House Congress Shadow Production Deployment

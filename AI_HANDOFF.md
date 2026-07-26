@@ -5,9 +5,9 @@
 - Branch / remediation commit: `master` /
   `fd4f16aa195beaa8ff1fe208dbc832acf55933e0`.
 - Production House shadow checkout is detached at the same exact commit.
-- House DB is healthy after stored-PDF remediation and an exact cron-wrapper
-  recovery canary. The first v3 daemon-fired run is due at
-  2026-07-26 03:27 UTC.
+- House DB is healthy after stored-PDF remediation, recovery canary and
+  daemon-fired run 12. The v3 observation runs through
+  2026-08-09 03:27:03 UTC.
 - Legacy live checkout remains `d9ba3fb`; scheduler PID `640336` is alive.
 - Existing SEC/M3 owner email remains active and SEC-only.
 - Last agent: Codex.
@@ -30,6 +30,8 @@
   rerun inserted zero, and all three historical parser errors remain.
 - Ran the exact cron wrapper recovery canary: 25 reports and 141 events inserted,
   leaving 106 reports in the discovered backlog and restoring healthy state.
+- Daemon-fired run 12 succeeded at 2026-07-26 03:27:03 UTC: 25 reports and 213
+  events inserted, leaving 81 reports in the backlog.
 - Published and restore-verified the current Congress snapshot.
 
 ## Verification
@@ -38,9 +40,10 @@
   fixture JSON and `git diff --check` passed.
 - VPS: built-in discovery passed 150 tests; dedicated PDF venv passed 24 focused
   tests and `compileall`.
-- House audit after recovery: `release_ready=true`, 207 raw, 1,492 events,
-  eight successes/three preserved errors, exact schema, `quick_check=ok`, zero
-  FK errors, zero raw-only reports, zero invalid semantics and healthy state.
+- House audit after the first daemon run: `release_ready=true`, 232 raw, 1,705
+  events, nine historical successes/three preserved errors, exact schema,
+  `quick_check=ok`, zero FK errors, zero raw-only reports, zero invalid semantics
+  and healthy state.
 - DocID `20034201` has nine v3 sale events. Every row retains bounds
   `1001`/`15000` and null value; exactly two preserve `amount_note`.
 - S3 current object: version `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl`,
@@ -53,8 +56,10 @@
 
 ## Decisions / constraints
 
-- The manual recovery canary does not start observation. Restart the 14-day/99%
-  gate only from the first successful daemon-fired v3 run.
+- The v3 14-day/99% observation started at the first successful daemon-fired run,
+  2026-07-26 03:27:03 UTC, and ends at 2026-08-09 03:27:03 UTC. The three
+  pre-remediation v2 errors remain history but are outside this replacement
+  observation denominator.
 - Congress remains outside email/report pending the full observation gate and a
   separate exact release.
 - Historical v2 evidence and the three error outcomes remain immutable.
@@ -63,9 +68,6 @@
 
 ## Next handoff
 
-- After 2026-07-26 03:27 UTC, confirm run 12 is daemon-fired and successful,
-  audit remains release-ready, and record its timestamp plus the exact 14-day
-  observation end.
 - Monitor backlog to zero, then verify cache-only polls download zero PDF bytes.
 - Monitor v3 reliability, evidence integrity, S3 restore and SEC zero-downstream
   isolation for the full observation before proposing email integration.
