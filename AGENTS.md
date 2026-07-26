@@ -204,8 +204,14 @@ before the documented release gates pass.
   rehearsal inserted nine missing events and zero on rerun, with no raw-only
   evidence, invalid semantics or integrity errors.
 - Focused suite passes 24 tests; full suite passes 150 tests plus two subtests.
-  Production deployment follows
-  `CONGRESS_HOUSE_PARSER_REMEDIATION_RUNBOOK.md`.
+  Deployed exact commit `fd4f16a`; production stored-PDF reprocessing inserted
+  nine events and zero on rerun, preserving all three historical errors.
+- The exact cron-wrapper recovery canary inserted 25 reports/141 events and
+  restored healthy state with zero raw-only/invalid/integrity errors. Published
+  and restore-verified S3 version `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl`.
+  Lambda, email, SEC, legacy, cron, IAM and firewall passed zero drift. The
+  14-day observation starts only after the first successful v3 daemon run.
+  Production deployment commit: `fd4f16a`.
 
 ### 2026-07-26 — House Congress Shadow Production Deployment
 

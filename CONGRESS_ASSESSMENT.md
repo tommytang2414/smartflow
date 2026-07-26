@@ -2,9 +2,9 @@
 
 Date: 2026-07-26 HKT
 
-Status: House shadow is in production observation. A fail-closed share-price
-note layout found in DocID `20034201` is covered by the prepared v3 remediation;
-deployment recovery, observation restart and Senate adapter remain pending.
+Status: House shadow v3 remediation is deployed. Stored-PDF recovery and the
+manual cron-wrapper canary passed; the first v3 daemon-fired run, restarted
+14-day observation and Senate adapter remain pending.
 
 ## Business meaning
 

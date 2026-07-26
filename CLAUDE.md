@@ -336,8 +336,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Added exact-DocID/hash reprocessing from stored raw PDF evidence without
   rewriting outcomes or health. A production-copy rehearsal inserted nine
   events and zero on rerun; full suite passes 150 tests plus two subtests.
-- Production deployment is governed by
-  `CONGRESS_HOUSE_PARSER_REMEDIATION_RUNBOOK.md`.
+- Deployed exact commit `fd4f16a` after a consistent backup and 150 VPS/24
+  focused tests. Production reprocessing inserted nine v3 events and zero on
+  rerun while preserving all three historical errors.
+- The recovery canary inserted 25 reports/141 events, restored healthy state and
+  passed integrity/semantic/evidence audit. Encrypted S3 version
+  `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl` passed metadata hash and byte-identical
+  restore; all SEC/live/AWS controls passed zero drift. Production deployment
+  commit: `fd4f16a`.
 
 ### 2026-07-26 — House Congress Shadow Production Deployment
 

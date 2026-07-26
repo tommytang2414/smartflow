@@ -2,15 +2,16 @@
 
 Change ID: `CONGRESS-HOUSE-PARSER-001`
 
-Status: locally verified and approved for the bounded remediation described
-below; production release commit is recorded at deployment
+Status: deployed from approved commit
+`fd4f16aa195beaa8ff1fe208dbc832acf55933e0`; manual recovery canary passed
+and first v3 daemon-fired run is due at 2026-07-26 03:27 UTC
 
 Target: `/home/ubuntu/SmartFlow-shadow`
 
 ## Failure and intended correction
 
 The production observation reached official House DocID `20034201`. Nine rows
-contain the legal disclosed range `$1,001 - $15,000`; eight also contain the
+contain the legal disclosed range `$1,001 - $15,000`; two also contain the
 following text in the same extracted amount column:
 
 `@ $470.985/share shares sold @ $253.45/share`
@@ -83,6 +84,35 @@ Any mismatch stops before mutation.
 
 The 14-day/99% House observation restarts from the first successful
 daemon-fired run on v3. Congress remains excluded from email.
+
+## Deployment record — 2026-07-26 HKT
+
+- Before-state backup:
+  `/home/ubuntu/SmartFlow-shadow/backups/CONGRESS-HOUSE-PARSER-001-20260726T030453Z`.
+  The SQLite backup passed `quick_check` and foreign-key validation before code
+  or data mutation.
+- Production shadow checkout is detached at
+  `fd4f16aa195beaa8ff1fe208dbc832acf55933e0`. Built-in `unittest` discovery
+  passed all 150 VPS tests; the dedicated PDF venv passed 24 focused tests and
+  `compileall`.
+- Exact raw event `house:20034201` matched the approved payload hash.
+  Stored-PDF reprocessing observed/inserted nine v3 events; the identical rerun
+  observed nine and inserted zero. The three historical parser errors remain.
+- All nine rows retain lower `1001`, upper `15000` and null value. Exactly two
+  preserve the observed share-price suffix as `amount_note`.
+- The exact cron wrapper recovery canary succeeded as run 11: 25 reports and
+  141 events inserted, 106 reports remained, and health recovered to healthy.
+  Audit recorded 207 raw reports, 1,492 events, zero raw-only reports, zero
+  invalid semantics, exact schema, zero FK failures and `quick_check=ok`.
+- Published encrypted S3 version `7fRjzv45F3Kh2yz2LH6ALHPLa4inAiQl`,
+  26,673,152 bytes and 1,711 verified rows. Metadata/download SHA-256 is
+  `baa4fe558a1832a8c08e86fad8f7e55f05feb5b8e55678a3f142705ea5311de0`;
+  disposable restore passed four tables, `quick_check` and byte identity.
+- Crontab hash/prefix, uploader/Lambda policies, lifecycle, versioning, Lambda
+  code/config, EventBridge, public ports, legacy DB/PID and SEC publisher/source
+  health passed zero drift. Congress sensitive-log pattern hits were zero.
+- The recovery canary is not the observation start. The first v3 daemon-fired
+  run is due at 03:27 UTC and must succeed before the 14-day window is dated.
 
 ## Recoverable rollback
 
