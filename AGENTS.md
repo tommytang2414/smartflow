@@ -197,11 +197,20 @@ before the documented release gates pass.
   not a production signal or owner-email integration.
 - Run a case with
   `py -3 -X utf8 ops/score_hk_float_squeeze.py <snapshot.json>`.
+- Run the maintained point-in-time case pack with
+  `py -3 -X utf8 ops/evaluate_hk_float_squeeze_cases.py`.
 - Never count a disclosed percentage increase as accumulation without proving
   the holder's share-count delta and reconciling issued-share changes.
 - `WATCH_DATA_GAP` is mandatory when actual holder delta, issued-share change or
   consolidated tradable float is unavailable. Dual-listed companies require
   global share capital and register treatment.
+- Reconcile comparable holder share counts before percentages. Record the
+  evidence date separately from first public availability and calculate market
+  outcomes only from the availability date to avoid look-ahead.
+- SFC high-shareholding-concentration notices are late public risk context. If
+  effective float is at most 15% and price has already risen at least 100% over
+  60 trading days or 200% over 252 days, classify `OVERHEATED`; never promote
+  the notice to an early accumulation trigger.
 - CCASS remains participant-custody context only and the disabled scraper must
   not be used to fill an ownership or free-float gap.
 
@@ -225,6 +234,21 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-07-29 — HK Float-Squeeze Point-in-Time Reconciliation
+
+- Added exact/inferred holder-share, issuer-denominator and effective-float
+  reconciliation so a percentage rise cannot hide actual holder distribution.
+- Rebuilt the Standard Chartered case at its 2026-03-05 public-availability
+  date. Temasek shares fell 42,161,042 while the disclosed percentage rose
+  1.004 points; the case now returns `INVALIDATED`.
+- Added four official SFC concentration cases and an `OVERHEATED` late-warning
+  state. All four notices arrived after extreme rerating and none became an
+  early trigger.
+- Added a five-case outcome runner with descriptive mean/median reporting. The
+  sample is explicitly too small for inference and remains local-only; no
+  production collector, database, AWS resource, report, email or schedule
+  changed.
+
 ### 2026-07-29 — HK Float-Squeeze Local Prototype
 
 - Added the owner-directed locked-float research screen with decomposed
@@ -232,9 +256,8 @@ before the documented release gates pass.
   market-trigger components.
 - Added fail-closed `WATCH_DATA_GAP` and `INVALIDATED` states so percentage-only
   changes, dilution and missing global float cannot become bullish conclusions.
-- Added a point-in-time Standard Chartered 02888 case. It returns
-  `WATCH_DATA_GAP`, score 23/100 and low confidence because core ownership/float
-  facts remain unproved despite strong price action.
+- Added the initial Standard Chartered 02888 case, which failed closed pending
+  actual holder-share and denominator reconciliation.
 - Added six focused tests; full regression passes 164 tests. No production
   collector, database, AWS resource, report, email or schedule changed.
 

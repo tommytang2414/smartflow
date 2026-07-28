@@ -57,9 +57,9 @@ primary Hong Kong use case: disclosed holder accumulation plus shrinking share
 supply and effective tradable float before a price/volume breakout.
 
 The deterministic prototype reports `ACCUMULATING`, `COILED`, `TRIGGERED`,
-`WATCH_DATA_GAP`, `INVALIDATED`, or `SCREEN_OUT`. Its decomposed 0-100 score is
-only an ordinal screen, not a probability, expected return, trade instruction or
-production-approved signal.
+`WATCH_DATA_GAP`, `INVALIDATED`, `OVERHEATED`, or `SCREEN_OUT`. Its decomposed
+0-100 score is only an ordinal screen, not a probability, expected return, trade
+instruction or production-approved signal.
 
 Three facts are critical:
 
@@ -74,10 +74,31 @@ Confirmed holder distribution or material share-supply expansion returns
 `INVALIDATED`. CCASS remains non-directional context and cannot fill a
 beneficial-ownership gap.
 
-The Standard Chartered 02888 point-in-time case is intentionally low confidence:
-strong price action and disclosed concentration are visible, but actual Temasek
-share accumulation, executed denominator shrink and consolidated global
-tradable float are not yet established.
+Every case separates the evidence's information date from its first public
+availability date. Price features and forward outcomes are anchored to first
+availability so a later publication cannot leak information backwards.
+
+An official high-concentration notice received only after the effective float is
+at most 15% and the stock has already risen at least 100% over 60 trading days
+or 200% over 252 trading days returns `OVERHEATED`. This is a liquidity and
+chasing-risk warning, not early smart-money evidence.
+
+The reconciled Standard Chartered 02888 case disproves the original Temasek
+accumulation hypothesis: between the comparable official disclosures, Temasek's
+share count fell by 42,161,042 even though its disclosed percentage rose by
+1.004 points as the issuer denominator contracted. The 719-day comparison and
+inferred current denominator remain visible limitations. A confirmed 2025
+buyback provides share-supply evidence but does not reverse the holder
+distribution result.
+
+The initial validation pack contains 02888 plus four official SFC
+high-concentration notices. At first public availability it produces one
+`INVALIDATED`, four `OVERHEATED`, and zero early `TRIGGERED` cases. Among the
+four late SFC warnings, the observed five-day median return is -5.83% and the
+20-day median is -12.31%; the 20-day mean is +10.42% because one case rose
+113.40%. Five selected cases are insufficient for statistical inference or a
+production release. They show that these free official notices are useful for
+fail-closed validation and late risk control, not yet a timely early-alpha feed.
 
 ## Owner brief target
 
@@ -166,5 +187,8 @@ See `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 - Float-squeeze candidates expose every score component and fail closed when
   holder share delta, issued-share change or consolidated tradable float is
   missing.
+- Float-squeeze backtests use first-public-availability timestamps, keep source
+  samples out of model tuning, and require a broader pre-declared universe
+  before any performance claim.
 - Crypto data is absent from the stock-first decision pack and email.
 - Production remains informational until time-separated outcome validation demonstrates stable value.

@@ -1,0 +1,42 @@
+{
+  "case_id": "00679-20260505",
+  "ticker": "00679.HK",
+  "company_name": "Asia Tele-Net and Technology Corporation Limited",
+  "information_date": "2026-04-20",
+  "available_at": "2026-05-05",
+  "dual_listed": false,
+  "ownership_lock": {
+    "anchor_holder_pct": 73.11,
+    "disclosed_holders_pct": 90.8
+  },
+  "ownership_history": null,
+  "capital": {
+    "issued_share_change_pct": null,
+    "executed_buyback_pct": null,
+    "buyback_announced": false
+  },
+  "float_structure": {
+    "issued_shares": 381933400,
+    "effective_tradable_shares": 35142733
+  },
+  "market": {
+    "return_60d_pct": 761.8556,
+    "return_252d_pct": 703.8462,
+    "distance_to_20d_high_pct": -18.439,
+    "latest_volume_ratio_20d": 0.1591
+  },
+  "outcome": {
+    "forward_5d_pct": 15.7895,
+    "forward_20d_pct": 113.3971
+  },
+  "research": [
+    {
+      "fact": "The SFC identified 90.80% concentrated holdings and 9.20% other shareholders as at 2026-04-20; the notice was published on 2026-05-05 after an extreme price rise.",
+      "source": "https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00679260505.pdf"
+    },
+    {
+      "fact": "Market metrics and forward outcomes use Yahoo Finance daily bars at the first public availability date.",
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/0679.HK"
+    }
+  ]
+}

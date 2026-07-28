@@ -1,0 +1,65 @@
+{
+  "case_id": "02888-20260305",
+  "ticker": "02888.HK",
+  "company_name": "Standard Chartered PLC",
+  "information_date": "2026-03-02",
+  "available_at": "2026-03-05",
+  "dual_listed": true,
+  "ownership_lock": {
+    "anchor_holder_pct": 18.005981,
+    "disclosed_holders_pct": 24.945981
+  },
+  "ownership_history": {
+    "holder_name": "Temasek",
+    "previous": {
+      "as_of": "2024-03-13",
+      "holder_shares": 447461831,
+      "holder_pct": 17.002,
+      "issued_shares": 2631812260,
+      "issued_shares_quality": "exact"
+    },
+    "current": {
+      "as_of": "2026-03-02",
+      "holder_shares": 405300789,
+      "holder_pct": 18.005981,
+      "issued_shares": 2250923118,
+      "issued_shares_quality": "inferred"
+    }
+  },
+  "capital": {
+    "issued_share_change_pct": null,
+    "executed_buyback_pct": 4.07,
+    "executed_buyback_shares": 98162451,
+    "executed_buyback_period": "2025-02-21/2025-07-30",
+    "buyback_announced": true
+  },
+  "float_structure": null,
+  "market": {
+    "return_60d_pct": 3.2665,
+    "return_252d_pct": 26.8121,
+    "distance_to_20d_high_pct": -11.7532,
+    "latest_volume_ratio_20d": 0.9482
+  },
+  "outcome": {
+    "forward_5d_pct": -3.7736,
+    "forward_20d_pct": -9.2675
+  },
+  "research": [
+    {
+      "fact": "Temasek reported 18.005981% and 405,300,789 voting rights; the filing reason was a change in the voting-right breakdown.",
+      "source": "https://www.hkexnews.hk/listedco/listconews/sehk/2026/0305/2026030500145.pdf"
+    },
+    {
+      "fact": "The prior filing reported 17.002%, 447,461,831 ordinary shares and 2,631,812,260 issued shares.",
+      "source": "https://www1.hkexnews.hk/listedco/listconews/sehk/2024/0318/2024031800160.pdf"
+    },
+    {
+      "fact": "The issuer's 2025 annual report confirms that the prior US$1.5 billion programme completed on 2025-07-30 purchased 98,162,451 shares, equal to 4.07% of ordinary shares in issue.",
+      "source": "https://www.sc.com/en/uploads/sites/66/content/docs/standard-chartered-plc-2025-annual-report.pdf"
+    },
+    {
+      "fact": "Market metrics and forward outcomes use Yahoo Finance daily bars from the 2026-03-05 first-public-availability date and are third-party research context.",
+      "source": "https://query1.finance.yahoo.com/v8/finance/chart/2888.HK"
+    }
+  ]
+}
