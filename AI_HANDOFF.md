@@ -2,89 +2,80 @@
 
 ## Current state
 
-- Branch: `master`; pushed House v4 release candidate:
+- Local branch: `master`; implementation baseline `e0d9d47`; latest prior
+  documentation commit `4bde1c1`.
+- Production SFC/House shadow checkout remains detached at exact commit
   `e0d9d47bcdaf062054910012e2a333f7d9c54564`.
-- Production SFC/House shadow checkout is detached at:
-  `e0d9d47bcdaf062054910012e2a333f7d9c54564`.
-- `SFC-SHADOW-001` Option B is active; observation runs from
-  2026-07-26 10:42:04 through 2026-08-09 10:42:04 UTC.
-- `CONGRESS-HOUSE-PARSER-V4-001` is active; House observation runs from
-  2026-07-26 20:27:03 through 2026-08-09 20:27:03 UTC.
+- House v4 observation runs through 2026-08-09 20:27:03 UTC. It is healthy:
+  45/45 outcomes since deployment were `success` or `empty`, with zero errors,
+  zero backlog, zero invalid semantics and no raw-only evidence.
+- SFC observation runs through 2026-08-09 10:42:04 UTC. Collection is reliable
+  but health is fail-closed `stale` because the official SFC page still lists
+  2026-07-17 as its latest report. Daily polls are clean cache hits; the
+  publisher correctly refused two newer snapshots.
 - Existing SEC/M3 owner email remains active and SEC-only.
-- Production House is healthy; raw-only DocID `20033725` is resolved with 18
-  v4 children.
 - Legacy live checkout remains `d9ba3fb`; scheduler PID `640336` is alive.
 - Last agent: Codex.
-- Updated: 2026-07-27 HKT.
+- Updated: 2026-07-29 HKT.
 
 ## Completed
 
-- Deployed approved `CONGRESS-HOUSE-PARSER-V4-001` at exact commit `e0d9d47`.
-- Saved the consistent pre-v4 backup, waited for daemon run 29 without manual
-  collection/reprocessing, verified v4 semantics and published a recoverable
-  current S3 snapshot.
-- Prepared `CONGRESS-HOUSE-PARSER-V4-001`.
-- Reproduced the production failure against the official PDF and added a
-  sanitized cross-page fixture plus footer-boundary regression.
-- Added v4 strict-range completion, cross-page asset/ticker preservation and
-  separate `transaction_note` handling.
-- Committed and pushed the verified v4 package at `e0d9d47`; captured the exact
-  read-only production before-state in its runbook.
-- Saved exact host/cloud before-state at
-  `/home/ubuntu/SmartFlow-shadow/backups/SFC-SHADOW-001-20260726T100537Z`.
-- Built the separate mode-600 SFC DB: 15 reports, 18,251 events,
-  14,090,240 bytes.
-- Applied only the approved two uploader write paths and one 30-day
-  non-current-version rule.
-- Installed the exact daily collector/audit/publisher cron block.
-- First daemon collector, audit and publisher all passed.
-- Promoted the approved IAM/lifecycle manifests to the tracked current desired
-  state and documented production deployment/rollback.
+- Ran the approved read-only production checkpoint covering House, SFC, SEC,
+  scheduler, S3 restore/hash integrity, Lambda/EventBridge and public ports.
+- Confirmed House v4 backlog completion and post-deployment reliability.
+- Independently checked the official SFC publication page and classified the
+  freshness failure as an upstream publication delay, not a collector defect.
+- No production database, cron, IAM, Lambda, email, firewall or source changed.
 
 ## Verification
 
-- Focused Congress suite: 26 tests passed. Full suite: 158 tests passed.
-  `compileall` and diff checks passed.
-- Official DocID `20033725` now parses into 18 v4 events; `TEM` has bounds
-  `50001`/`100000`, null value and the `$20` strike price only in its note.
-- Production target raw/PDF hashes remain unchanged. House is release-ready
-  with 296 raw reports, 2,585 events, no raw-only or invalid-semantic findings
-  and one-hour reliability 100%.
-- S3 version `1OROqnUPMNl0PlRDGgRUMRwtY3LXR1jj` passed metadata/download hash,
-  four-table/2,911-row restore, `quick_check` and byte-identity verification.
-- SEC/SFC, cron, Lambda/EventBridge, legacy scheduler and public ports passed
-  zero drift; Congress logs had zero sensitive hits.
-- VPS: 156 tests; `compileall` and diff checks passed.
-- SFC: `release_ready=true`, healthy, 100% reliability, 15 raw / 18,251 events,
-  zero rejected/raw-only/invalid/unexpected/integrity/FK findings.
-- Both manual and daemon latest-report polls were cache hits with zero CSV
-  download and zero inserts.
-- Scheduled S3 version:
-  `R.Z_1tyI4kco4dcjxeAZAqubZMF_VpKl`; 14,090,240 bytes; SSE-S3; metadata and
-  download SHA-256
-  `e3681c52da7be12db1b639a86517c2857e064773bee0336e065696dc5219968e`.
-  Restore verified four tables / 18,284 rows / `quick_check=ok` / byte identity.
-- IAM Access Analyzer, exact allow/deny simulation, semantic readback,
-  versioning and on-host read denial passed.
-- Prior crontab prefix is byte-identical; SFC markers occur once.
-- Lambda code/config/env hash/IAM, EventBridge, ports, SEC/House S3 versions,
-  SEC sources/health, legacy DB/PID and email path passed zero drift.
-- SFC logs have zero sensitive-pattern hits.
+- House v4: 616 normalized events across 318 cached reports; 533 valid and 83
+  warnings. The warnings are explainable evidence quality: 82 undisclosed
+  tickers and two date-order warnings, with one event carrying both. There are
+  297 disclosed tickers, 43 reporting people and 20 events filed since
+  2026-07-20.
+- House current S3 version `HrFmbfC1EhUeFsR_4P94DCnVXg857oI5`:
+  43,134,976 bytes; SHA-256
+  `b6a53a8cb670142544cb6312176c3e868b92bc270bb91638686e258c335690ac`;
+  metadata hash, downloaded object hash, four-table restore, `quick_check` and
+  byte identity all passed.
+- SFC: three clean post-activation `empty` outcomes; 15 raw reports and 18,251
+  valid events; zero rejected, raw-only, invalid, unexpected-source, integrity
+  or FK findings. The official source still ends at 2026-07-17.
+- SFC retained S3 version `R.Z_1tyI4kco4dcjxeAZAqubZMF_VpKl`:
+  14,090,240 bytes; SHA-256
+  `e3681c52da7be12db1b639a86517c2857e064773bee0336e065696dc5219968e`;
+  metadata/download hash and byte-identical restore passed.
+- SEC 48-hour reliability: Form 144 100%; Form 4 99.65%. Both source health
+  rows are healthy. Current SEC S3 version
+  `yH1Kokgh_nG9JYtCwEvs_5rzo9il1seQ` passed metadata/download hash and
+  byte-identical restore.
+- `smartflow-report` remains active with reviewed code hash
+  `zKtGpnNXOEcpIqAbnHzKt2axAtFERtnLpPiKG0KMWL8=`. The daily EventBridge rule
+  is enabled; the last three-day metric window shows three invocations and zero
+  errors; alarm state is `OK`.
+- Lightsail public firewall remains 22/443/5001. The known unrelated 443 drift
+  was not touched.
 
 ## Decisions / constraints
 
-- SFC stays context-only and absent from the owner email/decision pack until the
-  observation gate and a separate exact approval pass.
+- SFC stays context-only and absent from the owner email/decision pack until
+  the official source publishes newer data, the observation gate passes and a
+  separate exact integration approval is granted.
+- House stays absent from the owner email until its independent observation
+  gate passes and a separate integration approval is granted.
+- House v4 preserves disclosed amount ranges and keeps option notes separate;
+  null scalar price/quantity/value fields are intentional for range-only
+  disclosures.
 - Do not mix SFC with SEC, Congress or legacy databases.
-- House v4 preserves `$50,001 - $100,000` as the disclosed range and keeps the
-  `$20` option detail separate in `transaction_note`.
 - Senate and CCASS retain their access gates; CoinGlass remains out of scope.
 
 ## Next handoff
 
-- Monitor SFC daily outcomes, weekly publication freshness and S3 restores
-  through 2026-08-09 10:42:04 UTC.
-- Monitor House hourly outcomes, backlog completion and recoverable snapshots
-  through 2026-08-09 20:27:03 UTC.
-- Do not add House or SFC to the owner email until each independent observation
-  gate passes and a separate integration approval is granted.
+- Continue daily read-only monitoring through both 2026-08-09 gates.
+- For SFC, check the official page before treating `stale` or publisher refusal
+  as a defect. Once a newer weekly CSV appears, verify one successful ingestion,
+  health recovery and a new restorable S3 version.
+- For House, keep measuring exact post-v4 outcomes and new-document parsing.
+- Do not change production or add House/SFC to email without a separately
+  approved deployment manifest.
