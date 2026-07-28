@@ -13,6 +13,9 @@ SmartFlow is a personal equity intelligence system for following disclosed smart
 3. How many independent sources and distinct actors support the finding?
 4. What contradicts it, how stale is it, and what should be researched next?
 5. Where can the owner inspect every normalized event and original source record?
+6. For Hong Kong equities, is disclosed ownership becoming more concentrated
+   while issued supply and effective tradable float shrink before a price/volume
+   breakout?
 
 The product is stock-first. Crypto and CoinGlass are no longer active product scope. Existing crypto code and historical data remain contained for audit and are not deleted by this decision.
 
@@ -27,6 +30,9 @@ The product is stock-first. Crypto and CoinGlass are no longer active product sc
 | SEC Form 144 | US | Proposed-sale risk context | Proposed sale intent | Executed sale |
 | SFC short positions | HK | Short-interest context | Weekly anonymous aggregate reportable net-short position and week-on-week change | Short-selling trade, named seller, automatic bearish call |
 | HKEX CCASS | HK | Custody/concentration context | Participant-account balances, concentration and non-directional changes | Beneficial ownership, broker trade, “莊家”, BUY/SELL |
+| HKEX Disclosure of Interests | HK | Primary ownership evidence | Actual disclosed share count and percentage after denominator reconciliation | Treating a percentage increase as a purchase by itself |
+| Issuer buyback/capital returns | HK | Share-supply evidence | Executed purchases, cancellations and issued-share change | Treating an announced authorization as completed shrinkage |
+| Price and volume | HK | Trigger context | Breakout proximity, return and volume confirmation | Proof of ownership accumulation |
 
 ## Ranking contract
 
@@ -43,6 +49,35 @@ The deterministic ranking layer groups evidence by canonical market plus securit
 - never emits a trade instruction, price target, position size or claimed probability.
 
 M3 may summarize only the deterministic result and allowlisted evidence. It must not select securities, create scores, infer missing facts or override source limitations.
+
+## Hong Kong float-squeeze prototype contract
+
+`HK-FLOAT-SQUEEZE-001` is a local research-screen prototype for the owner's
+primary Hong Kong use case: disclosed holder accumulation plus shrinking share
+supply and effective tradable float before a price/volume breakout.
+
+The deterministic prototype reports `ACCUMULATING`, `COILED`, `TRIGGERED`,
+`WATCH_DATA_GAP`, `INVALIDATED`, or `SCREEN_OUT`. Its decomposed 0-100 score is
+only an ordinal screen, not a probability, expected return, trade instruction or
+production-approved signal.
+
+Three facts are critical:
+
+- actual holder share-count change, not percentage change alone;
+- issued-share change after executed buybacks, cancellations, placements and
+  other capital events;
+- consolidated effective tradable float, including all registers for
+  dual-listed companies.
+
+If any critical fact is missing, the prototype returns `WATCH_DATA_GAP`.
+Confirmed holder distribution or material share-supply expansion returns
+`INVALIDATED`. CCASS remains non-directional context and cannot fill a
+beneficial-ownership gap.
+
+The Standard Chartered 02888 point-in-time case is intentionally low confidence:
+strong price action and disclosed concentration are visible, but actual Temasek
+share accumulation, executed denominator shrink and consolidated global
+tradable float are not yet established.
 
 ## Owner brief target
 
@@ -107,6 +142,10 @@ See `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 ### Slice E — Hong Kong actor evidence and CCASS
 
 - Implement official/licensed HKEX director transaction-detail ingestion.
+- Add Disclosure of Interests share-count reconciliation, issuer
+  buyback/cancellation evidence and consolidated tradable-float research.
+- Validate the float-squeeze screen on time-separated Hong Kong cases before
+  any owner-email integration.
 - Keep CCASS live automation blocked until written HKEX permission or an authorised feed exists.
 - If access is obtained, release only non-directional custody/concentration context.
 
@@ -124,5 +163,8 @@ See `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 - Repeated transactions by one actor cannot fake consensus.
 - Congress and 13F latency is visible in every relevant candidate.
 - CCASS has an authorised acquisition route before any production collection.
+- Float-squeeze candidates expose every score component and fail closed when
+  holder share delta, issued-share change or consolidated tradable float is
+  missing.
 - Crypto data is absent from the stock-first decision pack and email.
 - Production remains informational until time-separated outcome validation demonstrates stable value.

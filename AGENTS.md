@@ -191,6 +191,20 @@ before the documented release gates pass.
 - HKEX CCASS search terms prohibit scripted/mechanical access and systematic database or derivative-work creation without written permission. Keep the legacy ViewState scraper disabled; no live adapter or historical v2 reprocessing is permitted until an approved licence/permission route is documented.
 - Use `ops/audit_ccass_legacy.py <database>` read-only. All legacy `hkex_ccass` directional signals are unsupported and must remain excluded from reporting.
 
+## HK float-squeeze prototype
+
+- `smartflow/hk_float_squeeze.py` is a local deterministic research prototype,
+  not a production signal or owner-email integration.
+- Run a case with
+  `py -3 -X utf8 ops/score_hk_float_squeeze.py <snapshot.json>`.
+- Never count a disclosed percentage increase as accumulation without proving
+  the holder's share-count delta and reconciling issued-share changes.
+- `WATCH_DATA_GAP` is mandatory when actual holder delta, issued-share change or
+  consolidated tradable float is unavailable. Dual-listed companies require
+  global share capital and register treatment.
+- CCASS remains participant-custody context only and the disabled scraper must
+  not be used to fill an ownership or free-float gap.
+
 ## Collector execution
 
 - Scheduled collectors run through `smartflow.runtime.run_in_process()` using the `spawn` start method. Keep worker entry points importable as `module:function` paths.
@@ -210,6 +224,19 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-07-29 — HK Float-Squeeze Local Prototype
+
+- Added the owner-directed locked-float research screen with decomposed
+  ownership, confirmed accumulation, denominator shrink, tradable-float and
+  market-trigger components.
+- Added fail-closed `WATCH_DATA_GAP` and `INVALIDATED` states so percentage-only
+  changes, dilution and missing global float cannot become bullish conclusions.
+- Added a point-in-time Standard Chartered 02888 case. It returns
+  `WATCH_DATA_GAP`, score 23/100 and low confidence because core ownership/float
+  facts remain unproved despite strong price action.
+- Added six focused tests; full regression passes 164 tests. No production
+  collector, database, AWS resource, report, email or schedule changed.
 
 ### 2026-07-27 — House PTR Parser v4 Production Deployment
 
