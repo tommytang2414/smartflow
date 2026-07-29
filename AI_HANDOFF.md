@@ -3,60 +3,64 @@
 ## Current state
 
 - Local branch / commit: `master` at
-  `ac64e3724e5a423f9280cb5c4d4324cfca71a94b`.
+  `78496d4ad4f69d039c6951cf83e54e3eab15d553`.
 - Production SFC/House shadow checkout remains detached at
   `e0d9d47bcdaf062054910012e2a333f7d9c54564`; no production component changed.
 - Existing SEC/M3 owner email remains active and SEC-only.
 - House v4 and SFC observation gates remain scheduled through 2026-08-09.
 - Last agent: Codex.
-- Updated: 2026-07-29 01:22 HKT.
+- Updated: 2026-07-29 19:42 HKT.
 
 ## Completed
 
-- Implemented Phase 2 local HK float-squeeze ownership reconciliation:
-  comparable holder shares, ownership percentage, issued-share denominator,
-  exact/inferred quality and effective tradable float.
-- Added first-public-availability dates and forward outcome tracking to prevent
-  publication look-ahead.
-- Rebuilt 02888 using official HKEX/issuer evidence. Temasek shares fell
-  42,161,042 while its disclosed percentage rose 1.004 points; issued shares
-  fell an inferred 14.47%. The case returns `INVALIDATED`, not accumulation.
-- Added four official SFC high-concentration cases and `OVERHEATED`, which is a
-  late liquidity/chasing-risk warning rather than an early signal.
-- Added a five-case evaluation CLI. No CCASS scraper, production database, AWS,
-  report, email or schedule was changed.
+- Completed the fixed-universe HK float source coverage audit using all 27 SFC
+  High Shareholding Concentration notices published from 2025-01-01 through
+  2026-06-30.
+- Stored announcement/information dates, share-class denominator, reported
+  other-shareholder residual, stated pre-notice rerating and official source URL
+  in `research/hk_float_coverage/`.
+- Added the repeatable coverage CLI and formal assessment.
+- Reviewed current HKEX Terms and expanded the access gate: automated DI and
+  issuer-document extraction is `BLOCKED_BY_TERMS`, not unmeasured zero
+  coverage. No HKEX scraper or derived DI database was created.
+- Corrected prior SFC case semantics: "other shareholders" is an upper bound for
+  tradable float, not exact free float. `OVERHEATED` behavior is unchanged and
+  now carries an explicit proxy risk.
+- Shortlisted FactSet, LSEG and S&P licensed ownership feeds and defined a
+  vendor trial acceptance gate.
 
 ## Verification
 
-- `py -3 -X utf8 -m unittest tests.test_hk_float_squeeze`: 11 passed.
-- `py -3 -X utf8 -m unittest discover -s tests`: 169 passed.
-- `compileall`, five-case JSON validation, individual 02888 scoring and the
-  batch evaluator passed.
-- Case states: one `INVALIDATED`, four `OVERHEATED`, zero `TRIGGERED`.
-- 02888 forward 5/20 trading-day returns: -3.77% / -9.27%.
-- Four SFC cases: five-day median -5.83%; 20-day median -12.31%. The 20-day
-  mean is +10.42% because 00679 returned +113.40%; sample is not inferential.
+- Focused HK coverage/squeeze suite: 16 passed.
+- Full repository suite: 174 passed.
+- `compileall`, CSV reconciliation, five-case evaluator and 27-case coverage CLI
+  passed.
+- Coverage result: 27/27 other-shareholder residuals at or below 10%; 0/27
+  notices public before a 100% stated rerating.
+- Median notice lag: 14 calendar days; median residual: 8.03%; median stated
+  rerating: 474%; rerating range: 193.60% to 1,544.27%.
+- One H-share-only case (02418) remains separated from domestic shares.
 
 ## Decisions / constraints
 
-- The current free official evidence is useful for falsification and late risk
-  control, but has not demonstrated a timely early-alpha feed.
-- SFC concentration notices must never become an early accumulation trigger.
-- CCASS remains non-directional custody context and live automated access stays
-  blocked pending an authorised route.
-- The five selected cases are a smoke test, not a backtest or performance
-  claim. Keep the prototype local until a broader pre-declared universe,
-  point-in-time source coverage and out-of-sample validation pass.
-- House/SFC remain absent from owner email pending their gates and separate
-  exact integration approval.
+- Current free official sources are `NO_GO` for early float-squeeze production.
+  SFC remains late liquidity-risk context only.
+- Do not automate HKEX DI, issuer documents or CCASS without express written
+  permission or a licence that covers the intended access, retention and
+  derived analytics.
+- Do not report blocked HKEX coverage as 0%.
+- Do not buy a vendor from marketing claims. Test event coverage, non-event
+  false positives, availability timestamps, holder-share comparability and
+  share-class denominators first.
+- No production DB, AWS, email, scheduler, firewall or source changed.
 
 ## Next handoff
 
-- Build a broader, pre-declared HK universe and source-timing coverage audit
-  before adding more score logic. Measure how often official DI/capital data
-  provides comparable holder-share deltas before the price move.
-- If early coverage is adequate, add untouched out-of-sample cases and test the
-  existing thresholds without retuning on them. If inadequate, propose a
-  licensed/authorised timely ownership/float feed; do not revive the legacy
-  CCASS scraper.
+- With owner approval, request a time-limited FactSet Ownership trial first;
+  use LSEG second and S&P third. Ask explicitly for HK small-cap coverage,
+  point-in-time `available_at`, share counts, shares outstanding, float,
+  corrections history, API rights, retention and derived-score rights.
+- Build 27 matched non-event controls only after trial data access is available,
+  then run the frozen acceptance gate without retuning the scorer.
+- If no feed passes, keep SmartFlow descriptive/late-risk only.
 - Continue read-only House/SFC observation monitoring through 2026-08-09.
