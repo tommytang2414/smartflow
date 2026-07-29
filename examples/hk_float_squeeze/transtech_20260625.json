@@ -17,7 +17,8 @@
   },
   "float_structure": {
     "issued_shares": 298976000,
-    "effective_tradable_shares": 24854000
+    "float_shares": 24854000,
+    "basis": "SFC_OTHER_SHAREHOLDERS_UPPER_BOUND"
   },
   "market": {
     "return_60d_pct": 296.2406,

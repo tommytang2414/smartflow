@@ -78,10 +78,11 @@ Every case separates the evidence's information date from its first public
 availability date. Price features and forward outcomes are anchored to first
 availability so a later publication cannot leak information backwards.
 
-An official high-concentration notice received only after the effective float is
-at most 15% and the stock has already risen at least 100% over 60 trading days
-or 200% over 252 trading days returns `OVERHEATED`. This is a liquidity and
-chasing-risk warning, not early smart-money evidence.
+An official high-concentration notice received only after its reported
+other-shareholder residual is at most 15% and the stock has already risen at
+least 100% over 60 trading days or 200% over 252 trading days returns
+`OVERHEATED`. The residual is an upper bound rather than exact free float. This
+is a liquidity and chasing-risk warning, not early smart-money evidence.
 
 The reconciled Standard Chartered 02888 case disproves the original Temasek
 accumulation hypothesis: between the comparable official disclosures, Temasek's
@@ -99,6 +100,21 @@ four late SFC warnings, the observed five-day median return is -5.83% and the
 113.40%. Five selected cases are insufficient for statistical inference or a
 production release. They show that these free official notices are useful for
 fail-closed validation and late risk control, not yet a timely early-alpha feed.
+
+The broader fixed-universe coverage audit confirms the timing problem. All 27
+SFC high-concentration notices published from 2025-01-01 through 2026-06-30
+reported an other-shareholder residual at or below 10%, but none was public
+before the SFC's stated reference move had exceeded 100%. The residual is an
+upper bound for tradable float, not proof that all residual shares can trade.
+Median announcement lag was 14 calendar days from the information date and
+median stated rerating was 474%. See
+`HK_FLOAT_SOURCE_COVERAGE_ASSESSMENT.md`.
+
+Automated HKEX DI and issuer-document coverage is currently
+`BLOCKED_BY_TERMS`, not measured as zero. Do not add a scraper. A production
+proposal requires express HKEX permission or a licensed feed that passes the
+documented event/control, availability-time, share-class and false-positive
+trial gate.
 
 ## Owner brief target
 
@@ -190,5 +206,8 @@ See `SFC_SHORT_SHADOW_RELEASE_RUNBOOK.md`.
 - Float-squeeze backtests use first-public-availability timestamps, keep source
   samples out of model tuning, and require a broader pre-declared universe
   before any performance claim.
+- HK ownership/float automation has documented acquisition and derived-use
+  rights; prohibited or unmeasured source coverage cannot be converted to a
+  numeric zero.
 - Crypto data is absent from the stock-first decision pack and email.
 - Production remains informational until time-separated outcome validation demonstrates stable value.

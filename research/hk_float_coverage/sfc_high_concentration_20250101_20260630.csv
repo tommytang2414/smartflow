@@ -1,0 +1,28 @@
+stock_code,company_name,announcement_date,information_date,notice_lag_calendar_days,issued_shares_in_scope,reported_other_shareholders_shares,reported_other_shareholders_pct,pre_notice_rerating_pct,share_class_scope,source_url
+02531,GL-Carlink Technology Holding Limited,2025-01-15,2025-01-02,13,366600000,18559500,5.06,474.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e02531250115a.pdf
+09900,Gain Plus Holdings Limited,2025-03-20,2025-03-10,10,372000000,26767000,7.19,731.70,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e09900250320.pdf
+08476,Ocean One Holding Ltd.,2025-05-14,2025-04-29,15,280000000,21780000,7.78,328.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e08476250514.pdf
+03626,Hang Sang (Siu Po) International Holding Company Limited,2025-07-04,2025-06-18,16,184000000,18168000,9.87,871.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e03626250704.pdf
+00326,China Star Entertainment Limited,2025-07-11,2025-06-27,14,2428906151,209665556,8.63,215.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00326250711.pdf
+01142,E&P Global Holdings Limited,2025-08-12,2025-07-31,12,6843657062,69114339,1.01,380.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01142250812.pdf
+00905,Walnut Capital Limited,2025-09-03,2025-08-25,9,1050500887,56220766,5.35,457.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00905250903.pdf
+00417,Tse Sui Luen Jewellery (International) Limited,2025-09-04,2025-08-21,14,249182030,20014113,8.03,235.94,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00417250904.pdf
+02271,Zhong An Intelligent Living Service Limited,2025-09-10,2025-08-27,14,517414000,16901764,3.27,252.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e02271250910.pdf
+00412,Shandong Hi-Speed Holdings Group Limited,2025-09-18,2025-09-01,17,6019431109,453508496,7.54,193.60,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00412250918.pdf
+08239,Capital Finance Holdings Limited,2025-09-30,2025-09-08,22,93841461,8874176,9.46,659.50,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e08239_20250930.pdf
+06113,BitStrat Holdings Limited,2025-10-15,2025-09-30,15,400000000,27290000,6.82,270.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e06113251015.pdf
+01747,Home Control International Limited,2025-11-04,2025-10-17,18,506650000,42540000,8.39,416.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01747251104.pdf
+02418,"Deewin Tianxia Co., Ltd",2025-12-02,2025-11-18,14,552436500,6054500,1.10,304.00,H_SHARES_ONLY,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e02418251202.pdf
+00108,GR Life Style Company Limited,2025-12-22,2025-12-09,13,3219373986,288596496,8.96,476.92,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00108251222.pdf
+00474,Aceso Life Science Group Limited,2026-01-13,2025-12-31,13,7381776805,684197657,9.27,489.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00474260113.pdf
+01757,Affluent Foundation Holdings Limited,2026-01-22,2026-01-12,10,1200000000,112433000,9.37,1281.20,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01757260122.pdf
+01481,Smart Globe Holdings Limited,2026-02-05,2026-01-27,9,1020000000,93540000,9.17,275.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01481260205.pdf
+02436,LX Technology Group Limited,2026-02-09,2026-01-26,14,353259000,27293628,7.73,241.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e02436260209.pdf
+02025,Ruifeng Power Group Company Limited,2026-03-09,2026-02-24,13,800000000,79165752,9.90,1544.27,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e02025260309.pdf
+01959,Zhong Ju Investment Group Limited,2026-03-17,2026-03-02,15,530002000,51344000,9.69,1346.51,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01959260317.pdf
+00167,IDT International Limited,2026-03-27,2026-03-16,11,519984181,35155615,6.76,989.90,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00167260327.pdf
+01643,"Modern Chinese Medicine Group Co., Ltd.",2026-04-14,2026-03-30,15,720000000,67674718,9.40,316.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01643260414.pdf
+00679,Asia Tele-Net and Technology Corporation Limited,2026-05-05,2026-04-20,15,381933400,35142733,9.20,483.00,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e00679260505.pdf
+01570,Weiye Holdings Limited,2026-05-26,2026-05-11,15,196133152,6621620,3.38,812.70,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e01570260526English-version.pdf
+02427,"Guanze Medical Information Industry (Holding) Co., Ltd.",2026-05-27,2026-05-13,14,950000000,55763057,5.87,967.90,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e02427260527.pdf
+09963,Transtech Optelecom Science Holdings Limited,2026-06-25,2026-06-16,9,298976000,24854000,8.31,513.57,LISTED_ORDINARY_SHARES,https://www.sfc.hk/-/media/EN/files/ENF/HighCon/e09963260625.pdf

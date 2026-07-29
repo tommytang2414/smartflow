@@ -64,9 +64,8 @@ def load_float_squeeze_case(path: Path) -> FloatSqueezeCase:
     float_structure = (
         FloatStructure(
             issued_shares=int(float_payload["issued_shares"]),
-            effective_tradable_shares=int(
-                float_payload["effective_tradable_shares"]
-            ),
+            float_shares=int(float_payload["float_shares"]),
+            basis=float_payload["basis"],
         )
         if float_payload is not None
         else None
@@ -104,6 +103,9 @@ def load_float_squeeze_case(path: Path) -> FloatSqueezeCase:
             float_structure.tradable_float_pct
             if float_structure is not None
             else None
+        ),
+        tradable_float_basis=(
+            float_structure.basis if float_structure is not None else None
         ),
         return_60d_pct=float(market["return_60d_pct"]),
         return_252d_pct=float(market["return_252d_pct"]),

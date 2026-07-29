@@ -207,10 +207,19 @@ before the documented release gates pass.
 - Reconcile comparable holder share counts before percentages. Record the
   evidence date separately from first public availability and calculate market
   outcomes only from the availability date to avoid look-ahead.
-- SFC high-shareholding-concentration notices are late public risk context. If
-  effective float is at most 15% and price has already risen at least 100% over
-  60 trading days or 200% over 252 days, classify `OVERHEATED`; never promote
-  the notice to an early accumulation trigger.
+- SFC high-shareholding-concentration notices are late public risk context.
+  Their reported "other shareholders" residual is only an upper bound for
+  tradable float. If that upper bound is at most 15% and price has already risen
+  at least 100% over 60 trading days or 200% over 252 days, classify
+  `OVERHEATED`; never promote the notice to an early accumulation trigger.
+- The fixed 2025-01-01 through 2026-06-30 SFC concentration universe lives
+  under `research/hk_float_coverage/`. Run
+  `py -3 -X utf8 ops/audit_hk_float_source_coverage.py`; all 27 notices arrived
+  after a stated price rerating above 100%.
+- HKEX's 2025-08-19 Terms prohibit automated/scripted access, systematic
+  retrieval, derivative databases and text/data mining without express written
+  permission. This blocks DI and issuer-document automation, not only CCASS.
+  Record source coverage as `BLOCKED_BY_TERMS`, never as zero or missing data.
 - CCASS remains participant-custody context only and the disabled scraper must
   not be used to fill an ownership or free-float gap.
 
@@ -234,10 +243,26 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-07-29 — HK Float Source Coverage Audit
+
+- Fixed an all-inclusive 27-notice SFC universe covering 2025-01-01 through
+  2026-06-30 and stored exact announcement dates, information dates, share-class
+  denominators, other-shareholder residuals and stated pre-notice rerating.
+- Confirmed 27/27 cases had other-shareholder residuals at or below 10%, but
+  0/27 notices arrived
+  before a 100% stated rerating. Median notice lag was 14 calendar days and
+  median pre-notice rerating was 474%.
+- Expanded the HKEX access gate after reviewing the current Terms: automated DI
+  and issuer-document mining is prohibited without express written permission.
+  No HKEX scraper or derived DI database was created.
+- Added a licensed-feed trial gate and FactSet/LSEG/S&P shortlist. Production
+  remains `NO_GO`; no AWS, collector, email, database or schedule changed.
+
 ### 2026-07-29 — HK Float-Squeeze Point-in-Time Reconciliation
 
-- Added exact/inferred holder-share, issuer-denominator and effective-float
-  reconciliation so a percentage rise cannot hide actual holder distribution.
+- Added exact/inferred holder-share, issuer-denominator and float-basis
+  reconciliation so a percentage rise cannot hide actual holder distribution
+  and an SFC residual cannot be presented as exact free float.
 - Rebuilt the Standard Chartered case at its 2026-03-05 public-availability
   date. Temasek shares fell 42,161,042 while the disclosed percentage rose
   1.004 points; the case now returns `INVALIDATED`.

@@ -14,6 +14,8 @@ WATCH_DATA_GAP = "WATCH_DATA_GAP"
 INVALIDATED = "INVALIDATED"
 OVERHEATED = "OVERHEATED"
 SCREEN_OUT = "SCREEN_OUT"
+EFFECTIVE_TRADABLE = "EFFECTIVE_TRADABLE"
+SFC_OTHER_SHAREHOLDERS_UPPER_BOUND = "SFC_OTHER_SHAREHOLDERS_UPPER_BOUND"
 
 
 def _percentage(name: str, value: float | None) -> None:
@@ -42,6 +44,10 @@ class FloatSqueezeSnapshot:
     return_252d_pct: float
     distance_to_20d_high_pct: float
     latest_volume_ratio_20d: float
+    tradable_float_basis: Literal[
+        "EFFECTIVE_TRADABLE",
+        "SFC_OTHER_SHAREHOLDERS_UPPER_BOUND",
+    ] | None = None
     ownership_window_days: int | None = None
     dual_listed: bool = False
 
@@ -64,6 +70,10 @@ class FloatSqueezeSnapshot:
             raise ValueError("disclosed_holders_pct cannot be below anchor_holder_pct")
         if self.latest_volume_ratio_20d < 0:
             raise ValueError("latest_volume_ratio_20d cannot be negative")
+        if (self.tradable_float_pct is None) != (self.tradable_float_basis is None):
+            raise ValueError(
+                "tradable_float_pct and tradable_float_basis must be set together"
+            )
         if self.ownership_window_days is not None and self.ownership_window_days <= 0:
             raise ValueError("ownership_window_days must be positive")
 
@@ -125,19 +135,26 @@ class OwnershipReconciliation:
 @dataclass(frozen=True)
 class FloatStructure:
     issued_shares: int
-    effective_tradable_shares: int
+    float_shares: int
+    basis: Literal[
+        "EFFECTIVE_TRADABLE",
+        "SFC_OTHER_SHAREHOLDERS_UPPER_BOUND",
+    ]
 
     def __post_init__(self) -> None:
         if self.issued_shares <= 0:
             raise ValueError("issued_shares must be positive")
-        if not 0 <= self.effective_tradable_shares <= self.issued_shares:
-            raise ValueError(
-                "effective_tradable_shares must be between zero and issued_shares"
-            )
+        if not 0 <= self.float_shares <= self.issued_shares:
+            raise ValueError("float_shares must be between zero and issued_shares")
+        if self.basis not in {
+            EFFECTIVE_TRADABLE,
+            SFC_OTHER_SHAREHOLDERS_UPPER_BOUND,
+        }:
+            raise ValueError("unsupported float basis")
 
     @property
     def tradable_float_pct(self) -> float:
-        return self.effective_tradable_shares / self.issued_shares * 100
+        return self.float_shares / self.issued_shares * 100
 
 
 def reconcile_ownership(
@@ -324,6 +341,8 @@ def assess_float_squeeze(snapshot: FloatSqueezeSnapshot) -> FloatSqueezeAssessme
         risks.append("material_share_supply_increase")
     if snapshot.tradable_float_pct is not None and snapshot.tradable_float_pct <= 20:
         risks.append("low_float_can_amplify_drawdown_and_exit_slippage")
+    if snapshot.tradable_float_basis == SFC_OTHER_SHAREHOLDERS_UPPER_BOUND:
+        risks.append("tradable_float_is_sfc_other_shareholders_upper_bound")
     if snapshot.return_252d_pct >= 40:
         risks.append("price_has_already_rerated_materially")
     if (

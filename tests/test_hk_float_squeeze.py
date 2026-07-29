@@ -4,8 +4,10 @@ from pathlib import Path
 
 from smartflow.hk_float_cases import load_float_squeeze_case
 from smartflow.hk_float_squeeze import (
+    EFFECTIVE_TRADABLE,
     INVALIDATED,
     OVERHEATED,
+    SFC_OTHER_SHAREHOLDERS_UPPER_BOUND,
     TRIGGERED,
     WATCH_DATA_GAP,
     FloatSqueezeSnapshot,
@@ -29,6 +31,7 @@ def snapshot(**overrides):
         "executed_buyback_pct": 3,
         "buyback_announced": True,
         "tradable_float_pct": 18,
+        "tradable_float_basis": EFFECTIVE_TRADABLE,
         "return_60d_pct": 12,
         "return_252d_pct": 20,
         "distance_to_20d_high_pct": -1,
@@ -54,6 +57,7 @@ class HKFloatSqueezeTests(unittest.TestCase):
                 confirmed_holder_delta_pct_of_issued=None,
                 issued_share_change_pct=None,
                 tradable_float_pct=None,
+                tradable_float_basis=None,
             )
         )
 
@@ -90,6 +94,7 @@ class HKFloatSqueezeTests(unittest.TestCase):
             confirmed_holder_delta_pct_of_issued=None,
             issued_share_change_pct=None,
             tradable_float_pct=None,
+            tradable_float_basis=None,
         )
         report = render_owner_brief(item, assess_float_squeeze(item))
 
@@ -152,13 +157,18 @@ class HKFloatSqueezeTests(unittest.TestCase):
         self.assertEqual(result.holder_share_delta, 0)
         self.assertEqual(result.issued_share_change_pct, -20)
 
-    def test_float_structure_calculates_effective_tradable_float(self):
+    def test_float_structure_preserves_sfc_upper_bound_semantics(self):
         structure = FloatStructure(
             issued_shares=298_976_000,
-            effective_tradable_shares=24_854_000,
+            float_shares=24_854_000,
+            basis=SFC_OTHER_SHAREHOLDERS_UPPER_BOUND,
         )
 
         self.assertAlmostEqual(structure.tradable_float_pct, 8.31, places=2)
+        self.assertEqual(
+            structure.basis,
+            SFC_OTHER_SHAREHOLDERS_UPPER_BOUND,
+        )
 
     def test_low_float_after_extreme_rerating_is_overheated(self):
         item = snapshot(
@@ -166,6 +176,7 @@ class HKFloatSqueezeTests(unittest.TestCase):
             issued_share_change_pct=None,
             executed_buyback_pct=None,
             tradable_float_pct=9.2,
+            tradable_float_basis=SFC_OTHER_SHAREHOLDERS_UPPER_BOUND,
             return_60d_pct=761.85,
             return_252d_pct=703.84,
         )
@@ -175,6 +186,10 @@ class HKFloatSqueezeTests(unittest.TestCase):
 
         self.assertEqual(result.state, OVERHEATED)
         self.assertIn("low_float_can_amplify_drawdown_and_exit_slippage", result.risks)
+        self.assertIn(
+            "tradable_float_is_sfc_other_shareholders_upper_bound",
+            result.risks,
+        )
         report = render_owner_brief(item, result)
         self.assertIn("唔係早期買入訊號", report)
 
