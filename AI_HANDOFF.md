@@ -8,8 +8,10 @@
   `e0d9d47bcdaf062054910012e2a333f7d9c54564`; no production component changed.
 - Existing SEC/M3 owner email remains active and SEC-only.
 - House v4 and SFC observation gates remain scheduled through 2026-08-09.
+- Graphify CLI `0.9.37` is available globally, but SmartFlow has no retained
+  `graphify-out/`, installed Graphify skill, or Graphify hook.
 - Last agent: Codex.
-- Updated: 2026-08-09 10:29 HKT.
+- Updated: 2026-08-09 10:34 HKT.
 
 ## Completed
 
@@ -72,9 +74,10 @@
 
 ## Next handoff
 
-- If the owner wants Graphify retained, review and approve a project-local
-  output/ignore strategy before installation; otherwise no Graphify action is
-  required.
+- On the next non-trivial SmartFlow task, assess whether exact-symbol navigation
+  or impact analysis justifies a code-only graph. If used, keep `graphify-out/`
+  local via `.git/info/exclude`, record its built commit, and do not enable
+  query-first behaviour or hooks.
 - With owner approval, request a time-limited FactSet Ownership trial first;
   use LSEG second and S&P third. Ask explicitly for HK small-cap coverage,
   point-in-time `available_at`, share counts, shares outstanding, float,
