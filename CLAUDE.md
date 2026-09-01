@@ -325,6 +325,13 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ## Changelog
 
+### 2026-09-02 — Non-blocking DevSecOps Observation
+
+- Added a pull-request observation workflow for Gitleaks secret diff, local changed-code Semgrep rules, `pip-audit`, the existing 174-test suite, and `compileall`.
+- Third-party Actions and scanner versions are pinned; permissions are read-only; no AWS, VPS, database, email, scheduler, or production secret is available to the workflow.
+- Evidence is portable JSON/SARIF with checksums and 30-day artifact retention. The unlocked dependency source is explicitly not treated as production parity.
+- Observation remains non-blocking for 14 days with no branch-protection or enforcement change.
+
 ### 2026-07-27 — House PTR Parser v4 Production Deployment
 
 - Deployed approved `CONGRESS-HOUSE-PARSER-V4-001` to

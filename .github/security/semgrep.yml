@@ -1,0 +1,26 @@
+rules:
+  - id: python-dynamic-code-execution
+    message: Dynamic Python execution was introduced and requires security review.
+    severity: ERROR
+    languages: [python]
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: exec(...)
+
+  - id: python-subprocess-shell
+    message: A subprocess with shell=True was introduced and requires command-injection review.
+    severity: ERROR
+    languages: [python]
+    pattern: subprocess.$FUNCTION(..., shell=True, ...)
+
+  - id: python-disabled-tls-verification
+    message: TLS certificate verification was disabled in a changed request.
+    severity: ERROR
+    languages: [python]
+    pattern: requests.$METHOD(..., verify=False, ...)
+
+  - id: python-pickle-deserialization
+    message: Pickle deserialization was introduced and requires trusted-input evidence.
+    severity: WARNING
+    languages: [python]
+    pattern: pickle.loads(...)

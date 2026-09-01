@@ -243,6 +243,13 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-09-02 — Non-blocking DevSecOps Observation
+
+- Added a pull-request-only observation workflow for secret diff, changed-code Semgrep, dependency audit, and the existing 174-test/compile validation path.
+- Pinned third-party GitHub Actions and scanner versions, limited workflow permissions to read-only contents, disabled checkout credential persistence, and kept all production credentials and infrastructure outside the workflow.
+- Records the dependency result as `UNLOCKED_SOURCE_TARGET_NOT_PRODUCTION_PARITY` because `requirements.txt` is not a deterministic lockfile; portable JSON/SARIF evidence is retained for 30 days.
+- This is a 14-day measurement control only: it is non-blocking and does not introduce branch protection or enforcement.
+
 ### 2026-07-29 — HK Float Source Coverage Audit
 
 - Fixed an all-inclusive 27-notice SFC universe covering 2025-01-01 through
