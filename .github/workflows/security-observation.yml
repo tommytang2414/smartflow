@@ -118,19 +118,7 @@ jobs:
       - name: Existing tests and compile validation
         id: build-test
         continue-on-error: true
-        shell: bash
-        run: |
-          set +e
-          "$APP_PYTHON" -m unittest discover -s tests -v 2>&1 | tee evidence/tests.log
-          TESTS=${PIPESTATUS[0]}
-          "$APP_PYTHON" -m compileall -q smartflow ops tests 2>&1 | tee evidence/compileall.log
-          COMPILE=${PIPESTATUS[0]}
-          printf '{"tests_exit_code":%s,"compileall_exit_code":%s}\n' \
-            "$TESTS" "$COMPILE" > evidence/build-test.json
-          if [[ "$TESTS" -ne 0 || "$COMPILE" -ne 0 ]]; then
-            echo "::warning::Existing tests/compile validation did not fully pass; see artifact."
-          fi
-          exit 0
+        run: python .github/security/observe.py build --kind pip
 
       - name: Finalize portable evidence
         if: always()
@@ -143,8 +131,9 @@ jobs:
           SEMGREP_OUTCOME: ${{ steps.semgrep.outcome }}
           DEPENDENCY_OUTCOME: ${{ steps.dependency.outcome }}
           BUILD_TEST_OUTCOME: ${{ steps.build-test.outcome }}
+          EFFECTIVENESS_OUTCOME: ${{ steps.effectiveness.outcome }}
         shell: bash
-        run: python .github/security/observe.py summarize
+        run: python .github/security/observe.py summarize --kind pip
 
       - name: Upload observation evidence
         if: always()

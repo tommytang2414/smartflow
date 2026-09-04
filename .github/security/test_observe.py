@@ -57,9 +57,48 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual(observe.sarif_status(path, "success")["status"], "SCAN_ERROR")
 
     def test_build_failure_is_visible(self):
-        self.assertEqual(observe.build_status({"build_exit_code": 7}, "success")["status"], "FINDINGS")
+        self.assertEqual(observe.build_status({"build_exit_code": 7, "npm_ci_exit_code": 0, "lint_exit_code": 0}, "success")["status"], "FINDINGS")
         self.assertEqual(observe.build_status({}, "success")["status"], "SCAN_ERROR")
         self.assertEqual(observe.build_status({"build_exit_code": 0}, "failure")["status"], "SCAN_ERROR")
+
+    def test_partial_build_and_install_failure(self):
+        self.assertEqual(observe.build_status({"compileall_exit_code": 0}, "success", "pip")["status"], "SCAN_ERROR")
+        self.assertEqual(observe.build_status({"compileall_exit_code": 0, "tests_exit_code": 0},
+                         "success", "pip", "failure")["status"], "SCAN_ERROR")
+
+    def test_malformed_sarif_shapes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "report"
+            for runs in [[None], [{"results": {}}], [{"results": [], "invocations": [None]}],
+                         [{"results": [], "invocations": [{"toolExecutionNotifications": {}}]}]]:
+                observe.write(path, {"version": "2.1.0", "runs": runs})
+                self.assertEqual(observe.sarif_status(path, "success")["status"], "SCAN_ERROR")
+
+    def test_effectiveness_exception_cannot_pass(self):
+        checks = {key: True for key in observe.EFFECTIVENESS_KEYS}
+        value = {"status": "PASS", "checks": checks}
+        self.assertEqual(observe.effectiveness_status(value, "success")["status"], "PASS")
+        self.assertEqual(observe.effectiveness_status(value, "failure")["status"], "SCAN_ERROR")
+        del checks["build_failure_visible"]
+        checks["harness_error"] = True
+        self.assertEqual(observe.effectiveness_status(value, "success")["status"], "SCAN_ERROR")
+
+    def test_pip_package_canonicalization(self):
+        def audit(name):
+            return {"dependencies": [{"name": name, "version": "1", "vulns": [{"id": "CVE-2026-0000"}]}]}
+        value = observe.dependency_diff("pip", audit("Demo._Pkg"), audit("demo-pkg"))
+        self.assertEqual(len(value["existing"]), 1)
+        self.assertEqual(value["new"], [])
+
+    def test_real_build_exit_capture(self):
+        import sys
+        with tempfile.TemporaryDirectory() as folder:
+            commands = {"tests_exit_code": [sys.executable, "-c", "raise SystemExit(7)"],
+                        "compileall_exit_code": [sys.executable, "-c", "raise SystemExit(0)"]}
+            observe.capture_build("pip", folder, commands)
+            value = json.loads((Path(folder) / "build-test.json").read_text())
+            self.assertEqual(value["tests_exit_code"], 7)
+            self.assertEqual(observe.build_status(value, "success", "pip")["status"], "FINDINGS")
 
 
 if __name__ == "__main__":

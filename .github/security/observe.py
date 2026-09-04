@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -43,7 +44,7 @@ def audit_findings(kind, document):
             for advisory in package["vulns"]:
                 aliases = sorted(set([advisory["id"]] + advisory.get("aliases", [])))
                 identity = next((v for v in aliases if v.startswith("CVE-")), aliases[0])
-                findings[package["name"].lower().replace("_", "-") + ":" + identity] = {
+                findings[re.sub(r"[-_.]+", "-", package["name"]).lower() + ":" + identity] = {
                     "package": package["name"], "version": package["version"],
                     "advisory": identity, "aliases": aliases,
                 }
@@ -106,31 +107,82 @@ def dependency(kind, base, head, evidence):
 def sarif_status(path, outcome):
     try:
         document = json.loads(Path(path).read_text(encoding="utf-8"))
-        runs = document["runs"]
-        if outcome != "success" or document["version"] != "2.1.0" or not runs:
+        if not isinstance(document, dict):
+            raise ValueError("invalid document")
+        runs = document.get("runs")
+        if outcome != "success" or document.get("version") != "2.1.0" or not isinstance(runs, list) or not runs:
             raise ValueError("invalid SARIF or failed step")
         count = 0
         for item in runs:
-            for invocation in item.get("invocations", []):
+            if not isinstance(item, dict) or not isinstance(item.get("results"), list):
+                raise ValueError("invalid run/results")
+            invocations = item.get("invocations", [])
+            if not isinstance(invocations, list):
+                raise ValueError("invalid invocations")
+            for invocation in invocations:
+                if not isinstance(invocation, dict):
+                    raise ValueError("invalid invocation")
                 if invocation.get("executionSuccessful") is False:
                     raise ValueError("scanner invocation failed")
-                if any(n.get("level") == "error" for n in invocation.get("toolExecutionNotifications", [])):
+                notifications = invocation.get("toolExecutionNotifications", [])
+                if not isinstance(notifications, list) or any(not isinstance(n, dict) for n in notifications):
+                    raise ValueError("invalid notifications")
+                if any(n.get("level") == "error" for n in notifications):
                     raise ValueError("scanner reported errors")
+            if any(not isinstance(result, dict) for result in item["results"]):
+                raise ValueError("invalid result")
             count += len(item["results"])
         return {"status": "FINDINGS" if count else "PASS", "count": count}
     except (OSError, ValueError, KeyError, TypeError):
         return {"status": "SCAN_ERROR", "count": None}
 
 
-def build_status(document, outcome):
-    if outcome != "success" or not document:
+BUILD_KEYS = {"npm": {"npm_ci_exit_code", "lint_exit_code", "build_exit_code"},
+              "pip": {"tests_exit_code", "compileall_exit_code"}}
+EFFECTIVENESS_KEYS = {"secret_detected", "sast_detected", "new_dependency_detected",
+                      "scanner_failure_visible", "build_failure_visible"}
+
+
+def effectiveness_status(document, outcome):
+    if outcome != "success" or not isinstance(document, dict):
+        return {"status": "SCAN_ERROR"}
+    checks = document.get("checks")
+    valid = (isinstance(checks, dict) and set(checks) == EFFECTIVENESS_KEYS
+             and all(value is True for value in checks.values()) and document.get("status") == "PASS")
+    return {"status": "PASS" if valid else "SCAN_ERROR", "checks": checks}
+
+
+def build_status(document, outcome, kind="npm", app_dependencies="success"):
+    if outcome != "success" or app_dependencies != "success" or not isinstance(document, dict):
+        return {"status": "SCAN_ERROR"}
+    if set(document) != BUILD_KEYS[kind]:
         return {"status": "SCAN_ERROR"}
     if any(type(value) is not int for value in document.values()):
         return {"status": "SCAN_ERROR"}
     return {"status": "FINDINGS" if any(document.values()) else "PASS", "exit_codes": document}
 
 
-def summarize(evidence):
+def capture_build(kind, evidence, commands=None):
+    evidence = Path(evidence)
+    evidence.mkdir(parents=True, exist_ok=True)
+    if commands is None:
+        commands = ({"npm_ci_exit_code": ["npm", "ci"], "lint_exit_code": ["npm", "run", "lint"],
+                     "build_exit_code": ["npm", "run", "build"]} if kind == "npm" else
+                    {"tests_exit_code": [os.environ["APP_PYTHON"], "-m", "unittest", "discover", "-s", "tests", "-v"],
+                     "compileall_exit_code": [os.environ["APP_PYTHON"], "-m", "compileall", "-q", "smartflow", "ops", "tests"]})
+    codes = {}
+    for name, command in commands.items():
+        if codes.get("npm_ci_exit_code", 0) != 0:
+            codes[name] = 125
+            continue
+        with (evidence / (name.removesuffix("_exit_code") + ".log")).open("w", encoding="utf-8") as output:
+            # A missing executable/timeout leaves the evidence incomplete => SCAN_ERROR.
+            codes[name] = subprocess.run(command, stdout=output, stderr=subprocess.STDOUT, text=True, timeout=240).returncode
+    write(evidence / "build-test.json", codes)
+    return codes
+
+
+def summarize(evidence, kind):
     evidence = Path(evidence)
     evidence.mkdir(parents=True, exist_ok=True)
     results = {}
@@ -140,7 +192,8 @@ def summarize(evidence):
         try:
             result = json.loads((evidence / filename).read_text(encoding="utf-8"))
             if name == "build_test":
-                result = build_status(result, os.getenv("BUILD_TEST_OUTCOME"))
+                result = build_status(result, os.getenv("BUILD_TEST_OUTCOME"), kind,
+                                      os.getenv("APP_DEPENDENCIES_OUTCOME", "success"))
             elif os.getenv("DEPENDENCY_OUTCOME") != "success" or result.get("status") not in ("PASS", "FINDINGS", "SCAN_ERROR"):
                 result = {"status": "SCAN_ERROR"}
         except (OSError, ValueError, TypeError):
@@ -148,7 +201,7 @@ def summarize(evidence):
         results[name] = result
     try:
         effectiveness = json.loads((evidence / "effectiveness/result.json").read_text(encoding="utf-8"))
-        results["effectiveness"] = {"status": effectiveness["status"], "checks": effectiveness["checks"]}
+        results["effectiveness"] = effectiveness_status(effectiveness, os.getenv("EFFECTIVENESS_OUTCOME"))
     except (OSError, ValueError, KeyError, TypeError):
         results["effectiveness"] = {"status": "SCAN_ERROR"}
     write(evidence / "metadata.json", {
@@ -172,7 +225,7 @@ def summarize(evidence):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=["dependency", "summarize"])
+    parser.add_argument("mode", choices=["dependency", "build", "summarize"])
     parser.add_argument("--kind", choices=["npm", "pip"])
     parser.add_argument("--base")
     parser.add_argument("--head")
@@ -180,4 +233,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.mode == "dependency":
         sys.exit(2 if dependency(args.kind, args.base, args.head, args.evidence)["status"] == "SCAN_ERROR" else 0)
-    summarize(args.evidence)
+    elif args.mode == "build":
+        capture_build(args.kind, args.evidence)
+    else:
+        summarize(args.evidence, args.kind)

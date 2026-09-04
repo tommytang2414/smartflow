@@ -69,12 +69,15 @@ def main(kind):
                 "--sarif", "--output", str(evidence / "broken.sarif"), "--metrics=off"], root)
             checks["scanner_failure_visible"] = broken.returncode != 0 and observe.sarif_status(
                 evidence / "broken.sarif", "failure")["status"] == "SCAN_ERROR"
-            failed_build = observe.run([sys.executable, "-c", "raise SystemExit(7)"], root)
-            checks["build_failure_visible"] = observe.build_status(
-                {"build_exit_code": failed_build.returncode}, "success")["status"] == "FINDINGS"
+            commands = {key: [sys.executable, "-c", "raise SystemExit(0)"] for key in sorted(observe.BUILD_KEYS[kind])}
+            failing = "build_exit_code" if kind == "npm" else "tests_exit_code"
+            commands[failing] = [sys.executable, "-c", "raise SystemExit(7)"]
+            observe.capture_build(kind, evidence / "build", commands)
+            captured = __import__("json").loads((evidence / "build/build-test.json").read_text())
+            checks["build_failure_visible"] = observe.build_status(captured, "success", kind)["status"] == "FINDINGS"
     except (OSError, ValueError, KeyError, subprocess.TimeoutExpired):
         checks["harness_error"] = True
-    status = "PASS" if len(checks) == 5 and all(checks.values()) else "FAIL"
+    status = "PASS" if set(checks) == observe.EFFECTIVENESS_KEYS and all(value is True for value in checks.values()) else "FAIL"
     observe.write(evidence / "result.json", {"status": status, "checks": checks,
         "boundary": "Disposable fixture repositories; vulnerable code/dependencies never installed or executed.",
         "note": "Canary effectiveness evidence is excluded from real-project alert/false-positive metrics."})
