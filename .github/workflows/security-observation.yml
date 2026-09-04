@@ -16,7 +16,7 @@ jobs:
   observe:
     name: Non-blocking security observation
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
 
     steps:
       - name: Checkout pull-request head
@@ -63,6 +63,7 @@ jobs:
             --redact=100 \
             --report-format=sarif \
             --report-path=evidence/gitleaks.sarif \
+            --config=.github/security/gitleaks.toml \
             --exit-code=0
 
       - name: Set up Python
@@ -74,12 +75,17 @@ jobs:
       - name: Install application dependencies
         id: app-dependencies
         continue-on-error: true
-        run: python -m pip install --disable-pip-version-check -r requirements.txt
+        run: |
+          echo "APP_PYTHON=$(command -v python)" >> "$GITHUB_ENV"
+          python -m pip install --disable-pip-version-check -r requirements.txt
 
       - name: Install pinned observation tools
         id: observation-tools
         continue-on-error: true
-        run: python -m pip install --disable-pip-version-check semgrep==1.175.0 pip-audit==2.10.1
+        run: |
+          python -m venv "$RUNNER_TEMP/observation-tools"
+          "$RUNNER_TEMP/observation-tools/bin/pip" install --disable-pip-version-check semgrep==1.175.0 pip-audit==2.10.1
+          echo "$RUNNER_TEMP/observation-tools/bin" >> "$GITHUB_PATH"
 
       - name: Changed-code SAST
         id: semgrep
@@ -91,39 +97,28 @@ jobs:
           --baseline-commit "$BASE_SHA" --sarif --output evidence/semgrep.sarif
           --metrics=off
 
-      - name: Dependency observation
+      - name: Base/head dependency observation
         id: dependency
         continue-on-error: true
         env:
           BASE_SHA: ${{ steps.range.outputs.base_sha }}
-        shell: bash
-        run: |
-          set +e
-          git diff --name-only "${BASE_SHA}...HEAD" -- requirements.txt 'requirements*.lock' pyproject.toml \
-            > evidence/dependency-files.txt
-          pip-audit -r requirements.txt --format json --output evidence/dependency-audit.json
-          AUDIT_EXIT=$?
-          printf '{"audit_exit_code":%s,"declarations_changed":%s,"boundary":"UNLOCKED_SOURCE_TARGET"}\n' \
-            "$AUDIT_EXIT" "$(test -s evidence/dependency-files.txt && echo true || echo false)" \
-            > evidence/dependency-changes.json
-          exit 0
+          HEAD_SHA: ${{ steps.range.outputs.head_sha }}
+        run: python .github/security/observe.py dependency --kind pip --base "$BASE_SHA" --head "$HEAD_SHA"
+
+      - name: Evidence classifier regression tests
+        run: python -m unittest discover -s .github/security -p 'test_*.py' -v
+
+      - name: Known-positive effectiveness checks
+        id: effectiveness
+        continue-on-error: true
+        env:
+          GITLEAKS_BINARY: ${{ runner.temp }}/gitleaks
+        run: python .github/security/effectiveness.py --kind pip
 
       - name: Existing tests and compile validation
         id: build-test
         continue-on-error: true
-        shell: bash
-        run: |
-          set +e
-          python -m unittest discover -s tests -v 2>&1 | tee evidence/tests.log
-          TESTS=${PIPESTATUS[0]}
-          python -m compileall -q smartflow ops tests 2>&1 | tee evidence/compileall.log
-          COMPILE=${PIPESTATUS[0]}
-          printf '{"tests_exit_code":%s,"compileall_exit_code":%s}\n' \
-            "$TESTS" "$COMPILE" > evidence/build-test.json
-          if [[ "$TESTS" -ne 0 || "$COMPILE" -ne 0 ]]; then
-            echo "::warning::Existing tests/compile validation did not fully pass; see artifact."
-          fi
-          exit 0
+        run: python .github/security/observe.py build --kind pip
 
       - name: Finalize portable evidence
         if: always()
@@ -136,47 +131,9 @@ jobs:
           SEMGREP_OUTCOME: ${{ steps.semgrep.outcome }}
           DEPENDENCY_OUTCOME: ${{ steps.dependency.outcome }}
           BUILD_TEST_OUTCOME: ${{ steps.build-test.outcome }}
+          EFFECTIVENESS_OUTCOME: ${{ steps.effectiveness.outcome }}
         shell: bash
-        run: |
-          python - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          evidence = Path("evidence")
-          evidence.mkdir(exist_ok=True)
-          metadata = {
-              "schema_version": 1,
-              "mode": "NON_BLOCKING_OBSERVATION",
-              "repository": os.environ["GITHUB_REPOSITORY"],
-              "run_id": os.environ["GITHUB_RUN_ID"],
-              "event": os.environ["GITHUB_EVENT_NAME"],
-              "base_sha": os.environ.get("BASE_SHA", ""),
-              "head_sha": os.environ.get("HEAD_SHA", ""),
-              "dependency_boundary": "UNLOCKED_SOURCE_TARGET_NOT_PRODUCTION_PARITY",
-              "outcomes": {
-                  "gitleaks": os.environ.get("GITLEAKS_OUTCOME", "unknown"),
-                  "application_dependencies": os.environ.get("APP_DEPENDENCIES_OUTCOME", "unknown"),
-                  "observation_tools": os.environ.get("OBSERVATION_TOOLS_OUTCOME", "unknown"),
-                  "semgrep": os.environ.get("SEMGREP_OUTCOME", "unknown"),
-                  "dependency": os.environ.get("DEPENDENCY_OUTCOME", "unknown"),
-                  "build_test": os.environ.get("BUILD_TEST_OUTCOME", "unknown"),
-              },
-          }
-          (evidence / "metadata.json").write_text(
-              json.dumps(metadata, indent=2) + "\n", encoding="utf-8"
-          )
-          empty_sarif = {"version": "2.1.0", "$schema": "https://json.schemastore.org/sarif-2.1.0.json", "runs": []}
-          for name in ("gitleaks.sarif", "semgrep.sarif"):
-              path = evidence / name
-              if not path.exists():
-                  path.write_text(json.dumps(empty_sarif) + "\n", encoding="utf-8")
-          dependency = evidence / "dependency-audit.json"
-          if not dependency.exists():
-              dependency.write_text("[]\n", encoding="utf-8")
-          PY
-          find evidence -maxdepth 1 -type f ! -name sha256sums.txt -print0 \
-            | sort -z | xargs -0 sha256sum > evidence/sha256sums.txt
+        run: python .github/security/observe.py summarize --kind pip
 
       - name: Upload observation evidence
         if: always()

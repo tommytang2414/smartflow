@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "devsecops-synthetic-canary"
+description = "Deliberately nonfunctional DevSecOps effectiveness canary"
+regex = "DEVSECOPS_TEST_ONLY_[A-Z0-9]{24}"
