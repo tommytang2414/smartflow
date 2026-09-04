@@ -243,6 +243,13 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-09-05 — Observation evidence integrity and effectiveness
+
+- Added exact base/head dependency advisory diff and explicit PASS/FINDINGS/SCAN_ERROR classification.
+- Removed fabricated empty scanner output; retained raw audit exit evidence and recursive checksums.
+- Added disposable known-positive secret/SAST/dependency/scanner-failure/build-failure checks.
+- Observation remains non-blocking; no production deployment, credential change or early window closure.
+
 ### 2026-09-02 — Non-blocking DevSecOps Observation
 
 - Added a pull-request-only observation workflow for secret diff, changed-code Semgrep, dependency audit, and the existing 174-test/compile validation path.
