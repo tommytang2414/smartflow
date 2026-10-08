@@ -359,6 +359,8 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 
 ### 2026-10-08 — Manual Mac GPT research prototype
 
+- Mac prototype release commit: `9d1e53f5b68f761b38cdbbbda82aed65eaadb313`;
+  final thirteen-file runtime fingerprint comparison passed.
 - Added isolated versioned import, explicit identity/evidence adapter, bounded
   five-stock packets, approved history/tasks and independent hash-bound GPT review.
 - Deployed the report-only runtime on Mac without modifying collectors, AWS,

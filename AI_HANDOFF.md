@@ -1,8 +1,9 @@
 # AI Handoff
 
 ## Current state
-- Branch: feat/smartflow-mac-research; implementation release resolves through
-  Git HEAD, based on architecture commit 55d3bc5. Prior observation branch
+- Branch: feat/smartflow-mac-research; implementation release
+  9d1e53f5b68f761b38cdbbbda82aed65eaadb313, based on architecture commit 55d3bc5.
+  Latest Git HEAD also records final deployment verification. Prior observation branch
   security/observation-window-20260902 and control commit 699742d remain unchanged.
 - Last agent: Codex, 2026-10-08 HKT. Owner approved Phase 1 manual prototype.
 - Mac: /Users/vortex/Applications/smartflow-research; own Python 3.11 environment,
@@ -26,6 +27,9 @@
 
 ## Verification
 - Existing 174 regression tests, compile and diff whitespace checks passed.
+- Final thirteen runtime code hashes match release 9d1e53f on Mac; its final
+  disposable rehearsal and approved-history lookups pass. Task-owned build/backup
+  staging files were removed; durable inputs, reports, failure ledger and backup retained.
 - Nine disposable end-to-end checks passed on Windows and Mac: replay/conflict,
   class/actor/date/intent, stale health, news hash/cutoff, review rejection and
   approved-history tamper; simulated tool/unknown CLI error events also reject.

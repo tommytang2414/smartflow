@@ -129,6 +129,8 @@ new background service. Preserve failed runs and the ledger for reconciliation.
 
 ## First real acceptance — 2026-10-08
 
+- Runtime release: `9d1e53f5b68f761b38cdbbbda82aed65eaadb313`; thirteen
+  runtime file hashes match the committed Windows release, pinned in Mac `release.json`.
 - Report: `state/runs/Rab0e08c393cb053cf913389f/REPORT.md`.
 - Pack SHA-256: `ab0e08c393cb053cf913389f6fd2c8307edd2a334acbd4dd8c5902e125e4ad35`.
 - Report SHA-256: `6cbf6508441ac0b45d787273d6364a1cf22923e04707dfdd5f9de2aa27034548`.

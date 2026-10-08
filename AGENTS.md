@@ -264,6 +264,8 @@ before the documented release gates pass.
 
 ### 2026-10-08 — Manual Mac research prototype
 
+- Mac prototype release commit: `9d1e53f5b68f761b38cdbbbda82aed65eaadb313`;
+  thirteen runtime file hashes verified against the local committed release.
 - Implemented `smartflow.research`: immutable snapshot import, class-aware aliases,
   deterministic packets, independent GPT review and approved history/follow-up tasks.
 - Deployed the independent Mac runtime; first real five-stock report passed
