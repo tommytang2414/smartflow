@@ -58,6 +58,7 @@ prices status unavailable 時，唔聲稱觀察過價格反應、volume、relati
 每項 thesis 係可被推翻嘅研究假說：status、support_ids、counter_ids、具體 invalidation_condition 同 next_evidence；唔係交易判斷。
 至少一個 support_id；反證有就列出，冇實際引用就留空唔捏造。next_evidence描述要查嘅原件，冇日曆唔聲稱已知下一次事件日期。
 已有 previous_approved 時，區分新交易同新研究背景；新增公司文件唔代表新買盤，previous claims唔係原始證據。
+同上次公司文件比較必須用 company_document_change；UNCHANGED唔聲稱新增文件。新 retrieval時間／receipt ID 唔等於新 filing或新內容；冇已核實 previous dossier就唔聲稱對比有新增。
 每個 dossier 一個 item，保持原 security_key；questions 最多三條具體未解問題。
 schema 以外唔加文字。"""
 
@@ -242,6 +243,7 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
             lines.extend(["", "計劃標記係 filing-level，唔直接歸因每筆交易；false／unknown 唔證明 discretionary。持倉係披露該行，唔推算目前總持倉或倉位百分比；交易金額可由 weighted-average price 計出，唔代表 exact cash paid。", ""])
             lines.extend(["交易後取得嘅公司文件只作目前背景；冇原文明確連結，就唔推斷 insider 回應公告、預知結果或交易動機。", ""])
         lines.extend(["", "### 公司文件與價格背景", "", f"公司文件覆蓋：{dossier['company_coverage']['status']}；context fetch 新鮮：{dossier['company_context_fresh']}。",
+                      f"同上次原件內容比較：{dossier['company_document_change']['status']}；新增原件 {len(dossier['company_document_change']['new_original_ids'])}；同內容原件 {len(dossier['company_document_change']['unchanged_original_ids'])}。",
                       "價格／volume／披露後反應：" + dossier["price_context"]["status"] + "；未計算回報。", ""])
         for document in dossier.get("company_documents", []):
             lines.extend([f"原件 [{document['id']}]({document['source_url']})：{document['form']} / {document['accession']}",

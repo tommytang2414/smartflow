@@ -275,6 +275,15 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-10-08 — Content-based continuity and explicit source windows
+
+- Compare company originals with the verified prior packet using issuer/accession
+  and raw/text hashes; new retrieval time or receipt ID does not mean new content.
+- Include source window start/end/days/interval in the packet, and show deterministic
+  new/unchanged document counts. No-doc dossiers no longer show fresh company context.
+- Added refetch/content-change regression coverage; immutable old reports are retained.
+
+
 ### 2026-10-08 — Reproducible footnotes and original wording conflicts
 
 - Fixed footnote field ordering so a frozen JSON packet reproduces report bytes.

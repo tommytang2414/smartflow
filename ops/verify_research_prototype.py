@@ -14,7 +14,7 @@ from smartflow.research.common import canonical, digest, file_hash, stamp, utc, 
 from smartflow.research.evidence import aliases, security_key, select_events, source_assessments
 from smartflow.research.model import validate_analysis, validate_review, run_model, object_schema, SAFE_DIAGNOSTICS, render_report
 from smartflow.research.news import import_news
-from smartflow.research.pack import build_pack
+from smartflow.research.pack import build_pack, company_change
 from smartflow.research.snapshots import BUCKET, KEYS, import_snapshot
 from smartflow.research.store import ResearchStore
 from smartflow.research.__main__ import analyze
@@ -117,6 +117,11 @@ def check_us_context(root):
     cutoff=utc(stamp())+timedelta(seconds=1)
     loaded=load_company(bundle,definitions,cutoff,root/'company-cache')
     assert len(loaded['by_security']['US:ACME:COMMON'])==1 and loaded['prices']['returns'] is None
+    documents=loaded['by_security']['US:ACME:COMMON']
+    refetched=copy.deepcopy(documents);refetched[0]['id']='Cnewreceipt';refetched[0]['retrieved_at']=stamp(cutoff)
+    assert company_change(refetched,{'company_documents':documents})['status']=='UNCHANGED'
+    assert company_change(refetched,{'company_documents':documents})['new_original_ids']==[]
+    assert company_change(documents,{'company_documents':[]})['new_original_ids']==[documents[0]['id']]
     rejects(lambda:load_company(bundle,definitions,NOW,root/'future-cache'),'after_cutoff')
     manifest=json.loads((bundle/'manifest.json').read_text());doc=manifest['documents'][0]
     doc['excerpts'][0]['quote']='Invented issuer claim'
@@ -159,6 +164,7 @@ def main():
         invalid=copy.deepcopy(definitions);invalid[0]["sec_titles"].append("Class B Common Stock")
         rejects(lambda:aliases(events,invalid),"invalid_alias")
         pack=build_pack(store,definitions,as_of=NOW)
+        assert all(s['window_days']==14 and utc(s['window_end'])-utc(s['window_start'])==timedelta(days=14) for s in pack['source_assessments'])
         joined=next(d for d in pack["dossiers"] if d["identity_resolved"])
         assert joined["stance"]=="MIXED" and joined["distinct_actors"]==2 and joined["unknown_actor_events"]==1
         assert pack["bootstrap"] and joined["new_evidence_count"]==0

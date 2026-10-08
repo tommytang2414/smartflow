@@ -121,3 +121,19 @@ class ResearchStore:
         if previous not in analysis["items"]:
             raise ValueError("previous_thesis_state_tamper")
         return previous
+
+    def previous_dossier(self, security_key: str) -> dict | None:
+        # Reuse the complete DB-pinned artifact verification before reading the
+        # previous packet. Comparing cited claims alone would miss uncited docs.
+        if self.previous(security_key) is None:
+            return None
+        from .common import beneath, read_json
+        row = self.db.execute(
+            "SELECT r.directory FROM theses t JOIN runs r ON r.id=t.run_id "
+            "WHERE t.security_key=? AND r.status='approved' ORDER BY r.rowid DESC LIMIT 1", (security_key,),
+        ).fetchone()
+        directory = beneath(self.root, row["directory"])
+        if "PACK.json" not in read_json(directory / "manifest.json")["files"]:
+            raise ValueError("previous_packet_not_manifest_pinned")
+        pack = read_json(directory / "PACK.json")
+        return next(item for item in pack["dossiers"] if item["security_key"] == security_key)

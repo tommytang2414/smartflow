@@ -12,6 +12,9 @@ production collectors, delivery or an unattended schedule.
   after the transaction, ownership kind and filing-level plan indicator.
 - SEC company current/periodic reports selected from official submissions metadata.
   Quotes are exact bounded extracted-text spans, never model-generated summaries.
+- Content-based comparison with the verified previous packet. Issuer/accession
+  and raw/text hashes distinguish changed originals; fresh retrieval/receipt IDs
+  do not make the same original new. Source window metadata is explicit.
 - Comparison with approved previous research. A new document is new research
   context; it is not a new trade and cannot establish an earlier trader's motive.
 - Explicit failure taxonomy and unavailable price/volume/return status.

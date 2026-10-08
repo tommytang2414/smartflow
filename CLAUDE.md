@@ -62,6 +62,11 @@ original/extracted text hashes, exact quote offsets and first-observed cutoff.
 Each approved run retains its originals in its sealed manifest. This is bounded
 company context, not complete earnings exhibits/news/calendar coverage.
 
+Company continuity compares against the manifest-pinned previous PACK.json, using
+issuer/accession/raw+text hashes rather than retrieval dates or cited claims alone.
+The pack exposes source window start/end/days/interval and deterministic original
+change counts; dossier freshness is false when no company document was imported.
+
 The v2 packet/report requires a structured falsifiable thesis with support and
 counter citations, invalidation condition and next evidence. Old approved histories
 remain immutable. New company context is not a new trade or evidence of an earlier

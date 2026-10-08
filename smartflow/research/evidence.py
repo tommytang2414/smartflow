@@ -71,6 +71,8 @@ def source_assessments(store: ResearchStore, as_of: datetime) -> list[dict]:
                        "health_as_of": health["checked_at"], "health_at_snapshot": health["state"],
                        "current_health": "UNKNOWN_NO_LIVE_RECEIPT", "snapshot_fresh": snapshot_fresh,
                        "event_fresh": event_fresh, "window_runs": len(runs), "window_slot_coverage": str(coverage),
+                       "window_days": 14, "window_start": stamp(cutoff), "window_end": stamp(generated),
+                       "expected_slot_interval_seconds": interval,
                        "window_failures": [{"kind": kind, "error_code": code, "count": count} for (kind, code), count in sorted(failures.items())],
                        "window_reliability": str(reliability), "raw_without_children": raw_only,
                        "invalid_semantics": semantic_errors, "rejected_raw": rejected_raw,

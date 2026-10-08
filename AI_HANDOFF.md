@@ -20,7 +20,9 @@
   class proof; GOOGL remains unresolved. Price route remains unverified/unavailable.
 - Ten disposable integration categories and 174 regression tests pass; independent
   code review's no-causality/filing-owner wording fixes applied.
-- First enriched run R7289fab5bdbef73f62075914 passed review and is preserved.
+- Enriched runs R7289fab5bdbef73f62075914 and Ra4a7d2b1874f91a1bdd4ded3
+  passed review and are preserved. Added content-based prior-packet comparison and
+  explicit source-window metadata after a real reviewer continuity correction.
   Final replay found footnote field-order drift; fixed deterministic ordering and
   added v2 source-note conflict warning. Exact next action: deploy the small fix and
   rerun real analyst/reviewer,

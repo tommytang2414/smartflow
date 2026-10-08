@@ -109,7 +109,9 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
         dossier["company_documents"] = (company or {}).get("by_security", {}).get(dossier["security_key"], [])
         dossier["company_coverage"] = (company or {}).get("coverage", {}).get(dossier["security_key"], {"status": "IDENTITY_UNRESOLVED" if not dossier["identity_resolved"] else "NOT_IMPORTED"})
         dossier["price_context"] = (company or {}).get("prices", {"status": "NOT_IMPORTED", "returns": None, "volume": None})
-        dossier["company_context_fresh"] = (company or {}).get("fresh", False)
+        dossier["company_context_fresh"] = bool(dossier["company_documents"]) and (company or {}).get("fresh", False)
+        previous_dossier = store.previous_dossier(dossier["security_key"]) if dossier["previous_approved"] else None
+        dossier["company_document_change"] = company_change(dossier["company_documents"], previous_dossier)
         sec_records = [e for e in grouped[dossier["security_key"]] if e["source"] == "sec_form4"
                        and utc(e["observed_at"]) >= as_of - timedelta(days=90)]
         repeats = defaultdict(set)
@@ -128,3 +130,16 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
             "company_context_manifest": (company or {}).get("manifest_sha256"),
             "company_context_fresh": (company or {}).get("fresh", False),
             "research_policy": "Deterministic facts and priorities; proposed sales and HK short positions are context only. AI inferences remain hypotheses, not trade instructions."}
+
+
+def company_change(documents: list[dict], previous: dict | None) -> dict:
+    def key(doc):
+        # A new retrieval/receipt ID is not a new issuer filing or new content.
+        return digest(canonical([doc["issuer_cik"], doc["accession"], doc["raw_sha256"], doc["text_sha256"]]))
+    old = {key(doc) for doc in (previous or {}).get("company_documents", [])}
+    current = {key(doc) for doc in documents}
+    return {"basis": "issuer_accession_raw_and_text_content_not_retrieval_time",
+            "status": "NO_VERIFIED_PREVIOUS_DOSSIER" if previous is None else "UNCHANGED" if old == current else "CHANGED",
+            "new_original_ids": [doc["id"] for doc in documents if key(doc) not in old] if previous is not None else [],
+            "unchanged_original_ids": [doc["id"] for doc in documents if key(doc) in old],
+            "removed_original_keys": sorted(old - current)}
