@@ -136,10 +136,12 @@ def company_change(documents: list[dict], previous: dict | None) -> dict:
     def key(doc):
         # A new retrieval/receipt ID is not a new issuer filing or new content.
         return digest(canonical([doc["issuer_cik"], doc["accession"], doc["raw_sha256"], doc["text_sha256"]]))
-    old = {key(doc) for doc in (previous or {}).get("company_documents", [])}
+    comparable = previous is not None and bool(previous.get("company_documents")) and previous.get("company_coverage", {}).get("status") == "BOUNDED_RECENT_FILINGS"
+    old = {key(doc) for doc in previous["company_documents"]} if comparable else set()
     current = {key(doc) for doc in documents}
+    status = "NO_CURRENT_COMPANY_ORIGINALS" if not documents else "NO_VERIFIED_PREVIOUS_DOSSIER" if previous is None else "NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT" if not comparable else "UNCHANGED" if old == current else "CHANGED"
     return {"basis": "issuer_accession_raw_and_text_content_not_retrieval_time",
-            "status": "NO_VERIFIED_PREVIOUS_DOSSIER" if previous is None else "UNCHANGED" if old == current else "CHANGED",
-            "new_original_ids": [doc["id"] for doc in documents if key(doc) not in old] if previous is not None else [],
-            "unchanged_original_ids": [doc["id"] for doc in documents if key(doc) in old],
-            "removed_original_keys": sorted(old - current)}
+            "status": status,
+            "new_original_ids": [doc["id"] for doc in documents if key(doc) not in old] if comparable and documents else [],
+            "unchanged_original_ids": [doc["id"] for doc in documents if key(doc) in old] if comparable else [],
+            "removed_original_keys": sorted(old - current) if comparable and documents else []}

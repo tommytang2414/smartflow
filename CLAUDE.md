@@ -384,6 +384,11 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 # Edit smartflow/config.py → DISABLED_COLLECTORS, commit, pull, restart
 ```
 
+Previous packets without imported company originals are not a verified empty
+baseline; comparison stays NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT. Missing current
+originals are not evidence of removed filings. Changes describe packet coverage,
+not a new public filing.
+
 ## Changelog
 
 ### 2026-10-08 — US company context and falsifiable research theses

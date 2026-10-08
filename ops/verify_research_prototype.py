@@ -119,9 +119,14 @@ def check_us_context(root):
     assert len(loaded['by_security']['US:ACME:COMMON'])==1 and loaded['prices']['returns'] is None
     documents=loaded['by_security']['US:ACME:COMMON']
     refetched=copy.deepcopy(documents);refetched[0]['id']='Cnewreceipt';refetched[0]['retrieved_at']=stamp(cutoff)
-    assert company_change(refetched,{'company_documents':documents})['status']=='UNCHANGED'
-    assert company_change(refetched,{'company_documents':documents})['new_original_ids']==[]
-    assert company_change(documents,{'company_documents':[]})['new_original_ids']==[documents[0]['id']]
+    previous={'company_documents':documents,'company_coverage':{'status':'BOUNDED_RECENT_FILINGS'}}
+    assert company_change(refetched,previous)['status']=='UNCHANGED'
+    assert company_change(refetched,previous)['new_original_ids']==[]
+    assert company_change(documents,{})['status']=='NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT'
+    assert company_change(documents,{'company_documents':[]})['new_original_ids']==[]
+    assert company_change([],previous)['removed_original_keys']==[]
+    changed=copy.deepcopy(documents);changed[0]['raw_sha256']='0'*64
+    assert company_change(changed,previous)['new_original_ids']==[documents[0]['id']]
     rejects(lambda:load_company(bundle,definitions,NOW,root/'future-cache'),'after_cutoff')
     manifest=json.loads((bundle/'manifest.json').read_text());doc=manifest['documents'][0]
     doc['excerpts'][0]['quote']='Invented issuer claim'

@@ -35,6 +35,11 @@ P/S represents open-market **or private** purchase/sale, per the
 [SEC ownership codes](https://www.sec.gov/edgar/searchedgar/ownershipformcodes.html).
 Never automatically label all such rows open-market conviction.
 
+Previous packets without imported company originals are not a verified empty
+baseline; comparison stays NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT. Missing current
+originals are not evidence of removed filings. Changes describe packet coverage,
+not a new public filing.
+
 ## SEC snapshot audit
 
 Read-only input: snapshot generated 2026-10-07T23:55:06Z, SHA-256

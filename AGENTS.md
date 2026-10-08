@@ -273,6 +273,11 @@ before the documented release gates pass.
 - Snapshot creation uses SQLite's backup API; restore refuses to overwrite an existing target and must pass schema, row-count, `quick_check`, and byte-hash comparisons.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
+Previous packets without imported company originals are not a verified empty
+baseline; comparison stays NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT. Missing current
+originals are not evidence of removed filings. Changes describe packet coverage,
+not a new public filing.
+
 ## Changelog
 
 ### 2026-10-08 — Content-based continuity and explicit source windows
