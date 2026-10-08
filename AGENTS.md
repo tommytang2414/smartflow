@@ -6,6 +6,11 @@ The Git working tree and Git history take precedence over documentation when the
 
 ## Active programme
 
+The proposed Mac mini research layer is documented in
+`docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`. It is a review draft, not an
+approval to migrate collectors, widen source/LLM scope, change access, schedule
+jobs or deliver reports. Existing production gates remain authoritative.
+
 Follow `PROJECT_PLAN.md` and `STOCK_FIRST_PRODUCT_SPEC.md` for the approved
 SmartFlow rehabilitation roadmap. The product is stock-first equity intelligence;
 do not add unapproved sources or restore authoritative `LONG`/`SHORT` output
@@ -242,6 +247,16 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-10-08 — Mac mini Research Architecture Proposal
+
+- Added a draft hybrid VPS/S3-to-Mac GPT research design with source identity,
+  point-in-time evidence, approved history, weekly delivery and staged gates.
+- Verified current S3 object metadata and an exact-version SEC pack hash;
+  inspected Mac hardware, CLI flags and launchd readback without running jobs.
+- Documented the SEC/House security-ID mismatch and the newsroom history CLI
+  write behavior; proposed pinned-manifest read-only imports and independent review.
+- No production code, source approval, IAM, secrets, scheduler or email changed.
 
 ### 2026-09-05 — Observation evidence integrity and effectiveness
 
