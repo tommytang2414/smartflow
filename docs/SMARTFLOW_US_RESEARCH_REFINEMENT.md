@@ -20,6 +20,9 @@ Form 4 context does not change the upstream normalized contract. IDs use the
 production parser's accepted order across derivatives and non-derivatives;
 skipped raw nodes cannot shift the join. Issuer, date, code, title, quantity,
 price and acquired/disposed signature must agree or context stays unknown.
+Derived context v2 explicitly flags weighted-average purchase/sale wording that
+conflicts with the disclosed P/S code. It preserves the code and unresolved note.
+Footnote fields render in sorted order so serialized JSON can reproduce report bytes.
 Joint reporting owners are filing-level, not separate execution attribution.
 Repeat activity counts distinct filings, not repeated lines. Holdings-after is
 not current total beneficial ownership. The plan checkbox is not proof that

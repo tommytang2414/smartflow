@@ -50,6 +50,7 @@ current_window=false 或 source_current_eligible=false 只係歷史 context，�
 company_documents 只係指定 SEC primary documents 嘅 bounded verbatim excerpts，唔代表完整文件／exhibits或 earnings coverage。
 引用公司文件用 C IDs；FACT只可由實際 excerpt 支持，未下載嘅業績 exhibit唔可用猜測內容補全。
 insider_context係綁定 raw hash 嘅衍生欄位；filing_plan_indicator唔係每筆交易嘅 plan證明；false/unknown唔證明 discretionary。
+source_note_warnings 有交易代碼／footnote 字眼衝突時，要披露未解決，唔擅自改 action 或用註腳推斷原因。
 owners／actor IDs 係整份 Form 4 reporting owners；多 owner 唔逐筆歸因交易、分配金額、視為每人都執行一次或獨立 conviction。
 holdings_after係披露該行持倉，唔推算目前總持倉／持倉比例／動機；P/S可係 private交易。
 除非 Form 4／issuer 原文明確連結，唔聲稱 insider 係因公司文件而交易、預知結果或回應公告；日期只說明先後，交易後文件只作目前公司背景，唔係當時動機證據。
@@ -233,9 +234,11 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
                     role for role, field in (("director", "is_director"), ("officer", "is_officer"), ("ten_percent_owner", "is_ten_percent_owner"), ("other", "is_other")) if owner.get(field)) + " / " + owner.get("officer_title", "") for owner in context.get("owners", []))
                 plan = context.get("filing_plan_indicator")
                 lines.append(f"| {event['id']} | {cell(owners)} | {context['status']} | {'true' if plan is True else 'false' if plan is False else 'unknown'} | {context.get('holdings_after') or '未知'} | {context.get('ownership_kind') or '未知'} |")
-                for field, notes in context.get("field_footnotes", {}).items():
+                for field, notes in sorted(context.get("field_footnotes", {}).items()):
                     for note in notes:
                         lines.extend(["", f"{event['id']} / {field} / footnote {cell(note['id'])}：", "", "> " + cell(note["text"] or "原件未找到所指 footnote")])
+                for warning in context.get("source_note_warnings", []):
+                    lines.extend(["", f"原件字眼衝突 {event['id']}：{warning}；保留披露代碼，未解決交易原文語義。"])
             lines.extend(["", "計劃標記係 filing-level，唔直接歸因每筆交易；false／unknown 唔證明 discretionary。持倉係披露該行，唔推算目前總持倉或倉位百分比；交易金額可由 weighted-average price 計出，唔代表 exact cash paid。", ""])
             lines.extend(["交易後取得嘅公司文件只作目前背景；冇原文明確連結，就唔推斷 insider 回應公告、預知結果或交易動機。", ""])
         lines.extend(["", "### 公司文件與價格背景", "", f"公司文件覆蓋：{dossier['company_coverage']['status']}；context fetch 新鮮：{dossier['company_context_fresh']}。",

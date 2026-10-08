@@ -387,6 +387,8 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 - Added thesis/support/counter/invalidation/next-evidence fields and a compact owner view.
 - Verified the extended disposable rehearsal and 174 existing regression tests.
 - Preserved upstream source gates, production writers and all auth/scheduler/mail boundaries.
+- Form 4 derived context v2 exposes weighted-average purchase/sale note wording
+  conflicts without rewriting action; report footnotes sort by field for byte replay.
 
 
 ### 2026-10-08 — Manual Mac GPT research prototype

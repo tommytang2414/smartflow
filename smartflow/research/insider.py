@@ -2,13 +2,14 @@
 from __future__ import annotations
 
 import json
+import re
 from decimal import Decimal, InvalidOperation
 from xml.etree import ElementTree as ET
 
 from .common import canonical, digest, readonly, utc
 
 
-VERSION = "form4-research-context-v1"
+VERSION = "form4-research-context-v2"
 
 
 def text(node, path: str, default: str = "") -> str:
@@ -73,6 +74,12 @@ def derive(event: dict, xml: str) -> dict:
         refs = [n.get("id") for n in field.iter("footnoteId")] if field is not None else []
         fields[name] = [{"id": ref, "text": footnotes.get(ref), "status": "FOUND" if ref in footnotes else "MISSING"} for ref in refs]
     indicator = text(root, "aff10b5One").lower()
+    price_notes = " ".join(note["text"] or "" for note in fields["price"])
+    warnings = []
+    if event["attributes"]["transaction_code"] == "S" and re.search(r"\baverage purchase price\b", price_notes, re.I):
+        warnings.append("FOOTNOTE_PURCHASE_PRICE_WORDING_WITH_S_CODE")
+    if event["attributes"]["transaction_code"] == "P" and re.search(r"\baverage sale price\b", price_notes, re.I):
+        warnings.append("FOOTNOTE_SALE_PRICE_WORDING_WITH_P_CODE")
     result = {**base, "status": "MATCHED", "accepted_transaction_index": index, "xml_transaction_ordinal": ordinal,
               "filing_plan_indicator": True if indicator in {"true", "1"} else False if indicator in {"false", "0"} else None,
               "plan_indicator_locator": "ownershipDocument/aff10b5One", "disclosed_quantity": shares,
@@ -82,6 +89,7 @@ def derive(event: dict, xml: str) -> dict:
               "ownership_kind": text(node, "ownershipNature/directOrIndirectOwnership/value") or None,
               "nature_of_ownership": text(node, "ownershipNature/natureOfOwnership/value") or None,
               "field_footnotes": fields, "position_percentage": None,
+              "source_note_warnings": warnings,
               "position_percentage_status": "NOT_INFERRED_DISCLOSED_LINE_IS_NOT_TOTAL_CURRENT_POSITION"}
     result["context_sha256"] = digest(canonical(result))
     return result

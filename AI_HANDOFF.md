@@ -20,7 +20,10 @@
   class proof; GOOGL remains unresolved. Price route remains unverified/unavailable.
 - Ten disposable integration categories and 174 regression tests pass; independent
   code review's no-causality/filing-owner wording fixes applied.
-- Exact next action: verify updated isolated Mac runtime, run real analyst/reviewer,
+- First enriched run R7289fab5bdbef73f62075914 passed review and is preserved.
+  Final replay found footnote field-order drift; fixed deterministic ordering and
+  added v2 source-note conflict warning. Exact next action: deploy the small fix and
+  rerun real analyst/reviewer,
   retain approved report/originals and consistent off-host backup, then finalize docs.
 
 ## Completed

@@ -12,7 +12,7 @@ from unittest.mock import patch
 
 from smartflow.research.common import canonical, digest, file_hash, stamp, utc, write_json
 from smartflow.research.evidence import aliases, security_key, select_events, source_assessments
-from smartflow.research.model import validate_analysis, validate_review, run_model, object_schema, SAFE_DIAGNOSTICS
+from smartflow.research.model import validate_analysis, validate_review, run_model, object_schema, SAFE_DIAGNOSTICS, render_report
 from smartflow.research.news import import_news
 from smartflow.research.pack import build_pack
 from smartflow.research.snapshots import BUCKET, KEYS, import_snapshot
@@ -101,6 +101,8 @@ def check_us_context(root):
     assert context['field_footnotes']['price'][0]['text'].startswith('Weighted average')
     assert derive({**transaction,'quantity':'11'},xml)['status']=='UNKNOWN_TRANSACTION_MATCH'
     assert derive(transaction,xml.replace('<aff10b5One>true</aff10b5One>',''))['filing_plan_indicator'] is None
+    conflict=derive(transaction,xml.replace('Weighted average price','Weighted average sale price'))
+    assert conflict['source_note_warnings']==['FOOTNOTE_SALE_PRICE_WORDING_WITH_P_CODE']
     rejects(lambda:derive(transaction,'<!DOCTYPE x>'+xml),'unsafe_form4')
     definitions=[dict(security_key='US:ACME:COMMON',issuer_cik='0000000001',market='US',ticker='ACME')]
     submissions=dict(cik=1,tickers=['ACME'],name='Acme',filings=dict(recent=dict(form=['8-K'],accessionNumber=['0000000001-26-000001'],
@@ -189,6 +191,11 @@ def main():
         analysis=dict(pack_sha256=digest(canonical(pack)),overview="只供研究。",items=[dict(security_key=d["security_key"],summary="保留證據矛盾。",change_since_previous="首次匯入未有上次結論。",claims=[dict(kind="FACT",text="披露原件提供研究依據。",evidence_ids=[d["evidence"][0]["id"]])],counterevidence_ids=[],questions=["交易動機有冇其他解釋？"],
              thesis=dict(status='CONTESTED',hypothesis='披露方向未確立基本面改善。',support_ids=[d['evidence'][0]['id']],counter_ids=[],invalidation_condition='若出現已核實同 actor 的相反交易，重評方向。',next_evidence='下一份可核實交易原件。')) for d in pack["dossiers"]])
         validate_analysis(pack,analysis)
+        render_pack=copy.deepcopy(pack)
+        context=next(e['insider_context'] for d in render_pack['dossiers'] for e in d['evidence'] if e.get('insider_context'))
+        context['field_footnotes']={'price':[{'id':'F1','text':'Disclosed price note'}], 'ownership':[{'id':'F2','text':'Disclosed ownership note'}]}
+        rendered=render_report(render_pack,analysis,status='fixture')
+        assert rendered==render_report(json.loads(canonical(render_pack)),json.loads(canonical(analysis)),status='fixture')
         bad=copy.deepcopy(analysis);bad["items"][0]["claims"][0]["evidence_ids"]=["Eunknown"]
         rejects(lambda:validate_analysis(pack,bad),"unknown_evidence")
         bad=copy.deepcopy(analysis);bad["overview"]="估計金額7500美元"

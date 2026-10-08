@@ -275,6 +275,14 @@ before the documented release gates pass.
 
 ## Changelog
 
+### 2026-10-08 — Reproducible footnotes and original wording conflicts
+
+- Fixed footnote field ordering so a frozen JSON packet reproduces report bytes.
+- Versioned Form 4 derived context to v2; flag weighted-average purchase/sale
+  wording that conflicts with the P/S code without changing normalized action.
+- Added round-trip report and source-wording conflict checks; retained prior reports.
+
+
 ### 2026-10-08 — US research context and persistent theses
 
 - Added research-only Form 4 raw context and bounded public SEC company originals.
