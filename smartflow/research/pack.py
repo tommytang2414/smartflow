@@ -7,10 +7,11 @@ from datetime import datetime, timedelta, timezone
 from .common import canonical, digest, stamp, utc
 from .evidence import AGE_DAYS, actors, aliases, security_key, select_events, source_assessments
 from .store import ResearchStore
+from .insider import enrich
 
 
 LIMITATIONS = {
-    "sec_form4": "披露交易唔代表目前持倉或交易動機；只包含有效 non-derivative P/S。",
+    "sec_form4": "披露交易唔代表目前持倉或交易動機；non-derivative P/S 包括 open-market 或 private purchase/sale。",
     "sec_form144": "出售意向，唔係已執行 sale；缺 share-class identity 時另列。",
     "congress": "延遲披露；金額係 range，同一 member household 唔算多個 actor。",
     "sfc_short": "匿名 weekly net-short snapshot，唔係賣出交易或已識別持有人。",
@@ -18,7 +19,7 @@ LIMITATIONS = {
 
 
 def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime,
-               news: dict | None = None, max_stocks: int = 5) -> dict:
+               news: dict | None = None, max_stocks: int = 5, company: dict | None = None) -> dict:
     events, exclusions = select_events(store, as_of)
     definitions_by_key = aliases(events, definitions)
     states = source_assessments(store, as_of)
@@ -82,6 +83,8 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
                      "amount_lower": event["attributes"].get("amount_lower"), "amount_upper": event["attributes"].get("amount_upper"),
                      "source_url": event["source_url"], "raw_hash": event["raw_hash"], "parser_version": event["parser_version"],
                      "actor_ids": actors(event), "current_window": event in current,
+                     "transaction_code": event["attributes"].get("transaction_code"),
+                     "issuer_cik": event["security_id"] if event["source"] == "sec_form4" else None,
                      "source_current_eligible": event["source"] in allowed,
                      "new_since_approved_analysis": event["id"] in new_ids} for event in chosen]
         tasks = [dict(row) for row in store.db.execute("SELECT id,question,created_at FROM tasks WHERE security_key=? AND state='pending' ORDER BY created_at LIMIT 3", (key,))]
@@ -98,8 +101,30 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
     order = {"FOLLOW_UP_HIGH": 0, "FOLLOW_UP_MEDIUM": 1, "FOLLOW_UP_LOW": 2, "NO_DIRECTIONAL_EVIDENCE": 3}
     candidates.sort(key=lambda item: (order[item["priority"]], -int(item["identity_resolved"]), -item["new_evidence_count"], -item["distinct_actors"], item["ticker"]))
     chosen = candidates[:max_stocks]
-    return {"schema_version": "smartflow-research-pack-v1", "as_of": stamp(as_of), "mode": "personal_research_report_only",
+    selected_ids = {record["id"] for dossier in chosen for record in dossier["evidence"]}
+    contexts = enrich(store, [event for event in events if event["id"] in selected_ids])
+    for dossier in chosen:
+        for event in dossier["evidence"]:
+            event["insider_context"] = contexts.get(event["id"])
+        dossier["company_documents"] = (company or {}).get("by_security", {}).get(dossier["security_key"], [])
+        dossier["company_coverage"] = (company or {}).get("coverage", {}).get(dossier["security_key"], {"status": "IDENTITY_UNRESOLVED" if not dossier["identity_resolved"] else "NOT_IMPORTED"})
+        dossier["price_context"] = (company or {}).get("prices", {"status": "NOT_IMPORTED", "returns": None, "volume": None})
+        dossier["company_context_fresh"] = (company or {}).get("fresh", False)
+        sec_records = [e for e in grouped[dossier["security_key"]] if e["source"] == "sec_form4"
+                       and utc(e["observed_at"]) >= as_of - timedelta(days=90)]
+        repeats = defaultdict(set)
+        for event in sec_records:
+            if actors(event):
+                repeats[(tuple(actors(event)), event["action"])].add(event["raw_identity"])
+        dossier["historical_insider_activity"] = {"window_days": 90, "events": len(sec_records),
+            "distinct_filings": len({e["raw_identity"] for e in sec_records}),
+            "distinct_actors": len({a for e in sec_records for a in actors(e)}),
+            "repeat_actor_action_groups": sum(len(filings) >= 2 for filings in repeats.values()), "current_confirmation": False,
+            "meaning": "Filing-owner/action groups recur across distinct filings; not transaction attribution, independent conviction or a buy cluster"}
+    return {"schema_version": "smartflow-research-pack-v2", "as_of": stamp(as_of), "mode": "personal_research_report_only",
             "bootstrap": not bool(analyzed), "source_assessments": states, "source_exclusions": dict(sorted(exclusions.items())),
             "alias_hash": digest(canonical(definitions)), "total_candidates": len(candidates), "not_reviewed_candidates": max(0, len(candidates) - max_stocks),
             "dossiers": chosen, "news_coverage": (news or {}).get("coverage", {"status": "NOT_IMPORTED", "us_issuer_macro": "NOT_COVERED"}),
+            "company_context_manifest": (company or {}).get("manifest_sha256"),
+            "company_context_fresh": (company or {}).get("fresh", False),
             "research_policy": "Deterministic facts and priorities; proposed sales and HK short positions are context only. AI inferences remain hypotheses, not trade instructions."}

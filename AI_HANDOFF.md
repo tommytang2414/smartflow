@@ -9,6 +9,20 @@
 - Mac: /Users/vortex/Applications/smartflow-research; own Python 3.11 environment,
   existing bundled CLI and existing ChatGPT login. No scheduler/mail/source migration.
 
+## US refinement in progress — 2026-10-08
+- Owner requested direct refinement and an explicit active goal. Main is sole writer.
+- Added raw Form 4 context, public keyless SEC company bundle, structured thesis
+  support/counter/invalidation/next evidence and compact report view.
+- SEC failures audited read-only: transport cause not retained; 106 transactionless
+  raw-only filings are parser-contract gaps. No upstream repair or gate relaxation.
+- Windows obtained fourteen original company reports for seven aliases; eight
+  documents cover the four resolved selected dossiers. MSFT/HD added with exact
+  class proof; GOOGL remains unresolved. Price route remains unverified/unavailable.
+- Ten disposable integration categories and 174 regression tests pass; independent
+  code review's no-causality/filing-owner wording fixes applied.
+- Exact next action: verify updated isolated Mac runtime, run real analyst/reviewer,
+  retain approved report/originals and consistent off-host backup, then finalize docs.
+
 ## Completed
 - Added smartflow.research: exact-version/hash/FK/immutable import, source gates,
   explicit single-class proof aliases, actor dedup, bounded five-stock pack,

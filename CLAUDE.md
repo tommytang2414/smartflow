@@ -45,6 +45,30 @@ SEC/House historical joins. SEC current gate holds at Form4 95.07%, Form144 97.0
 zero semantic/orphan/backlog failures. No matching news original for these stocks;
 US issuer/earnings/macro coverage is incomplete. Never relax gates to fill reports.
 
+## US research refinement — 2026-10-08
+
+Owner approved direct improvements to the isolated research runtime.
+`research.insider` verifies the raw hash and reconstructs production accepted
+transaction order before matching Form 4 IDs/signatures. It retains filing owners,
+field-specific footnotes, holdings-after and filing-level plan flag without guessing
+transaction attribution, current position percentage or motivation. Repetition
+counts distinct filings. SEC reliability remains HOLD; no upstream parser fix.
+
+`research.company` reads official keyless SEC submissions and at most two recent
+primary company reports per explicit alias on Windows (public contact User-Agent,
+serial <=2 requests/sec, stop on 403/429, no redirects). Transfer the immutable bundle
+to Mac and pass `--company-context`; loading checks issuer/ticker/accession metadata,
+original/extracted text hashes, exact quote offsets and first-observed cutoff.
+Each approved run retains its originals in its sealed manifest. This is bounded
+company context, not complete earnings exhibits/news/calendar coverage.
+
+The v2 packet/report requires a structured falsifiable thesis with support and
+counter citations, invalidation condition and next evidence. Old approved histories
+remain immutable. New company context is not a new trade or evidence of an earlier
+insider motive. Price/volume/returns are explicitly unavailable until a documented
+licensed source and adjustment semantics are approved; do not restore Yahoo helpers.
+See `docs/SMARTFLOW_US_RESEARCH_REFINEMENT.md` for audit evidence and source contracts.
+
 ## Project Structure
 
 ```
@@ -356,6 +380,14 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 ```
 
 ## Changelog
+
+### 2026-10-08 — US company context and falsifiable research theses
+
+- Added hash/signature-bound Form 4 context and bounded keyless SEC company documents.
+- Added thesis/support/counter/invalidation/next-evidence fields and a compact owner view.
+- Verified the extended disposable rehearsal and 174 existing regression tests.
+- Preserved upstream source gates, production writers and all auth/scheduler/mail boundaries.
+
 
 ### 2026-10-08 — Manual Mac GPT research prototype
 

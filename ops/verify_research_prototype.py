@@ -18,6 +18,9 @@ from smartflow.research.pack import build_pack
 from smartflow.research.snapshots import BUCKET, KEYS, import_snapshot
 from smartflow.research.store import ResearchStore
 from smartflow.research.__main__ import analyze
+from smartflow.research.insider import derive
+from smartflow.research.company import fetch as fetch_company, load as load_company, visible_text
+from smartflow.events import make_source_event_id
 
 
 NOW = utc("2026-10-08T00:00:00Z")
@@ -77,10 +80,57 @@ def snapshot(root, group, events):
     return path,dict(bucket=BUCKET,key=KEYS[group],version_id="fixture-version",sha256=file_hash(path),generated_at=stamp(NOW),size_bytes=path.stat().st_size,file=path.name)
 
 
+def check_us_context(root):
+    # A skipped XML row and an accepted derivative precede the target. Matching
+    # raw ordinal instead of the production accepted index would select wrongly.
+    xml='''<ownershipDocument><issuer><issuerCik>1</issuerCik></issuer><aff10b5One>true</aff10b5One>
+    <nonDerivativeTransaction/><nonDerivativeTransaction><transactionAmounts><transactionShares><value>invalid</value></transactionShares></transactionAmounts></nonDerivativeTransaction>
+    <derivativeTransaction><transactionAmounts><transactionShares><value>3</value></transactionShares></transactionAmounts></derivativeTransaction>
+    <nonDerivativeTransaction><securityTitle><value>Common Stock</value></securityTitle><transactionDate><value>2026-10-07</value></transactionDate>
+    <transactionCoding><transactionCode>P</transactionCode></transactionCoding><transactionAmounts><transactionShares><value>10</value></transactionShares>
+    <transactionPricePerShare><value>100</value><footnoteId id="F1"/></transactionPricePerShare><transactionAcquiredDisposedCode><value>A</value></transactionAcquiredDisposedCode></transactionAmounts>
+    <postTransactionAmounts><sharesOwnedFollowingTransaction><value>110</value></sharesOwnedFollowingTransaction></postTransactionAmounts>
+    <ownershipNature><directOrIndirectOwnership><value>D</value></directOrIndirectOwnership></ownershipNature></nonDerivativeTransaction>
+    <footnotes><footnote id="F1">Weighted average price; multiple transactions.</footnote></footnotes></ownershipDocument>'''
+    transaction=event('sec_form4','unused');transaction.update(raw_identity='0000000001-26-000001',raw_hash='f'*64)
+    transaction['attributes']['acquired_disposed']='A'
+    transaction['source_event_id']=make_source_event_id('sec_form4',transaction['raw_identity'],1)
+    context=derive(transaction,xml)
+    assert context['status']=='MATCHED' and context['xml_transaction_ordinal']==3 and context['accepted_transaction_index']==1
+    assert context['holdings_after']=='110' and context['filing_plan_indicator'] is True and context['position_percentage'] is None
+    assert context['field_footnotes']['price'][0]['text'].startswith('Weighted average')
+    assert derive({**transaction,'quantity':'11'},xml)['status']=='UNKNOWN_TRANSACTION_MATCH'
+    assert derive(transaction,xml.replace('<aff10b5One>true</aff10b5One>',''))['filing_plan_indicator'] is None
+    rejects(lambda:derive(transaction,'<!DOCTYPE x>'+xml),'unsafe_form4')
+    definitions=[dict(security_key='US:ACME:COMMON',issuer_cik='0000000001',market='US',ticker='ACME')]
+    submissions=dict(cik=1,tickers=['ACME'],name='Acme',filings=dict(recent=dict(form=['8-K'],accessionNumber=['0000000001-26-000001'],
+        primaryDocument=['report.htm'],filingDate=['2026-10-07'],reportDate=['2026-10-06'],acceptanceDateTime=['2026-10-07T19:00:00Z'],items=['2.02'])))
+    html=b'<html><head><title>Hidden</title></head><body><div style="display:none">Secret hidden</div><p>Item 2.02</p><p>'+b'Company outlook remains uncertain. '*30+b'</p></body></html>'
+    assert 'Hidden' not in visible_text(html) and 'Secret hidden' not in visible_text(html)
+    def reader(_,url):
+        return canonical(submissions) if url.startswith('https://data.sec.gov/') else html
+    bundle=root/'company-bundle'
+    with patch('smartflow.research.company.SECReader.get',reader):
+        assert fetch_company(definitions,bundle,'research@example.test')['documents']==1
+    cutoff=utc(stamp())+timedelta(seconds=1)
+    loaded=load_company(bundle,definitions,cutoff,root/'company-cache')
+    assert len(loaded['by_security']['US:ACME:COMMON'])==1 and loaded['prices']['returns'] is None
+    rejects(lambda:load_company(bundle,definitions,NOW,root/'future-cache'),'after_cutoff')
+    manifest=json.loads((bundle/'manifest.json').read_text());doc=manifest['documents'][0]
+    doc['excerpts'][0]['quote']='Invented issuer claim'
+    doc['id']='C'+digest(canonical({k:v for k,v in doc.items() if k!='id'}))[:24]
+    write_json(bundle/'manifest.json',manifest)
+    rejects(lambda:load_company(bundle,definitions,cutoff,root/'tamper-cache'),'quote_mismatch')
+    manifest['prices']['returns']='pretend prices';write_json(bundle/'manifest.json',manifest)
+    rejects(lambda:load_company(bundle,definitions,cutoff,root/'price-cache'),'unverified_price_payload')
+
+
 def main():
     checks=[]
     with tempfile.TemporaryDirectory(prefix="research-rehearsal-") as folder, ExitStack() as cleanup:
         root=Path(folder)
+        check_us_context(root)
+        checks.append('Form4 accepted-order/signature matching, plan unknown, footnote/holdings provenance and no position inference; SEC original/excerpt/cutoff/price fail closed')
         store=ResearchStore(root/"state")
         cleanup.callback(store.close)
         sec=[event("sec_form4","buy"),event("sec_form4","buy-again"),event("sec_form4","other-class",title="Class B Common Stock"),
@@ -136,12 +186,15 @@ def main():
         assert news["by_security"]["US:ACME:COMMON"][0]["published_at"]=="2026-10-07T00:00:00+00:00"
         assert before==file_hash(newsroot/"newsroom.sqlite3")
         checks.append("newsroom original hashes, historical cutoff and zero DB writes")
-        analysis=dict(pack_sha256=digest(canonical(pack)),overview="只供研究。",items=[dict(security_key=d["security_key"],summary="保留證據矛盾。",change_since_previous="首次匯入未有上次結論。",claims=[dict(kind="FACT",text="披露原件提供研究依據。",evidence_ids=[d["evidence"][0]["id"]])],counterevidence_ids=[],questions=["交易動機有冇其他解釋？"]) for d in pack["dossiers"]])
+        analysis=dict(pack_sha256=digest(canonical(pack)),overview="只供研究。",items=[dict(security_key=d["security_key"],summary="保留證據矛盾。",change_since_previous="首次匯入未有上次結論。",claims=[dict(kind="FACT",text="披露原件提供研究依據。",evidence_ids=[d["evidence"][0]["id"]])],counterevidence_ids=[],questions=["交易動機有冇其他解釋？"],
+             thesis=dict(status='CONTESTED',hypothesis='披露方向未確立基本面改善。',support_ids=[d['evidence'][0]['id']],counter_ids=[],invalidation_condition='若出現已核實同 actor 的相反交易，重評方向。',next_evidence='下一份可核實交易原件。')) for d in pack["dossiers"]])
         validate_analysis(pack,analysis)
         bad=copy.deepcopy(analysis);bad["items"][0]["claims"][0]["evidence_ids"]=["Eunknown"]
         rejects(lambda:validate_analysis(pack,bad),"unknown_evidence")
         bad=copy.deepcopy(analysis);bad["overview"]="估計金額7500美元"
         rejects(lambda:validate_analysis(pack,bad),"numeric_prose")
+        bad=copy.deepcopy(analysis);bad['items'][0]['thesis']['support_ids']=['Cunknown']
+        rejects(lambda:validate_analysis(pack,bad),'thesis_unknown_evidence')
         review=dict(pack_sha256="a"*64,analysis_sha256="b"*64,report_sha256="c"*64,verdict="PASS_WITH_LIMITATIONS",findings="已核對證據。",limitations=["未有完整新聞覆蓋。"])
         validate_review(review)
         rejects(lambda:validate_review({**review,"findings":None}),"findings_invalid")

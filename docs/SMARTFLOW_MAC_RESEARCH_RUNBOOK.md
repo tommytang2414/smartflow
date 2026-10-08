@@ -3,7 +3,9 @@
 Owner approved architecture implementation on 2026-10-08. This is Phase 1:
 manual, personal research reports using existing versioned snapshots and the
 existing Mac ChatGPT login. It does not authorise the later scheduler, mail,
-shared GPT slot, expanded sources, credential changes or collector cutover.
+shared GPT slot, credential changes or collector cutover. The owner separately
+approved US research-only raw Form 4 and bounded public SEC company context;
+see `SMARTFLOW_US_RESEARCH_REFINEMENT.md`.
 
 ## Runtime
 
@@ -126,6 +128,20 @@ on Windows and Mac; do not delete caches or old evidence automatically. A formal
 off-host schedule/retention/restore service is a separately approved Phase 3 change.
 To stop the prototype, stop its manually launched research process; there is no
 new background service. Preserve failed runs and the ledger for reconciliation.
+
+## US refinement operation
+
+On Windows, `fetch-context --aliases <aliases.json> --destination <new-bundle>
+--contact <public-email>` downloads bounded keyless SEC company originals. Use
+a new destination; preserve existing bundles. Transfer the complete hash-pinned
+bundle and the matching aliases to Mac. Add `--company-context <bundle>` to manual
+`prepare`/`analyze`. It checks cutoff, issuer/metadata, raw/text/quote hashes and
+seals all originals inside the approved run manifest.
+
+The v2 report opens with compact hypotheses and includes filing-level insider
+roles/plan/footnotes/holdings, company evidence, counterevidence, invalidation and
+next evidence. Old v1 approved histories remain immutable. Licensed prices and
+complete earnings exhibits/calendar/macro are still not imported.
 
 ## First real acceptance — 2026-10-08
 

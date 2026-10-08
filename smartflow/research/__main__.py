@@ -15,6 +15,7 @@ from .news import import_news
 from .pack import build_pack
 from .snapshots import KEYS, import_snapshot, sync_aws
 from .store import ResearchStore
+from .company import fetch as fetch_company, load as load_company
 
 
 @contextmanager
@@ -45,10 +46,14 @@ def single_writer(root: Path):
                 fcntl.flock(stream, fcntl.LOCK_UN)
 
 
-def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: Path | None) -> tuple[dict, str, Path]:
+def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None) -> tuple[dict, str, Path]:
     definitions = read_json(alias_path)
     news = import_news(news_root, definitions, as_of, store.root / "news-cache") if news_root else None
-    pack = build_pack(store, definitions, as_of=as_of, news=news)
+    # The per-run originals are pinned in its final manifest. A temporary import
+    # cache is retained on failure as evidence, never reused without verification.
+    company_cache = store.root / "company-cache" / (digest(canonical([str(company_root), stamp(as_of)]))[:24])
+    company = load_company(company_root, definitions, as_of, company_cache) if company_root else None
+    pack = build_pack(store, definitions, as_of=as_of, news=news, company=company)
     if not pack["dossiers"]:
         raise ValueError("no_eligible_research_dossiers_check_source_gates")
     pack_hash = digest(canonical(pack))
@@ -60,14 +65,17 @@ def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: 
     directory.mkdir(parents=True, exist_ok=False)
     (directory / "PACK.json").write_bytes(canonical(pack))
     write_json(directory / "aliases.json", definitions)
+    if company:
+        import shutil
+        shutil.copytree(company_cache, directory / "company-originals")
     (directory / "DETERMINISTIC.md").write_text(render_report(pack, None, status="Deterministic evidence，未完成 GPT review"), encoding="utf-8")
     with store.db:
         store.db.execute("INSERT INTO runs(id,pack_hash,directory,status) VALUES(?,?,?,'prepared')", (run_id, pack_hash, directory.relative_to(store.root).as_posix()))
     return pack, run_id, directory
 
 
-def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: datetime, news_root: Path | None) -> dict:
-    pack, run_id, directory = prepare(store, alias_path, as_of, news_root)
+def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None) -> dict:
+    pack, run_id, directory = prepare(store, alias_path, as_of, news_root, company_root)
     pack_hash = digest(canonical(pack))
     deadline = time.monotonic() + 45 * 60
     with store.db:
@@ -114,6 +122,8 @@ def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: dat
             manifest = {"run_id": run_id, "pack_hash": pack_hash, "analysis_hash": analysis_hash,
                         "revision": revision, "files": {name: file_hash(directory / name) for name in
                         ("PACK.json", "aliases.json", "ANALYSIS.json", "REPORT.md", "REVIEW.json", f"analyst-{revision}-execution.json", f"review-{revision}-execution.json")}}
+            for path in sorted((directory / "company-originals").glob("*")):
+                manifest["files"][path.relative_to(directory).as_posix()] = file_hash(path)
             write_json(directory / "manifest.json", manifest)
             store.approve(run_id, pack, analysis, report_hash, file_hash(directory / "REVIEW.json"), file_hash(directory / "manifest.json"))
             return {"status": "approved", "run_id": run_id, "report": str(directory / "REPORT.md"),
@@ -135,11 +145,16 @@ def main() -> None:
     sync.add_argument("--destination", type=Path, required=True)
     ingest = commands.add_parser("import", help="Verify and ingest immutable snapshot files")
     ingest.add_argument("--snapshots", type=Path, required=True)
+    context = commands.add_parser("fetch-context", help="Read bounded public SEC company filings on the operator machine; no auth changes")
+    context.add_argument("--aliases", type=Path, required=True)
+    context.add_argument("--destination", type=Path, required=True)
+    context.add_argument("--contact", required=True, help="Public SEC User-Agent contact email")
     for name in ("prepare", "analyze"):
         command = commands.add_parser(name)
         command.add_argument("--aliases", type=Path, required=True)
         command.add_argument("--as-of", type=utc, default=None)
         command.add_argument("--news-root", type=Path)
+        command.add_argument("--company-context", type=Path)
         if name == "analyze":
             command.add_argument("--codex", type=Path, required=True)
     commands.add_parser("status")
@@ -147,6 +162,9 @@ def main() -> None:
     args = parser.parse_args()
     if args.command == "sync":
         print(json.dumps(sync_aws(args.destination), ensure_ascii=False))
+        return
+    if args.command == "fetch-context":
+        print(json.dumps(fetch_company(read_json(args.aliases), args.destination, args.contact), ensure_ascii=False))
         return
     if args.command == "status":
         print(json.dumps(ResearchStore.read_status(args.state), ensure_ascii=False))
@@ -169,10 +187,10 @@ def main() -> None:
                         candidates.setdefault(key, {"ticker": key[0], "issuer_cik": key[1], "security_title": key[2], "proof_id": event["id"]})
                 result = list(candidates.values())
             elif args.command == "prepare":
-                pack, run_id, directory = prepare(store, args.aliases, args.as_of or datetime.now(timezone.utc), args.news_root)
+                pack, run_id, directory = prepare(store, args.aliases, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
                 result = {"run_id": run_id, "pack": str(directory / "PACK.json"), "dossiers": len(pack["dossiers"]), "status": "prepared_not_analyzed"}
             else:
-                result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root)
+                result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
             print(json.dumps(result, ensure_ascii=False))
         finally:
             store.close()

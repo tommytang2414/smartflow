@@ -9,6 +9,9 @@ The Git working tree and Git history take precedence over documentation when the
 The owner approved Phase 1 of `docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`
 on 2026-10-08: the isolated manual report-only Mac research prototype.
 Use `smartflow.research` and `docs/SMARTFLOW_MAC_RESEARCH_RUNBOOK.md`.
+Owner subsequently approved research-only US context enrichment on 2026-10-08:
+raw Form 4 roles/footnotes/holdings/plan indicator, public keyless SEC company
+documents and persistent falsifiable theses. This does not enable a new collector.
 Later collector migration, access/source expansion, scheduler and mail still
 require their concrete release manifests. Existing production gates remain authoritative.
 
@@ -22,6 +25,16 @@ require their concrete release manifests. Existing production gates remain autho
   on ticker or manufacture an actor for missing identity.
 - Only bound `PASS_WITH_LIMITATIONS` review advances research history. Every prior
   conclusion must pass its DB-pinned manifest/file hashes before reuse.
+- US context uses `fetch-context` on Windows with a public SEC contact UA, then
+  `--company-context` on Mac. Exact originals/excerpts/metadata and aliases are
+  validated and sealed in each run. Max two recent primary documents per alias;
+  earnings exhibits, macro/calendar and licensed price/volume remain uncovered.
+- Form 4 enrichment reconstructs accepted transaction order and checks ID/signature.
+  Reporting owners and plan indicators are filing-level; post-transaction holdings
+  are not current total holdings. Never infer plan applicability or trade motivation.
+  Repeated activity counts distinct filings, not repeated rows.
+- Structured thesis support/counter citations, invalidation and next evidence persist
+  only after review. Old approved reports remain immutable and readable.
 - `status` is read-only; `prepare`/`analyze` are manual and never send. Research
   locking does not coordinate the newsroom's GPT use; no shared slot is installed.
 
@@ -261,6 +274,16 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-10-08 — US research context and persistent theses
+
+- Added research-only Form 4 raw context and bounded public SEC company originals.
+- Replaced the report opening with five-stock theses, counterevidence, falsification
+  conditions and next evidence; retained the complete source/hash audit trail.
+- Extended the disposable rehearsal for accepted transaction order, missing plan
+  flags, original/excerpt tamper, historical cutoff and unavailable price payloads.
+- SEC source gates stay unchanged; no upstream collector, auth, scheduler or mail change.
+
 
 ### 2026-10-08 — Manual Mac research prototype
 

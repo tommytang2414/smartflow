@@ -39,6 +39,8 @@ def source_assessments(store: ResearchStore, as_of: datetime) -> list[dict]:
             slots = {int(utc(r["started_at"]).timestamp()) // interval for r in runs}
             expected = 14 * 86400 // interval
             good = sum(r["status"] in {"success", "empty"} and not r["failure_kind"] for r in runs)
+            failures = Counter((r["failure_kind"] or "unknown", r.get("error_code") or "UNRECORDED") for r in runs
+                               if r["status"] not in {"success", "empty"} or r["failure_kind"])
             reliability = Decimal(good) / Decimal(len(runs)) if runs else Decimal(0)
             coverage = min(Decimal(len(slots)) / Decimal(expected), Decimal(1))
             last_details = json.loads(runs[-1]["details"] or "{}") if runs else {}
@@ -69,6 +71,7 @@ def source_assessments(store: ResearchStore, as_of: datetime) -> list[dict]:
                        "health_as_of": health["checked_at"], "health_at_snapshot": health["state"],
                        "current_health": "UNKNOWN_NO_LIVE_RECEIPT", "snapshot_fresh": snapshot_fresh,
                        "event_fresh": event_fresh, "window_runs": len(runs), "window_slot_coverage": str(coverage),
+                       "window_failures": [{"kind": kind, "error_code": code, "count": count} for (kind, code), count in sorted(failures.items())],
                        "window_reliability": str(reliability), "raw_without_children": raw_only,
                        "invalid_semantics": semantic_errors, "rejected_raw": rejected_raw,
                        "snapshot_gate": "PASS" if gate else "HOLD", "eligible_for_current_research": bool(gate and snapshot_fresh and event_fresh)})
@@ -128,7 +131,7 @@ def eligibility(event: dict, as_of: datetime) -> str | None:
         if not (event["event_type"] == "form4_transaction" and event["execution_status"] == "reported"
                 and attrs.get("instrument_type") == "non_derivative"
                 and (attrs.get("transaction_code"), action, side) in {("P", "purchase", "BUY"), ("S", "sale", "SELL")}):
-            return "not_open_market_equity_transaction"
+            return "not_eligible_reported_equity_purchase_sale"
     elif source == "sec_form144":
         if not (event["event_type"] == "form144_notice" and action == "proposed_sale" and side == "SELL" and event["execution_status"] == "proposed"):
             return "invalid_proposed_sale_contract"
