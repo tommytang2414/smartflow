@@ -280,6 +280,14 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-08 — Verified US research release
+
+- Released only to the isolated manual Mac runtime at `2668ee6`; final run
+  `R1a0a2aeee56c8bbc9a40ba7e` passed independent review without correction.
+- Verified all 43 sealed artifacts, byte-identical report replay, original SEC
+  metadata/quotes and consistent off-host backup restoration.
+- Preserved unresolved GOOGL identity, unavailable licensed prices and source HOLDs.
+
 ### 2026-10-08 — Content-based continuity and explicit source windows
 
 - Compare company originals with the verified prior packet using issuer/accession

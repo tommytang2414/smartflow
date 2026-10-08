@@ -173,3 +173,39 @@ complete earnings exhibits/calendar/macro are still not imported.
   incorrectly classified as tool items. Its failed run is preserved; exact diagnostic
   classification was verified with real canaries and negative simulated tool/error
   events. The corrected successful run is a separate identity.
+
+## US refinement acceptance — 2026-10-08
+
+- Isolated runtime release: `2668ee629a9258fb3b64810fcd5cb52c7fd6cc72`.
+  All sixteen runtime file hashes match committed source; no production deployment.
+- Final report: `state/runs/R1a0a2aeee56c8bbc9a40ba7e/REPORT.md`.
+  Cutoff 2026-10-08T03:53:00Z; approved 03:54:29Z / 11:54:29 HKT.
+- Pack SHA-256: `1a0a2aeee56c8bbc9a40ba7ed8f4fa1a94e3ead70b7fb1ca4d482634c8648e4e`.
+- Report SHA-256: `1b52441f0d18233c7e999dcc82995be99ceb9a8d87bba6e681784d45802926ae`.
+- Manifest SHA-256: `891a4d08ab976e6cb19c3d3568a6774130642e00db017d44e69b95fd1a3f0b09`.
+  All 43 sealed files, original extraction/quotes/metadata and local model validators
+  verify. Serialized PACK/ANALYSIS reproduce identical REPORT bytes.
+- Formal verdict `PASS_WITH_LIMITATIONS`, zero corrections on the final pair,
+  distinct analyst/reviewer threads and zero tool items. Duration 60.177/26.070 seconds.
+  Input tokens 44,728/71,456; output 6,677/1,326; recorded reasoning 871/901.
+  These figures cover the final successful pair only; earlier refinement runs and
+  one narrative correction also consumed subscription allowance and are retained.
+- Four resolved dossiers: AAPL/MSFT/HD `CONTESTED`, AMAT `WATCH`; GOOGL remains
+  `INSUFFICIENT_EVIDENCE` with unresolved class identity. Nine selected Form 4 rows
+  match their raw XML contract; eight company documents cover the four resolved
+  dossiers. The full verified bundle contains fourteen documents for seven aliases.
+- No newly imported trades or changed company originals in this continuity run.
+  Twenty-eight pending research questions persist; no automatic execution/delivery.
+- SEC gates remain Form4 95.07% / Form144 97.02% HOLD; SFC stays stale HOLD.
+  Company originals are bounded excerpts, not complete earnings/calendar/news.
+  Prices/volume/returns remain unavailable because no verified licensed route exists.
+- Consistent backup on Mac: `exports/20261008-us-refinement-state.zip`; Windows:
+  `data/research-prototype/mac-state-backup-us-20261008.zip`.
+  Size 27,964,078 bytes; SHA-256
+  `68858c0a26d7be7e2ddf675f80069456b3239a03253d45a292fb5b6989a0b92e`.
+  A disposable restore with the three retained input snapshots passes quick_check,
+  FKs, 73,549-event count, all four approved manifests and all five latest theses
+  plus their verified previous packets. Snapshot caches remain separately retained.
+- Runtime staging archives and verified preview copies created by this task were
+  removed; original bundles, failed/prepared reports, release history and backups remain.
+  Newsroom LaunchAgent remains idle; auth/services/collectors/mail were unchanged.

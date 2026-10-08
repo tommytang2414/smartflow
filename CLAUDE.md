@@ -74,6 +74,15 @@ insider motive. Price/volume/returns are explicitly unavailable until a document
 licensed source and adjustment semantics are approved; do not restore Yahoo helpers.
 See `docs/SMARTFLOW_US_RESEARCH_REFINEMENT.md` for audit evidence and source contracts.
 
+Final refined report `R1a0a2aeee56c8bbc9a40ba7e` passed independent review at
+2026-10-08 11:54 HKT on isolated release `2668ee6`. Five persistent theses,
+nine matched Form 4 rows and eight company originals; GOOGL remains unresolved.
+All 43 sealed files, byte-identical report replay and restored state/previous-packet
+lookups pass. Consistent off-host backup is
+`data/research-prototype/mac-state-backup-us-20261008.zip`; SHA-256
+`68858c0a26d7be7e2ddf675f80069456b3239a03253d45a292fb5b6989a0b92e`.
+See the runbook for full receipts and hashes. No scheduling, mail or upstream change.
+
 ## Project Structure
 
 ```

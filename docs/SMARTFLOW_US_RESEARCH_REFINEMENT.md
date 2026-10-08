@@ -131,5 +131,8 @@ signature mismatch, missing plan indicator, raw footnotes/holdings, hidden HTML,
 company metadata/quote/hash tamper, future cutoff, unknown thesis citations and
 unverified prices, alongside the existing import/review/history controls.
 The independent code review additionally required explicit no-causality and
-filing-level owner wording; both are applied. Actual report acceptance and release
-hashes are recorded in the runbook and handoff after the Mac run.
+filing-level owner wording; both are applied. Final acceptance: `R1a0a2aeee56c8bbc9a40ba7e`, `PASS_WITH_LIMITATIONS`, runtime
+`2668ee6`. Nine selected Form 4 rows matched; eight company originals support
+four resolved dossiers. Report bytes reproduce from the frozen packet and all
+43 manifest files verify. Restore rehearsal also passed. Exact hashes, receipts
+and the preserved intermediate reviews are recorded in the runbook and handoff.

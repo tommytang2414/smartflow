@@ -1,91 +1,74 @@
 # AI Handoff
 
 ## Current state
-- Branch: feat/smartflow-mac-research; implementation release
-  9d1e53f5b68f761b38cdbbbda82aed65eaadb313, based on architecture commit 55d3bc5.
-  Latest Git HEAD also records final deployment verification. Prior observation branch
-  security/observation-window-20260902 and control commit 699742d remain unchanged.
-- Last agent: Codex, 2026-10-08 HKT. Owner approved Phase 1 manual prototype.
-- Mac: /Users/vortex/Applications/smartflow-research; own Python 3.11 environment,
-  existing bundled CLI and existing ChatGPT login. No scheduler/mail/source migration.
-
-## US refinement in progress — 2026-10-08
-- Owner requested direct refinement and an explicit active goal. Main is sole writer.
-- Added raw Form 4 context, public keyless SEC company bundle, structured thesis
-  support/counter/invalidation/next evidence and compact report view.
-- SEC failures audited read-only: transport cause not retained; 106 transactionless
-  raw-only filings are parser-contract gaps. No upstream repair or gate relaxation.
-- Windows obtained fourteen original company reports for seven aliases; eight
-  documents cover the four resolved selected dossiers. MSFT/HD added with exact
-  class proof; GOOGL remains unresolved. Price route remains unverified/unavailable.
-- Ten disposable integration categories and 174 regression tests pass; independent
-  code review's no-causality/filing-owner wording fixes applied.
-- Enriched runs R7289fab5bdbef73f62075914 and Ra4a7d2b1874f91a1bdd4ded3
-  passed review and are preserved. Added content-based prior-packet comparison and
-  explicit source-window metadata after a real reviewer continuity correction.
-  Final replay found footnote field-order drift; fixed deterministic ordering and
-  added v2 source-note conflict warning. Exact next action: deploy the small fix and
-  rerun real analyst/reviewer,
-  retain approved report/originals and consistent off-host backup, then finalize docs.
+- Branch: feat/smartflow-mac-research; isolated runtime release
+  2668ee629a9258fb3b64810fcd5cb52c7fd6cc72. Latest Git HEAD records final acceptance.
+- Last agent: Codex, 2026-10-08 HKT. Owner approved direct US research refinement.
+- Mac: /Users/vortex/Applications/smartflow-research; own Python 3.11 stdlib runtime,
+  existing ChatGPT CLI/login. Prior production/control branch 699742d is unchanged.
 
 ## Completed
-- Added smartflow.research: exact-version/hash/FK/immutable import, source gates,
-  explicit single-class proof aliases, actor dedup, bounded five-stock pack,
-  report-only GPT analyst/reviewer and manifest-pinned approved history/questions.
-- Imported 73,549 evidence records from three verified snapshots on Mac.
-- Newsroom direct read-only import audits publication manifest/review pins and
-  verified originals, uses historical cutoff/ISO/RFC2822 publication dates and
-  task-owned original cache. Secondary analysis/history links do not reach GPT.
-- First real run Rab0e08c393cb053cf913389f approved PASS_WITH_LIMITATIONS:
-  AAPL, AMAT, MSFT, HD, GOOGL; AAPL/AMAT have SEC/House historical joins.
-  Distinct model threads, zero tool items, 86.203 + 49.385 seconds, no correction.
-- Mac REPORT.md under state/runs/<run>/; Windows review copy under ignored
-  data/research-prototype/mac-runs/<run>/. Fifteen follow-up questions persisted.
-- Manual operation, exact run hashes, token receipts and recovery documented in
-  docs/SMARTFLOW_MAC_RESEARCH_RUNBOOK.md.
+- Raw Form 4 context v2: accepted-order/ID/signature/hash matching, filing-level
+  reporting roles, field footnotes, holdings-after, plan indicator and explicit
+  purchase/sale-note wording conflicts without modifying normalized actions.
+- Keyless official SEC company connector on Windows; bounded original documents
+  transferred offline to Mac and verified against submissions, extraction and quote
+  offsets. All originals are inside each sealed run; no new auth/source collector.
+- Explicit proof mappings for MSFT/HD; GOOGL Class C versus listing identity unresolved.
+- Five-stock owner view; persistent falsifiable theses/support/counter/invalidation/
+  next evidence. Content-based previous-packet comparison ignores refetch/receipt IDs
+  and treats missing old coverage as unknown, not a verified empty baseline.
+- Final approved run R1a0a2aeee56c8bbc9a40ba7e: AAPL/MSFT/HD CONTESTED,
+  AMAT WATCH, GOOGL INSUFFICIENT_EVIDENCE. Nine raw-matched Form 4 rows,
+  eight company reports for four resolved dossiers; full bundle fourteen documents.
+- No new trades or changed company originals in final continuity run; 28 pending
+  questions remain. Source events 73,549, imports3, candidates249 / reviewed5.
+- Final report copied to Windows data/research-prototype/mac-runs/<run>/REPORT.md.
+  Earlier approved, rejected/corrected and prepared evidence remain immutable.
 
 ## Verification
-- Existing 174 regression tests, compile and diff whitespace checks passed.
-- Final thirteen runtime code hashes match release 9d1e53f on Mac; its final
-  disposable rehearsal and approved-history lookups pass. Task-owned build/backup
-  staging files were removed; durable inputs, reports, failure ledger and backup retained.
-- Nine disposable end-to-end checks passed on Windows and Mac: replay/conflict,
-  class/actor/date/intent, stale health, news hash/cutoff, review rejection and
-  approved-history tamper; simulated tool/unknown CLI error events also reject.
-- Actual CLI canary passed with configured disabled capabilities and zero tool items.
-  One initial run was held by an over-strict warning classifier; failed evidence is
-  preserved. Only exact Code Mode disabled diagnostic is allowlisted separately.
-- Consistent SQLite backup + frozen runs transferred to Windows as
-  data/research-prototype/mac-state-backup.zip; SHA-256
-  b1415c44ba94285d680299809c162ef9c02f28448c3606cdf9f3c61abec915c1.
-  Disposable restore with retained input snapshot caches passed quick_check,
-  all approved hashes, counts and prior-thesis lookup. No scheduled backup service.
-- Newsroom LaunchAgent remained idle, runs=6, last exit0, calendar 08:00. Its
-  runtime/auth/mail/collector configuration was not modified.
+- Existing 174 regression tests, compile and whitespace checks passed; ten
+  disposable integration categories pass on Windows/Mac, including accepted XML
+  order, missing plan, raw/excerpt/cutoff tamper, report round-trip and refetch semantics.
+- Independent code review's owner attribution/causality/old-baseline concerns fixed.
+- Final real analyst/reviewer PASS_WITH_LIMITATIONS with distinct threads, zero
+  actual tool items, 60.177/26.070 seconds and no correction on the final pair.
+- All sixteen deployed code hashes match 2668ee6. All 43 final artifact hashes,
+  exact original extraction/metadata/quotes and byte-identical report replay verify.
+- Final report SHA-256
+  1b52441f0d18233c7e999dcc82995be99ceb9a8d87bba6e681784d45802926ae.
+- Consistent backup: Mac exports/20261008-us-refinement-state.zip and Windows
+  data/research-prototype/mac-state-backup-us-20261008.zip; 27,964,078 bytes;
+  SHA-256 68858c0a26d7be7e2ddf675f80069456b3239a03253d45a292fb5b6989a0b92e.
+  Disposable restore with retained snapshot caches passes quick_check/FKs/counts,
+  all four approved manifests and all five latest theses/previous-packet lookups.
+- Task-owned staging zips/preview duplicates removed; raw bundles, reports, release
+  history and backups retained. Newsroom LaunchAgent remains idle; services unchanged.
 
-## Research constraints / open evidence
-- House snapshot passes: 336/336 healthy, full slot coverage, zero semantic/raw
-  orphan/backlog errors. Current research classifications use House only.
-- SEC Form4 14-day reliability 95.07%, Form144 97.02%; both HOLD below 99%.
-  Form4 has 106 raw-only filings. Validated individual SEC rows remain explicitly
-  historical context and never count as current stance/actor consensus.
-- SFC snapshot Oct4/report Sep25 is stale, HOLD. No gate was relaxed or source fixed.
-- No matching news originals for the five stocks; one pinned publication audited,
-  six legacy/unpinned analyses excluded. US issuer/earnings/macro remain uncovered.
-- Identity-unresolved stocks/classes stay separate. Form144 remains proposed and
-  separate without class evidence; House bounds never become midpoint amounts.
-- Prepared/failed runs are preserved. Bootstrap backlog is distinguished from new
-  imported evidence after first approval; seven-day continuity remains unvalidated.
-- Research lock coordinates this runtime only. Shared GPT slot, launchd/outbox/mail,
-  formal backup destination/retention and collector cutover need their later manifest.
-- .gitignore excludes task state, input snapshots, aliases, reports and backup archive.
+## Durable decisions / constraints
+- House current gate passes. SEC Form4 95.07% / Form144 97.02% remain HOLD.
+  Source errors lost underlying transport causes, so do not claim 403/429/DNS.
+  All 106 raw-only filings are transactionless contract gaps (73 administrative,
+  33 holdings-only), not corrupt XML. No upstream fix or historic failure rewrite.
+- Gate-held SEC rows are historical context only. P/S may be private. Filing owners
+  are not per-row execution attribution; plan flag is not transaction applicability;
+  holdings-after is not current total ownership. Do not infer issuer-event motivation.
+- Company reports are bounded excerpts, not full earnings exhibits/macro/calendar.
+  Licensed price/volume/post-disclosure returns and paper alpha remain unavailable.
+  No verified approved data route found; never substitute unofficial Yahoo or trade prices.
+- No launchd/email/shared GPT slot, IAM/auth/secrets or upstream collector changes.
+  No claim of seven-day continuity or validated investment performance.
+- State/input aliases/snapshots/reports/backups remain ignored. Runbook holds exact
+  manual commands, source contracts, receipts, hashes and recovery procedure.
 
 ## Exact next step
-- Owner reviews the first report; investigate SEC failure taxonomy/raw-only evidence
-  and SFC stale publisher read-only before proposing any upstream fix/release.
-- Then use refreshed gate-passing snapshots for manually reviewed continuity runs;
-  measure at least seven research days before scheduler/delivery approval.
-- Preserve all existing production and prior DevSecOps observation constraints below.
+- Owner can review the final report. If price context is wanted, first supply/approve
+  a documented licensed source with adjustment/timezone/storage/GPT-processing rights.
+- Prepare a separate source-contract release for transactionless SEC forms and
+  transport diagnostics, preserving all historic failures; inspect SFC stale publishing.
+- Use fresh gate-passing versions for at least seven manually reviewed research days
+  before any scheduler/delivery/collector-cutover release manifest.
+- Preserve the prior DevSecOps constraints below.
 
 ## Prior DevSecOps work completed and verified
 - Real base/head dependency finding diff, raw audits/exit codes and PASS/FINDINGS/SCAN_ERROR evidence.
