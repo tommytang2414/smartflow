@@ -3,6 +3,7 @@
 .env.example
 
 # Data
+data/research-prototype/
 data/*.db
 data/*.db-wal
 data/*.db-shm

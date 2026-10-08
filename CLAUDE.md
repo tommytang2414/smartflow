@@ -13,6 +13,38 @@ each additional stock source passes its v2 gate.
 
 ---
 
+## Manual Mac research prototype — 2026-10-08
+
+The owner approved Phase 1 of `docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`.
+`smartflow.research` is a separate report-only CLI, deployed under
+`/Users/vortex/Applications/smartflow-research` with its own Python 3.11 `.venv`.
+Use `docs/SMARTFLOW_MAC_RESEARCH_RUNBOOK.md`; keep the existing SEC-only production
+reporter, all upstream writers and newsroom services unchanged.
+
+- Download exact S3 versions using existing Windows AWS authentication, transfer
+  verified snapshots to Mac, and import into independent research SQLite.
+- Explicit in-period single-class SEC-proof aliases; separate unknown classes and
+  Form 144 intent. Preserve House ranges, actor dedup and source-specific gates.
+- Direct read-only newsroom SQL/original hash verification; support ISO/RFC2822
+  source publication dates, unknown availability and research cutoff. Cache chosen
+  originals under research state; secondary conclusions/history links are excluded.
+- Separate ephemeral GPT analyst/reviewer CLI threads with reduced environment,
+  disabled tools/plugins and fail-closed hash/citation/review validation. The current
+  CLI's exact Code Mode disabled diagnostic is recorded separately from tool events;
+  unknown errors still reject. Approval pins immutable artifacts and research history.
+- `prepare` never invokes GPT; `analyze` prepares a new packet and invokes both
+  roles; `status` is read-only even while research is running. Mutation locks only
+  this research runtime. No launchd/email/shared GPT slot is installed.
+- Bootstrap evidence remains backlog, not false new alerts after first approval;
+  track unreviewed evidence separately. Failed runs never advance approved history.
+
+First report `Rab0e08c393cb053cf913389f` passed `PASS_WITH_LIMITATIONS` at
+2026-10-08 10:54 HKT: AAPL, AMAT, MSFT, HD, GOOGL; AAPL/AMAT have validated
+SEC/House historical joins. SEC current gate holds at Form4 95.07%, Form144 97.02%
+14-day reliability; SFC snapshot/report dates are stale. House passes 100% and
+zero semantic/orphan/backlog failures. No matching news original for these stocks;
+US issuer/earnings/macro coverage is incomplete. Never relax gates to fill reports.
+
 ## Project Structure
 
 ```
@@ -324,6 +356,18 @@ grep 'CIRCUIT OPEN\|Recovered\|Failure [0-9]' logs/smartflow.log | tail -20
 ```
 
 ## Changelog
+
+### 2026-10-08 — Manual Mac GPT research prototype
+
+- Added isolated versioned import, explicit identity/evidence adapter, bounded
+  five-stock packets, approved history/tasks and independent hash-bound GPT review.
+- Deployed the report-only runtime on Mac without modifying collectors, AWS,
+  authentication, newsroom scheduler or mail. Successful real roles used distinct
+  threads, zero tool items and 135.588 seconds total; no repair required.
+- Verified 174 existing tests, compile, nine disposable integration checks on
+  Windows/Mac, real artifact hashes and consistent backup/Windows restore.
+- Operational limitations and the first approved report are recorded in the runbook
+  and handoff; formal scheduling, delivery and source expansion remain separate.
 
 ### 2026-09-02 — Non-blocking DevSecOps Observation
 

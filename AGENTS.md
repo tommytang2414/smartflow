@@ -6,10 +6,24 @@ The Git working tree and Git history take precedence over documentation when the
 
 ## Active programme
 
-The proposed Mac mini research layer is documented in
-`docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`. It is a review draft, not an
-approval to migrate collectors, widen source/LLM scope, change access, schedule
-jobs or deliver reports. Existing production gates remain authoritative.
+The owner approved Phase 1 of `docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`
+on 2026-10-08: the isolated manual report-only Mac research prototype.
+Use `smartflow.research` and `docs/SMARTFLOW_MAC_RESEARCH_RUNBOOK.md`.
+Later collector migration, access/source expansion, scheduler and mail still
+require their concrete release manifests. Existing production gates remain authoritative.
+
+- Runtime `/Users/vortex/Applications/smartflow-research`, its own standard-library
+  `.venv` and research SQLite; no newsroom/runtime/collector credential copying.
+- Snapshot HEAD/exact-version GET occurs on the existing Windows operator route;
+  verified files are transferred to Mac. Never copy AWS credentials to Mac.
+- Keep 14-day 99% reliability/slot coverage and source-specific semantic/freshness
+  gates. Gate-held SEC rows are explicitly historical context, not current consensus.
+- Explicit single-class aliases need eligible in-period SEC proof. Never join solely
+  on ticker or manufacture an actor for missing identity.
+- Only bound `PASS_WITH_LIMITATIONS` review advances research history. Every prior
+  conclusion must pass its DB-pinned manifest/file hashes before reuse.
+- `status` is read-only; `prepare`/`analyze` are manual and never send. Research
+  locking does not coordinate the newsroom's GPT use; no shared slot is installed.
 
 Follow `PROJECT_PLAN.md` and `STOCK_FIRST_PRODUCT_SPEC.md` for the approved
 SmartFlow rehabilitation roadmap. The product is stock-first equity intelligence;
@@ -247,6 +261,17 @@ before the documented release gates pass.
 - S3 rehearsal downloads only to an auto-cleaned temporary directory and never changes the source object.
 
 ## Changelog
+
+### 2026-10-08 — Manual Mac research prototype
+
+- Implemented `smartflow.research`: immutable snapshot import, class-aware aliases,
+  deterministic packets, independent GPT review and approved history/follow-up tasks.
+- Deployed the independent Mac runtime; first real five-stock report passed
+  `PASS_WITH_LIMITATIONS`, with distinct threads and zero observed tool items.
+- Preserved SEC/SFC HOLD gates, all upstream production and newsroom services.
+- Verified 174 regression tests, compile, nine disposable integration cases on both
+  hosts and a consistent research-state backup/restore. Manual operation and release
+  boundaries live in `docs/SMARTFLOW_MAC_RESEARCH_RUNBOOK.md`.
 
 ### 2026-10-08 — Mac mini Research Architecture Proposal
 
