@@ -70,6 +70,19 @@
   before any scheduler/delivery/collector-cutover release manifest.
 - Preserve the prior DevSecOps constraints below.
 
+## 2026-10-09 read-only readiness assessment
+- Git HEAD at assessment: 0dce667, clean; deployed code remains 2668ee6.
+- Mac status confirms latest approved report is still Oct8 R1a0a2aeee56c8bbc9a40ba7e,
+  imports3/events73549/pending questions28; no research scheduler or delivery.
+- Readiness recommendations (not new owner approval): repair source contracts and
+  stale publishing; refresh inputs/health automatically; analyze material changes;
+  execute bounded follow-ups; add licensed prices/outcomes for investment-value
+  claims; coordinate Mac GPT jobs, fault alerts and recurring off-host backup.
+- Source failure percentages/raw-only counts refer to the retained Oct7 snapshot,
+  not a fresh upstream audit. No model rerun or runtime/cloud/auth change performed.
+- Shared Mac inventory now includes newsroom, Meme and Asset Radar; do not assume
+  coordinating only newsroom covers all subscription GPT workloads.
+
 ## Prior DevSecOps work completed and verified
 - Real base/head dependency finding diff, raw audits/exit codes and PASS/FINDINGS/SCAN_ERROR evidence.
 - No fabricated empty output. Strict malformed SARIF, incomplete build and failed effectiveness handling.
