@@ -16,6 +16,7 @@ from .pack import build_pack
 from .snapshots import KEYS, import_snapshot, sync_aws
 from .store import ResearchStore
 from .company import fetch as fetch_company, load as load_company
+from .followups import check_due
 
 
 @contextmanager
@@ -68,14 +69,27 @@ def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: 
     if company:
         import shutil
         shutil.copytree(company_cache, directory / "company-originals")
+    # Seal exactly the checked originals cited by this packet, independent of
+    # mutable operational task state and later follow-up attempts.
+    for dossier in pack["dossiers"]:
+        for check in dossier.get("followup_checks", []):
+            row = store.db.execute("SELECT directory,result_hash FROM task_attempts WHERE id=?", (check["id"],)).fetchone()
+            if row is None or row["result_hash"] != check["result_hash"]:
+                raise ValueError("followup_packet_binding")
+            original = beneath(store.root, row["directory"]) / "result.json"
+            if file_hash(original) != check["result_hash"]:
+                raise ValueError("followup_result_tamper")
+            target = directory / "followup-originals" / (check["id"] + ".json")
+            target.parent.mkdir(exist_ok=True)
+            target.write_bytes(original.read_bytes())
     (directory / "DETERMINISTIC.md").write_text(render_report(pack, None, status="Deterministic evidence，未完成 GPT review"), encoding="utf-8")
     with store.db:
         store.db.execute("INSERT INTO runs(id,pack_hash,directory,status) VALUES(?,?,?,'prepared')", (run_id, pack_hash, directory.relative_to(store.root).as_posix()))
     return pack, run_id, directory
 
 
-def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None) -> dict:
-    pack, run_id, directory = prepare(store, alias_path, as_of, news_root, company_root)
+def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None, *, prepared: tuple | None = None) -> dict:
+    pack, run_id, directory = prepared or prepare(store, alias_path, as_of, news_root, company_root)
     pack_hash = digest(canonical(pack))
     deadline = time.monotonic() + 45 * 60
     with store.db:
@@ -122,8 +136,9 @@ def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: dat
             manifest = {"run_id": run_id, "pack_hash": pack_hash, "analysis_hash": analysis_hash,
                         "revision": revision, "files": {name: file_hash(directory / name) for name in
                         ("PACK.json", "aliases.json", "ANALYSIS.json", "REPORT.md", "REVIEW.json", f"analyst-{revision}-execution.json", f"review-{revision}-execution.json")}}
-            for path in sorted((directory / "company-originals").glob("*")):
-                manifest["files"][path.relative_to(directory).as_posix()] = file_hash(path)
+            for group in ("company-originals", "followup-originals"):
+                for path in sorted((directory / group).glob("*")):
+                    manifest["files"][path.relative_to(directory).as_posix()] = file_hash(path)
             write_json(directory / "manifest.json", manifest)
             store.approve(run_id, pack, analysis, report_hash, file_hash(directory / "REVIEW.json"), file_hash(directory / "manifest.json"))
             return {"status": "approved", "run_id": run_id, "report": str(directory / "REPORT.md"),
@@ -138,7 +153,7 @@ def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: dat
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="SmartFlow isolated manual research; no collector/scheduler/email commands")
+    parser = argparse.ArgumentParser(description="SmartFlow sealed research and bounded operational cycles")
     parser.add_argument("--state", type=Path, default=Path("data/research-prototype/state"))
     commands = parser.add_subparsers(dest="command", required=True)
     sync = commands.add_parser("sync", help="Download exact S3 snapshot versions using existing operator AWS auth")
@@ -158,6 +173,17 @@ def main() -> None:
         if name == "analyze":
             command.add_argument("--codex", type=Path, required=True)
     commands.add_parser("status")
+    follow = commands.add_parser("followups", help="Execute bounded due evidence checks; unknown questions remain open")
+    follow.add_argument("--aliases", type=Path, required=True)
+    follow.add_argument("--company-context", type=Path)
+    follow.add_argument("--as-of", type=utc, default=None)
+    daily = commands.add_parser("cycle", help="Import sealed inputs, check follow-ups and analyze material changes at most once per HKT day")
+    daily.add_argument("--aliases", type=Path, required=True)
+    daily.add_argument("--snapshots", type=Path, required=True)
+    daily.add_argument("--company-context", type=Path, required=True)
+    daily.add_argument("--news-root", type=Path)
+    daily.add_argument("--codex", type=Path, help="Omit for deterministic checks without model calls")
+    daily.add_argument("--as-of", type=utc, default=None)
     suggest = commands.add_parser("alias-candidates", help="Print candidates, never auto-approve identity mappings")
     args = parser.parse_args()
     if args.command == "sync":
@@ -189,6 +215,16 @@ def main() -> None:
             elif args.command == "prepare":
                 pack, run_id, directory = prepare(store, args.aliases, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
                 result = {"run_id": run_id, "pack": str(directory / "PACK.json"), "dossiers": len(pack["dossiers"]), "status": "prepared_not_analyzed"}
+            elif args.command == "followups":
+                cutoff = args.as_of or datetime.now(timezone.utc)
+                definitions = read_json(args.aliases)
+                company = load_company(args.company_context, definitions, cutoff,
+                    store.root / "followup-company" / digest(canonical([str(args.company_context), stamp(cutoff)]))[:24]) if args.company_context else None
+                result = check_due(store, definitions, cutoff, company)
+            elif args.command == "cycle":
+                from .automation import cycle
+                result = cycle(store, args.aliases, args.snapshots, args.company_context, args.codex,
+                               as_of=args.as_of or datetime.now(timezone.utc), news_root=args.news_root)
             else:
                 result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
             print(json.dumps(result, ensure_ascii=False))

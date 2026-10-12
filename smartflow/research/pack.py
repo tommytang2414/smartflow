@@ -8,6 +8,7 @@ from .common import canonical, digest, stamp, utc
 from .evidence import AGE_DAYS, actors, aliases, security_key, select_events, source_assessments
 from .store import ResearchStore
 from .insider import enrich
+from .followups import latest_results
 
 
 LIMITATIONS = {
@@ -21,7 +22,9 @@ LIMITATIONS = {
 def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime,
                news: dict | None = None, max_stocks: int = 5, company: dict | None = None) -> dict:
     events, exclusions = select_events(store, as_of)
-    definitions_by_key = aliases(events, definitions)
+    identity_events, _ = select_events(store, as_of, identity_only=True)
+    definitions_by_key = aliases(identity_events, definitions)
+    followups = latest_results(store, as_of)
     states = source_assessments(store, as_of)
     allowed = {item["source"] for item in states if item["eligible_for_current_research"]}
     grouped = defaultdict(list)
@@ -32,7 +35,7 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
         grouped[key].append(event)
     analyzed = {row[0] for row in store.db.execute("SELECT evidence_id FROM analyzed")}
     first_approval = store.db.execute("SELECT completed_at FROM runs WHERE status='approved' ORDER BY rowid LIMIT 1").fetchone()
-    candidates = []
+    candidates, material_candidates = [], []
     for key, records in grouped.items():
         current = [event for event in records if event["source"] in allowed
                    and utc(event["observed_at"]) >= as_of - timedelta(days=AGE_DAYS[event["source"]])
@@ -56,6 +59,7 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
         stance = "MIXED" if buy_sources and sale_sources else "ACCUMULATION" if buy_sources else "DISTRIBUTION" if sale_sources else "CONTEXT_ONLY"
         actor_count = len(buy_actors | sale_actors)
         priority = "FOLLOW_UP_HIGH" if stance == "MIXED" or max(len(buy_sources), len(sale_sources)) >= 2 or actor_count >= 3 else "FOLLOW_UP_MEDIUM" if actor_count >= 2 else "FOLLOW_UP_LOW" if stance != "CONTEXT_ONLY" else "NO_DIRECTIONAL_EVIDENCE"
+        material_candidates.append([key, stance, priority, sorted(event["id"] for event in current)])
         previous = store.previous(key)
         # An initial import is bootstrap context, not thousands of new alert events.
         new_ids = [event["id"] for event in current if event["id"] not in analyzed
@@ -99,7 +103,7 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
                               for source in sorted({event["source"] for event in history} - allowed)],
                            "news": (news or {}).get("by_security", {}).get(key, [])})
     order = {"FOLLOW_UP_HIGH": 0, "FOLLOW_UP_MEDIUM": 1, "FOLLOW_UP_LOW": 2, "NO_DIRECTIONAL_EVIDENCE": 3}
-    candidates.sort(key=lambda item: (order[item["priority"]], -int(item["identity_resolved"]), -item["new_evidence_count"], -item["distinct_actors"], item["ticker"]))
+    candidates.sort(key=lambda item: (-int(bool(item["new_evidence_count"])), order[item["priority"]], -int(item["identity_resolved"]), -item["new_evidence_count"], -item["distinct_actors"], item["ticker"]))
     chosen = candidates[:max_stocks]
     selected_ids = {record["id"] for dossier in chosen for record in dossier["evidence"]}
     contexts = enrich(store, [event for event in events if event["id"] in selected_ids])
@@ -112,6 +116,13 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
         dossier["company_context_fresh"] = bool(dossier["company_documents"]) and (company or {}).get("fresh", False)
         previous_dossier = store.previous_dossier(dossier["security_key"]) if dossier["previous_approved"] else None
         dossier["company_document_change"] = company_change(dossier["company_documents"], previous_dossier)
+        dossier["followup_checks"] = [{"id": f["id"], "task_id": f["task_id"], "route": f["route"],
+            "outcome": f["outcome"], "result_hash": f["result_hash"], "limitation": f["limitation"], "resolved": False,
+            "full_current_stance": f["checked"]["full_current_stance"],
+            "current_evidence_count": len(f["checked"]["current_evidence_ids"]),
+            "raw_checked_rows": len(f["checked"]["raw_checks"]),
+            "company_documents_checked": len(f["checked"]["company_documents"])}
+            for f in followups if f["security_key"] == dossier["security_key"]]
         sec_records = [e for e in grouped[dossier["security_key"]] if e["source"] == "sec_form4"
                        and utc(e["observed_at"]) >= as_of - timedelta(days=90)]
         repeats = defaultdict(set)
@@ -129,6 +140,15 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
             "dossiers": chosen, "news_coverage": (news or {}).get("coverage", {"status": "NOT_IMPORTED", "us_issuer_macro": "NOT_COVERED"}),
             "company_context_manifest": (company or {}).get("manifest_sha256"),
             "company_context_fresh": (company or {}).get("fresh", False),
+            "material_inputs": {"candidates": sorted(material_candidates),
+                "sources": [[s["source"], s["snapshot_gate"], s["snapshot_fresh"], s["event_fresh"], s["health_at_snapshot"]] for s in states],
+                "aliases": digest(canonical(definitions)),
+                "company": {key: sorted([d["issuer_cik"], d["accession"], d["raw_sha256"], d["text_sha256"]] for d in docs)
+                            for key, docs in sorted((company or {}).get("by_security", {}).items())},
+                "company_fresh": (company or {}).get("fresh", False),
+                "followups": [[f["task_id"], f["semantic_hash"]] for f in followups],
+                "news": {key: sorted(digest(canonical([d.get("url"), d.get("text_hash"), d.get("excerpt")])) for d in docs)
+                         for key, docs in sorted((news or {}).get("by_security", {}).items())}},
             "research_policy": "Deterministic facts and priorities; proposed sales and HK short positions are context only. AI inferences remain hypotheses, not trade instructions."}
 
 

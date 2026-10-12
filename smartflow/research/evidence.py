@@ -80,7 +80,7 @@ def source_assessments(store: ResearchStore, as_of: datetime) -> list[dict]:
     return result
 
 
-def select_events(store: ResearchStore, as_of: datetime) -> tuple[list[dict], Counter]:
+def select_events(store: ResearchStore, as_of: datetime, *, identity_only: bool = False) -> tuple[list[dict], Counter]:
     newest = {}
     excluded = Counter()
     for row in store.db.execute("SELECT id,body,fingerprint,imported_at FROM evidence"):
@@ -104,6 +104,14 @@ def select_events(store: ResearchStore, as_of: datetime) -> tuple[list[dict], Co
     selected = []
     for body in newest.values():
         reason = eligibility(body, as_of)
+        if identity_only:
+            # A valid gift can prove issuer/class identity without being a buy/sell.
+            # Keep it entirely outside the directional evidence selection.
+            identity_ok = (body["source"] == "sec_form4" and body["event_type"] == "form4_transaction"
+                           and body["attributes"].get("instrument_type") == "non_derivative"
+                           and bool(body["attributes"].get("security_title"))
+                           and reason in {None, "not_eligible_reported_equity_purchase_sale"})
+            reason = None if identity_ok else "not_valid_class_identity_evidence"
         if reason:
             excluded[reason] += 1
         else:

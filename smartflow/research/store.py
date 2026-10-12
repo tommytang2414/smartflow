@@ -15,6 +15,10 @@ class ResearchStore:
         self.db = sqlite3.connect(self.root / "research.sqlite3", timeout=30)
         self.db.row_factory = sqlite3.Row
         self.db.execute("PRAGMA foreign_keys=ON")
+        version = self.db.execute("PRAGMA user_version").fetchone()[0]
+        if version > 2:
+            self.db.close()
+            raise ValueError("research_schema_newer_than_runtime")
         self.db.executescript("""
             CREATE TABLE IF NOT EXISTS imports (
                 identity TEXT PRIMARY KEY, source_group TEXT NOT NULL,
@@ -50,11 +54,25 @@ class ResearchStore:
                 id TEXT PRIMARY KEY, security_key TEXT NOT NULL, question TEXT NOT NULL,
                 state TEXT NOT NULL, created_at TEXT NOT NULL, run_id TEXT NOT NULL REFERENCES runs(id)
             );
+            CREATE TABLE IF NOT EXISTS task_attempts (
+                id TEXT PRIMARY KEY, task_id TEXT NOT NULL REFERENCES tasks(id),
+                cutoff TEXT NOT NULL, input_hash TEXT NOT NULL, result_hash TEXT NOT NULL,
+                directory TEXT NOT NULL, outcome TEXT NOT NULL, next_check_at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS cycles (
+                id TEXT PRIMARY KEY, started_at TEXT NOT NULL, completed_at TEXT,
+                status TEXT NOT NULL, material_hash TEXT, run_id TEXT REFERENCES runs(id),
+                details TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS operations (
+                identity TEXT PRIMARY KEY, kind TEXT NOT NULL, state TEXT NOT NULL,
+                body TEXT NOT NULL, updated_at TEXT NOT NULL
+            );
         """)
         # Upgrade only the task-owned early prototype schema, preserving imported facts.
         if "manifest_hash" not in {row[1] for row in self.db.execute("PRAGMA table_info(runs)")}:
             self.db.execute("ALTER TABLE runs ADD COLUMN manifest_hash TEXT")
-        self.db.execute("PRAGMA user_version=1")
+        self.db.execute("PRAGMA user_version=2")
         self.db.commit()
 
     def close(self) -> None:
@@ -74,11 +92,14 @@ class ResearchStore:
 
     @staticmethod
     def _status(connection: sqlite3.Connection) -> dict[str, Any]:
+        tables = {row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         return {
             "evidence": connection.execute("SELECT COUNT(*) FROM evidence").fetchone()[0],
             "imports": connection.execute("SELECT COUNT(*) FROM imports").fetchone()[0],
             "runs": [dict(row) for row in connection.execute("SELECT id,status,completed_at FROM runs ORDER BY rowid DESC LIMIT 10")],
             "open_tasks": connection.execute("SELECT COUNT(*) FROM tasks WHERE state='pending'").fetchone()[0],
+            "followup_attempts": connection.execute("SELECT COUNT(*) FROM task_attempts").fetchone()[0] if "task_attempts" in tables else 0,
+            "cycles": [dict(row) for row in connection.execute("SELECT id,status,started_at,run_id FROM cycles ORDER BY rowid DESC LIMIT 5")] if "cycles" in tables else [],
             "delivery": "report_only_no_send",
         }
 

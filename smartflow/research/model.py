@@ -61,6 +61,7 @@ prices status unavailable 時，唔聲稱觀察過價格反應、volume、relati
 同上次公司文件比較必須用 company_document_change；UNCHANGED唔聲稱新增文件。新 retrieval時間／receipt ID 唔等於新 filing或新內容；冇已核實 previous dossier就唔聲稱對比有新增。
 NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT表示以前未有可比較公司原件，唔當已驗證空 baseline。CHANGED都只表示研究 packet 內容變化，唔自動代表新發布 filing。
 每個 dossier 一個 item，保持原 security_key；questions 最多三條具體未解問題。
+followup_checks 係已執行嘅有範圍機械覆查，PARTIAL／UNKNOWN 唔當 resolved；唔將完整 normalized window 等同完整市場披露或已覆核投資判斷。
 schema 以外唔加文字。"""
 
 
@@ -138,7 +139,7 @@ def validate_analysis(pack: dict, analysis: dict) -> None:
             raise ValueError("analysis_security_identity")
         seen.add(item["security_key"])
         dossier = expected[item["security_key"]]
-        ids = {event["id"] for event in dossier["evidence"]} | {event["id"] for event in dossier["news"]} | {event["id"] for event in dossier.get("company_documents", [])}
+        ids = {event["id"] for event in dossier["evidence"]} | {event["id"] for event in dossier["news"]} | {event["id"] for event in dossier.get("company_documents", [])} | {event["id"] for event in dossier.get("followup_checks", [])}
         thesis = item["thesis"]
         if not isinstance(thesis, dict) or set(thesis) != set(THESIS["properties"]) or thesis["status"] not in {"WATCH", "CONTESTED", "INSUFFICIENT_EVIDENCE"}:
             raise ValueError("analysis_thesis_schema")
@@ -259,6 +260,12 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
                               f"published={news['published_at'] or '未知'}；retrieved={news['retrieved_at']}；text SHA-256={news['text_hash']}"])
             else:
                 lines.extend(["", f"已覆核新聞分析 {news['id']}（secondary context）：{news['headline']}", news["excerpt"]])
+        if dossier.get("followup_checks"):
+            lines.extend(["", "### 已執行後續覆查", "",
+                          "機械覆查保留完整 evidence ledger；PARTIAL／UNKNOWN 仍未解答，唔當 resolved。", ""])
+            for check in dossier["followup_checks"]:
+                lines.extend([f"- {check['id']} / {check['route']}：{check['outcome']}；全窗 {check['current_evidence_count']} 筆；raw 核對 {check['raw_checked_rows']} 行；全窗 stance={check['full_current_stance']}。",
+                              f"  Result SHA-256={check['result_hash']}；{check['limitation']}"])
         lines.extend(["", *["- " + note for note in dossier["limitations"]], "",
                       f"歷史事件 {dossier['history_evidence_count']}；packet 未包含 {dossier['not_in_packet_count']}。", ""])
     return "\n".join(lines) + "\n"

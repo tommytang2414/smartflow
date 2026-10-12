@@ -2,6 +2,14 @@
 
 ## What This Is
 
+Readiness work approved 2026-10-13 is tracked in
+`docs/SMARTFLOW_READINESS_RELEASE.md`. Research schema v2 executes bounded due
+follow-ups without pretending questions are resolved; valid non-directional Form4
+gifts may prove exact share class but never become P/S evidence. `cycle` compares
+all candidate content and reserves at most one model cycle per HKT day. Its
+prepared run is pinned before model calls so interrupted finalization can recover
+an already-approved report. Old reports/tasks/evidence remain immutable.
+
 A Python data pipeline for stock-first US/HK smart-money intelligence. The
 owner-approved 2026-07-26 direction follows insiders, institutions, Congress
 members and Hong Kong disclosed/context sources. Crypto and CoinGlass are

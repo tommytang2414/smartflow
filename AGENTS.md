@@ -31,6 +31,19 @@ elapsed observation windows. `docs/SMARTFLOW_READINESS_RELEASE.md` tracks execut
   gates. Gate-held SEC rows are explicitly historical context, not current consensus.
 - Explicit single-class aliases need eligible in-period SEC proof. Never join solely
   on ticker or manufacture an actor for missing identity.
+  `select_events(identity_only=True)` also permits valid non-derivative gifts as
+  class proof; these never enter directional P/S evidence. GOOGL Class A uses
+  exact Class A proof; Class C remains separate.
+- Research schema v2 preserves tasks and adds immutable `task_attempts`, operational
+  `cycles` and `operations`. `followups` checks up to32 due questions, up to32 raw
+  SEC rows per security and full eligible local90-day normalized evidence. PARTIAL
+  and UNKNOWN stay pending; no motive/current total holding inference. Run manifests
+  seal cited `followup-originals`. Verify with `python -m ops.verify_research_readiness`.
+- `cycle` imports sealed snapshots/context, checks due tasks and compares complete
+  candidate/content/gate fingerprints. Retrieval timestamps and analyzed flags do
+  not trigger GPT. One reserved model cycle per HKT day; failures consume reservation.
+  Persist prepared run before model; recover verified approved runs after interruption.
+  Operational scheduling/delivery/shared slot require their recorded runtime release.
 - Only bound `PASS_WITH_LIMITATIONS` review advances research history. Every prior
   conclusion must pass its DB-pinned manifest/file hashes before reuse.
 - US context uses `fetch-context` on Windows with a public SEC contact UA, then
@@ -287,6 +300,15 @@ originals are not evidence of removed filings. Changes describe packet coverage,
 not a new public filing.
 
 ## Changelog
+
+### 2026-10-13 — Executed follow-ups and material research cycles
+
+- Added bounded, immutable due-question checks and exact issuer/class proof from
+  non-directional SEC gifts. Questions stay open when evidence cannot answer them.
+- Added full-candidate semantic comparison, daily model reservation and verified
+  recovery after approval/finalization interruption; seal follow-up originals per run.
+- Verified178 regression tests plus both disposable research rehearsals. Runtime
+  deployment and operational prerequisites remain tracked in readiness release.
 
 ### 2026-10-13 — Publish explicit SFC stale position state
 

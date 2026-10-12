@@ -26,6 +26,12 @@ document records concrete release boundaries; approval does not imply results.
 - Excluded: legacy checkout/DB, IAM/auth/secrets/firewall, Lambda, report policy,
   S3 permissions, existing cron/environment and unrelated services.
 - Code commit: `d73a826`; deployment receipts recorded below once verified.
+- Deployed under SEC flock. Receipt directory
+  `/home/ubuntu/SmartFlow-shadow/backups/SEC-NOTICE-20261013-001-20261012T180136Z`.
+  Locked before-DB SHA256 `6ad9d467a1e29541dd631847e63e39f3d86a5ae98fb449e0e135a64972c43e4a`.
+  Exact live allowlist117 raw-only records added117 v5 children; replay added0.
+  Raw/collector/health invariant checks passed before new manual runs; Form4/144
+  existing wrappers both exit0. Old failures and14-day gate remain unchanged.
 
 ## SFC-STATUS-20261013-001
 
@@ -39,6 +45,27 @@ document records concrete release boundaries; approval does not imply results.
   VersionId/hash and unchanged SFC raw/events/run/health fingerprints.
 - Rollback code under the same lock; retain S3 version history, never replace raw
   evidence. No IAM/lifecycle/auth/service change.
+- Deployed `50cdced` after178 tests pass locally and on VPS. Receipt directory
+  `/home/ubuntu/SmartFlow-shadow/backups/SFC-STATUS-20261013-001-20261012T180433Z`.
+  All four SFC tables and cron unchanged. Published exact S3 version
+  `XajJF2dAfGxo_0yitXJe_1yi.8pcVc3_`, SHA256
+  `4ea7ee04fff11b16e5644d83eb70619174c3441da1aa735a62e7c4abc8a1e599`.
+  Generated2026-10-12T18:04:46Z; stale/last_event_exceeded_sla. Uploader cannot
+  HEAD exact versions; existing Windows operator verified it without IAM changes.
+
+## RESEARCH-CYCLES-20261013-001
+
+- Target: isolated Mac research runtime, existing authoritative state retained.
+  Additive schema v2; exact class proof, immutable due-check attempts and sealed
+  per-report originals; complete-candidate semantic comparison/daily reservation.
+- Before deployment retain consistent SQLite backup, all approved run manifests,
+  old release hashes, tasks/aliases and source cache inventory. Code-only release;
+  never overwrite Mac state with the Windows copy. New alias includes GOOGL ClassA
+  exact gift proof `E6ebbed0877865a063982b5a2`; no ClassC-to-A conversion.
+- Verify existing178 tests, original research rehearsal and readiness rehearsal;
+  real task checks/replay, report hashes and restore. No synthetic observation days.
+- Rollback code needs v2-aware reader or restore code release without opening state
+  with the old v1 writer. Never overwrite live evidence with a stale backup.
 
 ## Remaining approved work
 
