@@ -25,7 +25,20 @@ document records concrete release boundaries; approval does not imply results.
   newly collected evidence by overwriting a live DB with its before backup.
 - Excluded: legacy checkout/DB, IAM/auth/secrets/firewall, Lambda, report policy,
   S3 permissions, existing cron/environment and unrelated services.
-- Deployment commit and receipts: pending.
+- Code commit: `d73a826`; deployment receipts recorded below once verified.
+
+## SFC-STATUS-20261013-001
+
+- Target: same shadow checkout, SFC publisher only. Before-state is the SEC notice
+  release. Keep exact S3 paths/permissions/cron and SFC DB contents unchanged.
+- Accept stale state only with `last_event_exceeded_sla` plus successful/empty latest
+  collection and no failure. All other unsafe states remain blocked. Existing
+  research reader keeps the ten-day gate and displays stale positions as HOLD.
+- Under existing SFC flock, retain before commit/crontab and consistent DB backup,
+  deploy exact commit, run validations and existing publisher. Verify S3 exact
+  VersionId/hash and unchanged SFC raw/events/run/health fingerprints.
+- Rollback code under the same lock; retain S3 version history, never replace raw
+  evidence. No IAM/lifecycle/auth/service change.
 
 ## Remaining approved work
 

@@ -56,7 +56,7 @@ def _validate_snapshot(snapshot_path: Path) -> dict:
             "WHERE event.raw_event_id=raw.id))"
         ).fetchone()[0]
         health = connection.execute(
-            "SELECT state, last_run_status, last_failure_kind "
+            "SELECT state, last_run_status, last_failure_kind, reason "
             "FROM source_health WHERE source='sfc_short'"
         ).fetchone()
     finally:
@@ -68,11 +68,16 @@ def _validate_snapshot(snapshot_path: Path) -> dict:
         raise RuntimeError("snapshot contains rejected or incomplete SFC evidence")
     if (
         health is None
-        or health[0] != "healthy"
+        or not (health[0] == "healthy" or
+                (health[0] == "stale" and health[3] == "last_event_exceeded_sla"))
         or health[1] not in {"success", "empty"}
         or health[2] is not None
     ):
         raise RuntimeError("SFC short source health is not publishable")
+    # Publishing an operational snapshot is not approval of stale positions.
+    # Preserve source_health verbatim so research's ten-day gate still holds.
+    manifest["position_state"] = health[0]
+    manifest["position_reason"] = health[3]
     return manifest
 
 
@@ -184,6 +189,8 @@ def publish_snapshot(
         "size_bytes": size_bytes,
         "rows_verified": manifest["total_rows"],
         "generated_at": generated_text,
+        "position_state": manifest["position_state"],
+        "position_reason": manifest["position_reason"],
         "archive": archive,
     }
 

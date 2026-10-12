@@ -288,6 +288,15 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-13 — Publish explicit SFC stale position state
+
+- SFC snapshot publication accepts healthy collection with stale positions only
+  for `last_event_exceeded_sla`; failed/unknown/stopped collection still blocks.
+  Source health is copied unchanged and publication receipts expose state/reason.
+- Weekly report dates arrive approximately seven days later; the ten-day research
+  gate intentionally holds during part of each week. Snapshot freshness now carries
+  that status instead of freezing at the last healthy Sunday. No SLA relaxation.
+
 ### 2026-10-13 — Expanded transactionless SEC notices
 
 - Added a separate `sec-form4-v5` non-directional notice contract for holdings-only

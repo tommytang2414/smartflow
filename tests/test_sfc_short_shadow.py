@@ -1,5 +1,6 @@
 import io
 import json
+import sqlite3
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -11,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from ops.audit_sfc_short_shadow import audit
 from ops.manage_v2_shadow import create_shadow_database
-from ops.publish_sfc_short_shadow import publish_snapshot
+from ops.publish_sfc_short_shadow import publish_snapshot, _validate_snapshot
 from ops.run_sfc_short_shadow import main as run_main
 from smartflow.db.v2_engine import open_v2_shadow_engine
 from smartflow.ingestion.sfc import ingest_sfc_short_csv
@@ -27,6 +28,29 @@ OBSERVED_AT = datetime(2026, 7, 17, 2, 0, tzinfo=timezone.utc)
 
 
 class SFCShortShadowTests(unittest.TestCase):
+    def test_stale_positions_publish_as_stale_but_failed_or_stopped_collection_does_not(self):
+        with tempfile.TemporaryDirectory() as directory:
+            database = Path(directory) / "sfc-short-v2-shadow.db"
+            create_shadow_database(database)
+            engine = open_v2_shadow_engine(database)
+            with Session(engine) as session:
+                with patch("smartflow.ingestion.sfc._utc_now", return_value=OBSERVED_AT):
+                    ingest_sfc_short_csv(session, csv_content=CSV_CONTENT, source_url=SOURCE_URL,
+                                         published_at=None, observed_at=OBSERVED_AT)
+            engine.dispose()
+            with sqlite3.connect(database) as connection:
+                connection.execute("UPDATE source_health SET state='stale',reason='last_event_exceeded_sla'")
+            self.assertEqual(_validate_snapshot(database)["position_state"], "stale")
+            with sqlite3.connect(database) as connection:
+                self.assertEqual(connection.execute("SELECT state FROM source_health").fetchone()[0], "stale")
+                connection.execute("UPDATE source_health SET reason='last_success_exceeded_sla'")
+            with self.assertRaisesRegex(RuntimeError, "not publishable"):
+                _validate_snapshot(database)
+            with sqlite3.connect(database) as connection:
+                connection.execute("UPDATE source_health SET state='degraded',reason='last_run_error',last_run_status='error'")
+            with self.assertRaisesRegex(RuntimeError, "not publishable"):
+                _validate_snapshot(database)
+
     def test_audit_and_snapshot_keep_sfc_isolated(self):
         with tempfile.TemporaryDirectory() as directory:
             database_path = Path(directory) / "sfc-short-v2-shadow.db"
