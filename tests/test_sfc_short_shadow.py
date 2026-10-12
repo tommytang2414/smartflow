@@ -3,7 +3,7 @@ import json
 import sqlite3
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, closing
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -38,15 +38,15 @@ class SFCShortShadowTests(unittest.TestCase):
                     ingest_sfc_short_csv(session, csv_content=CSV_CONTENT, source_url=SOURCE_URL,
                                          published_at=None, observed_at=OBSERVED_AT)
             engine.dispose()
-            with sqlite3.connect(database) as connection:
+            with closing(sqlite3.connect(database)) as connection, connection:
                 connection.execute("UPDATE source_health SET state='stale',reason='last_event_exceeded_sla'")
             self.assertEqual(_validate_snapshot(database)["position_state"], "stale")
-            with sqlite3.connect(database) as connection:
+            with closing(sqlite3.connect(database)) as connection, connection:
                 self.assertEqual(connection.execute("SELECT state FROM source_health").fetchone()[0], "stale")
                 connection.execute("UPDATE source_health SET reason='last_success_exceeded_sla'")
             with self.assertRaisesRegex(RuntimeError, "not publishable"):
                 _validate_snapshot(database)
-            with sqlite3.connect(database) as connection:
+            with closing(sqlite3.connect(database)) as connection, connection:
                 connection.execute("UPDATE source_health SET state='degraded',reason='last_run_error',last_run_status='error'")
             with self.assertRaisesRegex(RuntimeError, "not publishable"):
                 _validate_snapshot(database)
