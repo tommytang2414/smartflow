@@ -13,6 +13,7 @@ from smartflow.db.v2_repository import EvidenceConflictError, persist_event_batc
 from smartflow.ingestion.sec import SECParserError, SECSchemaError
 from smartflow.normalizers.sec import normalize_form4
 from smartflow.parsers.edgar_xml import parse_form4_xml
+from smartflow.events import payload_sha256
 
 
 ACCESSION_PATTERN = re.compile(r"^\d{10}-\d{2}-\d{6}$")
@@ -33,7 +34,7 @@ def reprocess_transactionless_form4(
     accession: str,
     expected_sha256: str,
 ) -> Form4ReprocessResult:
-    """Add the v4 administrative child for one exact immutable raw filing."""
+    """Add a non-directional notice child for one exact immutable raw filing."""
     if not ACCESSION_PATTERN.fullmatch(accession):
         raise ValueError("invalid SEC accession")
     normalized_sha256 = expected_sha256.strip().lower()
@@ -52,6 +53,8 @@ def reprocess_transactionless_form4(
         raise EvidenceConflictError(f"raw evidence hash mismatch for sec_form4:{accession}")
 
     payload: Any = raw_event.payload
+    if payload_sha256(payload) != normalized_sha256:
+        raise EvidenceConflictError(f"stored raw payload hash mismatch for sec_form4:{accession}")
     if not isinstance(payload, dict):
         raise SECParserError(f"invalid raw payload for sec_form4:{accession}")
     if payload.get("content_type") != "application/xml":
@@ -63,8 +66,8 @@ def reprocess_transactionless_form4(
     parsed = parse_form4_xml(xml_content)
     if parsed is None:
         raise SECParserError(f"sec_form4 parser rejected accession {accession}")
-    if not parsed.get("is_transactionless_administrative"):
-        raise SECSchemaError(f"accession is not a transactionless administrative Form 4: {accession}")
+    if not (parsed.get("is_transactionless_administrative") or parsed.get("transactionless_notice_kind")):
+        raise SECSchemaError(f"accession is not a transactionless notice Form 4: {accession}")
 
     normalized_events = normalize_form4(
         parsed,

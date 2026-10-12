@@ -8,6 +8,8 @@ from smartflow.events import make_source_event_id
 
 
 FORM4_PARSER_VERSION = "sec-form4-v4"
+# The expanded zero-transaction contract does not change trusted v4 trade rows.
+FORM4_NOTICE_PARSER_VERSION = "sec-form4-v5"
 FORM144_PARSER_VERSION = "sec-form144-v1"
 
 FORM4_ACTIONS = {
@@ -85,7 +87,7 @@ def normalize_form4(
         entity_id = parsed.get("entity_cik")
         entity_name = parsed.get("entity_name")
 
-    if parsed.get("is_transactionless_administrative"):
+    if parsed.get("is_transactionless_administrative") or parsed.get("transactionless_notice_kind"):
         if parsed.get("transactions"):
             raise ValueError("administrative Form 4 must not contain transactions")
         event_at = _utc_date(str(parsed.get("period_of_report", "")))
@@ -100,17 +102,21 @@ def normalize_form4(
             quality_reasons.append("issuer_trading_symbol_not_applicable")
         if event_at is None:
             quality_reasons.append("missing_or_invalid_period_of_report")
+        if parsed.get("transactionless_notice_kind") == "holdings":
+            quality_reasons.append("holdings_only_not_executed_transaction")
 
+        legacy_admin = parsed.get("is_transactionless_administrative")
+        kind = "administrative" if legacy_admin else parsed["transactionless_notice_kind"]
         return [
             {
                 "source": "sec_form4",
                 "source_event_id": make_source_event_id(
                     "sec_form4",
                     accession,
-                    "administrative",
+                    kind,
                 ),
-                "event_type": "form4_administrative_notice",
-                "action": "no_reportable_transaction",
+                "event_type": f"form4_{kind}_notice",
+                "action": "holdings_reported_no_transactions" if kind == "holdings" else "no_reportable_transaction",
                 "side": None,
                 "execution_status": "reported",
                 "market": "US",
@@ -120,10 +126,12 @@ def normalize_form4(
                 "entity_name": entity_name,
                 "entities": reporting_owners,
                 "attributes": {
-                    "not_subject_to_section16": True,
+                    "not_subject_to_section16": parsed.get("not_subject_to_section16", False),
                     "period_of_report": parsed.get("period_of_report"),
                     "remarks": parsed.get("remarks"),
                     "issuer_trading_symbol": ticker,
+                    **({"holding_node_count": parsed["holding_node_count"], "raw_transaction_node_count": 0}
+                       if not legacy_admin else {}),
                 },
                 "quantity": None,
                 "price": None,
@@ -133,7 +141,7 @@ def normalize_form4(
                 "filed_at": _ensure_utc(filed_at),
                 "observed_at": _ensure_utc(observed_at),
                 "source_url": source_url,
-                "parser_version": FORM4_PARSER_VERSION,
+                "parser_version": FORM4_PARSER_VERSION if legacy_admin else FORM4_NOTICE_PARSER_VERSION,
                 "quality_status": "warning" if quality_reasons else "valid",
                 "quality_reasons": quality_reasons,
             }

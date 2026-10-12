@@ -9,7 +9,8 @@ from lxml import etree
 def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     """Parse a Form 4 XML document into structured data."""
     try:
-        root = etree.fromstring(xml_content.encode() if isinstance(xml_content, str) else xml_content)
+        parser = etree.XMLParser(resolve_entities=False, no_network=True, recover=False)
+        root = etree.fromstring(xml_content.encode() if isinstance(xml_content, str) else xml_content, parser=parser)
     except etree.XMLSyntaxError:
         return None
 
@@ -89,6 +90,10 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
     not_subject_to_section16 = is_true(find_text(root, "notSubjectToSection16"))
     remarks = find_text(root, "remarks")
 
+    raw_transaction_count = sum(len(elements_by_local_name(root, name)) for name in
+                                ("nonDerivativeTransaction", "derivativeTransaction"))
+    holding_count = sum(len(elements_by_local_name(root, name)) for name in
+                        ("nonDerivativeHolding", "derivativeHolding"))
     transactions = []
     for transaction_element in root.iter():
         tag = transaction_element.tag.split("}")[-1]
@@ -170,14 +175,19 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         )
 
     is_transactionless_administrative = (
-        not transactions
+        raw_transaction_count == 0
         and document_type == "4"
         and not_subject_to_section16
         and bool(remarks)
-        and not elements_by_local_name(root, "nonDerivativeHolding")
-        and not elements_by_local_name(root, "derivativeHolding")
+        and holding_count == 0
     )
-    if not transactions and not is_transactionless_administrative:
+    # A rejected transaction must never become a transactionless notice.
+    notice_kind = None
+    valid_identity = issuer_cik.isdigit() and bool(issuer_name) and all(
+        owner["entity_cik"].isdigit() and owner["entity_name"] for owner in reporting_owners)
+    if raw_transaction_count == 0 and document_type == "4" and valid_identity:
+        notice_kind = "holdings" if holding_count else "administrative" if not_subject_to_section16 else None
+    if not transactions and not is_transactionless_administrative and not notice_kind:
         return None
 
     directional_transactions = [
@@ -224,6 +234,9 @@ def parse_form4_xml(xml_content: str) -> Optional[Dict[str, Any]]:
         "not_subject_to_section16": not_subject_to_section16,
         "remarks": remarks,
         "is_transactionless_administrative": is_transactionless_administrative,
+        "transactionless_notice_kind": notice_kind,
+        "raw_transaction_node_count": raw_transaction_count,
+        "holding_node_count": holding_count,
         "direction": net_direction,
         "transactions": transactions,
         "total_shares": total_shares,

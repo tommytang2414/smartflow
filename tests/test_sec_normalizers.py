@@ -4,6 +4,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from smartflow.normalizers.sec import normalize_form4, normalize_form144
+from smartflow.events import make_source_event_id
 from smartflow.parsers.edgar_xml import parse_form4_xml
 from smartflow.parsers.form144_xml import parse_form144_xml
 from tests.test_sec_parsers import form4_with_codes
@@ -15,6 +16,25 @@ FILED_AT = datetime(2026, 5, 1, 0, 0, tzinfo=timezone.utc)
 
 
 class SECNormalizerTests(unittest.TestCase):
+    def test_expanded_transactionless_contract_is_versioned_and_non_directional(self):
+        for name, kind in (("form4_holdings_only_official_excerpt.xml", "holdings"),
+                           ("form4_admin_empty_remarks_official_excerpt.xml", "administrative")):
+            with self.subTest(name=name):
+                parsed = parse_form4_xml((FIXTURES / name).read_text(encoding="utf-8"))
+                event = normalize_form4(parsed, accession="0000000001-26-000001", filed_at=FILED_AT,
+                                        observed_at=OBSERVED_AT, source_url="https://www.sec.gov/form4.xml")[0]
+                self.assertEqual(event["parser_version"], "sec-form4-v5")
+                self.assertEqual(event["event_type"], f"form4_{kind}_notice")
+                for field in ("side", "quantity", "price", "value", "currency"):
+                    self.assertIsNone(event[field])
+                self.assertEqual(parsed["raw_transaction_node_count"], 0)
+
+    def test_malformed_transaction_cannot_become_holdings_or_admin_notice(self):
+        xml = (FIXTURES / "form4_holdings_only_official_excerpt.xml").read_text(encoding="utf-8")
+        malformed = "<nonDerivativeTransaction><securityTitle><value>Common Stock</value></securityTitle></nonDerivativeTransaction>"
+        self.assertIsNone(parse_form4_xml(xml.replace("</nonDerivativeTable>", malformed + "</nonDerivativeTable>")))
+        self.assertIsNone(parse_form4_xml(xml.replace("<documentType>4</documentType>", "<documentType>4/A</documentType>")))
+
     def test_transactionless_form4_is_a_non_directional_administrative_notice(self):
         parsed = parse_form4_xml(
             (FIXTURES / "form4_administrative_fund_i_official_excerpt.xml").read_text(
@@ -40,6 +60,8 @@ class SECNormalizerTests(unittest.TestCase):
         self.assertEqual(event["event_at"].isoformat(), "2026-06-26T00:00:00+00:00")
         self.assertTrue(event["attributes"]["not_subject_to_section16"])
         self.assertIn("resigned", event["attributes"]["remarks"])
+        self.assertEqual(event["source_event_id"], make_source_event_id("sec_form4", "0001461219-26-000003", "administrative"))
+        self.assertEqual(set(event["attributes"]), {"not_subject_to_section16", "period_of_report", "remarks", "issuer_trading_symbol"})
 
     def test_form4_derivative_event_has_no_false_side_or_notional(self):
         parsed = parse_form4_xml(

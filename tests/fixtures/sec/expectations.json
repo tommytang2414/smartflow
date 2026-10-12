@@ -110,5 +110,31 @@
       "proposed_amount": 352224,
       "proposed_sale_at": "2025-09-15T00:00:00"
     }
+  },
+  {
+    "name": "form4_holdings_only",
+    "parser": "form4",
+    "file": "form4_holdings_only_official_excerpt.xml",
+    "expected": {
+      "ticker": "BMRC",
+      "transactionless_notice_kind": "holdings",
+      "raw_transaction_node_count": 0,
+      "holding_node_count": 2,
+      "direction": "HOLD",
+      "transactions": []
+    }
+  },
+  {
+    "name": "form4_admin_empty_remarks",
+    "parser": "form4",
+    "file": "form4_admin_empty_remarks_official_excerpt.xml",
+    "expected": {
+      "ticker": "ENTG",
+      "transactionless_notice_kind": "administrative",
+      "raw_transaction_node_count": 0,
+      "holding_node_count": 0,
+      "remarks": "",
+      "transactions": []
+    }
   }
 ]

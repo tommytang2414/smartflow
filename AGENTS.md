@@ -15,6 +15,14 @@ documents and persistent falsifiable theses. This does not enable a new collecto
 Later collector migration, access/source expansion, scheduler and mail still
 require their concrete release manifests. Existing production gates remain authoritative.
 
+On 2026-10-13 the owner approved all five readiness improvements and requested a
+goal: source-contract/identity repair, automatic refresh/material triggers,
+executed follow-ups, free licensed prices/outcome evaluation, and operational
+scheduling/delivery/backups/GPT coordination. Implement reversible releases with
+recorded before-state, exact commit, rollback and evidence. This approval does not
+waive source gates, license requirements, security-critical approvals or actual
+elapsed observation windows. `docs/SMARTFLOW_READINESS_RELEASE.md` tracks execution.
+
 - Runtime `/Users/vortex/Applications/smartflow-research`, its own standard-library
   `.venv` and research SQLite; no newsroom/runtime/collector credential copying.
 - Snapshot HEAD/exact-version GET occurs on the existing Windows operator route;
@@ -279,6 +287,17 @@ originals are not evidence of removed filings. Changes describe packet coverage,
 not a new public filing.
 
 ## Changelog
+
+### 2026-10-13 — Expanded transactionless SEC notices
+
+- Added a separate `sec-form4-v5` non-directional notice contract for holdings-only
+  and Section16 administrative filings with empty remarks. Existing v4 trades and
+  v4 administrative rows keep their contracts; v5 notices cannot enter trade reports.
+- Require zero raw transaction nodes; malformed transactions cannot become notices.
+  Replay hash-verified raw-only XML offline and preserve original observation dates.
+- Exact accession/hash manifest reprocessing preserves raw evidence and all historic
+  outcomes. Transport diagnostics retain exception class/stage without payload text.
+- Verified 177 regression tests and 9/9 maintained official fixtures locally.
 
 ### 2026-10-08 — Verified US research release
 

@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from smartflow.db.models_v2 import NormalizedEventV2, RawEvent
 from smartflow.db.v2_repository import EvidenceConflictError
+from smartflow.events import payload_sha256
 from smartflow.ingestion.sec import (
     SOURCE_POLICIES,
     SECParserError,
@@ -110,7 +111,12 @@ class SECClient:
                 allow_redirects=False,
             )
         except Exception as error:
-            raise SECSourceError("SEC request failed") from error
+            failure = SECSourceError("SEC request failed; transport=" + type(error).__name__)
+            failure.transport_error_class = type(error).__name__
+            failure.request_stage = ("feed" if "/cgi-bin/" in allowed_url else
+                                     "tickers" if "/files/" in allowed_url else
+                                     "index" if allowed_url.endswith("-index.html") else "filing")
+            raise failure from error
 
         status_code = int(response.status_code)
         if status_code in {401, 403}:
@@ -310,25 +316,34 @@ def run_sec_shadow_source(
         filings_to_fetch = [
             filing for filing in filings if filing.accession not in complete_accessions
         ]
+        stored_by_accession = {raw.source_event_id: raw for raw in stored_raw_events}
         ticker_cache = None
         if source == "sec_form144" and filings_to_fetch:
             ticker_cache = build_cik_ticker_cache(active_client.get_json(SEC_TICKERS_URL))
 
         for filing in filings_to_fetch:
-            index_html = active_client.get_text(filing.index_url)
-            xml_url = resolve_primary_xml_url(
-                index_html,
-                index_url=filing.index_url,
-                form_type=form_type,
-            )
-            xml_content = active_client.get_text(xml_url)
+            stored = stored_by_accession.get(filing.accession)
+            if stored is not None:
+                if payload_sha256(stored.payload) != stored.payload_sha256:
+                    raise EvidenceConflictError("cached SEC raw payload hash mismatch")
+                if not isinstance(stored.payload, dict) or not isinstance(stored.payload.get("xml"), str):
+                    raise SECParserError("cached SEC raw payload has no XML")
+                xml_content, xml_url = stored.payload["xml"], stored.source_url
+            else:
+                index_html = active_client.get_text(filing.index_url)
+                xml_url = resolve_primary_xml_url(
+                    index_html,
+                    index_url=filing.index_url,
+                    form_type=form_type,
+                )
+                xml_content = active_client.get_text(xml_url)
             arguments = {
                 "xml_content": xml_content,
                 "accession": filing.accession,
                 "source_url": xml_url,
                 "filed_at": filing.filed_at,
-                "observed_at": observed_at,
-                "http_status": 200,
+                "observed_at": stored.retrieved_at if stored is not None else observed_at,
+                "http_status": stored.http_status if stored is not None else 200,
                 "record_outcome": False,
             }
             if ticker_cache is not None:
@@ -355,6 +370,8 @@ def run_sec_shadow_source(
                 "limit": limit,
                 "raw_inserted": raw_inserted,
                 "cached_filings": cached_filings,
+                "transport_error_class": getattr(error, "transport_error_class", None),
+                "request_stage": getattr(error, "request_stage", None),
             },
         )
         refresh_source_health(

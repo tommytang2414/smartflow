@@ -13,3 +13,7 @@ These minimized XML fixtures preserve the relevant structure and values from off
 `expectations.json` is the machine-readable agreement contract. Run `python ops/verify_sec_fixtures.py`; the Phase 1 gate requires at least 95% of maintained official fixtures to pass every declared expectation.
 
 Synthetic P/S/G cases in `tests/test_sec_parsers.py` use the same SEC ownership XML schema to exercise transaction-code boundaries that are not present in the two captured filings.
+
+Expanded non-directional notice fixtures (captured immutable raw evidence; addresses/signatures removed):
+- `form4_holdings_only_official_excerpt.xml`: accession `0001988976-26-000006`, https://www.sec.gov/Archives/edgar/data/1403475/000198897626000006/form4-07282026_050714.xml; original canonical payload SHA-256 `22962867acab48fd4b2176201a60e2142730fa962975e540d0cc480ab2c454b2`.
+- `form4_admin_empty_remarks_official_excerpt.xml`: accession `0001101302-26-000148`, https://www.sec.gov/Archives/edgar/data/1101302/000110130226000148/wk-form4_1785861270.xml; original canonical payload SHA-256 `999197f92c2d38b99ae12fd7250431a9f05ed2de77f7b400fc5e00bd4faa2cea`.

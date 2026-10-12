@@ -1,5 +1,24 @@
 # AI Handoff
 
+## Active goal — 2026-10-13
+- Owner approved all five Oct9 readiness improvements; free market-data route chosen.
+  Main sole writer on `feat/smartflow-mac-research`; started clean at `e014a1d`.
+- SEC notice fix: existing v4 trades/admin preserved; newly accepted zero-transaction
+  administrative/holdings notices use v5 only. Cached raw-only XML replays offline;
+  sanitized transport class/stage retained. Exact hash allowlist supports backfill.
+- Verified 177 tests, 9/9 fixtures, independent read-only review; disposable full DB
+  rehearsal adds 106 children, replay zero, raw and collector-run fingerprints unchanged.
+- Live VPS before-state `e0d9d47`, runtime locks/House venv untracked retained.
+  Existing archived Kronos key works with strict known-host verification; older
+  PycharmProjects reference is absent. Mac still release2668ee6, four approved runs.
+- SFC is collecting daily: Oct9–11 snapshots published, Oct12 blocked by event age.
+  Investigated cause is 10-day position freshness versus weekly delayed reporting.
+  Keep research SLA; planned explicit stale-state publication, not fake healthy data.
+- Next: commit/release SEC fix under existing flock with backup/allowlist/invariants;
+  then SFC publisher, automation/followups/free price adapter and operational rollout.
+  `docs/SMARTFLOW_READINESS_RELEASE.md` is current release boundary. Prior manual-only
+  authorization notes below describe Oct8 state; latest approval expands the scope.
+
 ## Current state
 - Branch: feat/smartflow-mac-research; isolated runtime release
   2668ee629a9258fb3b64810fcd5cb52c7fd6cc72. Latest Git HEAD records final acceptance.

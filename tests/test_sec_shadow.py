@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from smartflow.db.models_v2 import CollectorRunV2, NormalizedEventV2, RawEvent, SourceHealth
 from smartflow.db.v2_schema import create_v2_schema
+from smartflow.events import payload_sha256
 from smartflow.ingestion.sec_live import SECAuthenticationError, SECSourceError
 from smartflow.ingestion.sec_shadow import (
     SECClient,
@@ -156,6 +157,26 @@ class SECShadowRunTests(unittest.TestCase):
     def tearDown(self):
         self.engine.dispose()
         self.temporary_directory.cleanup()
+
+    def test_raw_only_notice_replays_offline_then_becomes_complete_cache(self):
+        payload = {"content_type": "application/xml", "xml":
+                   (FIXTURES / "form4_holdings_only_official_excerpt.xml").read_text(encoding="utf-8")}
+        index_url = "https://www.sec.gov/Archives/edgar/data/1/form4-index.htm"
+        client = FakeSECClient({"type=4&": atom_feed(feed_entry("4", FORM4_ACCESSION, index_url))})
+        with Session(self.engine) as session:
+            session.add(RawEvent(source="sec_form4", source_event_id=FORM4_ACCESSION,
+                                source_url="https://www.sec.gov/Archives/edgar/data/1/raw.xml", payload=payload,
+                                payload_sha256=payload_sha256(payload), http_status=200, retrieved_at=NOW))
+            session.commit()
+            first = run_sec_shadow_source(session, source="sec_form4", client=client, observed_at=NOW, limit=5)
+            second = run_sec_shadow_source(session, source="sec_form4", client=client, observed_at=NOW, limit=5)
+            self.assertEqual(first.normalized_inserted, 1)
+            self.assertEqual(second.normalized_inserted, 0)
+            self.assertEqual(first.raw_inserted, 0)
+            self.assertTrue(all("type=4&" in url for url in client.requests))
+            child = session.scalar(select(NormalizedEventV2))
+            self.assertEqual(child.parser_version, "sec-form4-v5")
+            self.assertEqual(child.observed_at.replace(tzinfo=timezone.utc), NOW)
 
     def form4_client(self) -> FakeSECClient:
         index_url = "https://www.sec.gov/Archives/edgar/data/1/form4-index.htm"
