@@ -194,6 +194,14 @@ def main():
                     store.db.execute("INSERT INTO runs(id,pack_hash,directory,status,completed_at) VALUES(?,?,?,'approved',?)", ("review-day-"+str(day_index), str(day_index)*64, "unused", stamp(NOW+timedelta(days=day_index))))
             digest_note = weekly(store, NOW+timedelta(days=9,hours=4))
             assert "GPT 覆核唔代替操作者驗收" in digest_note["text"]
+            with store.db:
+                for accepted_id in ["fixture"] + ["review-day-"+str(i) for i in range(6)]:
+                    store.db.execute("UPDATE runs SET report_hash=? WHERE id=?", ("f"*64, accepted_id))
+                    store.db.execute("INSERT INTO operations VALUES(?,'owner_review','recorded',?,?)", ("owner-reviewed:"+accepted_id,
+                        canonical({"run_id": accepted_id, "report_sha256": "f"*64, "actor": "explicit_owner_review_fixture"}).decode(), stamp()))
+            same_day_note = weekly(store, NOW+timedelta(days=16,hours=4))
+            assert "操作者明確手動驗收日數：1" in same_day_note["text"]
+            assert "GPT 覆核唔代替操作者驗收" in same_day_note["text"]
             rejects(lambda: backup(store, store.root / "exports"), "backup_destination")
             with patch("smartflow.research.operations.backup", side_effect=OSError("fixture")):
                 failure = scheduled(root / "failure-state", root / "unused-inbox", Path("unused"), root / "failure-exports", research=False)

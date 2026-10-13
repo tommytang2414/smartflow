@@ -29,6 +29,9 @@ elapsed observation windows. `docs/SMARTFLOW_READINESS_RELEASE.md` tracks execut
   verified files are transferred to Mac. Never copy AWS credentials to Mac.
 - Keep 14-day 99% reliability/slot coverage and source-specific semantic/freshness
   gates. Gate-held SEC rows are explicitly historical context, not current consensus.
+  Collector timestamps contain both naive UTC SQL strings and aware ISO strings;
+  parse with `research.common.utc` before date filtering. SQL lexical comparisons
+  against an ISO cutoff can silently omit the previous evening's rows.
 - Explicit single-class aliases need eligible in-period SEC proof. Never join solely
   on ticker or manufacture an actor for missing identity.
   `select_events(identity_only=True)` also permits valid non-derivative gifts as
@@ -56,8 +59,10 @@ elapsed observation windows. `docs/SMARTFLOW_READINESS_RELEASE.md` tracks execut
   Repeated activity counts distinct filings, not repeated rows.
 - Structured thesis support/counter citations, invalidation and next evidence persist
   only after review. Old approved reports remain immutable and readable.
-- `status` is read-only; `prepare`/`analyze` are manual and never send. Research
-  locking does not coordinate the newsroom's GPT use; no shared slot is installed.
+- `status` is read-only; `prepare`/`analyze` never send. Mac `scheduled` creates
+  frozen outbox/full backups; Windows existing-GWS gateway sends self-only after
+  restore and exact readback. Shared OS slot serializes actual model processes
+  across news/Asset/Meme/SmartFlow. See automation runbook and deployment receipt.
 
 Follow `PROJECT_PLAN.md` and `STOCK_FIRST_PRODUCT_SPEC.md` for the approved
 SmartFlow rehabilitation roadmap. The product is stock-first equity intelligence;
@@ -300,6 +305,12 @@ originals are not evidence of removed filings. Changes describe packet coverage,
 not a new public filing.
 
 ## Changelog
+
+### 2026-10-14 — Count actual manual acceptance dates
+
+- Weekly release gate counts the HKT date of each explicit owner-review receipt,
+  not the historical report date. Seven same-day approvals remain one acceptance
+  day. Disposable rehearsal covers this without adding any live owner receipts.
 
 ### 2026-10-14 — Scheduled read-only newsroom context
 
