@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import json
+import importlib.util
+import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -27,9 +30,12 @@ MAX_BYTES = 512 * 1024 * 1024
 def sync_aws(destination: Path) -> dict:
     """Uses existing operator auth; never installs credentials or modifies S3."""
     destination.mkdir(parents=True, exist_ok=True)
+    # This operator machine has AWS CLI v1 installed in Python with an aws.cmd
+    # shim. CreateProcess cannot resolve bare 'aws'; bypass file associations.
+    command = [sys.executable, "-m", "awscli"] if os.name == "nt" and importlib.util.find_spec("awscli") else [shutil.which("aws") or "aws"]
     results = {}
     for group, key in KEYS.items():
-        head = subprocess.run(["aws", "s3api", "head-object", "--bucket", BUCKET, "--key", key, "--output", "json"],
+        head = subprocess.run([*command, "s3api", "head-object", "--bucket", BUCKET, "--key", key, "--output", "json"],
                               check=True, capture_output=True, text=True, timeout=60)
         metadata = json.loads(head.stdout)
         version = metadata.get("VersionId")
@@ -47,7 +53,7 @@ def sync_aws(destination: Path) -> dict:
         else:
             with tempfile.TemporaryDirectory(prefix="download-", dir=destination) as folder:
                 temporary = Path(folder) / "snapshot.db"
-                subprocess.run(["aws", "s3api", "get-object", "--bucket", BUCKET, "--key", key,
+                subprocess.run([*command, "s3api", "get-object", "--bucket", BUCKET, "--key", key,
                                 "--version-id", version, str(temporary), "--output", "json"],
                                check=True, capture_output=True, timeout=180)
                 if temporary.stat().st_size != manifest["size_bytes"] or file_hash(temporary) != manifest["sha256"]:

@@ -301,6 +301,18 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-14 — Operational research bridge and private free-price adapter
+
+- Added Windows existing-auth refresh/drain bridge, atomic sealed Mac inbox,
+  complete state ZIP with restored DB/run/task/source verification, frozen self-mail
+  reconciliation and independent refresh/drain fault/recovery episodes.
+- Added scheduled research/weekly maintenance; stale/failed backup cannot count
+  as current success. Seven actual review days gate research-mail content.
+- Added shared model OS slot/process-death rehearsal and private Twelve Data Basic
+  adapter with listing/rights/hash/cutoff checks. Account/key/terms still required.
+-178 regressions and disposable operational checks pass; runtime receipts and
+  machine dependencies are tracked separately from implementation.
+
 ### 2026-10-13 — Executed follow-ups and material research cycles
 
 - Added bounded, immutable due-question checks and exact issuer/class proof from

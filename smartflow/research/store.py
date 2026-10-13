@@ -100,6 +100,7 @@ class ResearchStore:
             "open_tasks": connection.execute("SELECT COUNT(*) FROM tasks WHERE state='pending'").fetchone()[0],
             "followup_attempts": connection.execute("SELECT COUNT(*) FROM task_attempts").fetchone()[0] if "task_attempts" in tables else 0,
             "cycles": [dict(row) for row in connection.execute("SELECT id,status,started_at,run_id FROM cycles ORDER BY rowid DESC LIMIT 5")] if "cycles" in tables else [],
+            "outbox": [dict(row) for row in connection.execute("SELECT identity,kind,state,updated_at FROM operations WHERE kind IN ('weekly','fault','recovery','canary') ORDER BY rowid DESC LIMIT 10")] if "operations" in tables else [],
             "delivery": "report_only_no_send",
         }
 

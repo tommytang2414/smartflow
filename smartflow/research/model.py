@@ -5,6 +5,7 @@ import os
 import re
 import signal
 import subprocess
+import sys
 import time
 from pathlib import Path
 from decimal import Decimal
@@ -79,6 +80,8 @@ def run_model(executable: Path, directory: Path, role: str, payload: dict, schem
                "--output-last-message", str(output.resolve()), "-"]
     for feature in DISABLED:
         command.extend(["--disable", feature])
+    if sys.platform == "darwin":
+        command = [sys.executable, str(Path(__file__).with_name("slot.py")), "--wait-seconds", "600", "--", *command]
     prompt = INSTRUCTIONS + "\n" + ("獨立覆核 pack、analyst claims 同 frozen report；不得只信 analyst；逐项核對原 evidence、反證、日期、range同缺口。review要绑定所有輸入 hash。" if role.startswith("review") else "分析所有 dossiers，overview保持簡短。")
     prompt += "\nINPUT_JSON\n" + canonical(payload).decode()
     environment = {key: value for key, value in os.environ.items() if key in {

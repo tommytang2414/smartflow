@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import copy
+import base64
 import tempfile
+import sys
 from datetime import timedelta
 from pathlib import Path
 from unittest.mock import patch
@@ -16,11 +18,61 @@ from smartflow.research.followups import check_due, latest_results
 from smartflow.research.pack import build_pack
 from smartflow.research.snapshots import import_snapshot
 from smartflow.research.store import ResearchStore
+from smartflow.research.prices import parse as parse_prices, outcomes, contract
+from smartflow.research.delivery import send, SENDER, RECIPIENT
+from smartflow.research.operations import backup, queue
+from smartflow.research.operations import scheduled
+from smartflow.research import gateway
+from smartflow.research.gateway import restore_verify
+from email.message import EmailMessage
+from email import policy
 
 
 def main():
     with tempfile.TemporaryDirectory(prefix="smartflow-readiness-") as temporary:
         root = Path(temporary)
+        listing = {"security_key": "US:ACME:CLASS_A", "symbol": "ACME", "exchange": "NASDAQ", "currency": "USD", "timezone": "America/New_York"}
+        body = {"status": "ok", "meta": {"symbol": "ACME", "exchange": "NASDAQ", "currency": "USD", "exchange_timezone": "America/New_York", "interval": "1day"},
+                "values": [{"datetime": "2026-10-07", "open": "100", "high": "110", "low": "95", "close": "105", "volume": "10"}]}
+        price_cutoff = NOW + timedelta(hours=4)
+        price_rows = parse_prices(body, listing, price_cutoff)
+        assert len(price_rows) == 1
+        assert parse_prices(body, listing, price_cutoff-timedelta(seconds=1)) == []
+        unknown = outcomes({"US:ACME:CLASS_A": price_rows, "BENCHMARK:SPY": price_rows}, "US:ACME:CLASS_A", NOW-timedelta(days=2), price_cutoff)
+        assert unknown["horizons"]["1"]["stock_return_pct"] == "5.00"
+        assert unknown["horizons"]["5"]["stock_return_pct"] is None
+        missing = outcomes({"BENCHMARK:SPY": price_rows}, "US:ACME:CLASS_A", NOW-timedelta(days=2), price_cutoff)
+        assert missing["horizons"]["1"]["status"] == "MISSING_MATCHED_STOCK_SESSION"
+        duplicate = copy.deepcopy(body);duplicate["values"] *= 2
+        rejects(lambda: parse_prices(duplicate, listing, NOW), "duplicate_or_weekend")
+        wrong = copy.deepcopy(body);wrong["meta"]["symbol"] = "OTHER"
+        rejects(lambda: parse_prices(wrong, listing, NOW), "identity")
+        calls = []
+        item = {"identity": "fixture-canary", "recipient": RECIPIENT, "subject": "Fixture", "text": "Test only\n", "text_sha256": digest(b"Test only\n")}
+        message = EmailMessage(policy=policy.SMTP)
+        message["From"], message["To"] = SENDER, RECIPIENT
+        message["Subject"] = item["subject"] + " [smartflow-" + digest(item["identity"].encode())[:24] + "]"
+        message["Message-ID"] = "<provider@fixture.invalid>"
+        message.set_content(item["text"])
+        raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
+        def fake_gws(resource, action, params, body=None, upload=None):
+            calls.append((resource, action))
+            if action == "getProfile": return {"emailAddress": SENDER}
+            if (resource, action) == ("drafts", "create"): return {"id": "draft"}
+            if (resource, action) == ("drafts", "get"): return {"message": {"raw": raw}}
+            if (resource, action) == ("drafts", "send"): return {"id": "sent"}
+            if (resource, action) == ("messages", "get"): return {"raw": raw, "labelIds": ["SENT"]}
+            if action == "list": return {}
+            raise AssertionError((resource, action))
+        with patch("smartflow.research.delivery.gws", side_effect=fake_gws):
+            assert send(item, root / "delivery")["state"] == "sent"
+            assert send(item, root / "delivery")["state"] == "sent"
+            assert calls.count(("drafts", "send")) == 1
+            uncertain = root / "delivery" / digest(item["identity"].encode())[:24] / "delivery.json"
+            from smartflow.research.common import read_json
+            state = read_json(uncertain);state.pop("gmail_message_id");state["state"] = "sending";write_json(uncertain, state)
+            rejects(lambda: send(item, root / "delivery"), "uncertain_send")
+            assert calls.count(("drafts", "send")) == 1
         snapshots = root / "snapshots"
         snapshots.mkdir()
         events = [event("sec_form4", "proof"), event("congress", "house")]
@@ -101,10 +153,41 @@ def main():
                 assert third["status"] == "deferred_daily_model_budget" and model.call_count == 1
             assert store.db.execute("PRAGMA quick_check").fetchone()[0] == "ok"
             assert not store.db.execute("PRAGMA foreign_key_check").fetchall()
+            # This synthetic approved row has a deliberately minimal manifest;
+            # restore verification still checks it and every real prepared file.
+            queue(store, "canary:fixture", "Fixture", "Test only\n", "canary")
+            saved_backup = backup(store, root / "exports")
+            restored = root / "restored";restored.mkdir()
+            restored_db, verified = restore_verify(Path(saved_backup["archive"]), restored)
+            assert verified["approved_runs"] == 1
+            assert restored_db.execute("SELECT COUNT(*) FROM task_attempts").fetchone()[0] == 3
+            restored_db.close()
+            rejects(lambda: backup(store, store.root / "exports"), "backup_destination")
+            with patch("smartflow.research.operations.backup", side_effect=OSError("fixture")):
+                failure = scheduled(root / "failure-state", root / "unused-inbox", Path("unused"), root / "failure-exports", research=False)
+            assert failure["status"] == "needs_attention" and failure["reason_code"] == "backup_OSError"
+            attempt = read_json(root / "failure-exports/latest-attempt.json")
+            with patch("smartflow.research.gateway.remote", return_value=canonical(attempt).decode()):
+                rejects(lambda: gateway.drain(root / "failed-drain"), "latest_scheduled_backup_failed")
+            notices = []
+            bridge = root / "bridge"
+            with patch("smartflow.research.gateway.send", side_effect=lambda item, _: notices.append(item["identity"]) or {}), \
+                 patch("smartflow.research.gateway.refresh", return_value={"status": "refreshed"}):
+                with patch.object(sys, "argv", ["gateway", "drain", "--root", str(bridge)]), patch("smartflow.research.gateway.drain", side_effect=ValueError("fixture")):
+                    try: gateway.main()
+                    except SystemExit: pass
+                with patch.object(sys, "argv", ["gateway", "refresh", "--root", str(bridge)]): gateway.main()
+                assert len(notices) == 1 and notices[0].startswith("gateway-fault:")
+                with patch.object(sys, "argv", ["gateway", "drain", "--root", str(bridge)]), patch("smartflow.research.gateway.drain", return_value={"status": "restore_verified"}): gateway.main()
+                assert len(notices) == 2 and notices[1].startswith("gateway-recovery:")
             print(canonical({"status": "PASS", "checks": ["identity-only gift is never directional",
                 "immutable due checks; replay zero; future attempt cannot suppress historical check",
                 "unknown question stays open; cutoff and tamper checks",
                 "follow-up originals sealed in prepared packet; interrupted approved run reconciled",
+                "daily bar cutoff, identity, matched sessions and pending/missing values",
+                "strict self-mail readback, replay sends once and uncertain-send never retries",
+                "consistent complete state archive restored with source/run/follow-up hashes",
+                "backup failure closes store, refuses old backup; independent refresh/drain fault episodes",
                 "unchanged content skips GPT; changed content respects daily reservation",
                 "SQLite integrity and foreign keys"], "network_calls": 0, "model_calls": 0}).decode())
         finally:

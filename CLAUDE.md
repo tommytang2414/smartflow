@@ -2,6 +2,13 @@
 
 ## What This Is
 
+Operational research runbook: `docs/SMARTFLOW_AUTOMATION_RUNBOOK.md`. Windows
+retains existing AWS/GWS credentials and bridges sealed inputs/backups/mail to
+the authoritative Mac. No auth is copied. Fault episodes are mode-specific;
+backup failure/staleness cannot pass by replaying an old archive. Shared model
+slot covers actual Codex calls, not data collectors. Private free-price adapter
+is unactivated until owner account/key/terms/retention prerequisites are met.
+
 Readiness work approved 2026-10-13 is tracked in
 `docs/SMARTFLOW_READINESS_RELEASE.md`. Research schema v2 executes bounded due
 follow-ups without pretending questions are resolved; valid non-directional Form4

@@ -1,6 +1,26 @@
 # AI Handoff
 
 ## Active goal — 2026-10-13
+Latest continuation2026-10-14: source fixes deployed at50cdced on VPS;117 live
+notice children added with raw/run/health invariants and replay0. SFC exact stale
+snapshot verified without IAM changes. Mac core deployed e044001,19hashes match;
+four approved runs/28questions retained. Pre-release full backup copied Windows
+`data/research-prototype/mac-state-before-readiness-20261013.zip`, SHA9e673309a1d62c6939d276b3f2b97f69ec80dfe40be315d75deaa9e08f123ffe;
+restored4approved/136artifacts/3sourcecaches/28pending. Old notes below are historical.
+
+Main-owned uncommitted next release: operational gateway/backup/outbox/free-price
+adapter/shared slot and rehearsals; reviewed defects corrected.178tests and both
+research rehearsals PASS; Mac dummy-process slot SIGKILL/SIGTERM PASS. Windows
+GWS profile verifiedtommytang.cc@gmail.com. No real mail/new model call yet.
+Other three projects have small main-owned uncommitted model-prefix changes
+(news mac-run.sh/mac_daily.py; Asset mac_daily.py; Meme mac_reasoning.py). Preserve
+Asset pre-existing dirtyCLAUDE/mastery files. None of these prefixes deployed yet.
+Fresh Oct13inputs/company16docs are retained Windows and transferred Mac but not
+yet staged/imported; refresh again forOct14. Exact next: commit operational source,
+deploy hash-pinned runtime/shared slot under project locks, Mac tests, fresh gateway
+input, real cycle+backup+mail canary, install named schedules, verify receipts.
+Free Basic account/key question remains pending; never claim live prices/alpha.
+
 - Owner approved all five Oct9 readiness improvements; free market-data route chosen.
   Main sole writer on `feat/smartflow-mac-research`; started clean at `e014a1d`.
 - SEC notice fix: existing v4 trades/admin preserved; newly accepted zero-transaction

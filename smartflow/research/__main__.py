@@ -164,6 +164,16 @@ def main() -> None:
     context.add_argument("--aliases", type=Path, required=True)
     context.add_argument("--destination", type=Path, required=True)
     context.add_argument("--contact", required=True, help="Public SEC User-Agent contact email")
+    prices = commands.add_parser("fetch-prices", help="Private documented Twelve Data Basic daily data; existing key and confirmed rights required")
+    prices.add_argument("--aliases", type=Path, required=True)
+    prices.add_argument("--rights", type=Path, required=True)
+    prices.add_argument("--destination", type=Path, required=True)
+    outcomes = commands.add_parser("outcomes", help="Private matched-session outcomes for all approved resolved dossiers")
+    outcomes.add_argument("--aliases", type=Path, required=True)
+    outcomes.add_argument("--prices", type=Path, required=True)
+    outcomes.add_argument("--as-of", type=utc, default=None)
+    confirmed = commands.add_parser("confirm-delivery", help="Import trusted operator GWS SENT readback receipts; never send")
+    confirmed.add_argument("--receipts", type=Path, required=True)
     for name in ("prepare", "analyze"):
         command = commands.add_parser(name)
         command.add_argument("--aliases", type=Path, required=True)
@@ -173,6 +183,11 @@ def main() -> None:
         if name == "analyze":
             command.add_argument("--codex", type=Path, required=True)
     commands.add_parser("status")
+    scheduled = commands.add_parser("scheduled", help="Mac scheduler: sealed inputs, bounded cycle, frozen outbox and consistent backup")
+    scheduled.add_argument("--inbox", type=Path, required=True)
+    scheduled.add_argument("--codex", type=Path, required=True)
+    scheduled.add_argument("--exports", type=Path, required=True)
+    scheduled.add_argument("--maintenance-only", action="store_true")
     follow = commands.add_parser("followups", help="Execute bounded due evidence checks; unknown questions remain open")
     follow.add_argument("--aliases", type=Path, required=True)
     follow.add_argument("--company-context", type=Path)
@@ -192,8 +207,19 @@ def main() -> None:
     if args.command == "fetch-context":
         print(json.dumps(fetch_company(read_json(args.aliases), args.destination, args.contact), ensure_ascii=False))
         return
+    if args.command == "fetch-prices":
+        from .prices import fetch
+        print(json.dumps(fetch(read_json(args.aliases), args.rights, args.destination), ensure_ascii=False))
+        return
     if args.command == "status":
         print(json.dumps(ResearchStore.read_status(args.state), ensure_ascii=False))
+        return
+    if args.command == "scheduled":
+        from .operations import scheduled
+        result = scheduled(args.state, args.inbox, args.codex, args.exports, research=not args.maintenance_only)
+        print(json.dumps(result, ensure_ascii=False))
+        if result["status"] == "needs_attention":
+            raise SystemExit(1)
         return
     with single_writer(args.state):
         store = ResearchStore(args.state)
@@ -225,6 +251,19 @@ def main() -> None:
                 from .automation import cycle
                 result = cycle(store, args.aliases, args.snapshots, args.company_context, args.codex,
                                as_of=args.as_of or datetime.now(timezone.utc), news_root=args.news_root)
+            elif args.command == "outcomes":
+                from .prices import measure
+                result = measure(store, read_json(args.aliases), args.prices, args.as_of or datetime.now(timezone.utc))
+            elif args.command == "confirm-delivery":
+                results = []
+                for receipt in read_json(args.receipts):
+                    row = store.db.execute("SELECT body FROM operations WHERE identity=? AND kind IN ('weekly','fault','recovery','canary')", (receipt["identity"],)).fetchone()
+                    if row is None or json.loads(row["body"])["text_sha256"] != receipt["text_sha256"] or not receipt["gmail_message_id"]:
+                        raise ValueError("operator_delivery_receipt_binding")
+                    with store.db:
+                        store.db.execute("UPDATE operations SET state='sent',updated_at=? WHERE identity=?", (stamp(), receipt["identity"]))
+                    results.append(receipt["identity"])
+                result = {"confirmed": results}
             else:
                 result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
             print(json.dumps(result, ensure_ascii=False))
