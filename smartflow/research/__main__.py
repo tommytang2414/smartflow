@@ -191,6 +191,7 @@ def main() -> None:
     scheduled.add_argument("--inbox", type=Path, required=True)
     scheduled.add_argument("--codex", type=Path, required=True)
     scheduled.add_argument("--exports", type=Path, required=True)
+    scheduled.add_argument("--news-root", type=Path)
     scheduled.add_argument("--maintenance-only", action="store_true")
     follow = commands.add_parser("followups", help="Execute bounded due evidence checks; unknown questions remain open")
     follow.add_argument("--aliases", type=Path, required=True)
@@ -220,7 +221,7 @@ def main() -> None:
         return
     if args.command == "scheduled":
         from .operations import scheduled
-        result = scheduled(args.state, args.inbox, args.codex, args.exports, research=not args.maintenance_only)
+        result = scheduled(args.state, args.inbox, args.codex, args.exports, research=not args.maintenance_only, news_root=args.news_root)
         print(json.dumps(result, ensure_ascii=False))
         if result["status"] == "needs_attention":
             raise SystemExit(1)

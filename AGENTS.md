@@ -301,6 +301,13 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-14 — Scheduled read-only newsroom context
+
+- Daily entry now passes the existing newsroom data root to verified original
+  import. Actual Mac probe validates5trusted publications/excludes6legacy items,
+  with zero originals matching current8USaliases. US issuer/macro news remains
+  NOT_COVERED; no copied conclusions become primary stock evidence.
+
 ### 2026-10-14 — Separate expected SFC age HOLD from operational faults
 
 - A previously passing SFC report naturally ages into position-date HOLD each

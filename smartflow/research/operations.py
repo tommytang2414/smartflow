@@ -123,7 +123,7 @@ def backup(store: ResearchStore, destination: Path) -> dict:
     return receipt
 
 
-def scheduled(root: Path, inbox: Path, executable: Path, exports: Path, *, research: bool = True) -> dict:
+def scheduled(root: Path, inbox: Path, executable: Path, exports: Path, *, research: bool = True, news_root: Path | None = None) -> dict:
     from .__main__ import single_writer
     from .automation import cycle
     with single_writer(root):
@@ -139,7 +139,7 @@ def scheduled(root: Path, inbox: Path, executable: Path, exports: Path, *, resea
                     if file_hash(beneath(bundle, name)) != expected:
                         raise ValueError("scheduled_input_bundle_tamper")
                 result = cycle(store, bundle / "aliases.json", bundle / "snapshots", bundle / "company", executable,
-                               as_of=datetime.now(timezone.utc))
+                               as_of=datetime.now(timezone.utc), news_root=news_root)
                 if result["status"] in {"approved", "no_material_change", "health_only"}:
                     recovered(store)
             weekly(store, datetime.now(timezone.utc))

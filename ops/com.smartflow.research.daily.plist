@@ -9,6 +9,7 @@
 <string>scheduled</string><string>--inbox</string><string>inbox/latest.json</string>
 <string>--codex</string><string>/Users/vortex/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex</string>
 <string>--exports</string><string>exports/operations</string>
+<string>--news-root</string><string>/Users/vortex/Applications/hk-civic-newsroom/data</string>
 </array>
 <key>WorkingDirectory</key><string>/Users/vortex/Applications/smartflow-research</string>
 <key>StartCalendarInterval</key><dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>0</integer></dict>

@@ -15,6 +15,8 @@ Mac must be awake with vortex logged in. This is not a standalone cloud service.
    checks, compare all candidate/content/gate semantics. GPT only on material
    change and at most one reserved cycle/HKTday, including failed attempts. Each
    role waits on shared model slot; existing analyst/reviewer bounds remain.
+   Existing newsroom SQL/originals are read-only verified; zero matching originals
+   and US macro gaps are explicit, never replaced by a secondary hypothesis.
 3. A frozen private outbox records fault/recovery episodes. Saturday12:00
    `com.smartflow.research.weekly` queues one immutable weekly period. Before seven
    explicitly manually accepted research days, it contains operational status only.
