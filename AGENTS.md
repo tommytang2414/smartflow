@@ -301,6 +301,18 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-14 — Explicit manual acceptance and deployment schedules
+
+- Preserve seven manually accepted research days before automated research-mail
+  content; GPT approval alone never satisfies it. `owner-review` records only an
+  explicitly authorized human review bound to an exact approved report hash.
+- Added fixed limited-user Windows10:15 refresh/hourly:25 drain and Mac11:00 daily /
+  Saturday12:00 maintenance install sources. No credential or existing-job changes.
+- Stale/unhealthy snapshots or a PASS-to-HOLD regression stop the cycle visibly;
+  SFC position-age stale remains separately disclosed under its unchanged gate.
+- Reject stale price windows; incomplete provider sessions never become zeroes
+  or a claim that the future horizon is definitely still pending.
+
 ### 2026-10-14 — Operational research bridge and private free-price adapter
 
 - Added Windows existing-auth refresh/drain bridge, atomic sealed Mac inbox,

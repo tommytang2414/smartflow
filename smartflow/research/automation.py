@@ -64,6 +64,17 @@ def cycle(store: ResearchStore, definitions_path: Path, snapshots: Path, company
         news = import_news(news_root, definitions, as_of, store.root / "news-cache") if news_root else None
         checks = check_due(store, definitions, as_of, company)
         pack = build_pack(store, definitions, as_of=as_of, news=news, company=company)
+        for source in pack["source_assessments"]:
+            if not source["snapshot_fresh"]:
+                raise ValueError("source_snapshot_stale:" + source["source"])
+            if source["health_at_snapshot"] != "healthy" and not (
+                    source["source"] == "sfc_short" and source["health_at_snapshot"] == "stale"):
+                raise ValueError("source_health_at_snapshot_unhealthy:" + source["source"])
+        last_cycle = store.db.execute("SELECT details FROM cycles WHERE status IN ('approved','no_material_change','health_only') ORDER BY rowid DESC LIMIT 1").fetchone()
+        old_gates = {s["source"]: s["snapshot_gate"] for s in json.loads(last_cycle[0]).get("source_assessments", [])} if last_cycle else {}
+        for source in pack["source_assessments"]:
+            if old_gates.get(source["source"]) == "PASS" and source["snapshot_gate"] == "HOLD":
+                raise ValueError("source_gate_regressed:" + source["source"])
         material_hash = digest(canonical(pack["material_inputs"]))
         write_json(directory / "CHECK.json", pack)
         previous = store.db.execute("SELECT material_hash FROM cycles WHERE status IN ('approved','no_material_change','health_only') AND id<>? ORDER BY rowid DESC LIMIT 1", (identity,)).fetchone()

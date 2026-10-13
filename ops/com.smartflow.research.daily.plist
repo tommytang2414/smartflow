@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>Label</key><string>com.smartflow.research.daily</string>
+<key>ProgramArguments</key><array>
+<string>/usr/bin/caffeinate</string><string>-s</string>
+<string>/Users/vortex/Applications/smartflow-research/.venv/bin/python</string>
+<string>-m</string><string>smartflow.research</string><string>--state</string><string>state</string>
+<string>scheduled</string><string>--inbox</string><string>inbox/latest.json</string>
+<string>--codex</string><string>/Users/vortex/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex</string>
+<string>--exports</string><string>exports/operations</string>
+</array>
+<key>WorkingDirectory</key><string>/Users/vortex/Applications/smartflow-research</string>
+<key>StartCalendarInterval</key><dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>0</integer></dict>
+<key>RunAtLoad</key><false/><key>KeepAlive</key><false/>
+<key>StandardOutPath</key><string>/Users/vortex/Applications/smartflow-research/exports/scheduled.log</string>
+<key>StandardErrorPath</key><string>/Users/vortex/Applications/smartflow-research/exports/scheduled-error.log</string>
+</dict></plist>

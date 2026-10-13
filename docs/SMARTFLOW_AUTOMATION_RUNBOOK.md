@@ -17,7 +17,9 @@ Mac must be awake with vortex logged in. This is not a standalone cloud service.
    role waits on shared model slot; existing analyst/reviewer bounds remain.
 3. A frozen private outbox records fault/recovery episodes. Saturday12:00
    `com.smartflow.research.weekly` queues one immutable weekly period. Before seven
-   actual reviewed days, it contains operational status only, not research reports.
+   explicitly manually accepted research days, it contains operational status only.
+   GPT review does not satisfy manual acceptance. The operator records an exact
+   report hash with `owner-review` only after explicit human authorization.
 4. Every run creates a full SQLite-backup-API state archive, including source cache,
    approved run originals, task attempts, operations, aliases and release hashes.
 5. Windows `SmartFlowResearchDrain`,hourly at:25: copies latest backup, checks exact

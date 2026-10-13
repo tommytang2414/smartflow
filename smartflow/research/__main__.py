@@ -174,6 +174,10 @@ def main() -> None:
     outcomes.add_argument("--as-of", type=utc, default=None)
     confirmed = commands.add_parser("confirm-delivery", help="Import trusted operator GWS SENT readback receipts; never send")
     confirmed.add_argument("--receipts", type=Path, required=True)
+    accepted = commands.add_parser("owner-review", help="Record an explicitly authorized human review of an exact approved report; never run automatically")
+    accepted.add_argument("--run-id", required=True)
+    accepted.add_argument("--report-sha256", required=True)
+    accepted.add_argument("--note", required=True)
     for name in ("prepare", "analyze"):
         command = commands.add_parser(name)
         command.add_argument("--aliases", type=Path, required=True)
@@ -264,6 +268,17 @@ def main() -> None:
                         store.db.execute("UPDATE operations SET state='sent',updated_at=? WHERE identity=?", (stamp(), receipt["identity"]))
                     results.append(receipt["identity"])
                 result = {"confirmed": results}
+            elif args.command == "owner-review":
+                row = store.db.execute("SELECT * FROM runs WHERE id=? AND status='approved'", (args.run_id,)).fetchone()
+                if not row or row["report_hash"] != args.report_sha256 or not args.note.strip():
+                    raise ValueError("explicit_owner_review_binding")
+                directory = beneath(store.root, row["directory"])
+                if file_hash(directory / "REPORT.md") != row["report_hash"] or file_hash(directory / "manifest.json") != row["manifest_hash"]:
+                    raise ValueError("owner_review_artifact_tamper")
+                body = {"run_id": args.run_id, "report_sha256": args.report_sha256, "note": args.note, "actor": "explicit_owner_review"}
+                with store.db:
+                    store.db.execute("INSERT OR IGNORE INTO operations VALUES(?,'owner_review','recorded',?,?)", ("owner-reviewed:" + args.run_id, canonical(body).decode(), stamp()))
+                result = {"status": "owner_review_recorded", "run_id": args.run_id}
             else:
                 result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
             print(json.dumps(result, ensure_ascii=False))

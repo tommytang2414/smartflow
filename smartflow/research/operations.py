@@ -58,12 +58,19 @@ def weekly(store: ResearchStore, cutoff: datetime) -> dict | None:
         return None
     rows = store.db.execute("SELECT * FROM runs WHERE status='approved' AND completed_at>? AND completed_at<=? ORDER BY rowid", (stamp(cutoff-timedelta(days=7)), stamp(cutoff))).fetchall()
     review_days = {utc(row[0]).astimezone(HKT).date() for row in store.db.execute("SELECT completed_at FROM runs WHERE status='approved' AND completed_at<=?", (stamp(cutoff),))}
+    manual_days = set()
+    for row in store.db.execute("SELECT body FROM operations WHERE kind='owner_review' AND state='recorded' AND updated_at<=?", (stamp(cutoff),)):
+        receipt = json.loads(row[0])
+        run = store.db.execute("SELECT completed_at,report_hash FROM runs WHERE id=? AND status='approved' AND completed_at<=?", (receipt["run_id"], stamp(cutoff))).fetchone()
+        if run and run["report_hash"] == receipt["report_sha256"]:
+            manual_days.add(utc(run["completed_at"]).astimezone(HKT).date())
     # Seven real reviewed days remain an activation prerequisite for automatic
     # investment-report delivery; a truthful operational digest is allowed now.
     text = ["SmartFlow 每週狀況", "截點：" + stamp(cutoff), "本週通過覆核報告：" + str(len(rows)),
             "實際已覆核日數：" + str(len(review_days)), "待處理問題：" + str(store.status()["open_tasks"])]
-    if len(review_days) < 7:
-        text.append("投資研究週報仍在觀察期；未達七個實際覆核日，今次只寄營運狀況。")
+    text.append("操作者明確手動驗收日數：" + str(len(manual_days)))
+    if len(manual_days) < 7:
+        text.append("投資研究週報仍在觀察期；未達七個手動驗收研究日，今次只寄營運狀況。GPT 覆核唔代替操作者驗收。")
     else:
         for row in rows:
             directory = beneath(store.root, row["directory"])

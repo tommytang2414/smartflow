@@ -20,7 +20,7 @@ from smartflow.research.snapshots import import_snapshot
 from smartflow.research.store import ResearchStore
 from smartflow.research.prices import parse as parse_prices, outcomes, contract
 from smartflow.research.delivery import send, SENDER, RECIPIENT
-from smartflow.research.operations import backup, queue
+from smartflow.research.operations import backup, queue, weekly
 from smartflow.research.operations import scheduled
 from smartflow.research import gateway
 from smartflow.research.gateway import restore_verify
@@ -151,6 +151,8 @@ def main():
                 write_json(aliases_path, changed)
                 third = cycle(store, aliases_path, snapshots, root, Path("unused"), as_of=NOW+timedelta(seconds=3))
                 assert third["status"] == "deferred_daily_model_budget" and model.call_count == 1
+                rejects(lambda: cycle(store, aliases_path, snapshots, root, Path("unused"), as_of=NOW+timedelta(days=2,seconds=1)), "source_snapshot_stale")
+                assert model.call_count == 1
             assert store.db.execute("PRAGMA quick_check").fetchone()[0] == "ok"
             assert not store.db.execute("PRAGMA foreign_key_check").fetchall()
             # This synthetic approved row has a deliberately minimal manifest;
@@ -162,6 +164,13 @@ def main():
             assert verified["approved_runs"] == 1
             assert restored_db.execute("SELECT COUNT(*) FROM task_attempts").fetchone()[0] == 3
             restored_db.close()
+            # Seven synthetic model-reviewed dates cannot activate the original
+            # manual-acceptance gate. No fabricated operator receipts are added.
+            with store.db:
+                for day_index in range(6):
+                    store.db.execute("INSERT INTO runs(id,pack_hash,directory,status,completed_at) VALUES(?,?,?,'approved',?)", ("review-day-"+str(day_index), str(day_index)*64, "unused", stamp(NOW+timedelta(days=day_index))))
+            digest_note = weekly(store, NOW+timedelta(days=9,hours=4))
+            assert "GPT 覆核唔代替操作者驗收" in digest_note["text"]
             rejects(lambda: backup(store, store.root / "exports"), "backup_destination")
             with patch("smartflow.research.operations.backup", side_effect=OSError("fixture")):
                 failure = scheduled(root / "failure-state", root / "unused-inbox", Path("unused"), root / "failure-exports", research=False)
@@ -188,6 +197,7 @@ def main():
                 "strict self-mail readback, replay sends once and uncertain-send never retries",
                 "consistent complete state archive restored with source/run/follow-up hashes",
                 "backup failure closes store, refuses old backup; independent refresh/drain fault episodes",
+                "stale source blocks model; seven GPT dates cannot replace manual acceptance",
                 "unchanged content skips GPT; changed content respects daily reservation",
                 "SQLite integrity and foreign keys"], "network_calls": 0, "model_calls": 0}).decode())
         finally:

@@ -125,6 +125,8 @@ def load(root: Path, definitions: list[dict], cutoff: datetime) -> dict:
             or manifest.get("alias_hash") != rights["alias_hash"] or manifest.get("send_raw_to_gpt") is not False
             or utc(manifest["retrieved_at"]) > cutoff):
         raise ValueError("price_manifest_contract_or_future_retrieval")
+    if cutoff - utc(manifest["retrieved_at"]) > timedelta(hours=36):
+        raise ValueError("private_price_bundle_stale")
     result = {}
     for listing in manifest["listings"]:
         if {k: listing[k] for k in ("security_key", "symbol", "exchange", "currency", "timezone")} not in rights["listings"]:
@@ -137,6 +139,9 @@ def load(root: Path, definitions: list[dict], cutoff: datetime) -> dict:
         if listing["security_key"] in result:
             raise ValueError("duplicate_price_listing")
         result[listing["security_key"]] = parse(read_json(path), listing, cutoff)
+    benchmark = result.get("BENCHMARK:SPY", [])
+    if not benchmark or date.fromisoformat(benchmark[-1]["session"]) < cutoff.astimezone(NY).date() - timedelta(days=7):
+        raise ValueError("private_benchmark_window_stale_or_missing")
     return result
 
 
@@ -149,7 +154,7 @@ def outcomes(series: dict, security_key: str, known_at: datetime, cutoff: dateti
     by_date = {row["session"]: row for row in benchmark}
     results = {}
     for horizon in (1, 5, 20):
-        result = {"status": "PENDING_HORIZON", "stock_return_pct": None, "benchmark_return_pct": None, "excess_percentage_points": None}
+        result = {"status": "PENDING_OR_INCOMPLETE_PROVIDER_WINDOW", "stock_return_pct": None, "benchmark_return_pct": None, "excess_percentage_points": None}
         if len(dates) >= horizon:
             matched = dates[:horizon]
             if any(day not in stock for day in matched):

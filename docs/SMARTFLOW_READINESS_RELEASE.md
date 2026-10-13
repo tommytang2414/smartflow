@@ -69,6 +69,20 @@ document records concrete release boundaries; approval does not imply results.
 
 ## Remaining approved work
 
+Operational source `bac439f` deployed2026-10-14 01:53HKT to Mac,25code hashes match.
+Before-state/code backup and receipt:
+`/Users/vortex/Applications/smartflow-research/exports/operations-before-20261013T175354Z`.
+385research state files unchanged; original/prototype/readiness/process-slot plus
+news scheduler/failure and Meme reasoning offline Mac checks passed, no real
+inference/mail during deployment. Shared slot SHA256
+`19faa152aa9eae1145e8f71c68e61b74ba60207ec003bf52621bfd17de649b91`.
+News live/cold, Asset model review and Meme reasoning use the same slot at Codex
+startup, preserving all original collectors/auth/schedules/quotas. Windows source
+commits news00c293e / Asset7f547c8 / Memec505e34 (no remotes configured).
+Windows real gateway refresh20261013T175416Z-4082bdb5 staged48sealed files on Mac.
+Real cycle Yf73749caba9044ca8c3a9798 imported2425new events and executed28checks;
+GPT/reviewer, final backup/delivery and schedule acceptance still in progress.
+
 - Publish current SFC operational snapshots with explicit stale position state;
   retain the ten-day current-research gate.
 - Refresh sealed inputs through existing Windows AWS route; material fingerprint
