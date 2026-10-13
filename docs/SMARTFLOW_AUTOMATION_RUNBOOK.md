@@ -31,6 +31,10 @@ Mac must be awake with vortex logged in. This is not a standalone cloud service.
 
 No automatic deletion/retention pruning. Watch disk usage; backups retain evidence.
 Only main agent deploys; no collector/Lambda/credential/IAM changes in this release.
+Existing source-shadow SSH uses strict host verification and the retained key at
+`C:/Users/User/Archive/Kronos/mcp_VPS_server/LightsailDefaultKey-ap-southeast-1.pem`.
+The older PycharmProjects key reference is absent; never create/copy a replacement
+or disable pinning merely to make a connection work.
 
 ## Shared model slot
 

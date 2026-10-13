@@ -49,7 +49,8 @@ reporter, all upstream writers and newsroom services unchanged.
   unknown errors still reject. Approval pins immutable artifacts and research history.
 - `prepare` never invokes GPT; `analyze` prepares a new packet and invokes both
   roles; `status` is read-only even while research is running. Mutation locks only
-  this research runtime. No launchd/email/shared GPT slot is installed.
+  this research runtime in the originalOct8 baseline. Current operational release
+  adds launchd, Windows frozen self-mail/backups and shared model slot; see runbook.
 - Bootstrap evidence remains backlog, not false new alerts after first approval;
   track unreviewed evidence separately. Failed runs never advance approved history.
 

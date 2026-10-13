@@ -67,7 +67,7 @@ document records concrete release boundaries; approval does not imply results.
 - Rollback code needs v2-aware reader or restore code release without opening state
   with the old v1 writer. Never overwrite live evidence with a stale backup.
 
-## Remaining approved work
+## Operational deployment and acceptance
 
 Operational source `bac439f` deployed2026-10-14 01:53HKT to Mac,25code hashes match.
 Before-state/code backup and receipt:
@@ -81,16 +81,48 @@ startup, preserving all original collectors/auth/schedules/quotas. Windows sourc
 commits news00c293e / Asset7f547c8 / Memec505e34 (no remotes configured).
 Windows real gateway refresh20261013T175416Z-4082bdb5 staged48sealed files on Mac.
 Real cycle Yf73749caba9044ca8c3a9798 imported2425new events and executed28checks;
-GPT/reviewer, final backup/delivery and schedule acceptance still in progress.
+Four actual distinct no-tool analyst/reviewer calls consumed336412input/18633output
+tokens; both reviews requested revision because deterministic report headings
+labelled an unresolved asset with its raw ticker. Failed runR58939113fe7d6eabfbcfe6c5
+remains needs_attention. Renderer fixed in0ed10ee; original candidates/reviews
+were not rewritten and daily budget was not reset. New preview is explicitly
+unapproved/no-send; old four approved reports remain immutable.
 
-- Publish current SFC operational snapshots with explicit stale position state;
-  retain the ten-day current-research gate.
-- Refresh sealed inputs through existing Windows AWS route; material fingerprint
-  across the complete candidate set; bounded daily research and weekly digest.
-- Execute due follow-ups with immutable attempts, evidence and honest unknowns.
-- Free documented market-data adapter; actual key/license prerequisites explicit;
-  post-disclosure, matched benchmark outcomes without look-ahead or fake zeroes.
-- Bound model attempts/shared slot; sealed delivery ledger with uncertain-send
-  reconciliation, existing self-recipient GWS route, recurring off-host backups
-  with restore checks. No copying credentials between machines.
-- Real observation windows remain pending until elapsed; no synthetic continuity.
+Final deployed runtime18995a6 has27verified files, manual-acceptance gate, absolute
+backup paths and expected-SFC-age exception. Existing newsroom source probe
+verifies5trusted publications/excludes6legacy, zero current8USalias original
+matches; issuer/macro coverage remains NOT_COVERED. Daily entry includes this
+read-only source. New labels loaded with RunAtLoad/KeepAlivefalse:
+
+- Mac com.smartflow.research.daily11:00HKT; weeklySaturday12:00HKT. Actual daily
+  entry twice returned deferred_daily_model_budget, zero additional model calls
+  and zero repeated follow-up attempts. It did not emit a false recovery.
+- Windows SmartFlowResearchRefresh10:15HKT and SmartFlowResearchDrainhourly:25,
+  limited interactive user, existing credentials only. Actual refresh task exit0
+  at02:15; naturally scheduled drain02:25 exit0, restored668files/4approved runs,
+  source caches/28attempts and outbox. No credential copying or reauthorization.
+- Exact final archive state-20261013T183712Z-4b639e15.zip173216171bytes, SHA256
+  `c17f72d63411bbcf5b5d4b8efd8572f427d1919f3cfb203c28666e549962699e`.
+  Windows copy/restore receipt under data/research-prototype/gateway/backups/.
+- Real failure email self-only via existing tommytang.cc@gmail.com, Gmail ID
+  `1a13674e52522ec3`. Fresh raw/SENT/exact headers/body and exactly one matching
+  subject token verified. Repeated actual drain sent nothing; Mac outbox confirmed.
+- VPS latest24h parsed UTC cadence288Form4/24Form144 runs, zero failures; retain
+  14-day gate. At actual research cutoff, Form4HOLD96.80%, Form144PASS99.11%,
+  HousePASS100%, SFCposition-ageHOLD. These rates are observations, not guarantees.
+
+## Remaining prerequisites and acceptance
+
+- Obtain owner free Basic account/key and explicit account-use/retention evidence
+  before activating private Twelve Data adapter. No actual price data or measured
+  stock/benchmark returns exist yet; no unofficial or paid fallback.
+- Next independently approved report after renderer fix remains pending. Current
+  HKTday reservation consumed; normal11:00Oct14 can check/defer, next model day is
+  Oct15. Never rerun/reset just to obtain PASS. Preview is not a new approved report.
+- Seven explicitly manually accepted research days still required before weekly
+  research content; until then Saturday digest is operational status only. Genuine
+  source14-day reliability/coverage gates remain, no synthetic observation days.
+  Acceptance days use actual owner-review receipt timestamps in HKT, never old
+  report dates. Seven same-day approvals count one day; live owner-review count0.
+- Windows login/awake/LAN and Mac GUI/awake remain dependencies. No claimed
+  standalone Mac input access, full US news/market coverage or validated alpha.
