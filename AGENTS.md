@@ -301,6 +301,13 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-14 — Separate expected SFC age HOLD from operational faults
+
+- A previously passing SFC report naturally ages into position-date HOLD each
+  week. Preserve HOLD and material comparison, but do not generate a failure
+  episode solely for this expected stale position age. Other source regressions,
+  unhealthy collection and stale snapshots remain alertable. Rehearsal passes.
+
 ### 2026-10-14 — Preserve unresolved labels and executable backup paths
 
 - Actual independent review rejected a GLW-labelled unresolved dossier: renderer

@@ -161,6 +161,21 @@ def main():
                 assert third["status"] == "deferred_daily_model_budget" and model.call_count == 1
                 rejects(lambda: cycle(store, aliases_path, snapshots, root, Path("unused"), as_of=NOW+timedelta(days=2,seconds=1)), "source_snapshot_stale")
                 assert model.call_count == 1
+                from smartflow.research.common import read_json
+                import json
+                previous = store.db.execute("SELECT id,details FROM cycles WHERE status='no_material_change' ORDER BY rowid DESC LIMIT 1").fetchone()
+                previous_details = json.loads(previous["details"])
+                for source in previous_details["source_assessments"]:
+                    if source["source"] == "sfc_short": source["snapshot_gate"] = "PASS"
+                with store.db:
+                    store.db.execute("UPDATE cycles SET details=? WHERE id=?", (canonical(previous_details).decode(), previous["id"]))
+                aged = build_pack(store, changed, as_of=NOW+timedelta(seconds=5), company=company)
+                for source in aged["source_assessments"]:
+                    if source["source"] == "sfc_short":
+                        source.update(snapshot_gate="HOLD", health_at_snapshot="stale", event_fresh=False)
+                with patch("smartflow.research.automation.build_pack", return_value=aged):
+                    age_hold = cycle(store, aliases_path, snapshots, root, Path("unused"), as_of=NOW+timedelta(seconds=5))
+                assert age_hold["status"] == "deferred_daily_model_budget" and model.call_count == 1
             assert store.db.execute("PRAGMA quick_check").fetchone()[0] == "ok"
             assert not store.db.execute("PRAGMA foreign_key_check").fetchall()
             # This synthetic approved row has a deliberately minimal manifest;

@@ -73,7 +73,8 @@ def cycle(store: ResearchStore, definitions_path: Path, snapshots: Path, company
         last_cycle = store.db.execute("SELECT details FROM cycles WHERE status IN ('approved','no_material_change','health_only') ORDER BY rowid DESC LIMIT 1").fetchone()
         old_gates = {s["source"]: s["snapshot_gate"] for s in json.loads(last_cycle[0]).get("source_assessments", [])} if last_cycle else {}
         for source in pack["source_assessments"]:
-            if old_gates.get(source["source"]) == "PASS" and source["snapshot_gate"] == "HOLD":
+            expected_sfc_age_hold = source["source"] == "sfc_short" and source["health_at_snapshot"] == "stale" and not source["event_fresh"]
+            if old_gates.get(source["source"]) == "PASS" and source["snapshot_gate"] == "HOLD" and not expected_sfc_age_hold:
                 raise ValueError("source_gate_regressed:" + source["source"])
         material_hash = digest(canonical(pack["material_inputs"]))
         write_json(directory / "CHECK.json", pack)
