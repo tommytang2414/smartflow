@@ -18,6 +18,7 @@ from smartflow.research.followups import check_due, latest_results
 from smartflow.research.pack import build_pack
 from smartflow.research.snapshots import import_snapshot
 from smartflow.research.store import ResearchStore
+from smartflow.research.model import render_report
 from smartflow.research.prices import parse as parse_prices, outcomes, contract
 from smartflow.research.delivery import send, SENDER, RECIPIENT
 from smartflow.research.operations import backup, queue, weekly
@@ -124,6 +125,13 @@ def main():
             rejects(lambda: latest_results(store, NOW), "followup_result_tamper")
             original.write_bytes(saved)
             packet, prepared_id, prepared_directory = prepare(store, aliases_path, NOW, None)
+            unresolved = copy.deepcopy(packet)
+            for dossier in unresolved["dossiers"]:
+                dossier["identity_resolved"] = False
+                dossier["ticker"] = "UNVERIFIED_TICKER"
+            rendered = render_report(unresolved, None, status="fixture only")
+            assert "## UNVERIFIED_TICKER" not in rendered and "| UNVERIFIED_TICKER |" not in rendered
+            assert "未核實標的" in rendered
             sealed = list((prepared_directory / "followup-originals").glob("*.json"))
             assert sealed and file_hash(sealed[0]) in {f["result_hash"] for d in packet["dossiers"] for f in d["followup_checks"]}
             company = {"fresh": True, "by_security": {}, "coverage": {}, "manifest_sha256": "c"*64}

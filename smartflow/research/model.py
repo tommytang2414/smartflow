@@ -186,17 +186,19 @@ def validate_review(review: dict) -> None:
 
 def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
     lines = ["# SmartFlow 股票研究", "", f"研究 cutoff：{pack['as_of']}", f"狀態：{status}；只供個人研究。", "",
-             "首次歷史匯入；唔當所有歷史交易係今日新訊號。" if pack["bootstrap"] else "保留上次批准研究嘅比較；未送出任何通知。", ""]
+             "首次歷史匯入；唔當所有歷史交易係今日新訊號。" if pack["bootstrap"] else "保留上次批准研究嘅比較；寄送狀態見獨立 delivery ledger。", ""]
     if analysis:
         lines.extend([analysis["overview"], ""])
     by_key = {item["security_key"]: item for item in analysis["items"]} if analysis else {}
     def cell(value):
         return str(value).replace("|", "\\|").replace("\n", " ")
+    def label(dossier):
+        return dossier["ticker"] if dossier["identity_resolved"] else "未核實標的 " + dossier["security_key"]
     lines.extend(["## 本輪研究重點", "", "| 股票 | 證據分類 / 研究優先 | Thesis 狀態 | 本輪結論 | 下一份要查嘅證據 |", "|---|---|---|---|---|"])
     for dossier in pack["dossiers"]:
         item = by_key.get(dossier["security_key"])
         thesis = item["thesis"] if item else {}
-        lines.append(f"| {dossier['ticker']} | {dossier['stance']} / {dossier['priority']} | {thesis.get('status', '未分析')} | {cell(item['summary']) if item else '待 GPT review'} | {cell(thesis.get('next_evidence', '未分析'))} |")
+        lines.append(f"| {label(dossier)} | {dossier['stance']} / {dossier['priority']} | {thesis.get('status', '未分析')} | {cell(item['summary']) if item else '待 GPT review'} | {cell(thesis.get('next_evidence', '未分析'))} |")
     lines.extend(["", "Thesis status 表示研究假說狀況；唔係買賣建議。下列價格反應缺口保持明確，未有 paper outcome／alpha 驗證。", ""])
     lines.extend(["## 資料狀況", "", "| 來源 | snapshot cutoff | snapshot gate | 14 日成功率 | Raw 無 child | snapshot 新鮮 | 目前健康 |", "|---|---|---|---|---|---|---|"])
     for state in pack["source_assessments"]:
@@ -209,7 +211,7 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
     lines.extend(["", "美股公司背景只包括已匯入 SEC 原件片段；完整 earnings exhibits、macro、事件日曆未覆蓋。香港新聞只包括已驗證相關原件。", "",
                   f"研究候選：{pack['total_candidates']}；未進今次 packet：{pack['not_reviewed_candidates']}。", ""])
     for dossier in pack["dossiers"]:
-        lines.extend([f"## {dossier['ticker']}", "", f"證據分類：{dossier['stance']}；研究優先：{dossier['priority']}。",
+        lines.extend([f"## {label(dossier)}", "", f"證據分類：{dossier['stance']}；研究優先：{dossier['priority']}。",
                       f"可辨識 actor：{dossier['distinct_actors']}；未知 actor 交易：{dossier['unknown_actor_events']}；identity resolved：{dossier['identity_resolved']}。", ""])
         item = by_key.get(dossier["security_key"])
         if item:

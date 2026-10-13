@@ -91,6 +91,7 @@ def weekly(store: ResearchStore, cutoff: datetime) -> dict | None:
 
 
 def backup(store: ResearchStore, destination: Path) -> dict:
+    destination = destination.resolve()
     if destination.resolve().is_relative_to(store.root.resolve()):
         raise ValueError("backup_destination_must_be_outside_state")
     destination.mkdir(parents=True, exist_ok=True)
@@ -139,7 +140,8 @@ def scheduled(root: Path, inbox: Path, executable: Path, exports: Path, *, resea
                         raise ValueError("scheduled_input_bundle_tamper")
                 result = cycle(store, bundle / "aliases.json", bundle / "snapshots", bundle / "company", executable,
                                as_of=datetime.now(timezone.utc))
-                recovered(store)
+                if result["status"] in {"approved", "no_material_change", "health_only"}:
+                    recovered(store)
             weekly(store, datetime.now(timezone.utc))
         except Exception as error:
             code = str(error)[:120] if isinstance(error, ValueError) else type(error).__name__

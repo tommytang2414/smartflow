@@ -301,6 +301,17 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-14 — Preserve unresolved labels and executable backup paths
+
+- Actual independent review rejected a GLW-labelled unresolved dossier: renderer
+  now uses its original UNRESOLVED key in table/heading. Failed analysis/reviews
+  stay immutable; no daily reservation reset or unreviewed report delivery.
+- Backups now emit absolute archive paths for the pinned operator gateway.
+  Deferred model-budget checks cannot emit a false workflow recovery; failed
+  model reservations remain consumed and are visibly marked failed.
+- Rehearsal verifies unresolved labels plus backup/outbox integrity. Existing
+  four approved historical reports and current failed run remain separate.
+
 ### 2026-10-14 — Explicit manual acceptance and deployment schedules
 
 - Preserve seven manually accepted research days before automated research-mail

@@ -125,6 +125,10 @@ def cycle(store: ResearchStore, definitions_path: Path, snapshots: Path, company
     except Exception as error:
         code = str(error)[:160] if isinstance(error, ValueError) else type(error).__name__
         details["reason_code"] = code
+        if details["model_attempted"]:
+            day = as_of.astimezone(HKT).date().isoformat()
+            with store.db:
+                store.db.execute("UPDATE operations SET state='failed',updated_at=? WHERE identity=? AND state='reserved'", (stamp(), "model-day:" + day))
         write_json(directory / "failure.json", {"status": "needs_attention", "reason_code": code, "recorded_at": stamp()})
         with store.db:
             store.db.execute("UPDATE cycles SET status='needs_attention',completed_at=?,details=? WHERE id=?",
