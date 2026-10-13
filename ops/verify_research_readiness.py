@@ -147,7 +147,7 @@ def main():
                 (fixture_directory / "REPORT.md").write_text("fixture only", encoding="utf-8")
                 write_json(fixture_directory / "manifest.json", {"files": {"REPORT.md": file_hash(fixture_directory / "REPORT.md")}})
                 with store.db:
-                    store.db.execute("UPDATE runs SET status='approved',manifest_hash=?,completed_at=? WHERE id='fixture'", (file_hash(fixture_directory / "manifest.json"), stamp()))
+                    store.db.execute("UPDATE runs SET status='approved',manifest_hash=?,completed_at=? WHERE id='fixture'", (file_hash(fixture_directory / "manifest.json"), stamp(NOW+timedelta(days=6))))
                     store.db.execute("UPDATE cycles SET status='model_running' WHERE id=?", (first["cycle_id"],))
                 recovered = cycle(store, aliases_path, snapshots, root, Path("unused"), as_of=NOW+timedelta(seconds=2))
                 assert recovered["status"] == "no_material_change" and model.call_count == 1
@@ -198,7 +198,7 @@ def main():
                 for accepted_id in ["fixture"] + ["review-day-"+str(i) for i in range(6)]:
                     store.db.execute("UPDATE runs SET report_hash=? WHERE id=?", ("f"*64, accepted_id))
                     store.db.execute("INSERT INTO operations VALUES(?,'owner_review','recorded',?,?)", ("owner-reviewed:"+accepted_id,
-                        canonical({"run_id": accepted_id, "report_sha256": "f"*64, "actor": "explicit_owner_review_fixture"}).decode(), stamp()))
+                        canonical({"run_id": accepted_id, "report_sha256": "f"*64, "actor": "explicit_owner_review_fixture"}).decode(), stamp(NOW+timedelta(days=7))))
             same_day_note = weekly(store, NOW+timedelta(days=16,hours=4))
             assert "操作者明確手動驗收日數：1" in same_day_note["text"]
             assert "GPT 覆核唔代替操作者驗收" in same_day_note["text"]
