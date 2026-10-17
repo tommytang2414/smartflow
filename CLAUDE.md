@@ -9,6 +9,13 @@ backup failure/staleness cannot pass by replaying an old archive. Shared model
 slot covers actual Codex calls, not data collectors. Private free-price adapter
 is unactivated until owner account/key/terms/retention prerequisites are met.
 
+Observed2026-10-18: ordinary Oct15–17 scheduled reports independently passed
+after the renderer fix, with pinned pack/report/review hashes. Full off-host
+restore1248files/7approved runs/78follow-up attempts passes; recovery and Oct17
+status-only weekly mails have exact unique Sent/raw evidence. Owner reviews
+remain0 and prices inactive; latest packet resolves only1 of5 names. See
+`docs/SMARTFLOW_READINESS_RELEASE.md` for exact receipts and observation cutoff.
+
 Readiness work approved 2026-10-13 is tracked in
 `docs/SMARTFLOW_READINESS_RELEASE.md`. Research schema v2 executes bounded due
 follow-ups without pretending questions are resolved; valid non-directional Form4

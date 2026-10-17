@@ -306,6 +306,16 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-18 — Observe scheduled research and restore acceptance
+
+- Verified three ordinary Oct15–17 approved cycles after the renderer fix,
+  exact review bindings and distinct analyst/reviewer threads; runtime27 hashes
+  unchanged. See readiness release for observed source gates and limitations.
+- Freshly restored1248 files/7 approved runs/78 follow-up attempts; checked
+  recovery and operational weekly mails via exact GWS Sent/raw readback, one each.
+- No synthetic owner reviews: count0, weekly remains status only. Latest5-name
+  packet resolves only QCOM; free prices and return measurements remain inactive.
+
 ### 2026-10-14 — Count actual manual acceptance dates
 
 - Weekly release gate counts the HKT date of each explicit owner-review receipt,

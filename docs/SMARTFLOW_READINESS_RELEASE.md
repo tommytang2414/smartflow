@@ -111,14 +111,55 @@ read-only source. New labels loaded with RunAtLoad/KeepAlivefalse:
   14-day gate. At actual research cutoff, Form4HOLD96.80%, Form144PASS99.11%,
   HousePASS100%, SFCposition-ageHOLD. These rates are observations, not guarantees.
 
+## Observed scheduled acceptance — 2026-10-18 02:10HKT
+
+No runtime changes or additional model calls were needed for this audit. The
+installed `18995a6` release still matches all27 pinned file hashes. Mac daily
+and Saturday maintenance launchd jobs both last exited0; Windows refresh and
+hourly drain tasks last exited0, with zero reported missed runs. The Oct18
+10:15/11:00 input/research slots have not occurred at this observation cutoff.
+
+Three ordinary scheduled cycles after the renderer fix independently passed:
+
+| HKT day | Approved run | Completed UTC |
+|---|---|---|
+| Oct15 | Re16e05e1d9ff24bb7f46ea23 | 2026-10-15T03:04:05Z |
+| Oct16 | R8a7372ce4149f3edc59cf38b | 2026-10-16T03:03:52Z |
+| Oct17 | R2dfa8166743fc64d228bdacc | 2026-10-17T03:04:06Z |
+
+Each report's pack/analysis/report hashes match its independent
+`PASS_WITH_LIMITATIONS` review; analyst/reviewer thread IDs differ. The latest
+report SHA256 is `11c8570bfd1049fa20fd5f186fd059b01e4e86ceb07250e0816919d9fbcfcbb4`.
+At that sealed cutoff all four source snapshot gates pass: House100%,
+Form144100%, Form499.31%, SFC100% reliability. This is neither a live-health
+receipt nor proof of complete market coverage. Latest packet covers5 of1818
+candidates; only QCOM has resolved identity, the other4 remain explicitly
+unresolved. Prices, volume, relative returns and broad US news remain uncovered.
+
+Fresh off-host restore of454587805-byte archive
+`state-20261017T040005Z-3277d5fe.zip`, SHA256
+`0f26bbd5eb5bdad7f0f7aa05d21541f7816c7dfdd8ec7f555130b7d85f0cfc86`,
+verified1248 files, SQLite/FKs, all7 approved manifests,78 immutable follow-up
+results and source-cache hashes.64 questions remain pending, not resolved by
+counting attempts. The original fault episode actually closedOct15; recovery
+mail `1a13d97ded42554f` and Oct17 operational weekly mail `1a1481b991c055d6`
+each have exactly one matching Sent message and verified frozen raw content.
+The weekly correctly reports0 owner-review receipts and contains status only.
+
+Audit evidence and exact latest report copy are retained locally under
+`data/research-prototype/acceptance-20261018/`; source archive remains in gateway
+backups. The maintained11-category offline readiness rehearsal also passes.
+No acceptance receipts, historical reports, source gates or daily budgets were
+modified. Runtime/source keys and authentication were not changed.
+
 ## Remaining prerequisites and acceptance
 
 - Obtain owner free Basic account/key and explicit account-use/retention evidence
   before activating private Twelve Data adapter. No actual price data or measured
   stock/benchmark returns exist yet; no unofficial or paid fallback.
-- Next independently approved report after renderer fix remains pending. Current
-  HKTday reservation consumed; normal11:00Oct14 can check/defer, next model day is
-  Oct15. Never rerun/reset just to obtain PASS. Preview is not a new approved report.
+- Post-fix report acceptance is now observed through three ordinary approved
+  scheduled cycles above. Preserve the failed Oct14 run and unapproved preview;
+  never rerun/reset a daily reservation just to obtain PASS.
 - Seven explicitly manually accepted research days still required before weekly
   research content; until then Saturday digest is operational status only. Genuine
   source14-day reliability/coverage gates remain, no synthetic observation days.

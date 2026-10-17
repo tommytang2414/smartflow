@@ -1,76 +1,72 @@
 # AI Handoff
 
-## Current state —2026-10-14 02:38HKT
-- Owner-approved all-five goal; goal tool currently reports blocked, not complete.
-  No token budget. Branchfeat/smartflow-mac-research;
-  runtime source18995a66875ca13a2d937398307e0ae63d20b853,27hashes verified on Mac.
-  Documentation HEAD resolves through Git. Pending account/price activation,
-  fresh approved report and real/manual observation acceptance remain outstanding.
+## Current state — 2026-10-18 02:12HKT
+- Owner-approved all-five readiness goal remains incomplete; goal tool reports
+  blocked, not complete. No token budget. Branch feat/smartflow-mac-research;
+  documentation parent8014043, current documentation HEAD resolves through Git.
+  Runtime18995a66875ca13a2d937398307e0ae63d20b853 remains27/27 hash verified.
 - Mac authoritative /Users/vortex/Applications/smartflow-research, own.venv/state.
-  Windows bridges existing AWS/GWS via pinned SSH; never copy credentials/state over Mac.
-- Source shadow VPS deployed50cdced.117exact raw-only notice children added, replay0;
-  raw/run/health invariants before new runs preserved. Old trades/admin stayv4;
-  only newly accepted transactionless noticesv5, never directional evidence.
-- SFC explicit stale snapshots publish with unchanged research age gate; no IAM
-  expansion. Latest24h parsed UTC cadence288Form4/24Form144, zero failures.
+  Existing Windows AWS/GWS bridge transfers sealed inputs/backups/self-mail;
+  no credentials copied or auth changed. Shadow VPS50cdced, legacy untouched.
+- Oct18 audit was read-only against live services: no model calls, no source/gate/
+  budget changes, no new emails or fabricated owner-review receipts.
 
-## Completed and concrete results
-- Mac evidence75974/imports6,28pending questions/28immutable executed attempts.
-  New GOOGL ClassA gift proof is identity-only; ClassC remains separate.
-- Complete-candidate material fingerprints, one reserved cycle/HKTday, immutable
-  attempts/originals/history, verified approved-run crash recovery and bounded roles.
-- Scheduled read-only newsroom probe:5trusted publications/6excludedlegacy,
-  zero8USalias originals; US issuer/macro remains NOT_COVERED. No news writes.
-- Shared actual-model OS slot across news/Asset/Meme/SmartFlow; SIGKILL/SIGTERM
-  dummy checks PASS, actual Codex inherited lock FD observed. Existing collectors,
-  models, auth, quotas and other schedules retained. News live/cold00c293e,
-  Asset7f547c8, Memec505e34; respective docs7812917/5662d4e/c49d508, no remotes.
-- Installed Mac daily11:00/weeklySaturday12:00, RunAtLoad/KeepAlivefalse.
-  Windows limited-user refresh10:15/hourly:25drain tasks. Actual refresh taskexit0,
-  natural02:25drainexit0. Daily entry respects consumed budget and does not add calls.
-- Frozen self-mail uncertain-send reconciliation and distinct gateway fault modes;
-  full consistent backups, absolute paths, stale/current-attempt binding and restore.
-  One real failure mail Gmail1a13674e52522ec3, exact raw/SENT/body/recipient checked;
-  repeated drain adds zero messages. Mac outboxsent, original fault episode stillopen.
-- Private Twelve Data Basic adapter/outcome measurements implemented but UNACTIVATED:
-  no account/key/rights confirmation, no actual price or returns, no raw data to GPT.
+## Newly observed results
+- Three normal11:00HKT daily cycles after renderer repair independently approved:
+  Oct15 Re16e05e1d9ff24bb7f46ea23; Oct16 R8a7372ce4149f3edc59cf38b;
+  Oct17 R2dfa8166743fc64d228bdacc. Exact pack/analysis/report hashes match each
+  PASS_WITH_LIMITATIONS review, distinct analyst/reviewer threads verified.
+- Latest report SHA11c8570bfd1049fa20fd5f186fd059b01e4e86ceb07250e0816919d9fbcfcbb4.
+  At its sealed cutoff House/Form144/SFC PASS100%, Form4 PASS99.31%; no live-health
+  guarantee.5 of1818 candidates in packet; only QCOM resolved, other4 explicitly
+  unresolved. No actual prices/volume/relative returns/broad US news coverage.
+- Evidence79775/imports17,64 pending questions,78 immutable attempts. PARTIAL/
+  UNKNOWN remain pending. Prior failed runR58939113fe7d6eabfbcfe6c5 and preview
+  remain unchanged; daily reservations were never reset to force PASS.
+- Original fault episode closed2026-10-15T03:04:05Z on real success. Recovery
+  Gmail1a13d97ded42554f and weekly:2026-10-17 Gmail1a1481b991c055d6 each freshly
+  verified through existing GWS: exact one Sent token hit, frozen raw/body/header
+  match. Weekly status-only, actual owner-review receipts0.
+- Fresh full off-host restore: state-20261017T040005Z-3277d5fe.zip454587805bytes,
+  SHA0f26bbd5eb5bdad7f0f7aa05d21541f7816c7dfdd8ec7f555130b7d85f0cfc86.
+  Verified1248 files, SQLite/FKs,7 approved runs/manifests,78 follow-up result
+  hashes and source-cache hashes. Archive retained in Windows gateway/backups.
+- Mac daily/weekly launchd last exit0; weekly actually ranOct17 12:00HKT.
+  Windows last refreshOct17 10:15/drainOct18 01:25 exit0, missed runs0.
+  Oct18 10:15/11:00 slots have not occurred at observation time. No missed-day
+  claims based on next scheduled slots. Mac stderr logs both empty.
+- Maintained11-category offline readiness rehearsal PASS; existing178-test suite
+  was passed for runtime release, not rerun for this documentation-only audit.
+- Exact latest approved run originals/report plus audit.json, runtime hashes/
+  observations, Windows task receipt and frozen WEEKLY_STATUS.txt retained under
+  data/research-prototype/acceptance-20261018/. Temporary full restore cleaned
+  automatically; all pre-existing backups/raw/history retained.
 
-## Verification and immutable evidence
--178existing tests; prototype/readiness rehearsals pass on Windows/Mac; source9/9
-  fixtures earlierPASS; Asset248tests and news/Meme Mac offline checksPASS.
-- Before initial release full state backup9e673309a1d62c6939d276b3f2b97f69ec80dfe40be315d75deaa9e08f123ffe
-  restored4approved/136artifacts/3sourcecaches/28pending; retained Windows.
-- Final off-host backup data/research-prototype/gateway/backups/
-  state-20261013T183712Z-4b639e15.zip,173216171bytes,
-  SHAc17f72d63411bbcf5b5d4b8efd8572f427d1919f3cfb203c28666e549962699e.
-  Actual restore668files/SQLite/FKs/allapproved manifests/followups/source hashesPASS.
-- Release receipts/backups in Macexports/operations-before-20261013T175354Z,
-  rollforward-20261013T180631Z, sfc-age-patch-20261013T181411Z,
-  news-context-20261013T182151Z,manual-acceptance-20261013T183711Z;
-  copied key receipts to Windows gateway/.
-- Four actual roles/threads,336412input+18633output tokens, zero toolitems. Both
-  reviews reject original unresolved GLW heading despite correct unknown analysis.
-  RunR58939113fe7d6eabfbcfe6c5 remains needs_attention, four old approved runs intact.
-  Renderer repaired; new unapproved previewWindows data/research-prototype/
-  preview-20261014/PREVIEW.md +provenance; never approved/sent or used as history.
-
-## Constraints and exact next step
-- Do not reset today's reservation or rerun GPT to force PASS. Latest daily cycle
-  Y34bf758070bc4538a5e34f5d deferred_daily_model_budget; zero repeated due checks.
-  NormalOct14 11:00 maydefer; Oct15nextHKTmodelday can use corrected renderer.
-- Before further changes read runtime status/receipts. Observe next ordinary
-  independently approved report; only that can advance history/recovery. Free
-  account question remains pending; ask no key in chat, no automatic auth/key setup.
-- Seven distinct actual HKT human-acceptance dates required for research-mail content;
-  owner-review CLI only after actual human authorization. Same-day7reviews count1;
-  actual live receipts0. Until then weekly statusonly.
-  Keep actual14day/99%source/semantic/freshness gates: last packetHousePASS100%,
-  Form144PASS99.11%, Form4HOLD96.80%, SFCpositionageHOLD. No alpha/fullmarket claim.
-- Windows/Macawake/login/LAN dependencies disclosed. No automatic backup pruning.
-- SmartFlow/news/Meme trees clean before final docs; Asset pre-existing dirtyCLAUDE
-  and two knowledge/mastery reports/two builders preserved. No root scratch files.
-- docs/SMARTFLOW_AUTOMATION_RUNBOOK.md and SMARTFLOW_READINESS_RELEASE.md are
-  current run/rollback/acceptance contracts. Prior DevSecOps scope below remains separate.
+## Operational constraints and exact next step
+- Re-read current receipts before acting; latest local result is an Oct17 report,
+  not an Oct18 research run. Preserve normal daily model budget and history.
+- Private Twelve Data Basic adapter remains UNACTIVATED. Owner chose free route
+  but has no confirmed account/key/rights/retention contract. No raw quotes to GPT,
+  no unofficial source fallback, no auth/key setup or key requests in chat.
+  Existing account clarification remains unanswered; don't repeatedly ask it.
+- Seven distinct actual HKT human-acceptance dates required before research-mail
+  content. owner-review only after explicit review of exact report/hash; never
+  create on user's behalf or count model review/report dates as human dates.
+- Alias proof validity currently endsNov1; renew only with valid in-period exact
+  issuer/class proof, no blind extension or ticker-only joins. Known8 aliases
+  leave much of candidate universe unresolved; don't claim holistic coverage.
+- Windows refresh10:15/draingatewayhourly:25; Macdaily11:00/weeklySaturday12:00.
+  Windows interactive login/awake/LAN and Mac GUI/awake remain dependencies.
+  No automatic archive pruning. Shared actual-model slot across4 tools remains
+  in place; no other project files changed during this audit.
+- Source repair receipts/backups and exact rollback manifests in
+  docs/SMARTFLOW_READINESS_RELEASE.md; operating contracts in
+  docs/SMARTFLOW_AUTOMATION_RUNBOOK.md. No source gate relaxation, IAM, legacy
+  production reporter or unrelated asset/news/meme changes.
+- Next dependent work: once owner has private free-account rights/key, activate
+  existing adapter and verify real benchmark outcomes. Continue observed scheduled
+  acceptance and real human receipts; current report/restore/mail acceptance is
+  now evidenced, so do not repeat the old 'fresh approved report pending' claim.
 
 ## Prior DevSecOps work completed and verified
 - Real base/head dependency finding diff, raw audits/exit codes and PASS/FINDINGS/SCAN_ERROR evidence.
