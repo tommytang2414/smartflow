@@ -25,6 +25,7 @@ from smartflow.research.operations import backup, queue, weekly
 from smartflow.research.operations import scheduled
 from smartflow.research import gateway
 from smartflow.research.gateway import restore_verify
+from smartflow.research.company import excerpts
 from email.message import EmailMessage
 from email import policy
 
@@ -32,6 +33,8 @@ from email import policy
 def main():
     with tempfile.TemporaryDirectory(prefix="smartflow-readiness-") as temporary:
         root = Path(temporary)
+        merger = "Each share of Class A common stock outstanding before the Effective Time will be converted\ninto the right to receive $6.05 in cash. " + "Closing conditions remain outstanding. " * 40
+        assert any("$6.05 in cash" in quote["quote"] for quote in excerpts(merger))
         listing = {"security_key": "US:ACME:CLASS_A", "symbol": "ACME", "exchange": "NASDAQ", "currency": "USD", "timezone": "America/New_York"}
         body = {"status": "ok", "meta": {"symbol": "ACME", "exchange": "NASDAQ", "currency": "USD", "exchange_timezone": "America/New_York", "interval": "1day"},
                 "values": [{"datetime": "2026-10-07", "open": "100", "high": "110", "low": "95", "close": "105", "volume": "10"}]}
@@ -104,6 +107,36 @@ def main():
                 "valid_from": "2026-01-01T00:00:00Z", "valid_to": "2027-01-01T00:00:00Z",
                 "proof_ids": [gift_id], "company_terms": ["Acme"]}]
             assert "US:ACME:CLASS_A" in aliases(identity, definitions)
+            rejects(lambda: aliases(identity, [{**definitions[0], "instrument_type": "UNKNOWN"}]), "invalid_alias_contract")
+            target = definitions[0]["security_key"]
+            focused = build_pack(store, definitions, as_of=NOW, security_keys=[target])
+            assert [d["security_key"] for d in focused["dossiers"]] == [target]
+            assert focused["not_reviewed_candidates"] == focused["total_candidates"] - 1
+            rejects(lambda: build_pack(store, definitions, as_of=NOW, security_keys=[target, target]), "targeted_security_keys_invalid")
+            rejects(lambda: build_pack(store, definitions, as_of=NOW, security_keys=["US:UNKNOWN:COMMON"]), "targeted_security_keys_invalid")
+            fund_definitions = [{**definitions[0], "instrument_type": "CLOSED_END_FUND"}]
+            fund_packet = build_pack(store, fund_definitions, as_of=NOW, security_keys=[target])
+            fund = fund_packet["dossiers"][0]
+            assert fund["stance"] == "CONTEXT_ONLY" and fund["priority"] == "NO_DIRECTIONAL_EVIDENCE"
+            assert fund["distinct_actors"] == 0 and fund["purchase_sources"] == fund["sale_sources"] == []
+            assert fund["evidence"] and fund["identity_resolved"]
+            assert "封閉式基金" in render_report(fund_packet, None, status="fixture")
+            # A verified alias whose proof interval is valid but no current
+            # eligible records exist must never silently fall back to another name.
+            with patch("smartflow.research.pack.source_assessments", return_value=[]):
+                rejects(lambda: build_pack(store, definitions, as_of=NOW, security_keys=[target]), "targeted_security_has_no_eligible_current_evidence")
+            fund_store = ResearchStore(root / "fund-state")
+            try:
+                for group in ("sec", "house", "sfc"):
+                    manifest = read_json(snapshots / (group + "-manifest.json"))
+                    import_snapshot(fund_store, group, snapshots / manifest["file"], manifest)
+                with fund_store.db:
+                    fund_store.db.execute("INSERT INTO runs(id,pack_hash,directory,status) VALUES('fund-fixture',?,'fixture','prepared')", ("e"*64,))
+                    fund_store.db.execute("INSERT INTO tasks VALUES('fund-task',?,'基金身份是否已核實','pending',?,'fund-fixture')", (target, stamp(NOW)))
+                assert check_due(fund_store, fund_definitions, NOW)["checked"] == 1
+                assert latest_results(fund_store, NOW)[0]["checked"]["full_current_stance"] == "CONTEXT_ONLY"
+            finally:
+                fund_store.close()
             aliases_path = root / "aliases.json"
             write_json(aliases_path, definitions)
             with store.db:
@@ -221,6 +254,7 @@ def main():
                 with patch.object(sys, "argv", ["gateway", "drain", "--root", str(bridge)]), patch("smartflow.research.gateway.drain", return_value={"status": "restore_verified"}): gateway.main()
                 assert len(notices) == 2 and notices[1].startswith("gateway-recovery:")
             print(canonical({"status": "PASS", "checks": ["identity-only gift is never directional",
+                "exact manual target selection; unknown, duplicate and unavailable targets rejected; fund is context only",
                 "immutable due checks; replay zero; future attempt cannot suppress historical check",
                 "unknown question stays open; cutoff and tamper checks",
                 "follow-up originals sealed in prepared packet; interrupted approved run reconciled",

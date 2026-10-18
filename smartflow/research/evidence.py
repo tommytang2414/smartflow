@@ -177,7 +177,9 @@ def aliases(events: list[dict], definitions: list[dict]) -> dict[str, dict]:
     result = {}
     for item in definitions:
         required = {"security_key", "market", "ticker", "issuer_cik", "sec_titles", "valid_from", "valid_to", "proof_ids", "company_terms"}
-        if set(item) != required or item["market"] != "US" or len(item["sec_titles"]) != 1:
+        if (not required <= set(item) or set(item) - required - {"instrument_type"}
+                or item.get("instrument_type", "COMMON_STOCK") not in {"COMMON_STOCK", "CLOSED_END_FUND"}
+                or item["market"] != "US" or len(item["sec_titles"]) != 1):
             raise ValueError("invalid_alias_contract")
         if item["security_key"] in result or not re.fullmatch(r"[A-Z0-9.:_-]+", item["security_key"]):
             raise ValueError("duplicate_or_invalid_alias")

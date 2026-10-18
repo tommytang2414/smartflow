@@ -170,7 +170,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", choices=("refresh", "drain"))
     parser.add_argument("--root", type=Path, default=Path("data/research-prototype/gateway"))
-    parser.add_argument("--aliases", type=Path, default=Path("data/research-prototype/aliases-us-v3.json"))
+    parser.add_argument("--aliases", type=Path, default=Path("config/research-aliases-us.json"))
     args = parser.parse_args()
     args.root.mkdir(parents=True, exist_ok=True)
     with single_writer(args.root):

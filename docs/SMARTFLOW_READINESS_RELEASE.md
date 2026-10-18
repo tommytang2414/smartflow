@@ -167,3 +167,40 @@ modified. Runtime/source keys and authentication were not changed.
   report dates. Seven same-day approvals count one day; live owner-review count0.
 - Windows login/awake/LAN and Mac GUI/awake remain dependencies. No claimed
   standalone Mac input access, full US news/market coverage or validated alpha.
+
+## IDENTITY-20261018-001 — Owner-requested four-instrument research
+
+Target is the isolated Mac runtime, not collector normalization or legacy reports.
+The owner explicitly requested identity repair and fuller analysis on Oct18.
+Retain full consistent state/code/release before-state under a timestamped
+`exports/identity-before-*` directory, deploy the exact tested feature commit and
+verify runtime hashes. Never replace live state or rewrite prior approved reports.
+
+`config/research-aliases-us.json` retains eight original mappings and adds:
+
+| Ticker | Issuer CIK | Exact Form4 class | Instrument |
+|---|---|---|---|
+| FERG | 0002011641 | Common Stock | Ferguson Enterprises Inc. common stock |
+| AMBQ | 0001500412 | Common Stock | Ambiq Micro, Inc. common stock |
+| BMBL | 0001830043 | Class A Common Stock | Bumble Inc. ClassA only |
+| PCQ | 0001140411 | Common Shares | PIMCO California Municipal Income Fund, closed-end fund |
+
+Proof IDs, raw hashes and original SEC URLs are versioned in the adjacent identity
+audit JSON. All four original transactions were reconstructed and matched against
+the hash-verified SEC snapshot XML; AMBQ options and BMBL other classes stay separate.
+PCQ transactions remain visible as context but cannot generate company-insider
+directional stance/actor confirmation in either packet or follow-up checks.
+
+Manual `analyze --security-key` binds exactly the four resolved keys; invalid,
+duplicate or unavailable targets fail rather than falling back to global top5.
+This explicit owner-requested manual report uses the existing bounded independent
+analyst/reviewer and shared GPT slot, without changing/resetting the automated
+daily model reservation or recording human acceptance. No report email requested.
+Company context now permits bounded N-CSR/N-CSRS/N-2 and explicitly selects merger
+consideration text. Multi-fund tables cannot be attributed without matching labels.
+Old unresolved theses/tasks remain immutable, not automatically merged or resolved.
+
+Windows refresh task's explicit alias argument must point to the canonical config;
+preserve its XML/action before changing that argument only. Keep task account,
+permissions, triggers, mail route and all other services unchanged. Rollback to
+the retained code/release and task action; retain additive evidence and new runs.

@@ -20,10 +20,14 @@ LIMITATIONS = {
 
 
 def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime,
-               news: dict | None = None, max_stocks: int = 5, company: dict | None = None) -> dict:
+               news: dict | None = None, max_stocks: int = 5, company: dict | None = None,
+               security_keys: list[str] | None = None) -> dict:
     events, exclusions = select_events(store, as_of)
     identity_events, _ = select_events(store, as_of, identity_only=True)
     definitions_by_key = aliases(identity_events, definitions)
+    if security_keys is not None and (not 1 <= len(security_keys) <= max_stocks
+            or len(set(security_keys)) != len(security_keys) or set(security_keys) - set(definitions_by_key)):
+        raise ValueError("targeted_security_keys_invalid")
     followups = latest_results(store, as_of)
     states = source_assessments(store, as_of)
     allowed = {item["source"] for item in states if item["eligible_for_current_research"]}
@@ -37,6 +41,8 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
     first_approval = store.db.execute("SELECT completed_at FROM runs WHERE status='approved' ORDER BY rowid LIMIT 1").fetchone()
     candidates, material_candidates = [], []
     for key, records in grouped.items():
+        identity = definitions_by_key.get(key)
+        instrument = identity.get("instrument_type", "COMMON_STOCK") if identity else "UNRESOLVED"
         current = [event for event in records if event["source"] in allowed
                    and utc(event["observed_at"]) >= as_of - timedelta(days=AGE_DAYS[event["source"]])
                    and (event["source"] == "sec_form144" or utc(event["event_at"]) >= as_of - timedelta(days=AGE_DAYS[event["source"]]))]
@@ -46,6 +52,8 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
         buy_sources, sale_sources = set(), set()
         unknown_actors = 0
         for event in current:
+            if instrument == "CLOSED_END_FUND":
+                continue
             if event["source"] not in {"sec_form4", "congress"} or event["action"] not in {"purchase", "sale"}:
                 continue
             people = actors(event)
@@ -92,7 +100,9 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
                      "source_current_eligible": event["source"] in allowed,
                      "new_since_approved_analysis": event["id"] in new_ids} for event in chosen]
         tasks = [dict(row) for row in store.db.execute("SELECT id,question,created_at FROM tasks WHERE security_key=? AND state='pending' ORDER BY created_at LIMIT 3", (key,))]
-        candidates.append({**identities[key], "stance": stance, "priority": priority, "distinct_actors": actor_count,
+        candidates.append({**identities[key], "instrument_type": instrument,
+                           "identity_proof": {name: identity[name] for name in ("issuer_cik", "sec_titles", "proof_ids")} if identity else None,
+                           "stance": stance, "priority": priority, "distinct_actors": actor_count,
                            "unknown_actor_events": unknown_actors, "purchase_sources": sorted(buy_sources), "sale_sources": sorted(sale_sources),
                            "current_evidence_count": len(current), "history_evidence_count": len(history),
                            "not_in_packet_count": len(history) - len(chosen), "new_evidence_count": len(new_ids),
@@ -100,11 +110,14 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
                            "evidence": evidence, "previous_approved": previous, "pending_tasks": tasks,
                            "limitations": [LIMITATIONS[source] for source in sorted({event["source"] for event in history})]
                            + [source + " 未過 current source gate；相關個別已驗證事件只作歷史 context，唔計入本輪 stance／actor confirmation。"
-                              for source in sorted({event["source"] for event in history} - allowed)],
+                              for source in sorted({event["source"] for event in history} - allowed)]
+                           + (["封閉式基金；買賣只作基金披露背景，唔作營運公司 insider conviction。未覆蓋 NAV／折溢價／分派持續性。"] if instrument == "CLOSED_END_FUND" else []),
                            "news": (news or {}).get("by_security", {}).get(key, [])})
     order = {"FOLLOW_UP_HIGH": 0, "FOLLOW_UP_MEDIUM": 1, "FOLLOW_UP_LOW": 2, "NO_DIRECTIONAL_EVIDENCE": 3}
     candidates.sort(key=lambda item: (-int(bool(item["new_evidence_count"])), order[item["priority"]], -int(item["identity_resolved"]), -item["new_evidence_count"], -item["distinct_actors"], item["ticker"]))
-    chosen = candidates[:max_stocks]
+    chosen = candidates[:max_stocks] if security_keys is None else [item for key in security_keys for item in candidates if item["security_key"] == key]
+    if security_keys is not None and len(chosen) != len(security_keys):
+        raise ValueError("targeted_security_has_no_eligible_current_evidence")
     selected_ids = {record["id"] for dossier in chosen for record in dossier["evidence"]}
     contexts = enrich(store, [event for event in events if event["id"] in selected_ids])
     for dossier in chosen:
@@ -136,11 +149,12 @@ def build_pack(store: ResearchStore, definitions: list[dict], *, as_of: datetime
             "meaning": "Filing-owner/action groups recur across distinct filings; not transaction attribution, independent conviction or a buy cluster"}
     return {"schema_version": "smartflow-research-pack-v2", "as_of": stamp(as_of), "mode": "personal_research_report_only",
             "bootstrap": not bool(analyzed), "source_assessments": states, "source_exclusions": dict(sorted(exclusions.items())),
-            "alias_hash": digest(canonical(definitions)), "total_candidates": len(candidates), "not_reviewed_candidates": max(0, len(candidates) - max_stocks),
+            "alias_hash": digest(canonical(definitions)), "total_candidates": len(candidates), "not_reviewed_candidates": len(candidates) - len(chosen),
             "dossiers": chosen, "news_coverage": (news or {}).get("coverage", {"status": "NOT_IMPORTED", "us_issuer_macro": "NOT_COVERED"}),
             "company_context_manifest": (company or {}).get("manifest_sha256"),
             "company_context_fresh": (company or {}).get("fresh", False),
             "material_inputs": {"candidates": sorted(material_candidates),
+                "targeted_security_keys": security_keys,
                 "sources": [[s["source"], s["snapshot_gate"], s["snapshot_fresh"], s["event_fresh"], s["health_at_snapshot"]] for s in states],
                 "aliases": digest(canonical(definitions)),
                 "company": {key: sorted([d["issuer_cik"], d["accession"], d["raw_sha256"], d["text_sha256"]] for d in docs)

@@ -46,6 +46,8 @@ INSTRUCTIONS = """你係 SmartFlow 個人股票研究分析員。用廣東話輸
 不得把 proposed sale 當已執行、House range 當 exact amount、SFC snapshot 當賣出交易。
 多筆同 actor 唔係多 actor；跨來源唔等於因果；previous_approved 只係可推翻假說。
 current_window=false 或 source_current_eligible=false 只係歷史 context，唔當本輪方向確認。
+instrument_type=CLOSED_END_FUND係基金而非營運公司普通股；其P/S只作基金披露背景，唔當公司insider conviction；NAV、折溢價同分派持續性未覆蓋就明確保留未知。
+基金原件可能涵蓋多個基金；未有清晰對應本標的嘅欄位／標題就唔將其他基金或合計數當成本基金數據。
 要指出反證、資料 cutoff、coverage gaps、未知動機，同上次有咩不同。
 初次 bootstrap 要明講未有上次批准結論。唔假裝做過 earnings、price 或完整美股新聞研究。
 company_documents 只係指定 SEC primary documents 嘅 bounded verbatim excerpts，唔代表完整文件／exhibits或 earnings coverage。
@@ -193,7 +195,10 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
     def cell(value):
         return str(value).replace("|", "\\|").replace("\n", " ")
     def label(dossier):
-        return dossier["ticker"] if dossier["identity_resolved"] else "未核實標的 " + dossier["security_key"]
+        return (dossier["ticker"] + ("（封閉式基金）" if dossier.get("instrument_type") == "CLOSED_END_FUND" else "")) if dossier["identity_resolved"] else "未核實標的 " + dossier["security_key"]
+    scope = pack.get("material_inputs", {}).get("targeted_security_keys")
+    if scope:
+        lines.extend(["本輪係操作者指定標的嘅研究；唔代表全市場排名或完整市場覆蓋。", ""])
     lines.extend(["## 本輪研究重點", "", "| 股票 | 證據分類 / 研究優先 | Thesis 狀態 | 本輪結論 | 下一份要查嘅證據 |", "|---|---|---|---|---|"])
     for dossier in pack["dossiers"]:
         item = by_key.get(dossier["security_key"])
@@ -213,6 +218,10 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
     for dossier in pack["dossiers"]:
         lines.extend([f"## {label(dossier)}", "", f"證據分類：{dossier['stance']}；研究優先：{dossier['priority']}。",
                       f"可辨識 actor：{dossier['distinct_actors']}；未知 actor 交易：{dossier['unknown_actor_events']}；identity resolved：{dossier['identity_resolved']}。", ""])
+        proof = dossier.get("identity_proof")
+        if proof:
+            lines.extend([f"身份：CIK {proof['issuer_cik']}；股份／受益權類別：{cell(proof['sec_titles'][0])}；instrument：{dossier['instrument_type']}。",
+                          "身份原件證據：" + ", ".join(proof["proof_ids"]), ""])
         item = by_key.get(dossier["security_key"])
         if item:
             lines.extend([item["summary"], "", "同上次比較：" + item["change_since_previous"], ""])

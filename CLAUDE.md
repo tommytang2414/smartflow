@@ -16,6 +16,12 @@ status-only weekly mails have exact unique Sent/raw evidence. Owner reviews
 remain0 and prices inactive; latest packet resolves only1 of5 names. See
 `docs/SMARTFLOW_READINESS_RELEASE.md` for exact receipts and observation cutoff.
 
+Research aliases are now versioned in `config/research-aliases-us.json`, with
+adjacent exact SEC proof audit. PCQ Common Shares are a CLOSED_END_FUND and always
+context-only; FERG/AMBQ Common Stock and BMBL ClassA have distinct verified keys.
+Manual `prepare`/`analyze --security-key` pins an explicit complete target subset;
+it does not reset the automated daily reservation or approve old unresolved tasks.
+
 Readiness work approved 2026-10-13 is tracked in
 `docs/SMARTFLOW_READINESS_RELEASE.md`. Research schema v2 executes bounded due
 follow-ups without pretending questions are resolved; valid non-directional Form4

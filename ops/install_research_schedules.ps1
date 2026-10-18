@@ -8,7 +8,7 @@ foreach ($taskName in $taskNames) {
     if (Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue) { throw "Existing task requires inspection: $taskName" }
 }
 $gatewayRoot = Join-Path $projectRoot 'data\research-prototype\gateway'
-$aliasPath = Join-Path $projectRoot 'data\research-prototype\aliases-us-v3.json'
+$aliasPath = Join-Path $projectRoot 'config\research-aliases-us.json'
 if (-not (Test-Path -LiteralPath $aliasPath)) { throw 'Verified research alias file is required' }
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -RunOnlyIfNetworkAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 30)
 $principal = New-ScheduledTaskPrincipal -UserId ([System.Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited

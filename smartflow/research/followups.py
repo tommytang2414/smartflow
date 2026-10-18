@@ -42,6 +42,8 @@ def check_due(store: ResearchStore, definitions: list[dict], cutoff: datetime,
                        and utc(e["observed_at"]) >= cutoff - timedelta(days=AGE_DAYS[e["source"]])
                        and (e["source"] == "sec_form144" or utc(e["event_at"]) >= cutoff - timedelta(days=AGE_DAYS[e["source"]]))]
             sides = {e["side"] for e in current if e["source"] in {"sec_form4", "congress"} and e["action"] in {"purchase", "sale"}}
+            if approved_aliases.get(key, {}).get("instrument_type") == "CLOSED_END_FUND":
+                sides = set()
             stance = "MIXED" if sides == {"BUY", "SELL"} else "ACCUMULATION" if sides == {"BUY"} else "DISTRIBUTION" if sides == {"SELL"} else "CONTEXT_ONLY"
             raw_candidates = sorted((e for e in records if e["source"] == "sec_form4"), key=lambda e: (e["observed_at"], e["id"]), reverse=True)[:32]
             raw_checks = enrich(store, raw_candidates)

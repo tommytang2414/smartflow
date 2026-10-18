@@ -37,6 +37,14 @@ elapsed observation windows. `docs/SMARTFLOW_READINESS_RELEASE.md` tracks execut
   `select_events(identity_only=True)` also permits valid non-derivative gifts as
   class proof; these never enter directional P/S evidence. GOOGL Class A uses
   exact Class A proof; Class C remains separate.
+- Canonical research aliases are `config/research-aliases-us.json`; identity audit
+  proofs are `config/research-identity-proofs-20261018.json`. Optional
+  `instrument_type` permits COMMON_STOCK or CLOSED_END_FUND. PCQ is a fund:
+  both packet and follow-up stance remain CONTEXT_ONLY, never company conviction.
+- Manual `prepare`/`analyze --security-key <key>` accepts1–5 unique resolved keys;
+  every requested name needs current eligible evidence or preparation fails. Scope
+  is pinned in packet/material hashes. An owner-requested manual run does not
+  reset or overwrite the separate automatic daily reservation.
 - Research schema v2 preserves tasks and adds immutable `task_attempts`, operational
   `cycles` and `operations`. `followups` checks up to32 due questions, up to32 raw
   SEC rows per security and full eligible local90-day normalized evidence. PARTIAL
@@ -305,6 +313,17 @@ originals are not evidence of removed filings. Changes describe packet coverage,
 not a new public filing.
 
 ## Changelog
+
+### 2026-10-18 — Resolve four requested instruments and scope manual research
+
+- Added exact raw-XML issuer/class proof for FERG, AMBQ, BMBL ClassA and PCQ
+  Common Shares, retaining the previous eight aliases. PCQ is classified as a
+  closed-end fund and kept out of operating-company directional actor counts.
+- Added strict manual target selection and identity provenance in reports;
+  enabled bounded shareholder reports and merger consideration excerpts.
+- Updated canonical alias defaults and added fixture verification for fund
+  stance, target completeness/rejection and split-line merger consideration.
+  Deployment evidence is recorded in the readiness release and handoff.
 
 ### 2026-10-18 — Observe scheduled research and restore acceptance
 

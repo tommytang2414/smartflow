@@ -47,14 +47,15 @@ def single_writer(root: Path):
                 fcntl.flock(stream, fcntl.LOCK_UN)
 
 
-def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None) -> tuple[dict, str, Path]:
+def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None,
+            *, security_keys: list[str] | None = None) -> tuple[dict, str, Path]:
     definitions = read_json(alias_path)
     news = import_news(news_root, definitions, as_of, store.root / "news-cache") if news_root else None
     # The per-run originals are pinned in its final manifest. A temporary import
     # cache is retained on failure as evidence, never reused without verification.
     company_cache = store.root / "company-cache" / (digest(canonical([str(company_root), stamp(as_of)]))[:24])
     company = load_company(company_root, definitions, as_of, company_cache) if company_root else None
-    pack = build_pack(store, definitions, as_of=as_of, news=news, company=company)
+    pack = build_pack(store, definitions, as_of=as_of, news=news, company=company, security_keys=security_keys)
     if not pack["dossiers"]:
         raise ValueError("no_eligible_research_dossiers_check_source_gates")
     pack_hash = digest(canonical(pack))
@@ -88,8 +89,8 @@ def prepare(store: ResearchStore, alias_path: Path, as_of: datetime, news_root: 
     return pack, run_id, directory
 
 
-def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None, *, prepared: tuple | None = None) -> dict:
-    pack, run_id, directory = prepared or prepare(store, alias_path, as_of, news_root, company_root)
+def analyze(store: ResearchStore, alias_path: Path, executable: Path, as_of: datetime, news_root: Path | None, company_root: Path | None = None, *, prepared: tuple | None = None, security_keys: list[str] | None = None) -> dict:
+    pack, run_id, directory = prepared or prepare(store, alias_path, as_of, news_root, company_root, security_keys=security_keys)
     pack_hash = digest(canonical(pack))
     deadline = time.monotonic() + 45 * 60
     with store.db:
@@ -184,6 +185,7 @@ def main() -> None:
         command.add_argument("--as-of", type=utc, default=None)
         command.add_argument("--news-root", type=Path)
         command.add_argument("--company-context", type=Path)
+        command.add_argument("--security-key", action="append", dest="security_keys", help="Explicit manual research subset; every resolved key must have eligible current evidence")
         if name == "analyze":
             command.add_argument("--codex", type=Path, required=True)
     commands.add_parser("status")
@@ -244,7 +246,7 @@ def main() -> None:
                         candidates.setdefault(key, {"ticker": key[0], "issuer_cik": key[1], "security_title": key[2], "proof_id": event["id"]})
                 result = list(candidates.values())
             elif args.command == "prepare":
-                pack, run_id, directory = prepare(store, args.aliases, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
+                pack, run_id, directory = prepare(store, args.aliases, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context, security_keys=args.security_keys)
                 result = {"run_id": run_id, "pack": str(directory / "PACK.json"), "dossiers": len(pack["dossiers"]), "status": "prepared_not_analyzed"}
             elif args.command == "followups":
                 cutoff = args.as_of or datetime.now(timezone.utc)
@@ -281,7 +283,7 @@ def main() -> None:
                     store.db.execute("INSERT OR IGNORE INTO operations VALUES(?,'owner_review','recorded',?,?)", ("owner-reviewed:" + args.run_id, canonical(body).decode(), stamp()))
                 result = {"status": "owner_review_recorded", "run_id": args.run_id}
             else:
-                result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context)
+                result = analyze(store, args.aliases, args.codex, args.as_of or datetime.now(timezone.utc), args.news_root, args.company_context, security_keys=args.security_keys)
             print(json.dumps(result, ensure_ascii=False))
         finally:
             store.close()

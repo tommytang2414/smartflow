@@ -16,7 +16,7 @@ from .common import beneath, canonical, digest, file_hash, read_json, stamp, utc
 
 VERSION = "sec-company-context-v1"
 POLICY = "https://www.sec.gov/search-filings/edgar-application-programming-interfaces"
-FORMS = {"8-K", "8-K/A", "10-Q", "10-Q/A", "10-K", "10-K/A", "20-F", "6-K"}
+FORMS = {"8-K", "8-K/A", "10-Q", "10-Q/A", "10-K", "10-K/A", "20-F", "6-K", "N-CSR", "N-CSRS", "N-2"}
 MAX_BYTES = 10 * 1024 * 1024
 
 
@@ -65,7 +65,10 @@ def excerpts(text: str) -> list[dict]:
     # Fixed source excerpts, not model-produced summaries. Avoid reading just a
     # long report's contents page; keep meaningful keyword paragraphs instead.
     locations = []
-    patterns = [r"Item\s+(?:2\.02|7\.01|8\.01|5\.02|1\.01)",
+    patterns = [r"\bconverted\s+into\s+the\s+right\s+to\s+receive\b",
+                r"\b(?:merger agreement|closed-end management investment company)\b",
+                r"\bclosing conditions\b",
+                r"Item\s+(?:2\.02|7\.01|8\.01|5\.02|1\.01)",
                 r"(?:total|net)\s+(?:sales|revenue)", r"(?:share|stock)\s+repurchase(?:s|\s+program)?",
                 r"(?:increase[sd]?|decrease[sd]?|paused)\s+(?:in\s+)?(?:share\s+repurchases|net\s+sales|revenue)",
                 r"\b(?:guidance|dilution)\b", r"(?:reaffirm|rais|lower|updat)\w*\s+(?:its|our|the)?\s*(?:guidance|outlook)"]
@@ -77,9 +80,11 @@ def excerpts(text: str) -> list[dict]:
             # rows have substantive text. This remains selection, not analysis.
             substance = sum(len(line) for line in snippet.splitlines() if len(line) > 45)
             return substance + 100 * len(re.findall(r"\b(?:increased|decreased|compared|approved|paused|repurchased|announced)\b", snippet, re.I))
-        match = max(matches, key=relevance) if matches else None
+        # The first conversion clause supplies the transaction consideration;
+        # later references can concern another class or a termination provision.
+        match = (matches[0] if pattern == patterns[0] else max(matches, key=relevance)) if matches else None
         if match and not any(abs(match.start() - start) < 600 for start in locations):
-            locations.append(max(0, match.start() - 80))
+            locations.append(max(0, match.start() - (350 if pattern == patterns[0] else 80)))
         if len(locations) == 4:
             break
     if not locations:
@@ -148,7 +153,9 @@ def fetch(definitions: list[dict], destination: Path, contact: str) -> dict:
             raise ValueError("sec_company_identity_mismatch")
         recent = submission["filings"]["recent"]
         selected = []
-        for family in ({"8-K", "8-K/A", "6-K"}, {"10-Q", "10-Q/A", "10-K", "10-K/A", "20-F"}):
+        families = ({"N-CSR", "N-CSRS"}, {"N-2"}) if alias.get("instrument_type") == "CLOSED_END_FUND" else (
+            {"8-K", "8-K/A", "6-K"}, {"10-Q", "10-Q/A", "10-K", "10-K/A", "20-F"})
+        for family in families:
             selected.extend(next(([i] for i, form in enumerate(recent["form"]) if form in family), []))
         coverage[key] = {"status": "BOUNDED_RECENT_FILINGS", "submissions_path": submissions_path,
                          "submissions_sha256": submissions_hash, "company_name": submission["name"], "documents": 0,
