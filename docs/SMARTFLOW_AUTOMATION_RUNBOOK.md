@@ -85,8 +85,8 @@ timezone, with SPY benchmark. `send_raw_to_gpt=false` is mandatory. The account
 holder must confirm rights; a generated template is not license evidence.
 
 ```powershell
-py -3 -X utf8 -m smartflow.research fetch-prices --aliases data/research-prototype/aliases-us-v3.json --rights <confirmed-rights.json> --destination <new-private-bundle>
-py -3 -X utf8 -m smartflow.research --state <restored-or-authoritative-state> outcomes --aliases data/research-prototype/aliases-us-v3.json --prices <private-bundle>
+py -3 -X utf8 -m smartflow.research fetch-prices --aliases config/research-aliases-us.json --rights <confirmed-rights.json> --destination <new-private-bundle>
+py -3 -X utf8 -m smartflow.research --state <restored-or-authoritative-state> outcomes --aliases config/research-aliases-us.json --prices <private-bundle>
 ```
 
 Originals stay private and separate from GPT packets. Daily split-adjusted prices

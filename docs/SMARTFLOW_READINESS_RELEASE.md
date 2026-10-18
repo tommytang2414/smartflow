@@ -204,3 +204,59 @@ Windows refresh task's explicit alias argument must point to the canonical confi
 preserve its XML/action before changing that argument only. Keep task account,
 permissions, triggers, mail route and all other services unchanged. Rollback to
 the retained code/release and task action; retain additive evidence and new runs.
+
+Runtime release `88677de` is deployed with29 verified hashes (initial identity
+release `66eb69f`, operating excerpts `acffd8f`, inline-ID validation `1544911`,
+history note `d98f0e7`, counterproof rules `2386476`). Before-state retained at
+`exports/identity-before-20261018T143806Z`, including code/release rollback ZIPs
+and consistent state archive528205896bytes, SHA256
+`8fbdab1b691dc910741c7f9120015281920ad074e80184084da19d1bdc6fd032`.
+Windows refresh action now points to the canonical config; parsed before/after
+XML confirms identical principals, triggers, settings, command and working directory.
+
+The final sealed68file input is `inbox/identity-final-20261018T145818Z`, SHA256
+`02a0d5957e046a1c6c9de39b56042699e50c49d001442e66ed76c7611637ec15`.
+It contains24 bounded originals across12 aliases, eight for the requested four,
+including explicit PCQ N-2 classification and N-CSRS. Registration material is
+historical identity context, not current NAV or performance. Latest exact-version
+S3 GET timed out180seconds; input instead uses the already verified Oct18morning
+snapshots within the unchanged36hour gate, keeping their actual generated times.
+
+First manual run `R334224dfa69045d6ea4b7daa` remains needs_attention: both
+analyst outputs were rejected solely because legitimate inline evidence IDs
+matched the numeric-prose filter. Exact known IDs are now distinguished from
+numbers; unknown IDs, financial amounts, percentages and trade commands still
+reject. Second run `R3ecde7abcc795c58063ce9dc` remains needs_attention after
+independent review requested citation/counterproof corrections. All raw outputs,
+reviews, failure receipts and backups remain immutable. These are actual failures,
+not approved report dates or human acceptance. Subsequent corrections add an
+accurate selected-identity history introduction, explicit issuer-source citations
+for fund classification and direct-logical counterproof requirements.
+
+Final requested report `R017f8bddd3f02aa3fc15d1a9` passed independent
+`PASS_WITH_LIMITATIONS` review at the actual Oct18manual run. Research cutoff
+2026-10-18T14:58:47Z; report SHA256
+`58949e4ec20b14a202f85cec52c56120e253039ddbfcca1519ae53e437331f65`.
+All four identities resolve; PCQ remains CONTEXT_ONLY, the three company stocks
+have plan/structure-qualified WATCH theses. Analyst/reviewer thread IDs differ,
+actual tool counts0, and exact pack/analysis/report review bindings verify.
+General context was removed from both counter-citation fields; no false counterproof
+or synthetic baseline was accepted. The two earlier manual runs remain failed.
+
+Backup-config successor `be69fba` adds active canonical alias/proof JSON to state
+archives with relative paths; model/report code remains `88677de`. Final runtime
+29hashes and both rehearsal modules pass on Mac; existing178tests/4subtests pass.
+Fresh Windows download/restore of
+`state-20261018T150707Z-88578e1d.zip`,549745900bytes, SHA256
+`1a1fc04629e7fa94f6b13568b18be3e20c45c896e15093481160eb5d558aa743`,
+verified1933 files,9approved reports,124follow-up attempts, source-cache hashes,
+SQLite/FKs and both canonical config hashes.87questions remain pending. The
+automatic model-budget ledger hash is unchanged across manual work; owner-review
+count remains0. No requested report was queued or emailed.
+
+Local report/originals/audit receipts are under
+`data/research-prototype/identity-20261018/`, including `final-verification.json`.
+Temporary restore and known task-owned empty outputs were removed; all historical
+raw evidence, reports and backups retained. Price/volume/benchmark/NAV/complete-news
+coverage remains unavailable; this completes the requested identity repair and
+four-target analysis, not the outstanding all-five readiness goal.

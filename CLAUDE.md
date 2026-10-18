@@ -22,6 +22,20 @@ context-only; FERG/AMBQ Common Stock and BMBL ClassA have distinct verified keys
 Manual `prepare`/`analyze --security-key` pins an explicit complete target subset;
 it does not reset the automated daily reservation or approve old unresolved tasks.
 
+Owner-requested four-target report `R017f8bddd3f02aa3fc15d1a9` passed independent
+review on Oct18, with exact class/issuer proof and eight issuer/fund originals.
+PCQ is context-only; FERG/AMBQ plan-linked sales and BMBL affiliated forward
+arrangements do not establish independent bearish conviction. All prior reports
+and the two failed manual attempts remain preserved. Model release `88677de`;
+backup-config successor preserves canonical aliases/proofs as well as state.
+Prices, NAV/discounts, complete earnings/news and actual owner acceptance remain
+separate gaps; this requested report is not a manual acceptance receipt.
+
+Final runtime `be69fba` verified29hashes; model report was generated under
+`88677de`. Actual off-host restore1933files/9approved reports/124follow-up attempts
+and canonical alias/proof hashes PASS. The automatic daily budget is unchanged;
+87questions remain pending. Exact receipts/rollback are in the readiness release.
+
 Readiness work approved 2026-10-13 is tracked in
 `docs/SMARTFLOW_READINESS_RELEASE.md`. Research schema v2 executes bounded due
 follow-ups without pretending questions are resolved; valid non-directional Form4

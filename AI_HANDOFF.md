@@ -1,72 +1,68 @@
 # AI Handoff
 
-## Current state — 2026-10-18 02:12HKT
-- Owner-approved all-five readiness goal remains incomplete; goal tool reports
-  blocked, not complete. No token budget. Branch feat/smartflow-mac-research;
-  documentation parent8014043, current documentation HEAD resolves through Git.
-  Runtime18995a66875ca13a2d937398307e0ae63d20b853 remains27/27 hash verified.
-- Mac authoritative /Users/vortex/Applications/smartflow-research, own.venv/state.
-  Existing Windows AWS/GWS bridge transfers sealed inputs/backups/self-mail;
-  no credentials copied or auth changed. Shadow VPS50cdced, legacy untouched.
-- Oct18 audit was read-only against live services: no model calls, no source/gate/
-  budget changes, no new emails or fabricated owner-review receipts.
+## Current state — 2026-10-18 23:12HKT
+- User's four-identity repair and targeted analysis COMPLETE. Broader all-five
+  readiness goal remains incomplete/blocked; do not mark it complete.
+- Branch feat/smartflow-mac-research; runtimebe69fbaa4df0ab30fe31bd0b7f4e1818bd526d20,
+ 29hashes verified. Model report source88677de; successor only adds config backup.
+  Current docs HEAD resolves through Git. No foreign edits, auth/IAM/credentials,
+  upstream/legacy/otherproject changes, or requested report mail.
 
-## Newly observed results
-- Three normal11:00HKT daily cycles after renderer repair independently approved:
-  Oct15 Re16e05e1d9ff24bb7f46ea23; Oct16 R8a7372ce4149f3edc59cf38b;
-  Oct17 R2dfa8166743fc64d228bdacc. Exact pack/analysis/report hashes match each
-  PASS_WITH_LIMITATIONS review, distinct analyst/reviewer threads verified.
-- Latest report SHA11c8570bfd1049fa20fd5f186fd059b01e4e86ceb07250e0816919d9fbcfcbb4.
-  At its sealed cutoff House/Form144/SFC PASS100%, Form4 PASS99.31%; no live-health
-  guarantee.5 of1818 candidates in packet; only QCOM resolved, other4 explicitly
-  unresolved. No actual prices/volume/relative returns/broad US news coverage.
-- Evidence79775/imports17,64 pending questions,78 immutable attempts. PARTIAL/
-  UNKNOWN remain pending. Prior failed runR58939113fe7d6eabfbcfe6c5 and preview
-  remain unchanged; daily reservations were never reset to force PASS.
-- Original fault episode closed2026-10-15T03:04:05Z on real success. Recovery
-  Gmail1a13d97ded42554f and weekly:2026-10-17 Gmail1a1481b991c055d6 each freshly
-  verified through existing GWS: exact one Sent token hit, frozen raw/body/header
-  match. Weekly status-only, actual owner-review receipts0.
-- Fresh full off-host restore: state-20261017T040005Z-3277d5fe.zip454587805bytes,
-  SHA0f26bbd5eb5bdad7f0f7aa05d21541f7816c7dfdd8ec7f555130b7d85f0cfc86.
-  Verified1248 files, SQLite/FKs,7 approved runs/manifests,78 follow-up result
-  hashes and source-cache hashes. Archive retained in Windows gateway/backups.
-- Mac daily/weekly launchd last exit0; weekly actually ranOct17 12:00HKT.
-  Windows last refreshOct17 10:15/drainOct18 01:25 exit0, missed runs0.
-  Oct18 10:15/11:00 slots have not occurred at observation time. No missed-day
-  claims based on next scheduled slots. Mac stderr logs both empty.
-- Maintained11-category offline readiness rehearsal PASS; existing178-test suite
-  was passed for runtime release, not rerun for this documentation-only audit.
-- Exact latest approved run originals/report plus audit.json, runtime hashes/
-  observations, Windows task receipt and frozen WEEKLY_STATUS.txt retained under
-  data/research-prototype/acceptance-20261018/. Temporary full restore cleaned
-  automatically; all pre-existing backups/raw/history retained.
+## Delivered / verified
+- ReportR017f8bddd3f02aa3fc15d1a9, cutoff2026-10-18T14:58:47Z,
+  PASS_WITH_LIMITATIONS. SHA58949e4ec20b14a202f85cec52c56120e253039ddbfcca1519ae53e437331f65.
+  Exact pack/analysis/report review hashes, distinct role threads and zero tool
+  calls verified. Local complete report/originals and audit:
+  data/research-prototype/identity-20261018/R017f8bddd3f02aa3fc15d1a9/REPORT.md
+  and parent final-verification.json. Report tab queued in Codex.
+- FERG/Ferguson CIK2011641 Common Stock; AMBQ/Ambiq CIK1500412 Common Stock;
+  BMBL/Bumble CIK1830043 ClassA; PCQ/PIMCO California Municipal Income Fund
+  CIK1140411 Common Shares, CLOSED_END_FUND/CONTEXT_ONLY.12canonical aliases and
+  exact SEC proof audit now versioned under config/. Previous8 retained.
+- FERG/AMBQ plan-linked sales do not establish new discretionary bearish action.
+  BMBL affiliated owners/repeated filings/forwards are not independent sellers or
+  net outflow; merger conditional. PCQ NAV/discount/distribution gaps remain.
+-178tests/4subtests and prototype10/readiness12categories PASS on Windows/Mac.
+  Fresh Windows full restore1933files/9approved manifests/124follow-up results/
+  source hashes/SQLite/FKs/canonical config hashes PASS.87questions pending.
+- Exact archive retained locally in identity evidence root:
+  state-20261018T150707Z-88578e1d.zip549745900bytes,
+  SHA1a1fc04629e7fa94f6b13568b18be3e20c45c896e15093481160eb5d558aa743.
+  Automatic model-budget ledger unchanged; actual human owner-review count0.
+- Mac authoritative own.venv/state; rollback code/release/state retained under
+  exports/identity-before-20261018T143806Z. Exact receipts/hashes in readiness release.
+  Final sealed68file inbox/identity-final-20261018T145818Z includes24originals
+  across12aliases, eight for these4targets. Existing schedule/slot unchanged.
+- Windows refresh action now canonical config path; parsed before/after XML proves
+  unchanged principal/triggers/settings/command/working directory. Saved locally.
 
-## Operational constraints and exact next step
-- Re-read current receipts before acting; latest local result is an Oct17 report,
-  not an Oct18 research run. Preserve normal daily model budget and history.
-- Private Twelve Data Basic adapter remains UNACTIVATED. Owner chose free route
-  but has no confirmed account/key/rights/retention contract. No raw quotes to GPT,
-  no unofficial source fallback, no auth/key setup or key requests in chat.
-  Existing account clarification remains unanswered; don't repeatedly ask it.
-- Seven distinct actual HKT human-acceptance dates required before research-mail
-  content. owner-review only after explicit review of exact report/hash; never
-  create on user's behalf or count model review/report dates as human dates.
-- Alias proof validity currently endsNov1; renew only with valid in-period exact
-  issuer/class proof, no blind extension or ticker-only joins. Known8 aliases
-  leave much of candidate universe unresolved; don't claim holistic coverage.
-- Windows refresh10:15/draingatewayhourly:25; Macdaily11:00/weeklySaturday12:00.
-  Windows interactive login/awake/LAN and Mac GUI/awake remain dependencies.
-  No automatic archive pruning. Shared actual-model slot across4 tools remains
-  in place; no other project files changed during this audit.
-- Source repair receipts/backups and exact rollback manifests in
-  docs/SMARTFLOW_READINESS_RELEASE.md; operating contracts in
-  docs/SMARTFLOW_AUTOMATION_RUNBOOK.md. No source gate relaxation, IAM, legacy
-  production reporter or unrelated asset/news/meme changes.
-- Next dependent work: once owner has private free-account rights/key, activate
-  existing adapter and verify real benchmark outcomes. Continue observed scheduled
-  acceptance and real human receipts; current report/restore/mail acceptance is
-  now evidenced, so do not repeat the old 'fresh approved report pending' claim.
+## Failures preserved / constraints
+- R334224dfa69045d6ea4b7daa and R3ecde7abcc795c58063ce9dc stay needs_attention;
+  raw outputs, reviews and backups intact. Valid inline EIDs now distinguished
+  from numeric claims; unknown IDs/amounts/trade commands still reject. Selected
+  history note and fund/counterproof citations fixed before successful fresh run.
+- First manual attempt executed32due checks; replacements did not repeat them.
+  PARTIAL/UNKNOWN stay pending; old unresolved theses/tasks not auto-merged.
+- Extra S3 exact-version GET timed out180s. Used verified Oct18morning snapshots
+  within unchanged36h gate, actual generated times retained. All4snapshot gates
+  PASS at report cutoff, Form499.28%; no live-health claim. Failure receipt retained.
+- Own outputs stay in ignored identity evidence root; temporary restore/known empty
+  stderr outputs removed. Raw/history/backups retained; no archive pruning.
+
+## Exact next step
+- Requested work is complete. For further work reread actual receipts first.
+  If owner explicitly reviews exact new report, record one real HKT date with
+  owner-review; this implementation request is not a human acceptance receipt.
+- Free TwelveData account/key/use/retention rights still absent. No real prices/
+  volume/benchmark returns/fullUSnews/calendar/complete earnings exhibits or alpha.
+  No key requests in chat/auth setup; existing account question remains unanswered.
+- Seven actual human acceptance dates required before automatic research mail;
+  count0, weekly statusonly. Alias validity endsNov1; renew with exact eligible
+  issuer/class proof, no blind extension/ticker join. Other unknowns remain outside
+  this requested repair. Keep source14day99%/semantic/freshness gates.
+- Windowsrefresh10:15/drainhourly:25, Macdaily11:00/weeklySaturday12:00, awake/login/
+  LAN dependencies and shared4tool GPTslot retained. ShadowVPS50cdced and legacy
+  reporter untouched. See docs/SMARTFLOW_READINESS_RELEASE.md / AUTOMATION_RUNBOOK.
 
 ## Prior DevSecOps work completed and verified
 - Real base/head dependency finding diff, raw audits/exit codes and PASS/FINDINGS/SCAN_ERROR evidence.

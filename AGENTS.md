@@ -340,6 +340,9 @@ not a new public filing.
 - Full state archives also preserve canonical `config/research-aliases-us.json`
   and dated identity-proof audit JSON with relative paths and manifest hashes;
   the legacy root alias files alone are no longer the active configuration.
+- Backup-config successor `be69fba` is deployed; actual off-host restore verifies
+  1933 files/9approved reports and canonical configuration. Requested four-target
+  report `R017f8bddd3f02aa3fc15d1a9` passed independent review; prices remain absent.
 
 ### 2026-10-18 — Observe scheduled research and restore acceptance
 
