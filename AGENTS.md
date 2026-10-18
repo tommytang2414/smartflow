@@ -332,6 +332,8 @@ not a new public filing.
 - Report history introduction now checks the selected dossiers' actual approved
   predecessors; prior reports elsewhere in the DB do not establish a baseline
   for a newly resolved identity. Frozen older reports remain unchanged.
+- Thesis counter-citations must directly weaken the stated hypothesis; general
+  issuer/merger context and unresolved follow-ups are not automatic counterproof.
 
 ### 2026-10-18 — Observe scheduled research and restore acceptance
 

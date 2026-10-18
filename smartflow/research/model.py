@@ -60,6 +60,7 @@ holdings_after係披露該行持倉，唔推算目前總持倉／持倉比例／
 prices status unavailable 時，唔聲稱觀察過價格反應、volume、relative return或預測績效。
 每項 thesis 係可被推翻嘅研究假說：status、support_ids、counter_ids、具體 invalidation_condition 同 next_evidence；唔係交易判斷。
 至少一個 support_id；反證有就列出，冇實際引用就留空唔捏造。next_evidence描述要查嘅原件，冇日曆唔聲稱已知下一次事件日期。
+counter_ids必須直接削弱該項 hypothesis；一般公司背景、合併事件或未解答嘅 UNKNOWN／PARTIAL 覆查唔自動係反證，冇直接反證就留空，背景另列喺 claims。
 已有 previous_approved 時，區分新交易同新研究背景；新增公司文件唔代表新買盤，previous claims唔係原始證據。
 同上次公司文件比較必須用 company_document_change；UNCHANGED唔聲稱新增文件。新 retrieval時間／receipt ID 唔等於新 filing或新內容；冇已核實 previous dossier就唔聲稱對比有新增。
 NO_COMPARABLE_PREVIOUS_COMPANY_CONTEXT表示以前未有可比較公司原件，唔當已驗證空 baseline。CHANGED都只表示研究 packet 內容變化，唔自動代表新發布 filing。
