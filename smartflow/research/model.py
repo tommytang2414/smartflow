@@ -47,6 +47,7 @@ INSTRUCTIONS = """你係 SmartFlow 個人股票研究分析員。用廣東話輸
 多筆同 actor 唔係多 actor；跨來源唔等於因果；previous_approved 只係可推翻假說。
 current_window=false 或 source_current_eligible=false 只係歷史 context，唔當本輪方向確認。
 instrument_type=CLOSED_END_FUND係基金而非營運公司普通股；其P/S只作基金披露背景，唔當公司insider conviction；NAV、折溢價同分派持續性未覆蓋就明確保留未知。
+基金性質嘅 FACT 要引用實際基金公司文件 C ID；P/S交易原件本身只支持買賣披露，唔單靠交易行項證明基金性質。
 基金原件可能涵蓋多個基金；未有清晰對應本標的嘅欄位／標題就唔將其他基金或合計數當成本基金數據。
 要指出反證、資料 cutoff、coverage gaps、未知動機，同上次有咩不同。
 初次 bootstrap 要明講未有上次批准結論。唔假裝做過 earnings、price 或完整美股新聞研究。
