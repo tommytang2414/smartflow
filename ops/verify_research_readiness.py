@@ -35,6 +35,8 @@ def main():
         root = Path(temporary)
         merger = "Each share of Class A common stock outstanding before the Effective Time will be converted\ninto the right to receive $6.05 in cash. " + "Closing conditions remain outstanding. " * 40
         assert any("$6.05 in cash" in quote["quote"] for quote in excerpts(merger))
+        performance = "Gross profit increased compared with the prior year period. " * 8
+        assert any("Gross profit increased" in quote["quote"] for quote in excerpts(performance))
         listing = {"security_key": "US:ACME:CLASS_A", "symbol": "ACME", "exchange": "NASDAQ", "currency": "USD", "timezone": "America/New_York"}
         body = {"status": "ok", "meta": {"symbol": "ACME", "exchange": "NASDAQ", "currency": "USD", "exchange_timezone": "America/New_York", "interval": "1day"},
                 "values": [{"datetime": "2026-10-07", "open": "100", "high": "110", "low": "95", "close": "105", "volume": "10"}]}

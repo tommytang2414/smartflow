@@ -68,6 +68,7 @@ def excerpts(text: str) -> list[dict]:
     patterns = [r"\bconverted\s+into\s+the\s+right\s+to\s+receive\b",
                 r"\b(?:merger agreement|closed-end management investment company)\b",
                 r"\bclosing conditions\b",
+                r"\b(?:revenue|net\s+sales|gross\s+profit|gross\s+margin)\s+(?:increased|decreased)\b",
                 r"Item\s+(?:2\.02|7\.01|8\.01|5\.02|1\.01)",
                 r"(?:total|net)\s+(?:sales|revenue)", r"(?:share|stock)\s+repurchase(?:s|\s+program)?",
                 r"(?:increase[sd]?|decrease[sd]?|paused)\s+(?:in\s+)?(?:share\s+repurchases|net\s+sales|revenue)",
