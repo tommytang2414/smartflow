@@ -191,8 +191,11 @@ def validate_review(review: dict) -> None:
 
 
 def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
+    history_note = ("首次歷史匯入；唔當所有歷史交易係今日新訊號。" if pack["bootstrap"] else
+                    "保留上次批准研究嘅比較；寄送狀態見獨立 delivery ledger。" if any(d.get("previous_approved") for d in pack["dossiers"]) else
+                    "本輪標的未有可比較嘅同身份批准結論；其他歷史報告仍然保留。")
     lines = ["# SmartFlow 股票研究", "", f"研究 cutoff：{pack['as_of']}", f"狀態：{status}；只供個人研究。", "",
-             "首次歷史匯入；唔當所有歷史交易係今日新訊號。" if pack["bootstrap"] else "保留上次批准研究嘅比較；寄送狀態見獨立 delivery ledger。", ""]
+             history_note, ""]
     if analysis:
         lines.extend([analysis["overview"], ""])
     by_key = {item["security_key"]: item for item in analysis["items"]} if analysis else {}

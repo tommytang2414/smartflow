@@ -124,6 +124,10 @@ def main():
             assert fund["evidence"] and fund["identity_resolved"]
             assert "封閉式基金" in render_report(fund_packet, None, status="fixture")
             assert "營運公司方向確認 actor：0" in render_report(fund_packet, None, status="fixture")
+            new_identity = copy.deepcopy(fund_packet);new_identity["bootstrap"] = False
+            assert "本輪標的未有可比較嘅同身份批准結論" in render_report(new_identity, None, status="fixture")
+            new_identity["dossiers"][0]["previous_approved"] = {"fixture": True}
+            assert "保留上次批准研究嘅比較" in render_report(new_identity, None, status="fixture")
             # A verified alias whose proof interval is valid but no current
             # eligible records exist must never silently fall back to another name.
             with patch("smartflow.research.pack.source_assessments", return_value=[]):

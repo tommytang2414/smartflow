@@ -329,6 +329,9 @@ not a new public filing.
   IDs. The validator excludes only exact IDs present in the frozen pack before
   checking numbers; unknown IDs and financial values remain rejected. Preserve
   the rejected run and verify the replacement through independent review.
+- Report history introduction now checks the selected dossiers' actual approved
+  predecessors; prior reports elsewhere in the DB do not establish a baseline
+  for a newly resolved identity. Frozen older reports remain unchanged.
 
 ### 2026-10-18 — Observe scheduled research and restore acceptance
 
