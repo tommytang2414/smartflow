@@ -325,6 +325,11 @@ not a new public filing.
   stance, target completeness/rejection and split-line merger consideration.
   Deployment evidence is recorded in the readiness release and handoff.
 
+- Real manual output exposed a numeric-prose false positive on valid evidence
+  IDs. The validator excludes only exact IDs present in the frozen pack before
+  checking numbers; unknown IDs and financial values remain rejected. Preserve
+  the rejected run and verify the replacement through independent review.
+
 ### 2026-10-18 — Observe scheduled research and restore acceptance
 
 - Verified three ordinary Oct15–17 approved cycles after the renderer fix,

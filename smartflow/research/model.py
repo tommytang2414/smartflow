@@ -139,6 +139,7 @@ def validate_analysis(pack: dict, analysis: dict) -> None:
         raise ValueError("analysis_missing_dossiers")
     seen = set()
     prose = [analysis["overview"]]
+    inline_ids = set()
     for item in analysis["items"]:
         if set(item) != set(ITEM["properties"]) or item["security_key"] not in expected or item["security_key"] in seen:
             raise ValueError("analysis_security_identity")
@@ -150,6 +151,7 @@ def validate_analysis(pack: dict, analysis: dict) -> None:
             raise ValueError("analysis_thesis_schema")
         if not isinstance(thesis["support_ids"], list) or not isinstance(thesis["counter_ids"], list) or not thesis["support_ids"] or not set(thesis["support_ids"] + thesis["counter_ids"]) <= ids:
             raise ValueError("analysis_thesis_unknown_evidence")
+        inline_ids.update(ids)
         prose.extend([thesis["hypothesis"], thesis["invalidation_condition"], thesis["next_evidence"]])
         if not 1 <= len(item["claims"]) <= 8 or len(item["questions"]) > 3:
             raise ValueError("analysis_scope_limit")
@@ -165,7 +167,9 @@ def validate_analysis(pack: dict, analysis: dict) -> None:
     for text in prose:
         if not isinstance(text, str) or not text.strip() or len(text) > 1400:
             raise ValueError("analysis_invalid_prose")
-        if re.search(r"[0-9０-９%％$]|[零一二三四五六七八九十百千萬億]+(?:美元|港元|元|股|%|％)", text):
+        numeric_prose = re.sub(r"(?<![A-Za-z0-9])[ECNF][a-f0-9]{24}(?![A-Za-z0-9])",
+                              lambda match: "" if match[0] in inline_ids else match[0], text)
+        if re.search(r"[0-9０-９%％$]|[零一二三四五六七八九十百千萬億]+(?:美元|港元|元|股|%|％)", numeric_prose):
             raise ValueError("analysis_unverified_numeric_prose")
         if re.search(r"(?i)\b(?:LONG|SHORT|BUY NOW|SELL NOW)\b|目標價|止蝕價|買入建議|賣出建議", text):
             raise ValueError("analysis_trade_instruction")
@@ -216,8 +220,9 @@ def render_report(pack: dict, analysis: dict | None, *, status: str) -> str:
     lines.extend(["", "美股公司背景只包括已匯入 SEC 原件片段；完整 earnings exhibits、macro、事件日曆未覆蓋。香港新聞只包括已驗證相關原件。", "",
                   f"研究候選：{pack['total_candidates']}；未進今次 packet：{pack['not_reviewed_candidates']}。", ""])
     for dossier in pack["dossiers"]:
+        actor_label = "營運公司方向確認 actor" if dossier.get("instrument_type") == "CLOSED_END_FUND" else "可辨識 actor"
         lines.extend([f"## {label(dossier)}", "", f"證據分類：{dossier['stance']}；研究優先：{dossier['priority']}。",
-                      f"可辨識 actor：{dossier['distinct_actors']}；未知 actor 交易：{dossier['unknown_actor_events']}；identity resolved：{dossier['identity_resolved']}。", ""])
+                      f"{actor_label}：{dossier['distinct_actors']}；未知 actor 交易：{dossier['unknown_actor_events']}；identity resolved：{dossier['identity_resolved']}。", ""])
         proof = dossier.get("identity_proof")
         if proof:
             lines.extend([f"身份：CIK {proof['issuer_cik']}；股份／受益權類別：{cell(proof['sec_titles'][0])}；instrument：{dossier['instrument_type']}。",

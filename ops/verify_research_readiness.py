@@ -123,6 +123,7 @@ def main():
             assert fund["distinct_actors"] == 0 and fund["purchase_sources"] == fund["sale_sources"] == []
             assert fund["evidence"] and fund["identity_resolved"]
             assert "封閉式基金" in render_report(fund_packet, None, status="fixture")
+            assert "營運公司方向確認 actor：0" in render_report(fund_packet, None, status="fixture")
             # A verified alias whose proof interval is valid but no current
             # eligible records exist must never silently fall back to another name.
             with patch("smartflow.research.pack.source_assessments", return_value=[]):

@@ -202,6 +202,12 @@ def main():
         analysis=dict(pack_sha256=digest(canonical(pack)),overview="只供研究。",items=[dict(security_key=d["security_key"],summary="保留證據矛盾。",change_since_previous="首次匯入未有上次結論。",claims=[dict(kind="FACT",text="披露原件提供研究依據。",evidence_ids=[d["evidence"][0]["id"]])],counterevidence_ids=[],questions=["交易動機有冇其他解釋？"],
              thesis=dict(status='CONTESTED',hypothesis='披露方向未確立基本面改善。',support_ids=[d['evidence'][0]['id']],counter_ids=[],invalidation_condition='若出現已核實同 actor 的相反交易，重評方向。',next_evidence='下一份可核實交易原件。')) for d in pack["dossiers"]])
         validate_analysis(pack,analysis)
+        cited=copy.deepcopy(analysis);cited["overview"]="已核對原件 " + pack["dossiers"][0]["evidence"][0]["id"] + "。"
+        validate_analysis(pack,cited)
+        bad=copy.deepcopy(cited);bad["overview"] += " 未核實金額7500美元。"
+        rejects(lambda:validate_analysis(pack,bad),"numeric_prose")
+        bad=copy.deepcopy(cited);bad["overview"]="原件 E" + "0"*24 + "。"
+        rejects(lambda:validate_analysis(pack,bad),"numeric_prose")
         render_pack=copy.deepcopy(pack)
         context=next(e['insider_context'] for d in render_pack['dossiers'] for e in d['evidence'] if e.get('insider_context'))
         context['field_footnotes']={'price':[{'id':'F1','text':'Disclosed price note'}], 'ownership':[{'id':'F2','text':'Disclosed ownership note'}]}
