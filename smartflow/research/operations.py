@@ -112,10 +112,14 @@ def backup(store: ResearchStore, destination: Path) -> dict:
                 name = "state/" + path.relative_to(store.root).as_posix()
                 z.write(path, name)
                 files[name] = file_hash(path)
-            for path in sorted(store.root.parent.glob("aliases*.json")) + [store.root.parent / "release.json"]:
+            metadata = (sorted(store.root.parent.glob("aliases*.json")) + [store.root.parent / "release.json",
+                        store.root.parent / "config/research-aliases-us.json"]
+                        + sorted((store.root.parent / "config").glob("research-identity-proofs-*.json")))
+            for path in metadata:
                 if path.is_file():
-                    z.write(path, path.name)
-                    files[path.name] = file_hash(path)
+                    name = path.relative_to(store.root.parent).as_posix()
+                    z.write(path, name)
+                    files[name] = file_hash(path)
             z.writestr("backup-manifest.json", canonical({"schema": "smartflow-state-backup-v1", "files": files}))
     receipt = {"archive": str(archive), "sha256": file_hash(archive), "bytes": archive.stat().st_size,
                "files": len(files), "created_at": stamp(), "offhost": "pending_gateway_copy_and_restore_verification"}

@@ -221,11 +221,14 @@ def main():
             # This synthetic approved row has a deliberately minimal manifest;
             # restore verification still checks it and every real prepared file.
             queue(store, "canary:fixture", "Fixture", "Test only\n", "canary")
+            canonical_aliases = store.root.parent / "config/research-aliases-us.json"
+            write_json(canonical_aliases, definitions)
             saved_backup = backup(store, root / "exports")
             restored = root / "restored";restored.mkdir()
             restored_db, verified = restore_verify(Path(saved_backup["archive"]), restored)
             assert verified["approved_runs"] == 1
             assert restored_db.execute("SELECT COUNT(*) FROM task_attempts").fetchone()[0] == 3
+            assert file_hash(restored / "config/research-aliases-us.json") == file_hash(canonical_aliases)
             restored_db.close()
             # Seven synthetic model-reviewed dates cannot activate the original
             # manual-acceptance gate. No fabricated operator receipts are added.

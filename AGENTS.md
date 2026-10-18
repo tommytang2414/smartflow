@@ -334,6 +334,12 @@ not a new public filing.
   for a newly resolved identity. Frozen older reports remain unchanged.
 - Thesis counter-citations must directly weaken the stated hypothesis; general
   issuer/merger context and unresolved follow-ups are not automatic counterproof.
+- Deployed runtime `88677de` with29 verified hashes; actual refresh task now uses
+  canonical aliases with identical principal/triggers/settings. Failed manual
+  attempts and their reviews remain preserved; see exact release receipts.
+- Full state archives also preserve canonical `config/research-aliases-us.json`
+  and dated identity-proof audit JSON with relative paths and manifest hashes;
+  the legacy root alias files alone are no longer the active configuration.
 
 ### 2026-10-18 — Observe scheduled research and restore acceptance
 
