@@ -443,6 +443,11 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-25 — Restore read-only newsroom integration
+
+- Production Mac overlay `21232fb` accepts the producer's reader-v3 `reader-status.json` while preserving exact artifact and review verification. Missing/extra/tampered artifacts still fail closed.
+- Windows178tests and prototype/readiness checks pass; actual Mac candidate and deployed connector verified16publications with no source DB writes. Code/SQLite backups and deployment receipt are under `exports/repair-20261025`; no model call, research rerun, mail or schedule change.
+
 ### 2026-10-08 — US company context and falsifiable research theses
 
 - Added hash/signature-bound Form 4 context and bounded keyless SEC company documents.

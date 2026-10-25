@@ -314,6 +314,12 @@ not a new public filing.
 
 ## Changelog
 
+### 2026-10-25 — Reader version 3 news compatibility
+
+- Deployed `21232fb` to Mac: the read-only news connector requires `reader-status.json` exactly for reader_version3, matching the newsroom producer. Older reader contracts, exact file sets, manifest pins, all hashes and formal review bindings remain enforced.
+- Windows178tests, prototype/readiness rehearsals and actual Mac prototype pass. Deployed connector verifies16trusted publications/6legacy exclusions for12aliases without changing the source DB; this is connector recovery, not a new approved research cycle.
+- Code/SQLite backups and before/after evidence: Mac `exports/repair-20261025`. Daily11:00, reservations, mail and sources unchanged.
+
 ### 2026-10-18 — Resolve four requested instruments and scope manual research
 
 - Added exact raw-XML issuer/class proof for FERG, AMBQ, BMBL ClassA and PCQ

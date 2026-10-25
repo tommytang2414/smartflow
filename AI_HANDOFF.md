@@ -1,5 +1,13 @@
 # AI Handoff
 
+## Latest repair — 2026-10-25 09:04 HKT
+- Branch feat/smartflow-mac-research; production code21232fb, documentation HEAD resolves through Git. User requested repair of news/SmartFlow/Meme; main sole writer, two read-only diagnostic agents.
+- Root cause: reader-v3 adds reader-status.json to frozen submissions; connector still expected reader-v2 set and stopped with news_frozen_artifact_set_mismatch. Conditional exact required artifact fixes compatibility without skipping any pin/hash/review.
+- Windows178tests + prototype/readiness and independent review PASS. Actual Mac candidate prototype PASS; normal deployed connector verifies16trusted/6legacy for12aliases, source DB unchanged. No model needed for this verification; next normal11:00 cycle is separate operational acceptance.
+- Deployed under news daily/collection and SmartFlow research writer locks. Before code/release and both SQLite backups in exports/repair-20261025/before; deployment.json/post-deployment.json retain hashes. SmartFlow DB and5331news evidence/control files unchanged. News script0b8e2ef also deployed live/cold by main; existing sources/auth/schedules/reservations preserved.
+- No forced research cycle, mail or old failure rewrite. Meme provider_halt recovery requires separate locked-cohort decision; no Meme production changes yet.
+- Exact next: observe11:00 normal SmartFlow cycle; distinguish any new source/reviewer failure from repaired connector. Do not reset prior reservations or replay pending sends.
+
 ## Current state — 2026-10-18 23:12HKT
 - User's four-identity repair and targeted analysis COMPLETE. Broader all-five
   readiness goal remains incomplete/blocked; do not mark it complete.
