@@ -1,5 +1,9 @@
 # AI Handoff
 
+## Operational repair acceptance —2026-10-25 21:21HKT
+- Read-only actual cycle verification: normalOct25 11:00:04 run completed11:02:31HKT, statusapproved/reviewPASS_WITH_LIMITATIONS. The reader-v3 connector repair21232fb therefore passed the next scheduled research flow, not only the isolated connector check. No extra model run or send triggered for acceptance.
+- User-approved independent Meme continuation is handled in its own repository; original news/data/evaluators and SmartFlow source/credentials/schedules remain separate. Prior repair records below retain exact code/tests/backups.
+
 ## Latest repair — 2026-10-25 09:04 HKT
 - Branch feat/smartflow-mac-research; production code21232fb, documentation HEAD resolves through Git. User requested repair of news/SmartFlow/Meme; main sole writer, two read-only diagnostic agents.
 - Root cause: reader-v3 adds reader-status.json to frozen submissions; connector still expected reader-v2 set and stopped with news_frozen_artifact_set_mismatch. Conditional exact required artifact fixes compatibility without skipping any pin/hash/review.
