@@ -137,10 +137,77 @@ def check_us_context(root):
     rejects(lambda:load_company(bundle,definitions,cutoff,root/'price-cache'),'unverified_price_payload')
 
 
+def check_news_publication_contracts(root):
+    newsroot = root / "news-publications"
+    newsroot.mkdir()
+    db = sqlite3.connect(newsroot / "newsroom.sqlite3")
+    db.executescript("""
+    CREATE TABLE documents(id INTEGER,retrieved_at TEXT,published_at TEXT);
+    CREATE TABLE publications(analysis_hash TEXT,directory TEXT,sent_at TEXT);
+    CREATE TABLE submission_integrity(analysis_hash TEXT,directory TEXT,manifest_hash TEXT);
+    CREATE TABLE editorial_reviews(analysis_hash TEXT,directory TEXT,record_hash TEXT,verdict TEXT);
+    """)
+    directory = newsroot / "published"
+    directory.mkdir()
+    analysis = canonical({"fixture": "reviewed publication"})
+    identity = digest(analysis)
+    names = {"analysis.json", "packet-manifest.json", "PACKET.md", "DIGEST.md", "RESEARCH_LEDGER.md",
+             "EMAIL.txt", "EMAIL.html", "email-subject.json", "mechanical-validation.json", "source-health.json",
+             "analyst-notes.md", "BETA_REPORT.md", "sources/original.json"}
+    for name in names:
+        path = directory / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"fixture")
+    (directory / "analysis.json").write_bytes(analysis)
+    db.execute("INSERT INTO publications VALUES(?,?,?)", (identity, "published", stamp(NOW)))
+
+    def seal(version, extra=(), missing=()):
+        write_json(directory / "packet-manifest.json", {"delivery_version": 1, "reader_version": version,
+                                                       "source_files": ["original.json"]})
+        artifacts = names | ({"reader-status.json"} if version == 3 else set()) | set(extra)
+        for name in artifacts - names:
+            (directory / name).write_bytes(b"reader fixture")
+        write_json(directory / "submission-manifest.json", {"analysis_hash": identity,
+            "files": {name: file_hash(directory / name) for name in artifacts - set(missing)}})
+        manifest_hash = file_hash(directory / "submission-manifest.json")
+        write_json(directory / "review-record.json", {"analysis_sha256": identity,
+                   "submission_manifest_sha256": manifest_hash, "verdict": "PASS_WITH_LIMITATIONS"})
+        db.execute("DELETE FROM submission_integrity")
+        db.execute("DELETE FROM editorial_reviews")
+        db.execute("INSERT INTO submission_integrity VALUES(?,?,?)", (identity, "published", manifest_hash))
+        db.execute("INSERT INTO editorial_reviews VALUES(?,?,?,?)",
+                   (identity, "published", file_hash(directory / "review-record.json"), "PASS_WITH_LIMITATIONS"))
+        db.commit()
+
+    for version in (2, 3):
+        seal(version)
+        before = file_hash(newsroot / "newsroom.sqlite3")
+        assert import_news(newsroot, [], NOW)["coverage"]["trusted_publications"] == 1
+        assert file_hash(newsroot / "newsroom.sqlite3") == before
+    seal(3, missing=("reader-status.json",))
+    rejects(lambda: import_news(newsroot, [], NOW), "news_frozen_artifact_set_mismatch")
+    seal(2, extra=("reader-status.json",))
+    rejects(lambda: import_news(newsroot, [], NOW), "news_frozen_artifact_set_mismatch")
+    seal(3, extra=("unexpected.json",))
+    rejects(lambda: import_news(newsroot, [], NOW), "news_frozen_artifact_set_mismatch")
+    seal(3)
+    (directory / "reader-status.json").write_bytes(b"tampered")
+    rejects(lambda: import_news(newsroot, [], NOW), "news_artifact_hash_mismatch")
+    seal(3)
+    write_json(directory / "review-record.json", {"verdict": "PASS_WITH_LIMITATIONS"})
+    rejects(lambda: import_news(newsroot, [], NOW), "news_formal_review_binding_mismatch")
+    seal(3)
+    (directory / "submission-manifest.json").write_bytes(b"{}")
+    rejects(lambda: import_news(newsroot, [], NOW), "news_manifest_pin_mismatch")
+    db.close()
+
+
 def main():
     checks=[]
     with tempfile.TemporaryDirectory(prefix="research-rehearsal-") as folder, ExitStack() as cleanup:
         root=Path(folder)
+        check_news_publication_contracts(root)
+        checks.append("news reader-v2/v3 exact artifact contracts, status hash, manifest pin and formal review binding; zero source writes")
         check_us_context(root)
         checks.append('Form4 accepted-order/signature matching, plan unknown, footnote/holdings provenance and no position inference; SEC original/excerpt/cutoff/price fail closed')
         store=ResearchStore(root/"state")

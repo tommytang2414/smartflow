@@ -63,6 +63,8 @@ def import_news(root: Path, definitions: list[dict], as_of, cache: Path | None =
             required = {"analysis.json", "packet-manifest.json", "PACKET.md", "DIGEST.md", "RESEARCH_LEDGER.md",
                         "EMAIL.txt", "EMAIL.html", "email-subject.json", "mechanical-validation.json", "source-health.json", "analyst-notes.md", "BETA_REPORT.md"}
             required.update("sources/" + name for name in packet["source_files"])
+            if packet.get("reader_version") == 3:
+                required.add("reader-status.json")
             if set(manifest["files"]) != required:
                 raise ValueError("news_frozen_artifact_set_mismatch")
             analysis_bytes = beneath(directory, "analysis.json").read_bytes()
