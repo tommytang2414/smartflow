@@ -1,5 +1,14 @@
 # SmartFlow operational research
 
+**Windows bridge paused by owner,2026-11-01:** `SmartFlowResearchRefresh` and
+`SmartFlowResearchDrain` are DISABLED and stopped to prevent console windows.
+Windows input refresh, off-host backup retrieval/validation and queued self-mail
+delivery will not run automatically. Mac daily/weekly schedules were not changed;
+this is not a full SmartFlow shutdown. Preserve outbox, delivery ledger, backups
+and source evidence. Do not re-enable Windows tasks without new owner direction.
+Original task XML is retained under
+`C:\Users\User\docs\personal-device-audits\Console-task-audit-2026-11-01`.
+
 Owner approved all-five readiness scope2026-10-13. Mac is authoritative for
 research state; Windows bridges existing AWS/GWS authentication without copying
 credentials. Windows must be awake/logged in and reach the pinned Mac on LAN.

@@ -1,5 +1,10 @@
 # SmartFlow — Smart Money Data Pipeline
 
+Windows task status2026-11-01: owner stopped `SmartFlowResearchRefresh` and
+`SmartFlowResearchDrain` to prevent scheduled console popups. Both are DISABLED;
+Windows input refresh, backup retrieval/validation and queued-mail delivery are
+paused until new owner direction. Mac schedules remain unchanged. See the runbook.
+
 ## What This Is
 
 Operational research runbook: `docs/SMARTFLOW_AUTOMATION_RUNBOOK.md`. Windows

@@ -6,6 +6,12 @@ The Git working tree and Git history take precedence over documentation when the
 
 ## Active programme
 
+Owner stopped Windows console-launching tasks on2026-11-01: `SmartFlowResearchRefresh`
+and `SmartFlowResearchDrain` are DISABLED. Automatic Windows input refresh, off-host
+backup retrieval/validation and queued self-mail delivery are paused. Mac schedules
+were not changed. Keep Windows tasks disabled until new owner direction; preserve
+all ledgers, outbox and evidence. See `docs/SMARTFLOW_AUTOMATION_RUNBOOK.md`.
+
 The owner approved Phase 1 of `docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`
 on 2026-10-08: the isolated manual report-only Mac research prototype.
 Use `smartflow.research` and `docs/SMARTFLOW_MAC_RESEARCH_RUNBOOK.md`.
@@ -313,6 +319,11 @@ originals are not evidence of removed filings. Changes describe packet coverage,
 not a new public filing.
 
 ## Changelog
+
+### 2026-11-01 — Stop Windows console-launching research tasks
+
+- Disabled/stopped SmartFlowResearchRefresh and SmartFlowResearchDrain at the owner's request to stop scheduled CMD popups. Both launched console Python in the interactive session without a hidden-window launcher.
+- Verified Disabled/Enabled=false and no gateway process. Preserved task XML backups under C:\Users\User\docs\personal-device-audits\Console-task-audit-2026-11-01. Mac schedules, source/runtime, credentials, mail/outbox and database state unchanged; do not re-enable without owner direction.
 
 ### 2026-10-25 — Reader version 3 news compatibility
 

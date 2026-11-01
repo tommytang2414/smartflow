@@ -1,5 +1,12 @@
 # AI Handoff
 
+## Owner stopped Windows console tasks —2026-11-01
+
+- Entry branch feat/smartflow-mac-research/cb5f6f2, clean and aligned with upstream. Owner explicitly requested checking/stopping other CMD-launching scheduled tasks. Both SmartFlowResearchRefresh and SmartFlowResearchDrain used interactive console Python without a hidden launcher; disabled and stopped via Windows ScheduledTasks cmdlets.
+- Verified State=Disabled/Enabled=false for both and no gateway processes. Original task XML and before-state saved under C:\Users\User\docs\personal-device-audits\Console-task-audit-2026-11-01. Guidance/runbook updated; no application source change or application test/build needed.
+- Windows input refresh, off-host backup retrieval/validation and queued self-mail delivery are paused. No manual gateway run, mail, database/credential/runtime or Mac scheduler change. This is not a full SmartFlow shutdown. Preserve pending outbox and all existing evidence.
+- Next: leave both Windows tasks disabled until new owner direction. Any future restart must assess input freshness, pending delivery identities and backup gap before resuming; never replay sends blindly.
+
 ## Operational repair acceptance —2026-10-25 21:21HKT
 - Read-only actual cycle verification: normalOct25 11:00:04 run completed11:02:31HKT, statusapproved/reviewPASS_WITH_LIMITATIONS. The reader-v3 connector repair21232fb therefore passed the next scheduled research flow, not only the isolated connector check. No extra model run or send triggered for acceptance.
 - User-approved independent Meme continuation is handled in its own repository; original news/data/evaluators and SmartFlow source/credentials/schedules remain separate. Prior repair records below retain exact code/tests/backups.
