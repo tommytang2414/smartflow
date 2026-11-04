@@ -1,5 +1,20 @@
 # AI Handoff
 
+## Windowless refresh restored — 2026-11-05 HKT
+
+- Owner requested data refresh recovery. Branch `feat/smartflow-mac-research`;
+  current commit resolves through Git. Re-enabled only `SmartFlowResearchRefresh`
+  at 10:15 HKT with `pythonw.exe`, hidden console children and `--data-only`.
+  Drain stays disabled. Task XML before and after in
+  `data/research-prototype/gateway/repair-20261105`.
+- The actual task returned exit 0 and published bundle `20261104T175316Z-3e91859b`
+  at 01:55:43 HKT. Mac independently verified the archive and all 68 hashes,
+  24 company documents and all three S3 snapshots against the 11:00 freshness
+  cutoff. Receipt `exports/repair-20261105/inbox-verification.json` on Mac.
+- Readiness, prototype, PowerShell syntax and data-only success/failure no-mail
+  checks passed. Next check the ordinary 10:15 refresh and 11:00 research cycle.
+  Previous failed cycles and source/reviewer gates remain authoritative.
+
 ## Owner stopped Windows console tasks —2026-11-01
 
 - Entry branch feat/smartflow-mac-research/cb5f6f2, clean and aligned with upstream. Owner explicitly requested checking/stopping other CMD-launching scheduled tasks. Both SmartFlowResearchRefresh and SmartFlowResearchDrain used interactive console Python without a hidden launcher; disabled and stopped via Windows ScheduledTasks cmdlets.

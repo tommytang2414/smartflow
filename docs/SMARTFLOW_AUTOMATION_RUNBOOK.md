@@ -1,13 +1,12 @@
 # SmartFlow operational research
 
-**Windows bridge paused by owner,2026-11-01:** `SmartFlowResearchRefresh` and
-`SmartFlowResearchDrain` are DISABLED and stopped to prevent console windows.
-Windows input refresh, off-host backup retrieval/validation and queued self-mail
-delivery will not run automatically. Mac daily/weekly schedules were not changed;
-this is not a full SmartFlow shutdown. Preserve outbox, delivery ledger, backups
-and source evidence. Do not re-enable Windows tasks without new owner direction.
-Original task XML is retained under
-`C:\Users\User\docs\personal-device-audits\Console-task-audit-2026-11-01`.
+**Windows input refresh restored on 2026-11-05.** Both Windows tasks were stopped
+on 2026-11-01 to prevent console popups. The refresh task now uses windowless
+Python and `--data-only` at the original 10:15 HKT time. Its status receipt is
+`data/research-prototype/gateway/refresh-status.json`. The drain task remains
+disabled, so off-host restore validation and queued delivery remain paused.
+Preserve the outbox, delivery ledger, backups and source evidence. Refresh task
+XML before and after this repair is in `data/research-prototype/gateway/repair-20261105`.
 
 Owner approved all-five readiness scope2026-10-13. Mac is authoritative for
 research state; Windows bridges existing AWS/GWS authentication without copying
@@ -18,8 +17,8 @@ Mac must be awake with vortex logged in. This is not a standalone cloud service.
 
 1. Windows task `SmartFlowResearchRefresh`,10:15HKT: exact S3 versions and bounded
    SEC company originals, alias-bound hash bundle, pinned SSH/SCP, atomic Mac
-   `inbox/latest.json`. Refresh failure preserves the previous bundle and notifies
-   once per episode through existing Windows GWS.
+   `inbox/latest.json`. A data-only refresh failure preserves the previous bundle
+   and records its reason in the local status receipt.
 2. Mac `com.smartflow.research.daily`,11:00HKT: import sealed inputs, execute due
    checks, compare all candidate/content/gate semantics. GPT only on material
    change and at most one reserved cycle/HKTday, including failed attempts. Each
@@ -63,7 +62,7 @@ caller wall-clock/attempt limit, so busy slots can produce explicit failed attem
 From Windows project root:
 
 ```powershell
-py -3 -X utf8 -m smartflow.research.gateway refresh
+py -3 -X utf8 -m smartflow.research.gateway refresh --data-only
 py -3 -X utf8 -m smartflow.research.gateway drain
 ```
 

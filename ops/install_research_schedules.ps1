@@ -2,6 +2,8 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $pythonExecutable = 'C:\Users\User\AppData\Local\Programs\Python\Python312\python.exe'
 if (-not (Test-Path -LiteralPath $pythonExecutable)) { throw 'Verified operator Python is unavailable' }
+$windowlessPython = Join-Path (Split-Path $pythonExecutable) 'pythonw.exe'
+if (-not (Test-Path -LiteralPath $windowlessPython)) { throw 'Windowless operator Python is unavailable' }
 if ((Get-TimeZone).BaseUtcOffset -ne [TimeSpan]::FromHours(8)) { throw 'Inspect task timezone before installing HKT schedule' }
 $taskNames = @('SmartFlowResearchRefresh', 'SmartFlowResearchDrain')
 foreach ($taskName in $taskNames) {
@@ -18,7 +20,12 @@ if ($nextDrain -le [datetime]::Now) { $nextDrain = $nextDrain.AddHours(1) }
 $drain = New-ScheduledTaskTrigger -Once -At $nextDrain -RepetitionInterval (New-TimeSpan -Hours 1)
 foreach ($taskMode in @(@('refresh', $refresh, $taskNames[0]), @('drain', $drain, $taskNames[1]))) {
     $taskArguments = '-X utf8 -m smartflow.research.gateway ' + $taskMode[0] + ' --root "' + $gatewayRoot + '" --aliases "' + $aliasPath + '"'
-    $action = New-ScheduledTaskAction -Execute $pythonExecutable -Argument $taskArguments -WorkingDirectory $projectRoot
+    $taskExecutable = $pythonExecutable
+    if ($taskMode[0] -eq 'refresh') {
+        $taskExecutable = $windowlessPython
+        $taskArguments += ' --data-only'
+    }
+    $action = New-ScheduledTaskAction -Execute $taskExecutable -Argument $taskArguments -WorkingDirectory $projectRoot
     Register-ScheduledTask -TaskName $taskMode[2] -Action $action -Trigger $taskMode[1] -Settings $settings -Principal $principal -Description 'Approved SmartFlow existing-auth input/backup/self-mail gateway; requires interactive Windows and pinned Mac LAN.' | Out-Null
     Export-ScheduledTask -TaskName $taskMode[2] | Set-Content -LiteralPath (Join-Path $gatewayRoot ($taskMode[2] + '.xml')) -Encoding UTF8
 }

@@ -33,10 +33,11 @@ def sync_aws(destination: Path) -> dict:
     # This operator machine has AWS CLI v1 installed in Python with an aws.cmd
     # shim. CreateProcess cannot resolve bare 'aws'; bypass file associations.
     command = [sys.executable, "-m", "awscli"] if os.name == "nt" and importlib.util.find_spec("awscli") else [shutil.which("aws") or "aws"]
+    no_console = getattr(subprocess, "CREATE_NO_WINDOW", 0)
     results = {}
     for group, key in KEYS.items():
         head = subprocess.run([*command, "s3api", "head-object", "--bucket", BUCKET, "--key", key, "--output", "json"],
-                              check=True, capture_output=True, text=True, timeout=60)
+                              check=True, capture_output=True, text=True, timeout=60, creationflags=no_console)
         metadata = json.loads(head.stdout)
         version = metadata.get("VersionId")
         if not version or version == "null":
@@ -55,7 +56,7 @@ def sync_aws(destination: Path) -> dict:
                 temporary = Path(folder) / "snapshot.db"
                 subprocess.run([*command, "s3api", "get-object", "--bucket", BUCKET, "--key", key,
                                 "--version-id", version, str(temporary), "--output", "json"],
-                               check=True, capture_output=True, timeout=180)
+                               check=True, capture_output=True, timeout=180, creationflags=no_console)
                 if temporary.stat().st_size != manifest["size_bytes"] or file_hash(temporary) != manifest["sha256"]:
                     raise ValueError("snapshot_download_hash_mismatch")
                 temporary.replace(target)

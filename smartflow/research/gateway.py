@@ -23,14 +23,17 @@ ROOT = "/Users/vortex/Applications/smartflow-research"
 SSH = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "-o", "StrictHostKeyChecking=yes",
        "-o", "UserKnownHostsFile=C:/Users/User/.ssh/hk-newsroom-mac-known_hosts", "-o", "IdentitiesOnly=yes",
        "-i", "C:/Users/User/.ssh/hk-newsroom-mac"]
+NO_CONSOLE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
 def remote(command: str) -> str:
-    return subprocess.run(["ssh", *SSH, REMOTE, command], check=True, capture_output=True, encoding="utf-8", timeout=180).stdout
+    return subprocess.run(["ssh", *SSH, REMOTE, command], check=True, capture_output=True,
+                          encoding="utf-8", timeout=180, creationflags=NO_CONSOLE).stdout
 
 
 def scp(source: str, target: str) -> None:
-    subprocess.run(["scp", *SSH, source, target], check=True, capture_output=True, timeout=300)
+    subprocess.run(["scp", *SSH, source, target], check=True, capture_output=True,
+                   timeout=300, creationflags=NO_CONSOLE)
 
 
 def refresh(root: Path, aliases_path: Path) -> dict:
@@ -59,7 +62,7 @@ def refresh(root: Path, aliases_path: Path) -> dict:
         "value={'directory':d.name,'files':files,'archive_sha256':hashlib.sha256(a.read_bytes()).hexdigest()}",
         "t=r/'latest.json.tmp';t.write_text(json.dumps(value,sort_keys=True));t.replace(r/'latest.json')", "print(json.dumps(value))"])
     result = subprocess.run(["ssh", *SSH, REMOTE, "cd " + ROOT + " && .venv/bin/python -"], input=script,
-                            check=True, capture_output=True, encoding="utf-8", timeout=180)
+                            check=True, capture_output=True, encoding="utf-8", timeout=180, creationflags=NO_CONSOLE)
     receipt = {"status": "refreshed", "label": label, "archive_sha256": sha, "files": len(files), "mac": json.loads(result.stdout)}
     write_json(folder / "receipt.json", receipt)
     write_json(root / "last-refresh.json", {"completed_at": stamp(), **receipt})
@@ -171,13 +174,16 @@ def main() -> None:
     parser.add_argument("mode", choices=("refresh", "drain"))
     parser.add_argument("--root", type=Path, default=Path("data/research-prototype/gateway"))
     parser.add_argument("--aliases", type=Path, default=Path("config/research-aliases-us.json"))
+    parser.add_argument("--data-only", action="store_true", help="Refresh inputs and record status without gateway email")
     args = parser.parse_args()
+    if args.data_only and args.mode != "refresh":
+        parser.error("--data-only requires refresh")
     args.root.mkdir(parents=True, exist_ok=True)
     with single_writer(args.root):
         try:
             result = refresh(args.root, args.aliases) if args.mode == "refresh" else drain(args.root)
             episode_path = args.root / ("gateway-fault-" + args.mode + ".json")
-            if episode_path.exists() and result.get("status") in {"refreshed", "restore_verified"}:
+            if not args.data_only and episode_path.exists() and result.get("status") in {"refreshed", "restore_verified"}:
                 episode = read_json(episode_path)
                 if episode["state"] == "open":
                     text = "SmartFlow Windows " + args.mode + " 流程已恢復；其他流程、Mac 研究及來源 gates 仍以實際 receipt 為準。\n"
@@ -188,6 +194,8 @@ def main() -> None:
         except Exception as error:
             code = str(error)[:140] if isinstance(error, ValueError) else type(error).__name__
             write_json(args.root / (args.mode + "-status.json"), {"status": "needs_attention", "reason_code": code, "recorded_at": stamp()})
+            if args.data_only:
+                raise SystemExit("gateway_needs_attention:" + code) from None
             episode_path = args.root / ("gateway-fault-" + args.mode + ".json")
             episode = read_json(episode_path) if episode_path.exists() else {"state": "closed"}
             if episode["state"] == "closed":

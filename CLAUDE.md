@@ -1,9 +1,9 @@
 # SmartFlow — Smart Money Data Pipeline
 
-Windows task status2026-11-01: owner stopped `SmartFlowResearchRefresh` and
-`SmartFlowResearchDrain` to prevent scheduled console popups. Both are DISABLED;
-Windows input refresh, backup retrieval/validation and queued-mail delivery are
-paused until new owner direction. Mac schedules remain unchanged. See the runbook.
+Windows task status 2026-11-05: owner restored only the 10:15 HKT
+`SmartFlowResearchRefresh` using windowless Python and data-only mode.
+`SmartFlowResearchDrain` remains disabled, including off-host backup retrieval
+and queued-mail delivery. See the runbook.
 
 ## What This Is
 

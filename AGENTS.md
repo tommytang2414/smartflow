@@ -6,11 +6,11 @@ The Git working tree and Git history take precedence over documentation when the
 
 ## Active programme
 
-Owner stopped Windows console-launching tasks on2026-11-01: `SmartFlowResearchRefresh`
-and `SmartFlowResearchDrain` are DISABLED. Automatic Windows input refresh, off-host
-backup retrieval/validation and queued self-mail delivery are paused. Mac schedules
-were not changed. Keep Windows tasks disabled until new owner direction; preserve
-all ledgers, outbox and evidence. See `docs/SMARTFLOW_AUTOMATION_RUNBOOK.md`.
+Owner requested data refresh recovery on 2026-11-05. The Windows
+`SmartFlowResearchRefresh` task runs at 10:15 HKT via `pythonw.exe` and
+`--data-only`, with no console or gateway mail. `SmartFlowResearchDrain` remains
+disabled. Preserve the backup and delivery evidence. See
+`docs/SMARTFLOW_AUTOMATION_RUNBOOK.md`.
 
 The owner approved Phase 1 of `docs/SMARTFLOW_MAC_RESEARCH_ARCHITECTURE.md`
 on 2026-10-08: the isolated manual report-only Mac research prototype.
@@ -319,6 +319,11 @@ originals are not evidence of removed filings. Changes describe packet coverage,
 not a new public filing.
 
 ## Changelog
+
+### 2026-11-05 — Restore windowless input refresh
+
+- Re-enabled only the 10:15 Windows refresh, with windowless Python and child
+  processes. Data-only mode records local receipts and never invokes gateway mail.
 
 ### 2026-11-01 — Stop Windows console-launching research tasks
 
