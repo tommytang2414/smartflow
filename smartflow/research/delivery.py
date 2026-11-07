@@ -30,7 +30,9 @@ def gws(resource: str, action: str, params: dict, body: dict | None = None, uplo
         command += ["--json", json.dumps(body)]
     if upload:
         command += ["--upload", str(upload.resolve()), "--upload-content-type", "message/rfc822"]
-    result = subprocess.run(command, capture_output=True, encoding="utf-8", timeout=45)
+    # Hidden like the gateway's ssh/scp calls, so a pythonw scheduled drain opens no console window.
+    result = subprocess.run(command, capture_output=True, encoding="utf-8", timeout=45,
+                            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if result.returncode:
         # OAuth/key diagnostics are not logged; no automatic login or profile switch.
         raise ValueError("existing_gws_operation_failed_auth_or_provider_check_required")
