@@ -321,5 +321,62 @@ class SECShadowRunTests(unittest.TestCase):
             self.assertEqual(session.get(SourceHealth, "sec_form4").state, "degraded")
 
 
+class SequenceHTTPSession:
+    def __init__(self, outcomes):
+        self.outcomes = list(outcomes)
+        self.calls = 0
+
+    def get(self, url, *, headers, timeout, allow_redirects):
+        self.calls += 1
+        outcome = self.outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+
+class ReadTimeout(Exception):
+    pass
+
+
+class SECClientRetryTests(unittest.TestCase):
+    URL = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=144"
+
+    def client(self, outcomes):
+        session = SequenceHTTPSession(outcomes)
+        client = SECClient(session, contact_email="contact@example.com")
+        client.rate_limiter.wait = lambda: None
+        client.slept = []
+        client.sleep = client.slept.append
+        return client, session
+
+    def test_retries_once_after_transport_timeout(self):
+        client, session = self.client([ReadTimeout(), FakeHTTPResponse(200, "ok")])
+        self.assertEqual(client.get_text(self.URL), "ok")
+        self.assertEqual(session.calls, 2)
+        self.assertEqual(client.slept, [10])
+
+    def test_retries_once_after_server_error_or_throttle(self):
+        for status in (429, 503):
+            client, session = self.client([FakeHTTPResponse(status), FakeHTTPResponse(200, "ok")])
+            self.assertEqual(client.get_text(self.URL), "ok")
+            self.assertEqual(session.calls, 2)
+
+    def test_second_transient_failure_is_raised_with_metadata(self):
+        client, session = self.client([ReadTimeout(), ReadTimeout()])
+        with self.assertRaises(SECSourceError) as raised:
+            client.get_text(self.URL)
+        self.assertEqual(session.calls, 2)
+        self.assertEqual(raised.exception.transport_error_class, "ReadTimeout")
+        self.assertEqual(raised.exception.request_stage, "feed")
+
+    def test_permanent_errors_are_not_retried(self):
+        for response in (FakeHTTPResponse(404), FakeHTTPResponse(403)):
+            client, session = self.client([response])
+            with self.assertRaises((SECSourceError, SECAuthenticationError)):
+                client.get_text(self.URL)
+            self.assertEqual(session.calls, 1)
+            self.assertEqual(client.slept, [])
+
+
 if __name__ == "__main__":
     unittest.main()

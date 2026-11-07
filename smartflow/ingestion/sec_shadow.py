@@ -2,6 +2,7 @@
 
 import json
 import re
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
@@ -91,13 +92,28 @@ class SECClient:
         *,
         contact_email: str,
         timeout_seconds: float = 30,
+        retry_delay_seconds: float = 10,
     ):
         self.http_session = http_session
         self.user_agent = build_sec_user_agent(contact_email)
         self.timeout_seconds = timeout_seconds
+        self.retry_delay_seconds = retry_delay_seconds
+        self.sleep = time.sleep
         self.rate_limiter = RateLimiter(2)
 
     def get_text(self, url: str) -> str:
+        # One delayed retry for transient SEC failures (read timeouts, 429/5xx).
+        # Isolated timeouts otherwise drop the 14-day reliability below the
+        # research gate's 99% floor and hold every research cycle.
+        try:
+            return self._get_text_once(url)
+        except SECSourceError as error:
+            if not getattr(error, "transient", False):
+                raise
+        self.sleep(self.retry_delay_seconds)
+        return self._get_text_once(url)
+
+    def _get_text_once(self, url: str) -> str:
         allowed_url = _validate_sec_url(url)
         self.rate_limiter.wait()
         try:
@@ -116,13 +132,16 @@ class SECClient:
             failure.request_stage = ("feed" if "/cgi-bin/" in allowed_url else
                                      "tickers" if "/files/" in allowed_url else
                                      "index" if allowed_url.endswith("-index.html") else "filing")
+            failure.transient = True
             raise failure from error
 
         status_code = int(response.status_code)
         if status_code in {401, 403}:
             raise SECAuthenticationError(f"SEC returned HTTP {status_code}")
         if status_code < 200 or status_code >= 300:
-            raise SECSourceError(f"SEC returned HTTP {status_code}")
+            failure = SECSourceError(f"SEC returned HTTP {status_code}")
+            failure.transient = status_code == 429 or status_code >= 500
+            raise failure
         content = response.content
         if len(content) > MAX_RESPONSE_BYTES:
             raise SECSourceError("SEC response exceeded the 10 MB safety limit")
