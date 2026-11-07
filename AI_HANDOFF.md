@@ -1,5 +1,13 @@
 # AI Handoff
 
+## Form 144 gate hold diagnosed; collector retry deployed — 2026-11-08 HKT (Claude)
+
+- Cause of `source_gate_regressed:sec_form144` (Mac cycles since 11-06): 6 SEC errors in the 14-day window (4 feed `ReadTimeout`s on 11-04/05), so reliability was about 98.2%, below the 99% gate. Coverage was complete; no code fault.
+- `2b6023c` (this branch) and cherry-pick `b38ee66` on `hotfix/sec-transient-retry` (based on the deployed `50cdced`): one 10 s retry for transport errors and HTTP 429/5xx; 4xx and auth errors still fail at once. 182/182 tests pass locally and on the VPS.
+- Deployed to `/home/ubuntu/SmartFlow-shadow` as detached `b38ee66` under `sec-shadow.lock`. Backup with crontab, previous HEAD and DB: `backups/AUDIT-R12-20261107T192320Z/`. Cron unchanged. Rollback: `git checkout --detach 50cdced` under the lock.
+- The existing failures still age out of the window: the gate should return to PASS about 2026-11-18 20:00 UTC. The fix prevents new isolated timeouts from extending that.
+- `b789331`: gws mail calls now use `CREATE_NO_WINDOW`. Windows `SmartFlowResearchDrain` is **still disabled** (owner decision 11-01). 3 alerts are queued on the Mac (recovery 11-05, fault 11-06, weekly 11-07). Re-enable with `pythonw.exe` only after owner approval.
+
 ## Windowless refresh restored — 2026-11-05 HKT
 
 - Owner requested data refresh recovery. Branch `feat/smartflow-mac-research`;
