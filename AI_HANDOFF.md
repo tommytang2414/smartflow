@@ -6,7 +6,9 @@
 - `2b6023c` (this branch) and cherry-pick `b38ee66` on `hotfix/sec-transient-retry` (based on the deployed `50cdced`): one 10 s retry for transport errors and HTTP 429/5xx; 4xx and auth errors still fail at once. 182/182 tests pass locally and on the VPS.
 - Deployed to `/home/ubuntu/SmartFlow-shadow` as detached `b38ee66` under `sec-shadow.lock`. Backup with crontab, previous HEAD and DB: `backups/AUDIT-R12-20261107T192320Z/`. Cron unchanged. Rollback: `git checkout --detach 50cdced` under the lock.
 - The existing failures still age out of the window: the gate should return to PASS about 2026-11-18 20:00 UTC. The fix prevents new isolated timeouts from extending that.
-- `b789331`: gws mail calls now use `CREATE_NO_WINDOW`. Windows `SmartFlowResearchDrain` is **still disabled** (owner decision 11-01). 3 alerts are queued on the Mac (recovery 11-05, fault 11-06, weekly 11-07). Re-enable with `pythonw.exe` only after owner approval.
+- `b789331`: gws mail calls now use `CREATE_NO_WINDOW`.
+- Drain re-enabled 2026-11-08 14:44 HKT on owner approval. The action is now `pythonw.exe`; arguments, trigger and principal are unchanged. Task XML before and after is in `data/research-prototype/gateway/repair-20261108`. The manual run returned 0 and sent the 3 queued alerts (recovery 11-05, fault 11-06, weekly 11-07). Each ledger is `sent` with a Gmail ID, and the status is `restore_verified`.
+- VPS check at 06:45 UTC on 11-08: all runs since the deploy succeeded (form144 11, form4 137, first form144 at 20:02 UTC on 11-07).
 
 ## Windowless refresh restored — 2026-11-05 HKT
 
